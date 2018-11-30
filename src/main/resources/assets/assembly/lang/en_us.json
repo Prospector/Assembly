@@ -1,2 +1,7 @@
 {
+  "block.assembly.rubber_log": "Rubber Log",
+  "block.assembly.sapping_barrel": "Sapping Barrel",
+  "block.assembly.tree_tap": "Tree Tap",
+  "item.assembly.sap_bucket": "Sap Bucket",
+  "item.assembly.biomass_bucket": "Biomass Bucket"
 }

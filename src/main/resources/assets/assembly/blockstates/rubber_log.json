@@ -1,0 +1,32 @@
+{
+  "multipart": [
+	{
+	  "when": { "axis": "y" },
+	  "apply": { "model": "assembly:block/rubber_log" }
+	},
+	{
+	  "when": { "axis": "z" },
+	  "apply": { "model": "assembly:block/rubber_log", "x": 90 }
+	},
+	{
+	  "when": { "axis": "x" },
+	  "apply": { "model": "assembly:block/rubber_log", "x": 90, "y": 90 }
+	},
+	{
+	  "when": { "north_sap": true },
+	  "apply": { "model": "assembly:block/rubber_log_sap_spot" }
+	},
+	{
+	  "when": { "south_sap": true },
+	  "apply": { "model": "assembly:block/rubber_log_sap_spot", "y": 180 }
+	},
+	{
+	  "when": { "west_sap": true },
+	  "apply": { "model": "assembly:block/rubber_log_sap_spot", "y": 270 }
+	},
+	{
+	  "when": { "east_sap": true },
+	  "apply": { "model": "assembly:block/rubber_log_sap_spot", "y": 90 }
+	}
+  ]
+}

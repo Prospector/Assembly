@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "prospector.assembly.mixin",
+  "package": "teamreborn.assembly.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
   ],

@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+	"assembly:sap",
+	"assembly:flowing_sap"
+  ]
+}

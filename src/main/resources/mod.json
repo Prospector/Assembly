@@ -3,10 +3,15 @@
   "name": "Assembly",
   "version": "0.1.0",
   "side": "universal",
-  "initializer": "prospector.assembly.Assembly",
+  "initializers": [
+	"teamreborn.assembly.registry.AssemblyItems",
+	"teamreborn.assembly.registry.AssemblyBlocks",
+	"teamreborn.assembly.registry.AssemblyBlockEntities",
+	"teamreborn.assembly.registry.AssemblyFluids"
+  ],
   "description": "Expansion of Minecraft's technology into new ages",
   "mixins": {
-    "client": "assembly.client.json",
-    "common": "assembly.common.json"
+	"client": "assembly.client.json",
+	"common": "assembly.common.json"
   }
 }

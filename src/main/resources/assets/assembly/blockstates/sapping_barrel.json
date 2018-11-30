@@ -1,0 +1,5 @@
+{
+  "variants": {
+	"": { "model": "assembly:block/sapping_barrel" }
+  }
+}
