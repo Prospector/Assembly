@@ -1,8 +1,8 @@
 package teamreborn.assembly.fluid;
 
 import com.sun.istack.internal.Nullable;
-import net.fabricmc.api.Side;
-import net.fabricmc.api.Sided;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -43,7 +43,7 @@ public abstract class BiomassFluid extends BaseFluid {
 		return AssemblyFluids.SAP;
 	}
 
-	@Sided(Side.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
@@ -52,7 +52,7 @@ public abstract class BiomassFluid extends BaseFluid {
 		return AssemblyItems.BIOMASS_BUCKET;
 	}
 
-	@Sided(Side.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public void method_15776(World var1, BlockPos var2, FluidState var3, Random var4) {
 		if (!var3.isStill() && !var3.get(STILL)) {
 			if (var4.nextInt(64) == 0) {
@@ -65,7 +65,7 @@ public abstract class BiomassFluid extends BaseFluid {
 	}
 
 	@Nullable
-	@Sided(Side.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public Particle method_15787() {
 		return ParticleTypes.DRIPPING_WATER;
 	}
