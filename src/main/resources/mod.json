@@ -1,0 +1,12 @@
+{
+  "id": "assembly",
+  "name": "Assembly",
+  "version": "0.1.0",
+  "side": "universal",
+  "initializer": "prospector.assembly.Assembly",
+  "description": "Expansion of Minecraft's technology into new ages",
+  "mixins": {
+    "client": "assembly.client.json",
+    "common": "assembly.common.json"
+  }
+}
