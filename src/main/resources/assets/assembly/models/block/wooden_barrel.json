@@ -2,11 +2,11 @@
   "parent": "block/block",
   "credit": "Made with Blockbench",
   "textures": {
-	"side": "assembly:block/sapping_barrel/sapping_barrel_side",
-	"inside": "assembly:block/sapping_barrel/sapping_barrel_inside",
-	"top": "assembly:block/sapping_barrel/sapping_barrel_top",
-	"bottom": "assembly:block/sapping_barrel/sapping_barrel_bottom",
-	"particle": "assembly:block/sapping_barrel/sapping_barrel_side"
+	"side": "assembly:block/wooden_barrel/wooden_barrel_side",
+	"inside": "assembly:block/wooden_barrel/wooden_barrel_inside",
+	"top": "assembly:block/wooden_barrel/wooden_barrel_top",
+	"bottom": "assembly:block/wooden_barrel/wooden_barrel_bottom",
+	"particle": "assembly:block/wooden_barrel/wooden_barrel_side"
   },
   "elements": [
 	{

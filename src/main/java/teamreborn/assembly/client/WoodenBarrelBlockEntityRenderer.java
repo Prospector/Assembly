@@ -17,13 +17,13 @@ public class WoodenBarrelBlockEntityRenderer extends BlockEntityRenderer<WoodenB
 
 	@Override
 	public void render(WoodenBarrelBlockEntity barrel, double x, double y, double z, float ticksDelta, int destroyStage) {
-		if (barrel.currentFluid != null && barrel.currentFluid != Fluids.EMPTY) {
+		if (barrel.fluidInstance != null && barrel.fluidInstance.getFluid() != Fluids.EMPTY) {
 			final Tessellator tessellator = Tessellator.getInstance();
 			final VertexBuffer buffer = tessellator.getVertexBuffer();
 			buffer.setOffset(x, y, z);
 			GlStateManager.disableLighting();
-			Sprite sprite = MinecraftClient.getInstance().getBakedModelManager().getBlockStateMaps().getModel(barrel.currentFluid.getDefaultState().getBlockState()).getSprite();
-			double height = (barrel.fluidAmount / (float) 1000 * 14) + 1;
+			Sprite sprite = MinecraftClient.getInstance().getBakedModelManager().getBlockStateMaps().getModel(barrel.fluidInstance.getFluid().getDefaultState().getBlockState()).getSprite();
+			double height = (barrel.fluidInstance.getAmount() / (float) 1000 * 14) + 1;
 			buffer.begin(GL11.GL_QUADS, VertexFormats.POSITION_UV_COLOR);
 			buffer.vertex(frac(3), frac(height), frac(3)).texture(sprite.getMinU(), sprite.getMinV()).color(1.0F, 1.0F, 1.0F, 1.0F).next();
 			buffer.vertex(frac(3), frac(height), frac(13)).texture(sprite.getMaxU(), sprite.getMinV()).color(1.0F, 1.0F, 1.0F, 1.0F).next();
