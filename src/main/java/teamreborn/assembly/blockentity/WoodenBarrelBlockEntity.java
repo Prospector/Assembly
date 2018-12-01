@@ -11,21 +11,21 @@ import net.minecraft.util.registry.Registry;
 import prospector.silk.blockentity.FluidContainer;
 import teamreborn.assembly.registry.AssemblyBlockEntities;
 
-public class SappingBarrelBlockEntity extends BlockEntity implements FluidContainer, Tickable {
+public class WoodenBarrelBlockEntity extends BlockEntity implements FluidContainer, Tickable {
 	public static final int CAPACITY = 1000;
 
 	public Fluid currentFluid = Fluids.EMPTY;
 	public int fluidAmount;
 
-	public SappingBarrelBlockEntity() {
-		super(AssemblyBlockEntities.SAPPING_BARREL_BLOCK_ENTITY);
+	public WoodenBarrelBlockEntity() {
+		super(AssemblyBlockEntities.WOODEN_BARREL);
 	}
 
 	@Override
 	public void tick() {
 		if (world.isRemote && world.getTime() % (5 + world.getRandom().nextInt(15)) == 0) {
 			if (currentFluid == Fluids.EMPTY) {
-				currentFluid = Fluids.LAVA;
+				currentFluid = Fluids.WATER;
 			}
 			fluidAmount++;
 		}

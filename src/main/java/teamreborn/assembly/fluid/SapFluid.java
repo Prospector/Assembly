@@ -36,11 +36,11 @@ public abstract class SapFluid extends BaseFluid {
 	}
 
 	public Fluid getFlowing() {
-		return AssemblyFluids.SAP_FLOWING;
+		return AssemblyFluids.LATEX_FLOWING;
 	}
 
 	public Fluid getStill() {
-		return AssemblyFluids.SAP;
+		return AssemblyFluids.LATEX;
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -49,7 +49,7 @@ public abstract class SapFluid extends BaseFluid {
 	}
 
 	public Item getBucketItem() {
-		return AssemblyItems.SAP_BUCKET;
+		return AssemblyItems.LATEX_BUCKET;
 	}
 
 	@Environment(EnvType.CLIENT)

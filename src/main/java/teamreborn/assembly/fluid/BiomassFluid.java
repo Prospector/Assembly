@@ -36,11 +36,11 @@ public abstract class BiomassFluid extends BaseFluid {
 	}
 
 	public Fluid getFlowing() {
-		return AssemblyFluids.SAP_FLOWING;
+		return AssemblyFluids.LATEX_FLOWING;
 	}
 
 	public Fluid getStill() {
-		return AssemblyFluids.SAP;
+		return AssemblyFluids.LATEX;
 	}
 
 	@Environment(EnvType.CLIENT)

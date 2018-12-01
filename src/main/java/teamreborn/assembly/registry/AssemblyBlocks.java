@@ -11,18 +11,18 @@ import net.minecraft.util.MapColor;
 import net.minecraft.util.registry.Registry;
 import prospector.silk.util.SilkBlockBuilder;
 import teamreborn.assembly.Assembly;
+import teamreborn.assembly.block.WoodenBarrelBlock;
 import teamreborn.assembly.block.RubberLogBlock;
-import teamreborn.assembly.block.SappingBarrelBlock;
 import teamreborn.assembly.block.TreeTapBlock;
 
 public class AssemblyBlocks implements ModInitializer {
 	public static final Block RUBBER_LOG;
-	public static final Block SAPPING_BARREL;
+	public static final Block WOODEN_BARREL;
 	public static final Block TREE_TAP;
 
 	static {
 		RUBBER_LOG = AssemblyBlocks.register("rubber_log", new RubberLogBlock(MapColor.WOOD, SilkBlockBuilder.create(Material.WOOD).setStrength(2.0F).setSoundGroup(BlockSoundGroup.WOOD).build()), ItemGroup.DECORATIONS);
-		SAPPING_BARREL = AssemblyBlocks.register("sapping_barrel", new SappingBarrelBlock(SilkBlockBuilder.create(Material.WOOD).setStrength(2.0F).setSoundGroup(BlockSoundGroup.WOOD).build()), ItemGroup.DECORATIONS);
+		WOODEN_BARREL = AssemblyBlocks.register("wooden_barrel", new WoodenBarrelBlock(SilkBlockBuilder.create(Material.WOOD).setStrength(2.0F).setSoundGroup(BlockSoundGroup.WOOD).build()), ItemGroup.DECORATIONS);
 		TREE_TAP = AssemblyBlocks.register("tree_tap", new TreeTapBlock(SilkBlockBuilder.create(Material.WOOD).setStrength(2.0F).setSoundGroup(BlockSoundGroup.WOOD).build()), ItemGroup.DECORATIONS);
 	}
 

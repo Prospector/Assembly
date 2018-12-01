@@ -10,11 +10,11 @@ import teamreborn.assembly.Assembly;
 
 public class AssemblyItems implements ModInitializer {
 
-	public static final Item SAP_BUCKET;
+	public static final Item LATEX_BUCKET;
 	public static final Item BIOMASS_BUCKET;
 
 	static {
-		SAP_BUCKET = register("sap_bucket", new BucketItem(AssemblyFluids.SAP, new Item.Builder().containerItem(Items.BUCKET).stackSize(1).itemGroup(ItemGroup.MISC)));
+		LATEX_BUCKET = register("latex_bucket", new BucketItem(AssemblyFluids.LATEX, new Item.Builder().containerItem(Items.BUCKET).stackSize(1).itemGroup(ItemGroup.MISC)));
 		BIOMASS_BUCKET = register("biomass_bucket", new BucketItem(AssemblyFluids.BIOMASS, new Item.Builder().containerItem(Items.BUCKET).stackSize(1).itemGroup(ItemGroup.MISC)));
 	}
 

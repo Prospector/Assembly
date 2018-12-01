@@ -8,14 +8,14 @@ import teamreborn.assembly.fluid.SapFluid;
 
 public class AssemblyFluids implements ModInitializer {
 
-	public static final BaseFluid SAP_FLOWING;
-	public static final BaseFluid SAP;
+	public static final BaseFluid LATEX_FLOWING;
+	public static final BaseFluid LATEX;
 	public static final BaseFluid BIOMASS_FLOWING;
 	public static final BaseFluid BIOMASS;
 
 	static {
-		SAP_FLOWING = register("flowing_sap", new SapFluid.Flowing());
-		SAP = register("sap", new SapFluid.Still());
+		LATEX_FLOWING = register("flowing_latex", new SapFluid.Flowing());
+		LATEX = register("latex", new SapFluid.Still());
 		BIOMASS_FLOWING = register("flowing_biomass", new SapFluid.Flowing());
 		BIOMASS = register("biomass", new SapFluid.Still());
 	}
