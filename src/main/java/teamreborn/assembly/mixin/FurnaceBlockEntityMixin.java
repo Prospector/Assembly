@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import teamreborn.assembly.powernet.PowernetConnector;
 
 @Mixin(FurnaceBlockEntity.class)
-public abstract class MixinFurnaceBlockEntity implements PowernetConnector {
+public abstract class FurnaceBlockEntityMixin implements PowernetConnector {
 
     @Override
     public BlockPos getConnectorPos() {

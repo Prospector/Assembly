@@ -3,8 +3,8 @@
   "package": "teamreborn.assembly.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "MixinWorld",
-    "MixinFurnaceBlockEntity"
+	"WorldMixin",
+	"FurnaceBlockEntityMixin"
   ],
   "injectors": {
 	"defaultRequire": 1

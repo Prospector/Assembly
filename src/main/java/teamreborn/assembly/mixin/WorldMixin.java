@@ -17,7 +17,7 @@ import teamreborn.assembly.powernet.PowernetSimulator;
 
 
 @Mixin(World.class)
-public abstract class MixinWorld implements PowernetSimulator {
+public abstract class WorldMixin implements PowernetSimulator {
 
     @Shadow
     @Final

@@ -2,14 +2,19 @@ package teamreborn.assembly.blockentity;
 
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.Tickable;
 import net.minecraft.util.math.Facing;
-import teamreborn.assembly.registry.AssemblyBlockEntities;
+import net.minecraft.util.registry.Registry;
 import prospector.silk.blockentity.FluidContainer;
+import teamreborn.assembly.registry.AssemblyBlockEntities;
 
-public class SappingBarrelBlockEntity extends BlockEntity implements FluidContainer {
+public class SappingBarrelBlockEntity extends BlockEntity implements FluidContainer, Tickable {
 	public static final int CAPACITY = 1000;
 
-	public Fluid currentFluid;
+	public Fluid currentFluid = Fluids.EMPTY;
 	public int fluidAmount;
 
 	public SappingBarrelBlockEntity() {
@@ -17,8 +22,32 @@ public class SappingBarrelBlockEntity extends BlockEntity implements FluidContai
 	}
 
 	@Override
+	public void tick() {
+		if (world.isRemote && world.getTime() % (5 + world.getRandom().nextInt(15)) == 0) {
+			if (currentFluid == Fluids.EMPTY) {
+				currentFluid = Fluids.LAVA;
+			}
+			fluidAmount++;
+		}
+	}
+
+	@Override
+	public CompoundTag serialize(CompoundTag tag) {
+		tag.putString("CurrentFluid", Registry.FLUIDS.getId(currentFluid).toString());
+		tag.putInt("FluidAmount", fluidAmount);
+		return super.serialize(tag);
+	}
+
+	@Override
+	public void deserialize(CompoundTag tag) {
+		super.deserialize(tag);
+		currentFluid = Registry.FLUIDS.get(new Identifier(tag.getString("CurrentFluid")));
+		fluidAmount = tag.getInt("FluidAmount");
+	}
+
+	@Override
 	public boolean canInsertFluid(Facing fromSide, Fluid fluid, int amount) {
-		return currentFluid == null || fluid.equals(currentFluid) && fluidAmount + amount <= CAPACITY;
+		return currentFluid == null || currentFluid == Fluids.EMPTY || fluid.equals(currentFluid) && fluidAmount + amount <= CAPACITY;
 	}
 
 	@Override
@@ -39,7 +68,7 @@ public class SappingBarrelBlockEntity extends BlockEntity implements FluidContai
 		if (canExtractFluid(fromSide, fluid, amount)) {
 			fluidAmount -= amount;
 			if (fluidAmount == 0) {
-				currentFluid = null;
+				currentFluid = Fluids.EMPTY;
 			}
 		}
 	}
