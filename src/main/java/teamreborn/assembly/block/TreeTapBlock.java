@@ -15,9 +15,12 @@ import net.minecraft.util.math.Facing;
 import net.minecraft.util.shape.VoxelShapeContainer;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.ViewableWorld;
+import net.minecraft.world.World;
 import prospector.silk.block.SilkBlockWithEntity;
+import prospector.silk.fluid.FluidContainer;
 import teamreborn.assembly.api.SapSource;
 import teamreborn.assembly.blockentity.TreeTapBlockEntity;
+import teamreborn.assembly.util.AssemblyProperties;
 
 import java.util.Map;
 
@@ -30,7 +33,7 @@ public class TreeTapBlock extends SilkBlockWithEntity {
 
 	public TreeTapBlock(Builder builder) {
 		super(builder);
-		setDefaultState(getDefaultState().with(Properties.FACING_HORIZONTAL, Facing.NORTH));
+		setDefaultState(getDefaultState().with(Properties.FACING_HORIZONTAL, Facing.NORTH).with(AssemblyProperties.POURING, false));
 	}
 
 	@Override
@@ -43,8 +46,18 @@ public class TreeTapBlock extends SilkBlockWithEntity {
 	}
 
 	@Override
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos neighborPos) {
+		super.neighborUpdate(state, world, pos, neighborBlock, neighborPos);
+		if (!(world.getBlockEntity(pos.down()) instanceof FluidContainer)) {
+			if (state.get(AssemblyProperties.POURING)) {
+				world.setBlockState(pos, state.with(AssemblyProperties.POURING, false));
+			}
+		}
+	}
+
+	@Override
 	protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
-		builder.with(Properties.FACING_HORIZONTAL);
+		builder.with(Properties.FACING_HORIZONTAL, AssemblyProperties.POURING);
 	}
 
 	@Override

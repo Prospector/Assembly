@@ -7,4 +7,5 @@ public class AssemblyProperties {
 	public static final BooleanProperty SOUTH_SAP = BooleanProperty.create("south_sap");
 	public static final BooleanProperty WEST_SAP = BooleanProperty.create("west_sap");
 	public static final BooleanProperty EAST_SAP = BooleanProperty.create("east_sap");
+	public static final BooleanProperty POURING = BooleanProperty.create("pouring");
 }

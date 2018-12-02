@@ -1,21 +1,37 @@
 package teamreborn.assembly.blockentity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Tickable;
+import net.minecraft.util.math.BoundingBox;
 import net.minecraft.util.math.Facing;
 import prospector.silk.fluid.FluidContainer;
 import prospector.silk.fluid.FluidInstance;
+import prospector.silk.fluid.PlopValues;
+import teamreborn.assembly.network.AssemblyNetworking;
 import teamreborn.assembly.registry.AssemblyBlockEntities;
-import teamreborn.assembly.registry.AssemblyFluids;
+
+import java.util.List;
 
 public class WoodenBarrelBlockEntity extends BlockEntity implements FluidContainer, Tickable {
 	public static final String FLUID_KEY = "Fluid";
-	public static final int CAPACITY = 1000;
+	public static final int CAPACITY = PlopValues.BLOCK;
 
 	public FluidInstance fluidInstance = new FluidInstance(Fluids.EMPTY);
+
+	@Environment(EnvType.SERVER)
+	public FluidInstance fluidLastSync = new FluidInstance(Fluids.EMPTY);
+	@Environment(EnvType.SERVER)
+	public List<Entity> entitiesLastSync = null;
+
+	@Environment(EnvType.CLIENT)
+	boolean firstTick = true;
 
 	public WoodenBarrelBlockEntity() {
 		super(AssemblyBlockEntities.WOODEN_BARREL);
@@ -23,12 +39,19 @@ public class WoodenBarrelBlockEntity extends BlockEntity implements FluidContain
 
 	@Override
 	public void tick() {
-		if (world.isRemote && world.getTime() % (5 + world.getRandom().nextInt(15)) == 0) {
-			if (fluidInstance.getFluid() == Fluids.EMPTY) {
-				fluidInstance.setFluid(AssemblyFluids.LATEX);
+		if (world.isRemote && firstTick) {
+			AssemblyNetworking.requestBarrelSync(this);
+			firstTick = false;
+		}
+		if (!world.isRemote && world.getTime() % 10 == 0) {
+			List<Entity> nearbyEntities = world.getEntities((Entity) null, new BoundingBox(pos.getX() - 32, pos.getY() - 32, pos.getZ() - 32, pos.getX() + 32, pos.getY() + 32, pos.getZ() + 32), entity -> entity instanceof ServerPlayerEntity);
+			boolean entitiesChanged = entitiesLastSync != null && !entitiesLastSync.equals(nearbyEntities);
+			if (!fluidLastSync.equals(fluidInstance) || entitiesChanged) {
+				for (Entity entity : nearbyEntities) {
+					AssemblyNetworking.syncBarrelFluid(this, (ServerPlayerEntity) entity);
+				}
+				fluidLastSync = fluidInstance.copy();
 			}
-			if (fluidInstance.getAmount() < CAPACITY)
-				fluidInstance.grow(1);
 		}
 	}
 

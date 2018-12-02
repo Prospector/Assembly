@@ -1,11 +1,13 @@
 package teamreborn.assembly.blockentity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.Facing;
 import prospector.silk.fluid.FluidContainer;
 import teamreborn.assembly.registry.AssemblyBlockEntities;
 import teamreborn.assembly.registry.AssemblyFluids;
+import teamreborn.assembly.util.AssemblyProperties;
 
 public class TreeTapBlockEntity extends BlockEntity implements Tickable {
 	public TreeTapBlockEntity() {
@@ -14,10 +16,17 @@ public class TreeTapBlockEntity extends BlockEntity implements Tickable {
 
 	@Override
 	public void tick() {
-		if (!world.isRemote && world.getTime() % (5 + world.getRandom().nextInt(15)) == 0) {
-			BlockEntity downEntity = world.getBlockEntity(pos.offset(Facing.DOWN));
-			if (downEntity instanceof FluidContainer) {
-				((FluidContainer) downEntity).tryInsertFluid(Facing.UP, AssemblyFluids.LATEX, 1);
+		if (!world.isRemote) {
+			if (world.getTime() % (25 + world.getRandom().nextInt(15)) == 0) {
+				BlockEntity downEntity = world.getBlockEntity(pos.offset(Facing.DOWN));
+				boolean pouring = downEntity instanceof FluidContainer;
+				if (pouring) {
+					pouring = ((FluidContainer) downEntity).tryInsertFluid(Facing.UP, AssemblyFluids.LATEX, 1);
+				}
+				BlockState state = world.getBlockState(pos);
+				if (state.get(AssemblyProperties.POURING) != pouring) {
+					world.setBlockState(pos, state.with(AssemblyProperties.POURING, pouring));
+				}
 			}
 		}
 	}

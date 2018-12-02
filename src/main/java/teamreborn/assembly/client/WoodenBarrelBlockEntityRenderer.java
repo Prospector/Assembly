@@ -23,7 +23,7 @@ public class WoodenBarrelBlockEntityRenderer extends BlockEntityRenderer<WoodenB
 			buffer.setOffset(x, y, z);
 			GlStateManager.disableLighting();
 			Sprite sprite = MinecraftClient.getInstance().getBakedModelManager().getBlockStateMaps().getModel(barrel.fluidInstance.getFluid().getDefaultState().getBlockState()).getSprite();
-			double height = (barrel.fluidInstance.getAmount() / (float) 1000 * 14) + 1;
+			double height = (barrel.fluidInstance.getAmount() / (float) WoodenBarrelBlockEntity.CAPACITY * 14) + 1;
 			buffer.begin(GL11.GL_QUADS, VertexFormats.POSITION_UV_COLOR);
 			buffer.vertex(frac(3), frac(height), frac(3)).texture(sprite.getMinU(), sprite.getMinV()).color(1.0F, 1.0F, 1.0F, 1.0F).next();
 			buffer.vertex(frac(3), frac(height), frac(13)).texture(sprite.getMaxU(), sprite.getMinV()).color(1.0F, 1.0F, 1.0F, 1.0F).next();

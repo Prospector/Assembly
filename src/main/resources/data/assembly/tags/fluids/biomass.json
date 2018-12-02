@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-	"assembly:sap",
-	"assembly:flowing_sap"
+	"assembly:biomass",
+	"assembly:flowing_biomass"
   ]
 }

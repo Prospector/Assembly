@@ -7,7 +7,8 @@
 	"teamreborn.assembly.registry.AssemblyItems",
 	"teamreborn.assembly.registry.AssemblyBlocks",
 	"teamreborn.assembly.registry.AssemblyBlockEntities",
-	"teamreborn.assembly.registry.AssemblyFluids"
+	"teamreborn.assembly.registry.AssemblyFluids",
+	"teamreborn.assembly.network.AssemblyNetworking"
   ],
   "description": "Expansion of Minecraft's technology into new ages",
   "mixins": {

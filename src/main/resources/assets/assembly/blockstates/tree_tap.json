@@ -1,8 +1,12 @@
 {
   "variants": {
-	"facing=north": { "model": "assembly:block/tree_tap" },
-	"facing=east": { "model": "assembly:block/tree_tap", "y": 90 },
-	"facing=south": { "model": "assembly:block/tree_tap", "y": 180 },
-	"facing=west": { "model": "assembly:block/tree_tap", "y": 270 }
+	"facing=north,pouring=false": { "model": "assembly:block/tree_tap" },
+	"facing=east,pouring=false": { "model": "assembly:block/tree_tap", "y": 90 },
+	"facing=south,pouring=false": { "model": "assembly:block/tree_tap", "y": 180 },
+	"facing=west,pouring=false": { "model": "assembly:block/tree_tap", "y": 270 },
+	"facing=north,pouring=true": { "model": "assembly:block/tree_tap_pouring" },
+	"facing=east,pouring=true": { "model": "assembly:block/tree_tap_pouring", "y": 90 },
+	"facing=south,pouring=true": { "model": "assembly:block/tree_tap_pouring", "y": 180 },
+	"facing=west,pouring=true": { "model": "assembly:block/tree_tap_pouring", "y": 270 }
   }
 }
