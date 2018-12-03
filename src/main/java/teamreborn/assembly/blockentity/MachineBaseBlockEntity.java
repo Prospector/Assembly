@@ -1,10 +1,9 @@
 package teamreborn.assembly.blockentity;
 
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.Tickable;
 
-public abstract class MachineBaseBlockEntity extends BlockEntity implements Tickable {
+public abstract class MachineBaseBlockEntity extends InventoryBaseBlockEntity implements Tickable {
 	public MachineBaseBlockEntity(BlockEntityType<?> blockEntityType) {
 		super(blockEntityType);
 	}
@@ -13,4 +12,5 @@ public abstract class MachineBaseBlockEntity extends BlockEntity implements Tick
 	public void tick() {
 
 	}
+
 }

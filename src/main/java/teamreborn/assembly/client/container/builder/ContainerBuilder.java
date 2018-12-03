@@ -30,7 +30,6 @@ package teamreborn.assembly.client.container.builder;
 
 import net.minecraft.container.Slot;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventory;
 import org.apache.commons.lang3.Range;
@@ -74,11 +73,11 @@ public class ContainerBuilder {
 		return this;
 	}
 
-	public ContainerPlayerInventoryBuilder player(final PlayerInventory player) {
+	public ContainerPlayerInventoryBuilder player(final PlayerEntity player) {
 		return new ContainerPlayerInventoryBuilder(this, player);
 	}
 
-	public ContainerTileInventoryBuilder tile(final Inventory tile) {
+	public ContainerTileInventoryBuilder blockEntity(final Inventory tile) {
 		return new ContainerTileInventoryBuilder(this, tile);
 	}
 
@@ -92,7 +91,7 @@ public class ContainerBuilder {
 
 	@Deprecated
 	/**
-	 * The container have to know if the tile is still available (the block was not destroyed)
+	 * The container have to know if the blockEntity is still available (the block was not destroyed)
 	 * and if the player is not to far from him to close the GUI if necessary
 	 */
 	public BuiltContainer create() {

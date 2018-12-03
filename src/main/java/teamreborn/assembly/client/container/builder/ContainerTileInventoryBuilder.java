@@ -82,7 +82,7 @@ public class ContainerTileInventoryBuilder {
 	 * @param supplier The supplier it can supply a variable holding in an Object it
 	 * will be synced with a custom packet
 	 * @param setter The setter to call when the variable has been updated.
-	 * @return ContainerTileInventoryBuilder Inventory which will do the sync
+	 * @return ContainerTileInventoryBuilder InventoryBaseBlockEntity which will do the sync
 	 */
 	public <T> ContainerTileInventoryBuilder sync(final ObjectSupplier<T> supplier, final ObjectConsumer<T> setter) {
 		this.parent.objectValues.add(Pair.of(supplier, setter));

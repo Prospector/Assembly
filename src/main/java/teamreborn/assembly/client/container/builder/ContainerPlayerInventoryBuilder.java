@@ -29,18 +29,19 @@
 package teamreborn.assembly.client.container.builder;
 
 import net.minecraft.container.Slot;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import org.apache.commons.lang3.Range;
 
 public final class ContainerPlayerInventoryBuilder {
 
-	private final PlayerInventory player;
+	private final PlayerEntity player;
 	private final ContainerBuilder parent;
 	private Range<Integer> main;
 	private Range<Integer> hotbar;
 	private Range<Integer> armor;
 
-	ContainerPlayerInventoryBuilder(final ContainerBuilder parent, final PlayerInventory player) {
+	ContainerPlayerInventoryBuilder(final ContainerBuilder parent, final PlayerEntity player) {
 		this.player = player;
 		this.parent = parent;
 	}
@@ -49,7 +50,7 @@ public final class ContainerPlayerInventoryBuilder {
 		final int startIndex = this.parent.slots.size();
 		for (int i = 0; i < 3; ++i)
 			for (int j = 0; j < 9; ++j)
-				this.parent.slots.add(new Slot(this.player, j + i * 9 + 9, xStart + j * 18, yStart + i * 18));
+				this.parent.slots.add(new Slot(this.player.inventory, j + i * 9 + 9, xStart + j * 18, yStart + i * 18));
 		this.main = Range.between(startIndex, this.parent.slots.size() - 1);
 		return this;
 	}
@@ -57,7 +58,7 @@ public final class ContainerPlayerInventoryBuilder {
 	public ContainerPlayerInventoryBuilder hotbar(final int xStart, final int yStart) {
 		final int startIndex = this.parent.slots.size();
 		for (int i = 0; i < 9; ++i)
-			this.parent.slots.add(new Slot(this.player, i, xStart + i * 18, yStart));
+			this.parent.slots.add(new Slot(this.player.inventory, i, xStart + i * 18, yStart));
 		this.hotbar = Range.between(startIndex, this.parent.slots.size() - 1);
 		return this;
 	}
