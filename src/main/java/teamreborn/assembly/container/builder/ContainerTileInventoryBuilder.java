@@ -35,11 +35,13 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.tuple.Pair;
+import teamreborn.assembly.container.builder.slot.FilteredSlot;
 import teamreborn.assembly.container.builder.slot.SlotOutput;
 import teamreborn.assembly.util.ObjectConsumer;
 import teamreborn.assembly.util.ObjectSupplier;
 
-import java.util.function.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public class ContainerTileInventoryBuilder {
 
@@ -63,14 +65,11 @@ public class ContainerTileInventoryBuilder {
 		return this;
 	}
 
-
-
 	public ContainerTileInventoryBuilder filterSlot(final int index, final int x, final int y,
 	                                                final Predicate<ItemStack> filter) {
 		this.parent.slots.add(new FilteredSlot(this.tile, index, x, y).setFilter(filter));
 		return this;
 	}
-
 
 	public ContainerTileInventoryBuilder fuelSlot(final int index, final int x, final int y) {
 		this.parent.slots.add(new FurnaceFuelSlot(this.tile, index, x, y));
@@ -87,7 +86,6 @@ public class ContainerTileInventoryBuilder {
 		this.parent.objectValues.add(Pair.of(supplier, setter));
 		return this;
 	}
-
 
 	public ContainerTileInventoryBuilder onCraft(final Consumer<CraftingInventory> onCraft) {
 		this.parent.craftEvents.add(onCraft);

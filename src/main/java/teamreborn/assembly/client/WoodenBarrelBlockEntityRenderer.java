@@ -25,10 +25,10 @@ public class WoodenBarrelBlockEntityRenderer extends BlockEntityRenderer<WoodenB
 			Sprite sprite = MinecraftClient.getInstance().getBakedModelManager().getBlockStateMaps().getModel(barrel.fluidInstance.getFluid().getDefaultState().getBlockState()).getSprite();
 			double height = (barrel.fluidInstance.getAmount() / (float) WoodenBarrelBlockEntity.CAPACITY * 14) + 1;
 			buffer.begin(GL11.GL_QUADS, VertexFormats.POSITION_UV_COLOR);
-			buffer.vertex(frac(3), frac(height), frac(3)).texture(sprite.getMinU(), sprite.getMinV()).color(1.0F, 1.0F, 1.0F, 1.0F).next();
-			buffer.vertex(frac(3), frac(height), frac(13)).texture(sprite.getMaxU(), sprite.getMinV()).color(1.0F, 1.0F, 1.0F, 1.0F).next();
-			buffer.vertex(frac(13), frac(height), frac(13)).texture(sprite.getMaxU(), sprite.getMaxV()).color(1.0F, 1.0F, 1.0F, 1.0F).next();
-			buffer.vertex(frac(13), frac(height), frac(3)).texture(sprite.getMinU(), sprite.getMaxV()).color(1.0F, 1.0F, 1.0F, 1.0F).next();
+			buffer.vertex(frac(3), frac(height), frac(3)).texture(sprite.getMinU(), sprite.getMinV()).color(0.0F, 0.0F, 1.0F, 0.5F).next();
+			buffer.vertex(frac(3), frac(height), frac(13)).texture(sprite.getMaxU(), sprite.getMinV()).color(0.0F, 0.0F, 1.0F, 0.5F).next();
+			buffer.vertex(frac(13), frac(height), frac(13)).texture(sprite.getMaxU(), sprite.getMaxV()).color(0.0F, 0.0F, 1.0F, 0.5F).next();
+			buffer.vertex(frac(13), frac(height), frac(3)).texture(sprite.getMinU(), sprite.getMaxV()).color(0.0F, 0.0F, 1.0F, 0.5F).next();
 			buffer.setOffset(0.0, 0.0, 0.0);
 			tessellator.draw();
 			GlStateManager.enableLighting();
