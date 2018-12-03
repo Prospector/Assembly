@@ -76,6 +76,8 @@ public class BuiltContainer extends Container implements IExtendedContainerListe
 		this.objectValues = new ArrayList<>();
 
 		this.tile = tile;
+
+		this.guiId = 120; //Wee :) Thanks asie, this is required to stop the odd container de-sycns
 	}
 
 	@Override
