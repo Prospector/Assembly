@@ -26,7 +26,7 @@
  * THE SOFTWARE.
  */
 
-package teamreborn.assembly.client.container.builder;
+package teamreborn.assembly.container.builder;
 
 import net.minecraft.container.Slot;
 import net.minecraft.entity.player.PlayerEntity;

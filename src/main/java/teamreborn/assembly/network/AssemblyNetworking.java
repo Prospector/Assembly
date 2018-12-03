@@ -21,7 +21,7 @@ import prospector.silk.fluid.FluidContainer;
 import prospector.silk.fluid.FluidInstance;
 import teamreborn.assembly.Assembly;
 import teamreborn.assembly.blockentity.WoodenBarrelBlockEntity;
-import teamreborn.assembly.client.container.builder.IExtendedContainerListener;
+import teamreborn.assembly.container.builder.IExtendedContainerListener;
 
 public class AssemblyNetworking implements ModInitializer {
 

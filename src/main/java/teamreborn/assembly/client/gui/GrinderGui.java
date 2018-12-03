@@ -7,19 +7,23 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import teamreborn.assembly.blockentity.GrinderBlockEntity;
 
-public class GrinderGui extends ContainerGui {
-	private static final Identifier BG_TEX = new Identifier("textures/gui/container/furnace.png");
+public class GrinderGui extends GuiBase {
 
 	public GrinderGui(PlayerEntity playerEntity, GrinderBlockEntity blockEntity) {
-		super(blockEntity.createContainer(playerEntity.inventory, playerEntity));
+		super(blockEntity, playerEntity);
 	}
 
 	@Override
-	protected void drawBackground(float v, int i, int i1) {
-		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.client.getTextureManager().bindTexture(BG_TEX);int var4 = this.left;
-		int var5 = this.top;
-		this.drawTexturedRect(var4, var5, 0, 0, this.containerWidth, this.containerHeight);
+	public void drawSlots() {
+		drawSlot(55, 45);
+		drawOutputSlot(101, 45);
+	}
 
+	@Override
+	protected void drawForeground(int i, int i1) {
+		super.drawForeground(i, i1);
+
+		drawProgressBar(50, 100, 76, 48,  ProgressDirection.RIGHT);
+		drawEnergyBar(9, 19, 50, 50, 100);
 	}
 }

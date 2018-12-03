@@ -26,7 +26,7 @@
  * THE SOFTWARE.
  */
 
-package teamreborn.assembly.client.container.builder.slot;
+package teamreborn.assembly.container.builder.slot;
 
 import net.minecraft.inventory.Inventory;
 

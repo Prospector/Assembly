@@ -1,4 +1,4 @@
-package teamreborn.assembly.client.container.builder;
+package teamreborn.assembly.container.builder;
 
 import net.minecraft.container.Container;
 import net.minecraft.container.ListenerContainer;

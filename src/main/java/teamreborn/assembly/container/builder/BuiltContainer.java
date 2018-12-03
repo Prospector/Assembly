@@ -26,7 +26,7 @@
  * THE SOFTWARE.
  */
 
-package teamreborn.assembly.client.container.builder;
+package teamreborn.assembly.container.builder;
 
 import net.minecraft.container.Container;
 import net.minecraft.container.ListenerContainer;
@@ -38,13 +38,11 @@ import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.tuple.MutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
-import teamreborn.assembly.block.MachineBaseBlock;
 import teamreborn.assembly.blockentity.MachineBaseBlockEntity;
 import teamreborn.assembly.util.ItemUtils;
 import teamreborn.assembly.util.ObjectConsumer;
 import teamreborn.assembly.util.ObjectSupplier;
 
-import java.awt.event.ContainerListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.*;

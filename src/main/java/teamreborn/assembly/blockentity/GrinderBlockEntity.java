@@ -4,7 +4,7 @@ import net.minecraft.container.Container;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.Identifier;
-import teamreborn.assembly.client.container.builder.ContainerBuilder;
+import teamreborn.assembly.container.builder.ContainerBuilder;
 import teamreborn.assembly.container.FabricContainerProvider;
 import teamreborn.assembly.registry.AssemblyBlockEntities;
 

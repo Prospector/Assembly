@@ -26,7 +26,7 @@
  * THE SOFTWARE.
  */
 
-package teamreborn.assembly.client.container.builder;
+package teamreborn.assembly.container.builder;
 
 import net.minecraft.container.FurnaceFuelSlot;
 import net.minecraft.container.Slot;
@@ -35,8 +35,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.tuple.Pair;
-import teamreborn.assembly.client.container.builder.slot.FilteredSlot;
-import teamreborn.assembly.client.container.builder.slot.SlotOutput;
+import teamreborn.assembly.container.builder.slot.SlotOutput;
 import teamreborn.assembly.util.ObjectConsumer;
 import teamreborn.assembly.util.ObjectSupplier;
 
