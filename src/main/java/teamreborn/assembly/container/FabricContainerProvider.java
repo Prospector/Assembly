@@ -1,6 +1,9 @@
 package teamreborn.assembly.container;
 
+import net.minecraft.container.Container;
 import net.minecraft.container.ContainerProvider;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.TextComponent;
 import net.minecraft.text.TranslatableTextComponent;
 import net.minecraft.util.Identifier;
@@ -21,6 +24,13 @@ public interface FabricContainerProvider extends ContainerProvider {
 	default TextComponent getName() {
 		return new TranslatableTextComponent(getContainerIdentifier().toString());
 	}
+
+	@Override
+	default Container createContainer(PlayerInventory playerInventory, PlayerEntity playerEntity){
+		return createContainer(playerEntity);
+	}
+
+	Container createContainer(PlayerEntity playerEntity);
 
 	Identifier getContainerIdentifier();
 }

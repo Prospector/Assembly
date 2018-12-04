@@ -2,10 +2,9 @@ package teamreborn.assembly.blockentity;
 
 import net.minecraft.container.Container;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.Identifier;
-import teamreborn.assembly.container.builder.ContainerBuilder;
 import teamreborn.assembly.container.FabricContainerProvider;
+import teamreborn.assembly.container.builder.ContainerBuilder;
 import teamreborn.assembly.registry.AssemblyBlockEntities;
 
 public class GrinderBlockEntity extends MachineBaseBlockEntity implements FabricContainerProvider {
@@ -15,7 +14,7 @@ public class GrinderBlockEntity extends MachineBaseBlockEntity implements Fabric
 
 
 	@Override
-	public Container createContainer(PlayerInventory playerInventory, PlayerEntity playerEntity) {
+	public Container createContainer(PlayerEntity playerEntity) {
 		return (new ContainerBuilder("grinder"))
 			.player(playerEntity).inventory().hotbar().addInventory()
 			.blockEntity(this).slot(0, 55, 45).outputSlot(1, 101, 45)

@@ -3,8 +3,7 @@
   "package": "teamreborn.assembly.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-	"WorldMixin",
-	"FurnaceBlockEntityMixin"
+	"MinecraftServerMixin"
   ],
   "injectors": {
 	"defaultRequire": 1
