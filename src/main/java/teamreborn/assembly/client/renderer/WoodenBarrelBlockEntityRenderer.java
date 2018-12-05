@@ -1,4 +1,4 @@
-package teamreborn.assembly.client;
+package teamreborn.assembly.client.renderer;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.MinecraftClient;

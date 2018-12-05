@@ -20,7 +20,7 @@ import prospector.silk.block.SilkBlockWithEntity;
 import prospector.silk.fluid.FluidContainer;
 import teamreborn.assembly.api.SapSource;
 import teamreborn.assembly.blockentity.TreeTapBlockEntity;
-import teamreborn.assembly.util.AssemblyProperties;
+import teamreborn.assembly.util.block.AssemblyProperties;
 
 import java.util.Map;
 
@@ -70,7 +70,7 @@ public class TreeTapBlock extends SilkBlockWithEntity {
 		Facing side = state.get(Properties.FACING_HORIZONTAL);
 		BlockState placedOn = world.getBlockState(pos.offset(side));
 		Block placedOnBlock = placedOn.getBlock();
-		return placedOnBlock instanceof SapSource && ((SapSource) placedOnBlock).isSideSapSource(placedOn, side.getOpposite());
+		return placedOnBlock instanceof SapSource && ((SapSource) placedOnBlock).isSideSapSource(world, pos, placedOn, side.getOpposite());
 	}
 
 	@Override

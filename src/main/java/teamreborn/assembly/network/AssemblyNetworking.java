@@ -34,8 +34,8 @@ public class AssemblyNetworking implements ModInitializer {
 		CustomPayloadHandlerRegistry.CLIENT.register(SYNC_BARREL_FLUID, (packetContext, packetByteBuf) -> {
 			BlockPos pos = packetByteBuf.readBlockPos();
 			FluidInstance instance = new FluidInstance(packetByteBuf.readCompoundTag());
-			if (packetContext.getPlayer() != null && packetContext.getPlayer().getWorld() != null) {
-				BlockEntity blockEntity = packetContext.getPlayer().getWorld().getBlockEntity(pos);
+			if (packetContext.getPlayer() != null && packetContext.getPlayer().getEntityWorld() != null) {
+				BlockEntity blockEntity = packetContext.getPlayer().getEntityWorld().getBlockEntity(pos);
 				if (blockEntity instanceof WoodenBarrelBlockEntity) {
 					((FluidContainer) blockEntity).setFluid(null, instance);
 				}
@@ -43,16 +43,16 @@ public class AssemblyNetworking implements ModInitializer {
 		});
 		CustomPayloadHandlerRegistry.SERVER.register(REQUEST_BARREL_SYNC, (packetContext, packetByteBuf) -> {
 			BlockPos pos = packetByteBuf.readBlockPos();
-			BlockEntity blockEntity = packetContext.getPlayer().getWorld().getBlockEntity(pos);
+			BlockEntity blockEntity = packetContext.getPlayer().getEntityWorld().getBlockEntity(pos);
 			if (blockEntity instanceof WoodenBarrelBlockEntity) {
 				syncBarrelFluid((WoodenBarrelBlockEntity) blockEntity, (ServerPlayerEntity) packetContext.getPlayer());
 			}
 		});
 		CustomPayloadHandlerRegistry.CLIENT.register(CONTAINER_SYNC, (packetContext, packetByteBuf) -> {
 			Gui gui = MinecraftClient.getInstance().currentGui;
-			if(gui instanceof ContainerGui){
+			if (gui instanceof ContainerGui) {
 				Container container = ((ContainerGui) gui).container;
-				if(container instanceof IExtendedContainerListener){
+				if (container instanceof IExtendedContainerListener) {
 					((IExtendedContainerListener) container).handleObject(packetByteBuf.readInt(), ObjectBufUtils.readObject(packetByteBuf));
 				}
 			}
@@ -63,7 +63,7 @@ public class AssemblyNetworking implements ModInitializer {
 	public static void syncBarrelFluid(WoodenBarrelBlockEntity woodenBarrel, ServerPlayerEntity player) {
 		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
 		buf.writeBlockPos(woodenBarrel.getPos());
-		buf.writeCompoundTag(woodenBarrel.getFluids(null)[0].serialize(new CompoundTag()));
+		buf.writeCompoundTag(woodenBarrel.getFluids(null)[0].toTag(new CompoundTag()));
 		player.networkHandler.sendPacket(new CustomPayloadClientPacket(SYNC_BARREL_FLUID, buf));
 	}
 

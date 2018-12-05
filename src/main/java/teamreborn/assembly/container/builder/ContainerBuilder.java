@@ -35,12 +35,12 @@ import net.minecraft.inventory.Inventory;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.tuple.Pair;
 import teamreborn.assembly.blockentity.MachineBaseBlockEntity;
-import teamreborn.assembly.util.ObjectConsumer;
-import teamreborn.assembly.util.ObjectSupplier;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class ContainerBuilder {
 
@@ -51,7 +51,7 @@ public class ContainerBuilder {
 	final List<Slot> slots;
 	final List<Range<Integer>> playerInventoryRanges, tileInventoryRanges;
 
-	final List<Pair<ObjectSupplier, ObjectConsumer>> objectValues;
+	final List<Pair<Supplier, Consumer>> objectValues;
 
 	final List<Consumer<CraftingInventory>> craftEvents;
 
@@ -103,7 +103,6 @@ public class ContainerBuilder {
 		if (!this.craftEvents.isEmpty())
 			built.addCraftEvents(this.craftEvents);
 
-
 		this.slots.forEach(built::addSlot);
 
 		this.slots.clear();
@@ -112,8 +111,8 @@ public class ContainerBuilder {
 
 	public BuiltContainer create(final MachineBaseBlockEntity tile) {
 		final BuiltContainer built = new BuiltContainer(this.name, this.canInteract,
-				this.playerInventoryRanges,
-				this.tileInventoryRanges, tile);
+			this.playerInventoryRanges,
+			this.tileInventoryRanges, tile);
 		if (!this.craftEvents.isEmpty())
 			built.addCraftEvents(this.craftEvents);
 

@@ -37,11 +37,10 @@ import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.tuple.Pair;
 import teamreborn.assembly.container.builder.slot.FilteredSlot;
 import teamreborn.assembly.container.builder.slot.SlotOutput;
-import teamreborn.assembly.util.ObjectConsumer;
-import teamreborn.assembly.util.ObjectSupplier;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class ContainerTileInventoryBuilder {
 
@@ -82,7 +81,7 @@ public class ContainerTileInventoryBuilder {
 	 * @param setter The setter to call when the variable has been updated.
 	 * @return ContainerTileInventoryBuilder InventoryBaseBlockEntity which will do the sync
 	 */
-	public <T> ContainerTileInventoryBuilder sync(final ObjectSupplier<T> supplier, final ObjectConsumer<T> setter) {
+	public <T> ContainerTileInventoryBuilder sync(final Supplier<T> supplier, final Consumer<T> setter) {
 		this.parent.objectValues.add(Pair.of(supplier, setter));
 		return this;
 	}

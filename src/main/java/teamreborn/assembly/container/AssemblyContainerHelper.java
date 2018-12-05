@@ -6,8 +6,8 @@ import net.fabricmc.fabric.networking.CustomPayloadHandlerRegistry;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.ContainerGui;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.packet.CustomPayloadClientPacket;
-import net.minecraft.client.player.ClientPlayerEntity;
 import net.minecraft.container.Container;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -31,7 +31,7 @@ public class AssemblyContainerHelper implements ModInitializer {
 
 	public static final ContainerSupplier<Container> DEFAULT_CONTAINER_SUPPLIER = (playerEntity, pos) -> {
 		BlockEntity blockEntity = playerEntity.world.getBlockEntity(pos);
-		if(blockEntity instanceof FabricContainerProvider){
+		if (blockEntity instanceof FabricContainerProvider) {
 			return ((FabricContainerProvider) blockEntity).createContainer(playerEntity.inventory, playerEntity);
 		}
 		return null;
@@ -53,7 +53,7 @@ public class AssemblyContainerHelper implements ModInitializer {
 	public static void openGui(FabricContainerProvider containerProvider, BlockPos pos, ServerPlayerEntity playerEntity) {
 		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
 		Identifier identifier = containerProvider.getContainerIdentifier();
-		if(!containerMap.containsKey(identifier)){
+		if (!containerMap.containsKey(identifier)) {
 			throw new RuntimeException("No gui found for " + identifier);
 		}
 		buf.writeString(identifier.toString());
@@ -65,14 +65,14 @@ public class AssemblyContainerHelper implements ModInitializer {
 
 	}
 
-	public static void addContainerMapping(Identifier identifier, ContainerSupplier<Container> containerSupplier , ContainerSupplier<ContainerGui> guiSupplier){
+	public static void addContainerMapping(Identifier identifier, ContainerSupplier<Container> containerSupplier, ContainerSupplier<ContainerGui> guiSupplier) {
 		Validate.isTrue(!containerMap.containsKey(identifier));
 		containerMap.put(identifier, Pair.of(containerSupplier, guiSupplier));
 	}
 
 	private static void openGui(Identifier container, ClientPlayerEntity playerEntity, BlockPos pos) {
 		Pair<ContainerSupplier<Container>, ContainerSupplier<ContainerGui>> supplierPair = containerMap.get(container);
-		if(supplierPair == null){
+		if (supplierPair == null) {
 			throw new RuntimeException("No container found for " + container);
 		}
 		MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().openGui(supplierPair.getRight().get(playerEntity, pos)));
@@ -83,7 +83,6 @@ public class AssemblyContainerHelper implements ModInitializer {
 	public void onInitialize() {
 		init();
 	}
-
 
 	public interface ContainerSupplier<T> {
 		T get(PlayerEntity playerEntity, BlockPos pos);

@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import teamreborn.assembly.blockentity.WoodenBarrelBlockEntity;
-import teamreborn.assembly.client.WoodenBarrelBlockEntityRenderer;
+import teamreborn.assembly.client.renderer.WoodenBarrelBlockEntityRenderer;
 
 @Mixin(BlockEntityRendererRegistry.class)
 public class MinecraftClientMixin {

@@ -7,7 +7,7 @@ import net.minecraft.util.math.Facing;
 import prospector.silk.fluid.FluidContainer;
 import teamreborn.assembly.registry.AssemblyBlockEntities;
 import teamreborn.assembly.registry.AssemblyFluids;
-import teamreborn.assembly.util.AssemblyProperties;
+import teamreborn.assembly.util.block.AssemblyProperties;
 
 public class TreeTapBlockEntity extends BlockEntity implements Tickable {
 	public TreeTapBlockEntity() {

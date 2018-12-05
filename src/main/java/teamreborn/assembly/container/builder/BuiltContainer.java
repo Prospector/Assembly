@@ -29,7 +29,7 @@
 package teamreborn.assembly.container.builder;
 
 import net.minecraft.container.Container;
-import net.minecraft.container.ListenerContainer;
+import net.minecraft.container.ContainerListener;
 import net.minecraft.container.Slot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
@@ -40,12 +40,12 @@ import org.apache.commons.lang3.tuple.MutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
 import teamreborn.assembly.blockentity.MachineBaseBlockEntity;
 import teamreborn.assembly.util.ItemUtils;
-import teamreborn.assembly.util.ObjectConsumer;
-import teamreborn.assembly.util.ObjectSupplier;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class BuiltContainer extends Container implements IExtendedContainerListener {
 
@@ -55,15 +55,15 @@ public class BuiltContainer extends Container implements IExtendedContainerListe
 	private final List<Range<Integer>> playerSlotRanges;
 	private final List<Range<Integer>> tileSlotRanges;
 
-	private final ArrayList<MutableTriple<ObjectSupplier, ObjectConsumer, Object>> objectValues;
+	private final ArrayList<MutableTriple<Supplier, Consumer, Object>> objectValues;
 	private List<Consumer<CraftingInventory>> craftEvents;
 	private Integer[] integerParts;
 
 	private final MachineBaseBlockEntity tile;
 
 	public BuiltContainer(final String name, final Predicate<PlayerEntity> canInteract,
-						  final List<Range<Integer>> playerSlotRange,
-						  final List<Range<Integer>> tileSlotRange, MachineBaseBlockEntity tile) {
+	                      final List<Range<Integer>> playerSlotRange,
+	                      final List<Range<Integer>> tileSlotRange, MachineBaseBlockEntity tile) {
 		this.name = name;
 
 		this.canInteract = canInteract;
@@ -75,7 +75,7 @@ public class BuiltContainer extends Container implements IExtendedContainerListe
 
 		this.tile = tile;
 
-		this.guiId = 120; //Wee :) Thanks asie, this is required to stop the odd container de-sycns
+		this.syncId = 120; //Wee :) Thanks asie, this is required to stop the odd container de-sycns
 	}
 
 	@Override
@@ -83,9 +83,9 @@ public class BuiltContainer extends Container implements IExtendedContainerListe
 		return super.addSlot(slot);
 	}
 
-	public void addObjectSync(final List<Pair<ObjectSupplier, ObjectConsumer>> syncables) {
+	public void addObjectSync(final List<Pair<Supplier, Consumer>> syncables) {
 
-		for (final Pair<ObjectSupplier, ObjectConsumer> syncable : syncables)
+		for (final Pair<Supplier, Consumer> syncable : syncables)
 			this.objectValues.add(MutableTriple.of(syncable.getLeft(), syncable.getRight(), null));
 		this.objectValues.trimToSize();
 	}
@@ -105,18 +105,17 @@ public class BuiltContainer extends Container implements IExtendedContainerListe
 			this.craftEvents.forEach(consumer -> consumer.accept((CraftingInventory) inv));
 	}
 
-
 	@Override
 	public void sendContentUpdates() {
 		super.sendContentUpdates();
 
-		for (final ListenerContainer listener : this.listeners) {
-			if (!this.objectValues.isEmpty()){
+		for (final ContainerListener listener : this.listeners) {
+			if (!this.objectValues.isEmpty()) {
 				int objects = 0;
-				for (final MutableTriple<ObjectSupplier, ObjectConsumer, Object> value : this.objectValues) {
+				for (final MutableTriple<Supplier, Consumer, Object> value : this.objectValues) {
 					final Object supplied = value.getLeft();
-					if(supplied != value.getRight()){
-						sendObject(listener,this, objects, supplied);
+					if (supplied != value.getRight()) {
+						sendObject(listener, this, objects, supplied);
 						value.setRight(supplied);
 					}
 					objects++;
@@ -126,14 +125,14 @@ public class BuiltContainer extends Container implements IExtendedContainerListe
 	}
 
 	@Override
-	public void addListener(ListenerContainer listener) {
+	public void addListener(ContainerListener listener) {
 		super.addListener(listener);
 
-		if (!this.objectValues.isEmpty()){
+		if (!this.objectValues.isEmpty()) {
 			int objects = 0;
-			for (final MutableTriple<ObjectSupplier, ObjectConsumer, Object> value : this.objectValues) {
+			for (final MutableTriple<Supplier, Consumer, Object> value : this.objectValues) {
 				final Object supplied = value.getLeft();
-				sendObject(listener,this, objects, supplied);
+				sendObject(listener, this, objects, supplied);
 				value.setRight(supplied);
 				objects++;
 			}
@@ -146,8 +145,7 @@ public class BuiltContainer extends Container implements IExtendedContainerListe
 	}
 
 	@Override
-	public ItemStack getStack(final PlayerEntity player, final int index) {
-
+	public ItemStack transferSlot(PlayerEntity player, int index) {
 		ItemStack originalStack = ItemStack.EMPTY;
 
 		final Slot slot = this.slotList.get(index);
@@ -185,8 +183,6 @@ public class BuiltContainer extends Container implements IExtendedContainerListe
 			slot.onTakeItem(player, stackInSlot);
 		}
 		return originalStack;
-
-
 	}
 
 	protected boolean shiftItemStack(final ItemStack stackToShift, final int start, final int end) {

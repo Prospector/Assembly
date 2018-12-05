@@ -1,4 +1,4 @@
-package teamreborn.assembly.util;
+package teamreborn.assembly.util.block;
 
 import net.minecraft.state.property.BooleanProperty;
 

@@ -66,40 +66,39 @@ public class ItemUtils {
 		return false;
 	}
 
-
-	public static void writeInvToNBT(Inventory inv, String tag, CompoundTag data) {
+	public static void inventoryToTag(Inventory inv, String tag, CompoundTag data) {
 		ListTag list = new ListTag();
 		for (byte slot = 0; slot < inv.getInvSize(); slot++) {
 			ItemStack stack = inv.getInvStack(slot);
 			if (!stack.isEmpty()) {
 				CompoundTag itemTag = new CompoundTag();
 				itemTag.putInt("Slot", slot);
-				writeItemToNBT(stack, itemTag);
+				stackToTag(stack, itemTag);
 				list.add(itemTag);
 			}
 		}
 		data.put(tag, list);
 	}
 
-	public static void readInvFromNBT(Inventory inv, String tag, CompoundTag data) {
+	public static void inventoryFromTag(Inventory inv, String tag, CompoundTag data) {
 		ListTag list = data.getList(tag, 10);
 		for (byte entry = 0; entry < list.size(); entry++) {
 			CompoundTag itemTag = list.getCompoundTag(entry);
 			int slot = itemTag.getByte("Slot");
 			if (slot >= 0 && slot < inv.getInvSize()) {
-				ItemStack stack = readItemFromNBT(itemTag);
+				ItemStack stack = stackFromTag(itemTag);
 				inv.setInvStack(slot, stack);
 			}
 		}
 	}
 
-	public static void writeItemToNBT(ItemStack stack, CompoundTag data) {
+	public static void stackToTag(ItemStack stack, CompoundTag data) {
 		if (stack.isEmpty() || stack.getAmount() <= 0)
 			return;
-		stack.serialize(data);
+		stack.toTag(data);
 	}
 
-	public static ItemStack readItemFromNBT(CompoundTag data) {
+	public static ItemStack stackFromTag(CompoundTag data) {
 		return ItemStack.fromTag(data);
 	}
 

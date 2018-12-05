@@ -16,15 +16,15 @@ public abstract class InventoryBaseBlockEntity extends BlockEntity implements In
 	private DefaultedList<ItemStack> inventory = DefaultedList.create(getInvSize(), ItemStack.EMPTY);
 
 	@Override
-	public void deserialize(CompoundTag compoundTag) {
-		ItemUtils.readInvFromNBT(this, "inventory", compoundTag);
-		super.deserialize(compoundTag);
+	public void fromTag(CompoundTag compoundTag) {
+		ItemUtils.inventoryFromTag(this, "inventory", compoundTag);
+		super.fromTag(compoundTag);
 	}
 
 	@Override
-	public CompoundTag serialize(CompoundTag compoundTag) {
-		ItemUtils.writeInvToNBT(this, "inventory", compoundTag);
-		return super.serialize(compoundTag);
+	public CompoundTag toTag(CompoundTag compoundTag) {
+		ItemUtils.inventoryToTag(this, "inventory", compoundTag);
+		return super.toTag(compoundTag);
 	}
 
 	public InventoryBaseBlockEntity(BlockEntityType<?> blockEntityType) {

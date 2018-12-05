@@ -3,16 +3,24 @@ package teamreborn.assembly.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LogBlock;
+import net.minecraft.block.MaterialColor;
 import net.minecraft.state.StateFactory;
-import net.minecraft.util.MapColor;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Facing;
+import net.minecraft.world.ViewableWorld;
 import teamreborn.assembly.api.SapSource;
-import teamreborn.assembly.util.AssemblyProperties;
+import teamreborn.assembly.util.block.AssemblyProperties;
 
 public class RubberLogBlock extends LogBlock implements SapSource {
+	public static final BooleanProperty NORTH_SAP = AssemblyProperties.NORTH_SAP;
+	public static final BooleanProperty SOUTH_SAP = AssemblyProperties.SOUTH_SAP;
+	public static final BooleanProperty WEST_SAP = AssemblyProperties.WEST_SAP;
+	public static final BooleanProperty EAST_SAP = AssemblyProperties.EAST_SAP;
+	public static final BooleanProperty POURING = AssemblyProperties.POURING;
 
-	public RubberLogBlock(MapColor mapColor, Builder builder) {
-		super(mapColor, builder);
+	public RubberLogBlock(MaterialColor materialColor, Builder builder) {
+		super(materialColor, builder);
 		setDefaultState(this.getDefaultState()
 			.with(AssemblyProperties.NORTH_SAP, false)
 			.with(AssemblyProperties.SOUTH_SAP, false)
@@ -30,7 +38,7 @@ public class RubberLogBlock extends LogBlock implements SapSource {
 	}
 
 	@Override
-	public boolean isSideSapSource(BlockState blockState, Facing side) {
+	public boolean isSideSapSource(ViewableWorld world, BlockPos pos, BlockState blockState, Facing side) {
 		switch (side) {
 			case NORTH:
 				return blockState.get(AssemblyProperties.NORTH_SAP);

@@ -56,15 +56,15 @@ public class WoodenBarrelBlockEntity extends BlockEntity implements FluidContain
 	}
 
 	@Override
-	public CompoundTag serialize(CompoundTag tag) {
-		tag.put(FLUID_KEY, fluidInstance.serialize(new CompoundTag()));
-		return super.serialize(tag);
+	public CompoundTag toTag(CompoundTag tag) {
+		tag.put(FLUID_KEY, fluidInstance.toTag(new CompoundTag()));
+		return super.toTag(tag);
 	}
 
 	@Override
-	public void deserialize(CompoundTag tag) {
-		super.deserialize(tag);
-		fluidInstance.deserialize(tag.getCompound(FLUID_KEY));
+	public void fromTag(CompoundTag tag) {
+		super.fromTag(tag);
+		fluidInstance.fromTag(tag.getCompound(FLUID_KEY));
 	}
 
 	@Override
