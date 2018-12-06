@@ -6,6 +6,11 @@ import teamreborn.assembly.util.block.MachineBlockProperties;
 
 public class GrinderBlock extends MachineBaseBlock {
 	public GrinderBlock(Builder builder) {
-		super(new MachineBlockProperties(GrinderBlockEntity::new), builder);
+		super(builder);
+	}
+
+	@Override
+	public MachineBlockProperties createMachineBlockProperties() {
+		return new MachineBlockProperties(GrinderBlockEntity::new);
 	}
 }

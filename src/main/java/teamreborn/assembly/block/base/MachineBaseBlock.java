@@ -21,11 +21,10 @@ import teamreborn.assembly.util.block.MachinePlacementContext;
 
 public abstract class MachineBaseBlock extends SilkBlockWithEntity {
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
-	public final MachineBlockProperties machineProperties;
+	public MachineBlockProperties machineProperties;
 
-	protected MachineBaseBlock(MachineBlockProperties machineProperties, Builder builder) {
+	public MachineBaseBlock(Builder builder) {
 		super(builder);
-		this.machineProperties = machineProperties;
 		setDefaultState(stateFactory.getDefaultState());
 		if (machineProperties.hasActive()) {
 			this.setDefaultState(getDefaultState().with(ACTIVE, false));
@@ -35,6 +34,8 @@ public abstract class MachineBaseBlock extends SilkBlockWithEntity {
 		}
 	}
 
+	public abstract MachineBlockProperties createMachineBlockProperties();
+
 	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
 		return machineProperties.createBlockEntity();
@@ -43,6 +44,9 @@ public abstract class MachineBaseBlock extends SilkBlockWithEntity {
 	@Override
 	protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
+		if (machineProperties == null) {
+			this.machineProperties = createMachineBlockProperties();
+		}
 		if (machineProperties.hasActive()) {
 			builder.with(ACTIVE);
 		}
@@ -61,12 +65,12 @@ public abstract class MachineBaseBlock extends SilkBlockWithEntity {
 
 	@Override
 	public boolean activate(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, Facing facing, float hitX, float hitY, float hitZ) {
-		if (!world.isRemote) {
-			BlockEntity blockEntity = world.getBlockEntity(pos);
-			if (blockEntity instanceof FabricContainerProvider) {
+		BlockEntity blockEntity = world.getBlockEntity(pos);
+		if (blockEntity instanceof FabricContainerProvider) {
+			if (!world.isRemote) {
 				AssemblyContainerHelper.openGui((FabricContainerProvider) blockEntity, pos, (ServerPlayerEntity) player);
-				return true;
 			}
+			return true;
 		}
 		return false;
 	}

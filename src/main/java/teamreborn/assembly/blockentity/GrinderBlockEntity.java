@@ -3,6 +3,7 @@ package teamreborn.assembly.blockentity;
 import net.minecraft.container.Container;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
+import teamreborn.assembly.Assembly;
 import teamreborn.assembly.container.FabricContainerProvider;
 import teamreborn.assembly.container.builder.ContainerBuilder;
 import teamreborn.assembly.registry.AssemblyBlockEntities;
@@ -11,7 +12,6 @@ public class GrinderBlockEntity extends MachineBaseBlockEntity implements Fabric
 	public GrinderBlockEntity() {
 		super(AssemblyBlockEntities.GRINDER);
 	}
-
 
 	@Override
 	public Container createContainer(PlayerEntity playerEntity) {
@@ -23,7 +23,7 @@ public class GrinderBlockEntity extends MachineBaseBlockEntity implements Fabric
 
 	@Override
 	public Identifier getContainerIdentifier() {
-		return new Identifier("assembly", "grinder");
+		return new Identifier(Assembly.MOD_ID, "grinder");
 	}
 
 	@Override
