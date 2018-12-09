@@ -4,7 +4,7 @@ import io.netty.buffer.Unpooled;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.networking.CustomPayloadHandlerRegistry;
+import net.fabricmc.fabric.networking.CustomPayloadPacketRegistry;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.ContainerGui;
@@ -31,7 +31,7 @@ public class AssemblyNetworking implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		CustomPayloadHandlerRegistry.CLIENT.register(SYNC_BARREL_FLUID, (packetContext, packetByteBuf) -> {
+		CustomPayloadPacketRegistry.CLIENT.register(SYNC_BARREL_FLUID, (packetContext, packetByteBuf) -> {
 			BlockPos pos = packetByteBuf.readBlockPos();
 			FluidInstance instance = new FluidInstance(packetByteBuf.readCompoundTag());
 			if (packetContext.getPlayer() != null && packetContext.getPlayer().getEntityWorld() != null) {
@@ -41,14 +41,14 @@ public class AssemblyNetworking implements ModInitializer {
 				}
 			}
 		});
-		CustomPayloadHandlerRegistry.SERVER.register(REQUEST_BARREL_SYNC, (packetContext, packetByteBuf) -> {
+		CustomPayloadPacketRegistry.SERVER.register(REQUEST_BARREL_SYNC, (packetContext, packetByteBuf) -> {
 			BlockPos pos = packetByteBuf.readBlockPos();
 			BlockEntity blockEntity = packetContext.getPlayer().getEntityWorld().getBlockEntity(pos);
 			if (blockEntity instanceof WoodenBarrelBlockEntity) {
 				syncBarrelFluid((WoodenBarrelBlockEntity) blockEntity, (ServerPlayerEntity) packetContext.getPlayer());
 			}
 		});
-		CustomPayloadHandlerRegistry.CLIENT.register(CONTAINER_SYNC, (packetContext, packetByteBuf) -> {
+		CustomPayloadPacketRegistry.CLIENT.register(CONTAINER_SYNC, (packetContext, packetByteBuf) -> {
 			Gui gui = MinecraftClient.getInstance().currentGui;
 			if (gui instanceof ContainerGui) {
 				Container container = ((ContainerGui) gui).container;

@@ -19,8 +19,8 @@ public class RubberLogBlock extends LogBlock implements SapSource {
 	public static final BooleanProperty EAST_SAP = AssemblyProperties.EAST_SAP;
 	public static final BooleanProperty POURING = AssemblyProperties.POURING;
 
-	public RubberLogBlock(MaterialColor materialColor, Builder builder) {
-		super(materialColor, builder);
+	public RubberLogBlock(MaterialColor materialColor, Settings settings) {
+		super(materialColor, settings);
 		setDefaultState(this.getDefaultState()
 			.with(AssemblyProperties.NORTH_SAP, false)
 			.with(AssemblyProperties.SOUTH_SAP, false)

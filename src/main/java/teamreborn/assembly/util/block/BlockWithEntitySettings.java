@@ -9,7 +9,7 @@ import net.minecraft.util.math.Facing;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class MachineBlockProperties {
+public class BlockWithEntitySettings {
 	public static final Function<MachinePlacementContext, BlockState> HIT_FACING = (context) -> context.block.getDefaultState().with(context.property, context.getFacing().getOpposite());
 	public static final Function<MachinePlacementContext, BlockState> PLAYER_FACING = (context) -> context.block.getDefaultState().with(context.property, context.getPlayerFacing().getOpposite());
 	public static final Function<MachinePlacementContext, BlockState> PLAYER_FACING_HORIZONTAL = (context) -> context.block.getDefaultState().with(context.property, context.getPlayerHorizontalFacing().getOpposite());
@@ -21,33 +21,33 @@ public class MachineBlockProperties {
 	protected Function<MachinePlacementContext, BlockState> placementLogic = PLAYER_FACING_HORIZONTAL;
 	protected Supplier<BlockEntity> blockEntity;
 
-	public MachineBlockProperties(Supplier<BlockEntity> blockEntity) {
+	public BlockWithEntitySettings(Supplier<BlockEntity> blockEntity) {
 		this.blockEntity = blockEntity;
 	}
 
-	public MachineBlockProperties withoutActive() {
+	public BlockWithEntitySettings withoutActive() {
 		this.hasActive = false;
 		return this;
 	}
 
-	public MachineBlockProperties withoutFacing() {
+	public BlockWithEntitySettings withoutFacing() {
 		this.hasFacing = false;
 		return this;
 	}
 
-	public MachineBlockProperties setHorizontalFacing() {
+	public BlockWithEntitySettings setHorizontalFacing() {
 		return setFacing(Properties.FACING_HORIZONTAL, Facing.NORTH, PLAYER_FACING_HORIZONTAL);
 	}
 
-	public MachineBlockProperties setFacingPlayerPlacement() {
+	public BlockWithEntitySettings setFacingPlayerPlacement() {
 		return setFacing(Properties.FACING, Facing.NORTH, PLAYER_FACING);
 	}
 
-	public MachineBlockProperties setFacingHitPlacement() {
+	public BlockWithEntitySettings setFacingHitPlacement() {
 		return setFacing(Properties.FACING, Facing.NORTH, HIT_FACING);
 	}
 
-	public MachineBlockProperties setFacing(FacingProperty property, Facing defaultFacing, Function<MachinePlacementContext, BlockState> placementLogic) {
+	public BlockWithEntitySettings setFacing(FacingProperty property, Facing defaultFacing, Function<MachinePlacementContext, BlockState> placementLogic) {
 		this.hasFacing = true;
 		this.facingProperty = property;
 		this.defaultFacing = defaultFacing;

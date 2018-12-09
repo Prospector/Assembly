@@ -22,11 +22,11 @@ public interface FabricContainerProvider extends ContainerProvider {
 
 	@Override
 	default TextComponent getName() {
-		return new TranslatableTextComponent(getContainerIdentifier().toString());
+		return new TranslatableTextComponent(getContainerIdentifier() + ".name");
 	}
 
 	@Override
-	default Container createContainer(PlayerInventory playerInventory, PlayerEntity playerEntity){
+	default Container createContainer(PlayerInventory playerInventory, PlayerEntity playerEntity) {
 		return createContainer(playerEntity);
 	}
 

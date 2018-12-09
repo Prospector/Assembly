@@ -2,7 +2,7 @@ package teamreborn.assembly.container;
 
 import io.netty.buffer.Unpooled;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.networking.CustomPayloadHandlerRegistry;
+import net.fabricmc.fabric.networking.CustomPayloadPacketRegistry;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.ContainerGui;
@@ -16,6 +16,7 @@ import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.tuple.Pair;
+import prospector.appetite.client.gui.CounterGui;
 import teamreborn.assembly.Assembly;
 import teamreborn.assembly.blockentity.GrinderBlockEntity;
 import teamreborn.assembly.client.gui.GrinderGui;
@@ -38,16 +39,15 @@ public class AssemblyContainerHelper implements ModInitializer {
 	};
 
 	public static void init() {
-		CustomPayloadHandlerRegistry.CLIENT.register(OPEN_CONTAINER, (packetContext, packetByteBuf) -> {
+		CustomPayloadPacketRegistry.CLIENT.register(OPEN_CONTAINER, (packetContext, packetByteBuf) -> {
 			Identifier identifier = new Identifier(packetByteBuf.readString(64));
 			BlockPos pos = (BlockPos) ObjectBufUtils.readObject(packetByteBuf);
 			openGui(identifier, (ClientPlayerEntity) packetContext.getPlayer(), pos);
 		});
 
-		addContainerMapping(new Identifier("assembly", "grinder"), DEFAULT_CONTAINER_SUPPLIER, (playerEntity, pos) -> {
-			GrinderBlockEntity blockEntity = (GrinderBlockEntity) playerEntity.world.getBlockEntity(pos);
-			return new GrinderGui(playerEntity, blockEntity);
-		});
+		addContainerMapping(new Identifier("assembly", "grinder"), DEFAULT_CONTAINER_SUPPLIER, (playerEntity, pos) -> new GrinderGui(playerEntity, (GrinderBlockEntity) playerEntity.world.getBlockEntity(pos)));
+
+		addContainerMapping(new Identifier("appetite", "counter"), DEFAULT_CONTAINER_SUPPLIER, (playerEntity, pos) -> new CounterGui(playerEntity.inventory));
 	}
 
 	public static void openGui(FabricContainerProvider containerProvider, BlockPos pos, ServerPlayerEntity playerEntity) {

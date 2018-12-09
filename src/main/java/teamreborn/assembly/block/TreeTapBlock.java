@@ -31,8 +31,8 @@ public class TreeTapBlock extends SilkBlockWithEntity {
 		Facing.WEST, Block.createCubeShape(0.0D, 1.0D, 5.5D, 6.5D, 5.5D, 9.5D),
 		Facing.EAST, Block.createCubeShape(16 - 0.0D, 1.0D, 16 - 5.5D, 16 - 6.5D, 5.5D, 16 - 9.5D)));
 
-	public TreeTapBlock(Builder builder) {
-		super(builder);
+	public TreeTapBlock(Settings settings) {
+		super(settings);
 		setDefaultState(getDefaultState().with(Properties.FACING_HORIZONTAL, Facing.NORTH).with(AssemblyProperties.POURING, false));
 	}
 

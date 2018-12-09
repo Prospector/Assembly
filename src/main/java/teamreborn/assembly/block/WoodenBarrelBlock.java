@@ -12,10 +12,11 @@ import teamreborn.assembly.blockentity.WoodenBarrelBlockEntity;
 public class WoodenBarrelBlock extends SilkBlockWithEntity {
 	protected static final VoxelShapeContainer BOUNDING_SHAPE = Block.createCubeShape(2.0D, 0.0D, 2.0D, 14.0D, 16.0D, 14.0D);
 
-	public WoodenBarrelBlock(Builder builder) {
-		super(builder);
+	public WoodenBarrelBlock(Settings settings) {
+		super(settings);
 	}
 
+	@Override
 	public VoxelShapeContainer getBoundingShape(BlockState state, BlockView world, BlockPos pos) {
 		return BOUNDING_SHAPE;
 	}

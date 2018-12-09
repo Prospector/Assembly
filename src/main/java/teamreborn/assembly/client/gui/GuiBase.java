@@ -5,11 +5,12 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.ContainerGui;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
+import teamreborn.assembly.Assembly;
 import teamreborn.assembly.container.FabricContainerProvider;
 
 public class GuiBase extends ContainerGui {
 
-	public static final Identifier GUI_SHEET = new Identifier("assembly", "textures/gui/gui_sheet.png");
+	public static final Identifier GUI_SHEET = new Identifier(Assembly.MOD_ID, "textures/gui/gui_sheet.png");
 	public int xSize = 176;
 	public int ySize = 176;
 
@@ -31,7 +32,7 @@ public class GuiBase extends ContainerGui {
 	}
 
 	//Best time to draw slots
-	public void drawSlots(){
+	public void drawSlots() {
 
 	}
 
@@ -82,7 +83,7 @@ public class GuiBase extends ContainerGui {
 		}
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
-		drawTexturedRect(posX -1, posY -1, 150, 0, 18, 18);
+		drawTexturedRect(posX - 1, posY - 1, 150, 0, 18, 18);
 	}
 
 	public void drawOutputSlot(int x, int y) {
@@ -92,10 +93,10 @@ public class GuiBase extends ContainerGui {
 		}
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
-		drawTexturedRect(x -5, y -5, 150, 18, 26, 26);
+		drawTexturedRect(x - 5, y - 5, 150, 18, 26, 26);
 	}
 
-	public void drawEnergyBar( int x, int y, int height, int energyStored, int maxEnergyStored) {
+	public void drawEnergyBar(int x, int y, int height, int energyStored, int maxEnergyStored) {
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
 
@@ -108,10 +109,10 @@ public class GuiBase extends ContainerGui {
 	}
 
 	public void drawProgressBar(int progress, int maxProgress, int x, int y, ProgressDirection direction) {
-//		if (layer == GuiBase.Layer.BACKGROUND) {
-//			x += left;
-//			y += top;
-//		}
+		//		if (layer == GuiBase.Layer.BACKGROUND) {
+		//			x += left;
+		//			y += top;
+		//		}
 
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);

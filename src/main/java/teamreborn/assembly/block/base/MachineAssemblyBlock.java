@@ -16,49 +16,49 @@ import net.minecraft.world.World;
 import prospector.silk.block.SilkBlockWithEntity;
 import teamreborn.assembly.container.AssemblyContainerHelper;
 import teamreborn.assembly.container.FabricContainerProvider;
-import teamreborn.assembly.util.block.MachineBlockProperties;
+import teamreborn.assembly.util.block.BlockWithEntitySettings;
 import teamreborn.assembly.util.block.MachinePlacementContext;
 
-public abstract class MachineBaseBlock extends SilkBlockWithEntity {
+public abstract class MachineAssemblyBlock extends SilkBlockWithEntity {
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
-	public MachineBlockProperties machineProperties;
+	public BlockWithEntitySettings machineSettings;
 
-	public MachineBaseBlock(Builder builder) {
-		super(builder);
+	public MachineAssemblyBlock(Settings settings) {
+		super(settings);
 		setDefaultState(stateFactory.getDefaultState());
-		if (machineProperties.hasActive()) {
+		if (machineSettings.hasActive()) {
 			this.setDefaultState(getDefaultState().with(ACTIVE, false));
 		}
-		if (machineProperties.hasFacing()) {
-			this.setDefaultState(getDefaultState().with(machineProperties.getFacingProperty(), machineProperties.getDefaultFacing()));
+		if (machineSettings.hasFacing()) {
+			this.setDefaultState(getDefaultState().with(machineSettings.getFacingProperty(), machineSettings.getDefaultFacing()));
 		}
 	}
 
-	public abstract MachineBlockProperties createMachineBlockProperties();
+	public abstract BlockWithEntitySettings createMachineSettings();
 
 	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
-		return machineProperties.createBlockEntity();
+		return machineSettings.createBlockEntity();
 	}
 
 	@Override
 	protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
-		if (machineProperties == null) {
-			this.machineProperties = createMachineBlockProperties();
+		if (machineSettings == null) {
+			this.machineSettings = createMachineSettings();
 		}
-		if (machineProperties.hasActive()) {
+		if (machineSettings.hasActive()) {
 			builder.with(ACTIVE);
 		}
-		if (machineProperties.hasFacing()) {
-			builder.with(machineProperties.getFacingProperty());
+		if (machineSettings.hasFacing()) {
+			builder.with(machineSettings.getFacingProperty());
 		}
 	}
 
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
-		if (machineProperties.hasFacing()) {
-			return machineProperties.getPlacementLogic().apply(new MachinePlacementContext(this, machineProperties.getFacingProperty(), context));
+		if (machineSettings.hasFacing()) {
+			return machineSettings.getPlacementLogic().apply(new MachinePlacementContext(this, machineSettings.getFacingProperty(), context));
 		}
 		return super.getPlacementState(context);
 	}
