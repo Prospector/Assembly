@@ -7,5 +7,6 @@
   ],
   "result": {
     "item": "minecraft:stone"
-  }
+  },
+  "tick_time": 120
 }

@@ -9,8 +9,11 @@ import teamreborn.assembly.blockentity.GrinderBlockEntity;
 
 public class GrinderGui extends GuiBase {
 
+	GrinderBlockEntity grinder;
+
 	public GrinderGui(PlayerEntity playerEntity, GrinderBlockEntity blockEntity) {
 		super(blockEntity, playerEntity);
+		this.grinder = blockEntity;
 	}
 
 	@Override
@@ -23,7 +26,7 @@ public class GrinderGui extends GuiBase {
 	protected void drawForeground(int i, int i1) {
 		super.drawForeground(i, i1);
 
-		drawProgressBar(50, 100, 76, 48,  ProgressDirection.RIGHT);
+		drawProgressBar(grinder.getProgressScaled(100), 100, 76, 48,  ProgressDirection.RIGHT);
 		drawEnergyBar(9, 19, 50, 50, 100);
 	}
 }

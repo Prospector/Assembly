@@ -37,6 +37,7 @@ import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.tuple.Pair;
 import teamreborn.assembly.container.builder.slot.FilteredSlot;
 import teamreborn.assembly.container.builder.slot.SlotOutput;
+import teamreborn.assembly.recipe.IRecipeCrafterProvider;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -94,5 +95,15 @@ public class ContainerTileInventoryBuilder {
 	public ContainerBuilder addInventory() {
 		this.parent.tileInventoryRanges.add(Range.between(this.rangeStart, this.parent.slots.size() - 1));
 		return this.parent;
+	}
+
+	public ContainerTileInventoryBuilder syncCrafterValue() {
+		return this
+					.sync(() -> ((IRecipeCrafterProvider) this.tile).getRecipeCrafter().currentTickTime,
+							(currentTickTime) -> ((IRecipeCrafterProvider) this.tile)
+									.getRecipeCrafter().currentTickTime = currentTickTime)
+					.sync(() -> ((IRecipeCrafterProvider) this.tile).getRecipeCrafter().currentNeededTicks,
+							(currentNeededTicks) -> ((IRecipeCrafterProvider) this.tile)
+									.getRecipeCrafter().currentNeededTicks = currentNeededTicks);
 	}
 }
