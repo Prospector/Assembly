@@ -41,7 +41,7 @@ minecraft {
 
 dependencies {
 	minecraft "com.mojang:minecraft:18w49a"
-	mappings "net.fabricmc:pomf:18w49a.2"
+	mappings "net.fabricmc:pomf:18w49a.17"
 	modCompile "net.fabricmc:fabric-loader:0.1.0.52"
 	modCompile "net.fabricmc:fabric:0.0.3-SNAPSHOT"
 	modCompile "prospector.silk:SilkAPI:+"

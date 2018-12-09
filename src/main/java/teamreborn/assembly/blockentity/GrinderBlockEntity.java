@@ -8,7 +8,7 @@ import teamreborn.assembly.container.FabricContainerProvider;
 import teamreborn.assembly.container.builder.ContainerBuilder;
 import teamreborn.assembly.registry.AssemblyBlockEntities;
 
-public class GrinderBlockEntity extends MachineBaseBlockEntity implements FabricContainerProvider {
+public class GrinderBlockEntity extends MachineBaseBlockEntity {
 	public GrinderBlockEntity() {
 		super(AssemblyBlockEntities.GRINDER);
 	}
@@ -17,7 +17,7 @@ public class GrinderBlockEntity extends MachineBaseBlockEntity implements Fabric
 	public Container createContainer(PlayerEntity playerEntity) {
 		return (new ContainerBuilder("grinder"))
 			.player(playerEntity).inventory().hotbar().addInventory()
-			.blockEntity(this).slot(0, 55, 45).outputSlot(1, 101, 45)
+			.blockEntity(this).slot(0, 55, 45).outputSlot(1, 101, 45).syncCrafterValue()
 			.addInventory().create(this);
 	}
 

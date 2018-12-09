@@ -115,6 +115,8 @@ public class ContainerBuilder {
 			this.tileInventoryRanges, tile);
 		if (!this.craftEvents.isEmpty())
 			built.addCraftEvents(this.craftEvents);
+		if (!this.objectValues.isEmpty())
+			built.addObjectSync(objectValues);
 
 		this.slots.forEach(built::addSlot);
 
