@@ -17,17 +17,10 @@ import teamreborn.assembly.block.TreeTapBlock;
 import teamreborn.assembly.block.WoodenBarrelBlock;
 
 public class AssemblyBlocks implements ModInitializer {
-	public static final Block RUBBER_LOG;
-	public static final Block WOODEN_BARREL;
-	public static final Block TREE_TAP;
-	public static final Block GRINDER;
-
-	static {
-		RUBBER_LOG = AssemblyBlocks.register("rubber_log", new RubberLogBlock(MaterialColor.WOOD, FabricBlockSettings.create(Material.WOOD).setStrength(2.0F, 2.0F).setSoundGroup(BlockSoundGroup.WOOD).build()), ItemGroup.DECORATIONS);
-		WOODEN_BARREL = AssemblyBlocks.register("wooden_barrel", new WoodenBarrelBlock(FabricBlockSettings.create(Material.WOOD).setStrength(2.0F, 2.0F).setSoundGroup(BlockSoundGroup.WOOD).build()), ItemGroup.DECORATIONS);
-		TREE_TAP = AssemblyBlocks.register("tree_tap", new TreeTapBlock(FabricBlockSettings.create(Material.WOOD).setStrength(2.0F, 2.0F).setSoundGroup(BlockSoundGroup.WOOD).build()), ItemGroup.DECORATIONS);
-		GRINDER = AssemblyBlocks.register("grinder", new GrinderBlock(FabricBlockSettings.create(Material.STONE).build()), ItemGroup.MISC);
-	}
+	public static Block RUBBER_LOG;
+	public static Block WOODEN_BARREL;
+	public static Block TREE_TAP;
+	public static Block GRINDER;
 
 	public static Block register(String name, Block block, ItemGroup tab) {
 		Registry.register(Registry.BLOCKS, Assembly.MOD_ID + ":" + name, block);
@@ -38,5 +31,10 @@ public class AssemblyBlocks implements ModInitializer {
 	}
 
 	@Override
-	public void onInitialize() { }
+	public void onInitialize() {
+		RUBBER_LOG = AssemblyBlocks.register("rubber_log", new RubberLogBlock(MaterialColor.WOOD, FabricBlockSettings.create(Material.WOOD).setStrength(2.0F, 2.0F).setSoundGroup(BlockSoundGroup.WOOD).build()), ItemGroup.DECORATIONS);
+		WOODEN_BARREL = AssemblyBlocks.register("wooden_barrel", new WoodenBarrelBlock(FabricBlockSettings.create(Material.WOOD).setStrength(2.0F, 2.0F).setSoundGroup(BlockSoundGroup.WOOD).build()), ItemGroup.DECORATIONS);
+		TREE_TAP = AssemblyBlocks.register("tree_tap", new TreeTapBlock(FabricBlockSettings.create(Material.WOOD).setStrength(2.0F, 2.0F).setSoundGroup(BlockSoundGroup.WOOD).build()), ItemGroup.DECORATIONS);
+		GRINDER = AssemblyBlocks.register("grinder", new GrinderBlock(FabricBlockSettings.create(Material.STONE).build()), ItemGroup.MISC);
+	}
 }

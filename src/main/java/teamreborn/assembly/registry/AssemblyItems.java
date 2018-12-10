@@ -10,13 +10,9 @@ import teamreborn.assembly.Assembly;
 
 public class AssemblyItems implements ModInitializer {
 
-	public static final Item LATEX_BUCKET;
-	public static final Item BIOMASS_BUCKET;
+	public static Item LATEX_BUCKET;
+	public static Item BIOMASS_BUCKET;
 
-	static {
-		LATEX_BUCKET = register("latex_bucket", new BucketItem(AssemblyFluids.LATEX, new Item.Settings().containerItem(Items.BUCKET).stackSize(1).itemGroup(ItemGroup.MISC)));
-		BIOMASS_BUCKET = register("biomass_bucket", new BucketItem(AssemblyFluids.BIOMASS, new Item.Settings().containerItem(Items.BUCKET).stackSize(1).itemGroup(ItemGroup.MISC)));
-	}
 
 	public static Item register(String name, Item item) {
 		Registry.register(Registry.ITEMS, Assembly.MOD_ID + ":" + name, item);
@@ -24,5 +20,8 @@ public class AssemblyItems implements ModInitializer {
 	}
 
 	@Override
-	public void onInitialize() { }
+	public void onInitialize() {
+		LATEX_BUCKET = register("latex_bucket", new BucketItem(AssemblyFluids.LATEX, new Item.Settings().containerItem(Items.BUCKET).stackSize(1).itemGroup(ItemGroup.MISC)));
+		BIOMASS_BUCKET = register("biomass_bucket", new BucketItem(AssemblyFluids.BIOMASS, new Item.Settings().containerItem(Items.BUCKET).stackSize(1).itemGroup(ItemGroup.MISC)));
+	}
 }

@@ -16,7 +16,6 @@ import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.tuple.Pair;
-import prospector.appetite.client.gui.CounterGui;
 import teamreborn.assembly.Assembly;
 import teamreborn.assembly.blockentity.GrinderBlockEntity;
 import teamreborn.assembly.client.gui.GrinderGui;
@@ -47,7 +46,7 @@ public class AssemblyContainerHelper implements ModInitializer {
 
 		addContainerMapping(new Identifier("assembly", "grinder"), DEFAULT_CONTAINER_SUPPLIER, (playerEntity, pos) -> new GrinderGui(playerEntity, (GrinderBlockEntity) playerEntity.world.getBlockEntity(pos)));
 
-		addContainerMapping(new Identifier("appetite", "counter"), DEFAULT_CONTAINER_SUPPLIER, (playerEntity, pos) -> new CounterGui(playerEntity.inventory));
+//		addContainerMapping(new Identifier("appetite", "counter"), DEFAULT_CONTAINER_SUPPLIER, (playerEntity, pos) -> new CounterGui(playerEntity.inventory));
 	}
 
 	public static void openGui(FabricContainerProvider containerProvider, BlockPos pos, ServerPlayerEntity playerEntity) {
