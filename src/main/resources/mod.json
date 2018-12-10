@@ -9,7 +9,8 @@
 	"teamreborn.assembly.registry.AssemblyBlockEntities",
 	"teamreborn.assembly.registry.AssemblyFluids",
 	"teamreborn.assembly.network.AssemblyNetworking",
-    "teamreborn.assembly.container.AssemblyContainerHelper"
+	"teamreborn.assembly.container.AssemblyContainerHelper",
+	"teamreborn.assembly.client.AssemblyRenderers"
   ],
   "description": "Expansion of Minecraft's technology into new ages",
   "mixins": {
