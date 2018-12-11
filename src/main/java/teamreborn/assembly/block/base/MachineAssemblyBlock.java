@@ -13,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Facing;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import prospector.silk.block.SilkBlockWithEntity;
+import io.github.prospector.silk.block.SilkBlockWithEntity;
 import teamreborn.assembly.container.AssemblyContainerHelper;
 import teamreborn.assembly.container.FabricContainerProvider;
 import teamreborn.assembly.util.block.BlockWithEntitySettings;

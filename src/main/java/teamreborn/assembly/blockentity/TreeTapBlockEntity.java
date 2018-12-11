@@ -4,7 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.Facing;
-import prospector.silk.fluid.FluidContainer;
+import io.github.prospector.silk.fluid.FluidContainer;
 import teamreborn.assembly.registry.AssemblyBlockEntities;
 import teamreborn.assembly.registry.AssemblyFluids;
 import teamreborn.assembly.util.block.AssemblyProperties;

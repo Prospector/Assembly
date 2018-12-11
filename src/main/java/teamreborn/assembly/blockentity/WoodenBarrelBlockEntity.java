@@ -11,9 +11,9 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BoundingBox;
 import net.minecraft.util.math.Facing;
-import prospector.silk.fluid.FluidContainer;
-import prospector.silk.fluid.FluidInstance;
-import prospector.silk.fluid.DripValues;
+import io.github.prospector.silk.fluid.FluidContainer;
+import io.github.prospector.silk.fluid.FluidInstance;
+import io.github.prospector.silk.fluid.DripValues;
 import teamreborn.assembly.network.AssemblyNetworking;
 import teamreborn.assembly.registry.AssemblyBlockEntities;
 
