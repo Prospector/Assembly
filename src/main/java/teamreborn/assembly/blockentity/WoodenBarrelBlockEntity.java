@@ -13,7 +13,7 @@ import net.minecraft.util.math.BoundingBox;
 import net.minecraft.util.math.Facing;
 import prospector.silk.fluid.FluidContainer;
 import prospector.silk.fluid.FluidInstance;
-import prospector.silk.fluid.PlopValues;
+import prospector.silk.fluid.DripValues;
 import teamreborn.assembly.network.AssemblyNetworking;
 import teamreborn.assembly.registry.AssemblyBlockEntities;
 
@@ -21,7 +21,7 @@ import java.util.List;
 
 public class WoodenBarrelBlockEntity extends BlockEntity implements FluidContainer, Tickable {
 	public static final String FLUID_KEY = "Fluid";
-	public static final int CAPACITY = PlopValues.BLOCK;
+	public static final int CAPACITY = DripValues.BLOCK;
 
 	public FluidInstance fluidInstance = new FluidInstance(Fluids.EMPTY);
 
