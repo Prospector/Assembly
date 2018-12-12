@@ -21,7 +21,7 @@ import java.util.List;
 
 public class WoodenBarrelBlockEntity extends BlockEntity implements FluidContainer, Tickable {
 	public static final String FLUID_KEY = "Fluid";
-	public static final int CAPACITY = PlopValues.BLOCK;
+	public static final int CAPACITY = DripValues.BLOCK;
 
 	public FluidInstance fluidInstance = new FluidInstance(Fluids.EMPTY);
 

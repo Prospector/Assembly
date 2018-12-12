@@ -47,7 +47,7 @@ dependencies {
 	modCompile "net.fabricmc:fabric:0.1.1.47"
 
 	modCompile "prospector.silk:SilkAPI:+"
-	modCompile "prospector.modmenu:ModMenu:1.0.0-12"
+	modCompile "io.github.prospector.modmenu:ModMenu:1.0.0-12"
 }
 
 uploadArchives {

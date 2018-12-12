@@ -6,7 +6,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
-import prospector.silk.block.SilkBlockWithEntity;
+import io.github.prospector.silk.block.SilkBlockWithEntity;
 import teamreborn.assembly.blockentity.WoodenBarrelBlockEntity;
 
 public class WoodenBarrelBlock extends SilkBlockWithEntity {

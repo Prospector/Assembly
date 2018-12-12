@@ -13,7 +13,7 @@ import net.minecraft.tag.FluidTags;
 import org.lwjgl.opengl.GL11;
 import teamreborn.assembly.blockentity.WoodenBarrelBlockEntity;
 
-import static prospector.silk.util.RenderUtil.frac;
+import static io.github.prospector.silk.util.RenderUtil.frac;
 
 public class WoodenBarrelBlockEntityRenderer extends BlockEntityRenderer<WoodenBarrelBlockEntity> {
 
