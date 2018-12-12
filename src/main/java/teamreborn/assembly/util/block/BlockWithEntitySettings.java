@@ -2,9 +2,9 @@ package teamreborn.assembly.util.block;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.state.property.FacingProperty;
+import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.util.math.Facing;
+import net.minecraft.util.math.Direction;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -16,8 +16,8 @@ public class BlockWithEntitySettings {
 
 	protected boolean hasActive = true;
 	protected boolean hasFacing = true;
-	protected FacingProperty facingProperty = Properties.FACING_HORIZONTAL;
-	protected Facing defaultFacing = Facing.NORTH;
+	protected DirectionProperty facingProperty = Properties.FACING_HORIZONTAL;
+	protected Direction defaultFacing = Direction.NORTH;
 	protected Function<MachinePlacementContext, BlockState> placementLogic = PLAYER_FACING_HORIZONTAL;
 	protected Supplier<BlockEntity> blockEntity;
 
@@ -36,18 +36,18 @@ public class BlockWithEntitySettings {
 	}
 
 	public BlockWithEntitySettings setHorizontalFacing() {
-		return setFacing(Properties.FACING_HORIZONTAL, Facing.NORTH, PLAYER_FACING_HORIZONTAL);
+		return setFacing(Properties.FACING_HORIZONTAL, Direction.NORTH, PLAYER_FACING_HORIZONTAL);
 	}
 
 	public BlockWithEntitySettings setFacingPlayerPlacement() {
-		return setFacing(Properties.FACING, Facing.NORTH, PLAYER_FACING);
+		return setFacing(Properties.FACING, Direction.NORTH, PLAYER_FACING);
 	}
 
 	public BlockWithEntitySettings setFacingHitPlacement() {
-		return setFacing(Properties.FACING, Facing.NORTH, HIT_FACING);
+		return setFacing(Properties.FACING, Direction.NORTH, HIT_FACING);
 	}
 
-	public BlockWithEntitySettings setFacing(FacingProperty property, Facing defaultFacing, Function<MachinePlacementContext, BlockState> placementLogic) {
+	public BlockWithEntitySettings setFacing(DirectionProperty property, Direction defaultFacing, Function<MachinePlacementContext, BlockState> placementLogic) {
 		this.hasFacing = true;
 		this.facingProperty = property;
 		this.defaultFacing = defaultFacing;
@@ -71,11 +71,11 @@ public class BlockWithEntitySettings {
 		return placementLogic;
 	}
 
-	public FacingProperty getFacingProperty() {
+	public DirectionProperty getFacingProperty() {
 		return facingProperty;
 	}
 
-	public Facing getDefaultFacing() {
+	public Direction getDefaultFacing() {
 		return defaultFacing;
 	}
 }

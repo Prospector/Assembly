@@ -28,7 +28,6 @@
 
 package teamreborn.assembly.container.builder;
 
-import net.minecraft.container.FurnaceFuelSlot;
 import net.minecraft.container.Slot;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventory;
@@ -68,11 +67,6 @@ public class ContainerTileInventoryBuilder {
 	public ContainerTileInventoryBuilder filterSlot(final int index, final int x, final int y,
 	                                                final Predicate<ItemStack> filter) {
 		this.parent.slots.add(new FilteredSlot(this.tile, index, x, y).setFilter(filter));
-		return this;
-	}
-
-	public ContainerTileInventoryBuilder fuelSlot(final int index, final int x, final int y) {
-		this.parent.slots.add(new FurnaceFuelSlot(this.tile, index, x, y));
 		return this;
 	}
 

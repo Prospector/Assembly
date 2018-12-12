@@ -15,7 +15,7 @@ public class AssemblyItems implements ModInitializer {
 
 
 	public static Item register(String name, Item item) {
-		Registry.register(Registry.ITEMS, Assembly.MOD_ID + ":" + name, item);
+		Registry.register(Registry.ITEM, Assembly.MOD_ID + ":" + name, item);
 		return item;
 	}
 

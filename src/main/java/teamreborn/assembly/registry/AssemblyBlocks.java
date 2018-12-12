@@ -23,7 +23,7 @@ public class AssemblyBlocks implements ModInitializer {
 	public static Block GRINDER;
 
 	public static Block register(String name, Block block, ItemGroup tab) {
-		Registry.register(Registry.BLOCKS, Assembly.MOD_ID + ":" + name, block);
+		Registry.register(Registry.BLOCK, Assembly.MOD_ID + ":" + name, block);
 		BlockItem item = new BlockItem(block, new Item.Settings().itemGroup(tab));
 		item.registerBlockItemMap(Item.BLOCK_ITEM_MAP, item);
 		AssemblyItems.register(name, item);

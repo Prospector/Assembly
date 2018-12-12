@@ -3,7 +3,7 @@ package teamreborn.assembly.powernet;
 
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Facing;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
 public class Powernet {
@@ -19,7 +19,7 @@ public class Powernet {
 
     //Adds a connector to the current world
     public void addConnector(PowernetConnector connector) {
-        for (Facing facing : Facing.values()) {
+        for (Direction facing : Direction.values()) {
             if (isConnector(connector.getConnectorPos().offset(facing), connector.getConnectorWorld())) {
                 graph.addLine(connector.getConnectorPos().asLong(), connector.getConnectorPos().offset(facing).asLong());
             }

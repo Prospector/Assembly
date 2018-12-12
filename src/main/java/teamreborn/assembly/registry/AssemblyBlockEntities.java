@@ -16,7 +16,7 @@ public class AssemblyBlockEntities implements ModInitializer {
 
 	public static <T extends BlockEntity> BlockEntityType<T> register(String name, BlockEntityType.Builder<T> builder) {
 		BlockEntityType<T> blockEntityType = builder.method_11034(null);
-		Registry.register(Registry.BLOCK_ENTITIES, Assembly.MOD_ID + ":" + name, blockEntityType);
+		Registry.register(Registry.BLOCK_ENTITY, Assembly.MOD_ID + ":" + name, blockEntityType);
 		return blockEntityType;
 	}
 

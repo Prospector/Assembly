@@ -11,8 +11,8 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Facing;
-import net.minecraft.util.shape.VoxelShapeContainer;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.ViewableWorld;
 import net.minecraft.world.World;
@@ -25,23 +25,23 @@ import teamreborn.assembly.util.block.AssemblyProperties;
 import java.util.Map;
 
 public class TreeTapBlock extends SilkBlockWithEntity {
-	private static final Map<Facing, VoxelShapeContainer> BOUNDING_SHAPES = Maps.newEnumMap(ImmutableMap.of(
-		Facing.NORTH, Block.createCubeShape(6.5D, 1.0D, 0.0D, 10.5D, 5.5D, 6.5D),
-		Facing.SOUTH, Block.createCubeShape(16 - 6.5D, 1.0D, 16 - 0.0D, 16 - 10.5D, 5.5D, 16 - 6.5D).method_1097(),
-		Facing.WEST, Block.createCubeShape(0.0D, 1.0D, 5.5D, 6.5D, 5.5D, 9.5D),
-		Facing.EAST, Block.createCubeShape(16 - 0.0D, 1.0D, 16 - 5.5D, 16 - 6.5D, 5.5D, 16 - 9.5D)));
+	private static final Map<Direction, VoxelShape> BOUNDING_SHAPES = Maps.newEnumMap(ImmutableMap.of(
+		Direction.NORTH, Block.createCubeShape(6.5D, 1.0D, 0.0D, 10.5D, 5.5D, 6.5D),
+		Direction.SOUTH, Block.createCubeShape(16 - 6.5D, 1.0D, 16 - 0.0D, 16 - 10.5D, 5.5D, 16 - 6.5D).method_1097(),
+		Direction.WEST, Block.createCubeShape(0.0D, 1.0D, 5.5D, 6.5D, 5.5D, 9.5D),
+		Direction.EAST, Block.createCubeShape(16 - 0.0D, 1.0D, 16 - 5.5D, 16 - 6.5D, 5.5D, 16 - 9.5D)));
 
 	public TreeTapBlock(Settings settings) {
 		super(settings);
-		setDefaultState(getDefaultState().with(Properties.FACING_HORIZONTAL, Facing.NORTH).with(AssemblyProperties.POURING, false));
+		setDefaultState(getDefaultState().with(Properties.FACING_HORIZONTAL, Direction.NORTH).with(AssemblyProperties.POURING, false));
 	}
 
 	@Override
-	public VoxelShapeContainer getBoundingShape(BlockState state, BlockView world, BlockPos pos) {
+	public VoxelShape getBoundingShape(BlockState state, BlockView world, BlockPos pos) {
 		return getBoundingShapeForState(state);
 	}
 
-	public static VoxelShapeContainer getBoundingShapeForState(BlockState state) {
+	public static VoxelShape getBoundingShapeForState(BlockState state) {
 		return BOUNDING_SHAPES.get(state.get(Properties.FACING_HORIZONTAL));
 	}
 
@@ -67,7 +67,7 @@ public class TreeTapBlock extends SilkBlockWithEntity {
 
 	@Override
 	public boolean canPlaceAt(BlockState state, ViewableWorld world, BlockPos pos) {
-		Facing side = state.get(Properties.FACING_HORIZONTAL);
+		Direction side = state.get(Properties.FACING_HORIZONTAL);
 		BlockState placedOn = world.getBlockState(pos.offset(side));
 		Block placedOnBlock = placedOn.getBlock();
 		return placedOnBlock instanceof SapSource && ((SapSource) placedOnBlock).isSideSapSource(world, pos, placedOn, side.getOpposite());
@@ -75,8 +75,8 @@ public class TreeTapBlock extends SilkBlockWithEntity {
 
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
-		Facing direction = context.getFacing().getOpposite();
-		return Facing.class_2353.HORIZONTAL.contains(direction) ? getDefaultState().with(Properties.FACING_HORIZONTAL, direction) : null;
+		Direction direction = context.getFacing().getOpposite();
+		return Direction.class_2353.HORIZONTAL.contains(direction) ? getDefaultState().with(Properties.FACING_HORIZONTAL, direction) : null;
 	}
 
 	@Override

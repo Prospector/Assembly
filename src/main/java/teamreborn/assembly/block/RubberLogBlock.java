@@ -7,7 +7,7 @@ import net.minecraft.block.MaterialColor;
 import net.minecraft.state.StateFactory;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Facing;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.ViewableWorld;
 import teamreborn.assembly.api.SapSource;
 import teamreborn.assembly.util.block.AssemblyProperties;
@@ -38,7 +38,7 @@ public class RubberLogBlock extends LogBlock implements SapSource {
 	}
 
 	@Override
-	public boolean isSideSapSource(ViewableWorld world, BlockPos pos, BlockState blockState, Facing side) {
+	public boolean isSideSapSource(ViewableWorld world, BlockPos pos, BlockState blockState, Direction side) {
 		switch (side) {
 			case NORTH:
 				return blockState.get(AssemblyProperties.NORTH_SAP);

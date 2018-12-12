@@ -10,7 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BoundingBox;
-import net.minecraft.util.math.Facing;
+import net.minecraft.util.math.Direction;
 import prospector.silk.fluid.FluidContainer;
 import prospector.silk.fluid.FluidInstance;
 import prospector.silk.fluid.PlopValues;
@@ -68,17 +68,17 @@ public class WoodenBarrelBlockEntity extends BlockEntity implements FluidContain
 	}
 
 	@Override
-	public boolean canInsertFluid(Facing fromSide, Fluid fluid, int amount) {
+	public boolean canInsertFluid(Direction fromSide, Fluid fluid, int amount) {
 		return this.fluidInstance == null || this.fluidInstance.getFluid() == Fluids.EMPTY || fluid == this.fluidInstance.getFluid() && fluidInstance.getAmount() + amount <= CAPACITY;
 	}
 
 	@Override
-	public boolean canExtractFluid(Facing fromSide, Fluid fluid, int amount) {
+	public boolean canExtractFluid(Direction fromSide, Fluid fluid, int amount) {
 		return fluid == this.fluidInstance.getFluid() && amount <= fluidInstance.getAmount();
 	}
 
 	@Override
-	public void insertFluid(Facing fromSide, Fluid fluid, int amount) {
+	public void insertFluid(Direction fromSide, Fluid fluid, int amount) {
 		if (canInsertFluid(fromSide, fluid, amount)) {
 			fluidInstance.setFluid(fluid);
 			fluidInstance.grow(amount);
@@ -86,7 +86,7 @@ public class WoodenBarrelBlockEntity extends BlockEntity implements FluidContain
 	}
 
 	@Override
-	public void extractFluid(Facing fromSide, Fluid fluid, int amount) {
+	public void extractFluid(Direction fromSide, Fluid fluid, int amount) {
 		if (canExtractFluid(fromSide, fluid, amount)) {
 			fluidInstance.shrink(amount);
 			if (fluidInstance.getAmount() == 0) {
@@ -96,12 +96,12 @@ public class WoodenBarrelBlockEntity extends BlockEntity implements FluidContain
 	}
 
 	@Override
-	public void setFluid(Facing fromSide, FluidInstance instance) {
+	public void setFluid(Direction fromSide, FluidInstance instance) {
 		this.fluidInstance = instance;
 	}
 
 	@Override
-	public FluidInstance[] getFluids(Facing fromSide) {
+	public FluidInstance[] getFluids(Direction fromSide) {
 		return new FluidInstance[] { fluidInstance };
 	}
 }

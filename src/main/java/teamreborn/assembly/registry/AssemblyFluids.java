@@ -14,7 +14,7 @@ public class AssemblyFluids implements ModInitializer {
 	public static BaseFluid BIOMASS;
 
 	public static BaseFluid register(String name, BaseFluid fluid) {
-		Registry.register(Registry.FLUIDS, Assembly.MOD_ID + ":" + name, fluid);
+		Registry.register(Registry.FLUID, Assembly.MOD_ID + ":" + name, fluid);
 		return fluid;
 	}
 

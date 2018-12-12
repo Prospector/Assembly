@@ -17,11 +17,11 @@ import net.minecraft.item.Item;
 import net.minecraft.particle.Particle;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.Sounds;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateFactory;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Facing;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.ViewableWorld;
 import net.minecraft.world.World;
@@ -56,7 +56,7 @@ public abstract class BiomassFluid extends BaseFluid {
 	public void method_15776(World var1, BlockPos var2, FluidState var3, Random var4) {
 		if (!var3.isStill() && !var3.get(STILL)) {
 			if (var4.nextInt(64) == 0) {
-				var1.playSound((double) var2.getX() + 0.5D, (double) var2.getY() + 0.5D, (double) var2.getZ() + 0.5D, Sounds.BLOCK_WATER_AMBIENT, SoundCategory.BLOCK, var4.nextFloat() * 0.25F + 0.75F, var4.nextFloat() + 0.5F, false);
+				var1.playSound((double) var2.getX() + 0.5D, (double) var2.getY() + 0.5D, (double) var2.getZ() + 0.5D, SoundEvents.BLOCK_WATER_AMBIENT, SoundCategory.BLOCK, var4.nextFloat() * 0.25F + 0.75F, var4.nextFloat() + 0.5F, false);
 			}
 		} else if (var4.nextInt(10) == 0) {
 			var1.method_8406(ParticleTypes.UNDERWATER, (double) ((float) var2.getX() + var4.nextFloat()), (double) ((float) var2.getY() + var4.nextFloat()), (double) ((float) var2.getZ() + var4.nextFloat()), 0.0D, 0.0D, 0.0D);
@@ -88,7 +88,7 @@ public abstract class BiomassFluid extends BaseFluid {
 	}
 
 	public boolean matchesType(Fluid var1) {
-		return var1 == Fluids.WATER || var1 == Fluids.WATER_FLOWING;
+		return var1 == Fluids.WATER || var1 == Fluids.FLOWING_WATER;
 	}
 
 	public int method_15739(ViewableWorld var1) {
@@ -99,8 +99,8 @@ public abstract class BiomassFluid extends BaseFluid {
 		return 5;
 	}
 
-	public boolean method_15777(FluidState var1, Fluid var2, Facing var3) {
-		return var3 == Facing.DOWN && !var2.matches(FluidTags.WATER);
+	public boolean method_15777(FluidState var1, Fluid var2, Direction var3) {
+		return var3 == Direction.DOWN && !var2.matches(FluidTags.WATER);
 	}
 
 	protected float getBlastResistance() {
