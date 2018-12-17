@@ -2,8 +2,8 @@ package teamreborn.assembly.client.renderer;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexBuffer;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.render.block.BiomeColors;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
@@ -21,7 +21,7 @@ public class WoodenBarrelBlockEntityRenderer extends BlockEntityRenderer<WoodenB
 	public void render(WoodenBarrelBlockEntity barrel, double x, double y, double z, float ticksDelta, int destroyStage) {
 		if (barrel.fluidInstance != null && barrel.fluidInstance.getFluid() != Fluids.EMPTY) {
 			final Tessellator tessellator = Tessellator.getInstance();
-			final VertexBuffer buffer = tessellator.getVertexBuffer();
+			final BufferBuilder buffer = tessellator.getBufferBuilder();
 			buffer.setOffset(x, y, z);
 			GlStateManager.disableLighting();
 			Sprite sprite = MinecraftClient.getInstance().getBakedModelManager().getBlockStateMaps().getModel(barrel.fluidInstance.getFluid().getDefaultState().getBlockState()).getSprite();

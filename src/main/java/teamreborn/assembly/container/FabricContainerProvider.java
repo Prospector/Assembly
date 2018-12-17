@@ -16,7 +16,7 @@ public interface FabricContainerProvider extends ContainerProvider {
 	}
 
 	@Override
-	default boolean method_16914() {
+	default boolean hasCustomName() {
 		return false;
 	}
 

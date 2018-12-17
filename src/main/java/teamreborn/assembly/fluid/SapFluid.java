@@ -14,7 +14,7 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
-import net.minecraft.particle.Particle;
+import net.minecraft.particle.ParticleType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -59,14 +59,14 @@ public abstract class SapFluid extends BaseFluid {
 				var1.playSound((double) var2.getX() + 0.5D, (double) var2.getY() + 0.5D, (double) var2.getZ() + 0.5D, SoundEvents.BLOCK_WATER_AMBIENT, SoundCategory.BLOCK, var4.nextFloat() * 0.25F + 0.75F, var4.nextFloat() + 0.5F, false);
 			}
 		} else if (var4.nextInt(10) == 0) {
-			var1.method_8406(ParticleTypes.UNDERWATER, (double) ((float) var2.getX() + var4.nextFloat()), (double) ((float) var2.getY() + var4.nextFloat()), (double) ((float) var2.getZ() + var4.nextFloat()), 0.0D, 0.0D, 0.0D);
+			var1.addParticle(ParticleTypes.UNDERWATER, (double) ((float) var2.getX() + var4.nextFloat()), (double) ((float) var2.getY() + var4.nextFloat()), (double) ((float) var2.getZ() + var4.nextFloat()), 0.0D, 0.0D, 0.0D);
 		}
 
 	}
 
 	@Nullable
 	@Environment(EnvType.CLIENT)
-	public Particle method_15787() {
+	public ParticleType method_15787() {
 		return ParticleTypes.DRIPPING_WATER;
 	}
 
@@ -76,7 +76,7 @@ public abstract class SapFluid extends BaseFluid {
 
 	protected void method_15730(IWorld var1, BlockPos var2, BlockState var3) {
 		BlockEntity var4 = var3.getBlock().hasBlockEntity() ? var1.getBlockEntity(var2) : null;
-		Block.dropStacks(var3, var1.method_8410(), var2, var4);
+		Block.dropStacks(var3, var1.getWorld(), var2, var4);
 	}
 
 	public int method_15733(ViewableWorld var1) {

@@ -1,5 +1,8 @@
 package teamreborn.assembly.blockentity;
 
+import io.github.prospector.silk.fluid.DropletValues;
+import io.github.prospector.silk.fluid.FluidContainer;
+import io.github.prospector.silk.fluid.FluidInstance;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.entity.BlockEntity;
@@ -11,9 +14,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BoundingBox;
 import net.minecraft.util.math.Direction;
-import prospector.silk.fluid.FluidContainer;
-import prospector.silk.fluid.FluidInstance;
-import prospector.silk.fluid.PlopValues;
 import teamreborn.assembly.network.AssemblyNetworking;
 import teamreborn.assembly.registry.AssemblyBlockEntities;
 
@@ -21,7 +21,7 @@ import java.util.List;
 
 public class WoodenBarrelBlockEntity extends BlockEntity implements FluidContainer, Tickable {
 	public static final String FLUID_KEY = "Fluid";
-	public static final int CAPACITY = DripValues.BLOCK;
+	public static final int CAPACITY = DropletValues.BLOCK;
 
 	public FluidInstance fluidInstance = new FluidInstance(Fluids.EMPTY);
 
@@ -39,11 +39,11 @@ public class WoodenBarrelBlockEntity extends BlockEntity implements FluidContain
 
 	@Override
 	public void tick() {
-		if (world.isRemote && firstTick) {
+		if (world.isClient && firstTick) {
 			AssemblyNetworking.requestBarrelSync(this);
 			firstTick = false;
 		}
-		if (!world.isRemote && world.getTime() % 10 == 0) {
+		if (!world.isClient && world.getTime() % 10 == 0) {
 			List<Entity> nearbyEntities = world.getEntities((Entity) null, new BoundingBox(pos.getX() - 32, pos.getY() - 32, pos.getZ() - 32, pos.getX() + 32, pos.getY() + 32, pos.getZ() + 32), entity -> entity instanceof ServerPlayerEntity);
 			boolean entitiesChanged = entitiesLastSync != null && !entitiesLastSync.equals(nearbyEntities);
 			if (!fluidLastSync.equals(fluidInstance) || entitiesChanged) {

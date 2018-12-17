@@ -110,7 +110,7 @@ public abstract class InventoryBaseBlockEntity extends BlockEntity implements In
 	}
 
 	@Override
-	public boolean method_16914() {
+	public boolean hasCustomName() {
 		return false;
 	}
 }

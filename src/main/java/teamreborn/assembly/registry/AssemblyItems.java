@@ -13,7 +13,6 @@ public class AssemblyItems implements ModInitializer {
 	public static Item LATEX_BUCKET;
 	public static Item BIOMASS_BUCKET;
 
-
 	public static Item register(String name, Item item) {
 		Registry.register(Registry.ITEM, Assembly.MOD_ID + ":" + name, item);
 		return item;
@@ -21,7 +20,7 @@ public class AssemblyItems implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		LATEX_BUCKET = register("latex_bucket", new BucketItem(AssemblyFluids.LATEX, new Item.Settings().containerItem(Items.BUCKET).stackSize(1).itemGroup(ItemGroup.MISC)));
-		BIOMASS_BUCKET = register("biomass_bucket", new BucketItem(AssemblyFluids.BIOMASS, new Item.Settings().containerItem(Items.BUCKET).stackSize(1).itemGroup(ItemGroup.MISC)));
+		LATEX_BUCKET = register("latex_bucket", new BucketItem(AssemblyFluids.LATEX, new Item.Settings().recipeRemainder(Items.BUCKET).stackSize(1).itemGroup(ItemGroup.MISC)));
+		BIOMASS_BUCKET = register("biomass_bucket", new BucketItem(AssemblyFluids.BIOMASS, new Item.Settings().recipeRemainder(Items.BUCKET).stackSize(1).itemGroup(ItemGroup.MISC)));
 	}
 }

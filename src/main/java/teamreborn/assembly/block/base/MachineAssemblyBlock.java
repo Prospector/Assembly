@@ -1,5 +1,6 @@
 package teamreborn.assembly.block.base;
 
+import io.github.prospector.silk.block.SilkBlockWithEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -13,7 +14,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import io.github.prospector.silk.block.SilkBlockWithEntity;
 import teamreborn.assembly.container.AssemblyContainerHelper;
 import teamreborn.assembly.container.FabricContainerProvider;
 import teamreborn.assembly.util.block.BlockWithEntitySettings;
@@ -67,7 +67,7 @@ public abstract class MachineAssemblyBlock extends SilkBlockWithEntity {
 	public boolean activate(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, Direction facing, float hitX, float hitY, float hitZ) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 		if (blockEntity instanceof FabricContainerProvider) {
-			if (!world.isRemote) {
+			if (!world.isClient) {
 				AssemblyContainerHelper.openGui((FabricContainerProvider) blockEntity, pos, (ServerPlayerEntity) player);
 			}
 			return true;
