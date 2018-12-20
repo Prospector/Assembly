@@ -81,14 +81,14 @@ public class WoodenBarrelBlockEntity extends BlockEntity implements FluidContain
 	public void insertFluid(Direction fromSide, Fluid fluid, int amount) {
 		if (canInsertFluid(fromSide, fluid, amount)) {
 			fluidInstance.setFluid(fluid);
-			fluidInstance.grow(amount);
+			fluidInstance.addAmount(amount);
 		}
 	}
 
 	@Override
 	public void extractFluid(Direction fromSide, Fluid fluid, int amount) {
 		if (canExtractFluid(fromSide, fluid, amount)) {
-			fluidInstance.shrink(amount);
+			fluidInstance.subtractAmount(amount);
 			if (fluidInstance.getAmount() == 0) {
 				this.fluidInstance.setFluid(Fluids.EMPTY);
 			}
