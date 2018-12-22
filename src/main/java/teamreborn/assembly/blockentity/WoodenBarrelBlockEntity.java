@@ -70,17 +70,7 @@ public class WoodenBarrelBlockEntity extends BlockEntity implements FluidContain
 
 	@Override
 	public int getMaxCapacity() {
-		return 0;
-	}
-
-	@Override
-	public int getCurrentFill(Direction fromSide) {
-		return 0;
-	}
-
-	@Override
-	public int getCurrentSingleFluidFill(Direction fromSide, Fluid fluid) {
-		return 0;
+		return CAPACITY;
 	}
 
 	@Override
@@ -93,25 +83,6 @@ public class WoodenBarrelBlockEntity extends BlockEntity implements FluidContain
 		return fluid == this.fluidInstance.getFluid() && amount <= fluidInstance.getAmount();
 	}
 
-	@Override
-	public boolean tryInsertFluid(Direction fromSide, Fluid fluid, int amount, ContainerInteraction interaction) {
-		return false;
-	}
-
-	@Override
-	public int tryPartialInsertFluid(Direction fromSide, Fluid fluid, int maxAmount, ContainerInteraction interaction) {
-		return 0;
-	}
-
-	@Override
-	public boolean tryExtractFluid(Direction fromSide, Fluid fluid, int amount, ContainerInteraction interaction) {
-		return false;
-	}
-
-	@Override
-	public int tryPartialExtractFluid(Direction fromSide, Fluid fluid, int maxAmount, ContainerInteraction interaction) {
-		return 0;
-	}
 
 	@Override
 	public void insertFluid(Direction fromSide, Fluid fluid, int amount) {
