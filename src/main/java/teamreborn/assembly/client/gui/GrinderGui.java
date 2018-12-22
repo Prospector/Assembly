@@ -1,19 +1,15 @@
 package teamreborn.assembly.client.gui;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.gui.ContainerGui;
-import net.minecraft.container.Container;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Identifier;
 import teamreborn.assembly.blockentity.GrinderBlockEntity;
+import teamreborn.assembly.container.builder.BuiltContainer;
 
 public class GrinderGui extends GuiBase {
 
 	GrinderBlockEntity grinder;
 
-	public GrinderGui(PlayerEntity playerEntity, GrinderBlockEntity blockEntity) {
-		super(blockEntity, playerEntity);
-		this.grinder = blockEntity;
+	public GrinderGui(BuiltContainer container) {
+		super(container);
+		this.grinder = (GrinderBlockEntity) container.getTile();
 	}
 
 	@Override

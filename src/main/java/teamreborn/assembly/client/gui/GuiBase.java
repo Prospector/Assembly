@@ -6,7 +6,7 @@ import net.minecraft.client.gui.ContainerGui;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import teamreborn.assembly.Assembly;
-import teamreborn.assembly.container.FabricContainerProvider;
+import teamreborn.assembly.container.builder.BuiltContainer;
 
 public class GuiBase extends ContainerGui {
 
@@ -15,10 +15,10 @@ public class GuiBase extends ContainerGui {
 	public int ySize = 176;
 
 	private Layer layer = Layer.BACKGROUND;
-	final FabricContainerProvider containerProvider;
+	final BuiltContainer containerProvider;
 
-	public GuiBase(FabricContainerProvider container, PlayerEntity playerEntity) {
-		super(container.createContainer(playerEntity.inventory, playerEntity));
+	public GuiBase(BuiltContainer container) {
+		super(container);
 		this.containerProvider = container;
 	}
 
@@ -39,7 +39,7 @@ public class GuiBase extends ContainerGui {
 	@Override
 	protected void drawForeground(int i, int i1) {
 		super.drawForeground(i, i1);
-		fontRenderer.draw(containerProvider.getContainerId(), 10, 6, 4210752);
+		fontRenderer.draw(containerProvider.getName().toString(), 10, 6, 4210752);
 		fontRenderer.draw("Inventory", 10, 80, 4210752);
 	}
 

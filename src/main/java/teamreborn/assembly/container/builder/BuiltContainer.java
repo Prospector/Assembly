@@ -35,6 +35,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.tuple.MutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
@@ -49,7 +50,7 @@ import java.util.function.Supplier;
 
 public class BuiltContainer extends Container implements IExtendedContainerListener {
 
-	private final String name;
+	private final Identifier name;
 
 	private final Predicate<PlayerEntity> canInteract;
 	private final List<Range<Integer>> playerSlotRanges;
@@ -61,7 +62,7 @@ public class BuiltContainer extends Container implements IExtendedContainerListe
 
 	private final MachineBaseBlockEntity tile;
 
-	public BuiltContainer(final String name, final Predicate<PlayerEntity> canInteract,
+	public BuiltContainer(final Identifier name, final Predicate<PlayerEntity> canInteract,
 	                      final List<Range<Integer>> playerSlotRange,
 	                      final List<Range<Integer>> tileSlotRange, MachineBaseBlockEntity tile) {
 		this.name = name;
@@ -241,7 +242,11 @@ public class BuiltContainer extends Container implements IExtendedContainerListe
 		return false;
 	}
 
-	public String getName() {
-		return this.name;
+	public Identifier getName() {
+		return name;
+	}
+
+	public MachineBaseBlockEntity getTile() {
+		return tile;
 	}
 }

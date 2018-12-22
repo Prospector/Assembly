@@ -3,6 +3,7 @@ package teamreborn.assembly.blockentity;
 import io.github.prospector.silk.fluid.DropletValues;
 import io.github.prospector.silk.fluid.FluidContainer;
 import io.github.prospector.silk.fluid.FluidInstance;
+import io.github.prospector.silk.util.ContainerInteraction;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.entity.BlockEntity;
@@ -68,6 +69,21 @@ public class WoodenBarrelBlockEntity extends BlockEntity implements FluidContain
 	}
 
 	@Override
+	public int getMaxCapacity() {
+		return 0;
+	}
+
+	@Override
+	public int getCurrentFill(Direction fromSide) {
+		return 0;
+	}
+
+	@Override
+	public int getCurrentSingleFluidFill(Direction fromSide, Fluid fluid) {
+		return 0;
+	}
+
+	@Override
 	public boolean canInsertFluid(Direction fromSide, Fluid fluid, int amount) {
 		return this.fluidInstance == null || this.fluidInstance.getFluid() == Fluids.EMPTY || fluid == this.fluidInstance.getFluid() && fluidInstance.getAmount() + amount <= CAPACITY;
 	}
@@ -75,6 +91,26 @@ public class WoodenBarrelBlockEntity extends BlockEntity implements FluidContain
 	@Override
 	public boolean canExtractFluid(Direction fromSide, Fluid fluid, int amount) {
 		return fluid == this.fluidInstance.getFluid() && amount <= fluidInstance.getAmount();
+	}
+
+	@Override
+	public boolean tryInsertFluid(Direction fromSide, Fluid fluid, int amount, ContainerInteraction interaction) {
+		return false;
+	}
+
+	@Override
+	public int tryPartialInsertFluid(Direction fromSide, Fluid fluid, int maxAmount, ContainerInteraction interaction) {
+		return 0;
+	}
+
+	@Override
+	public boolean tryExtractFluid(Direction fromSide, Fluid fluid, int amount, ContainerInteraction interaction) {
+		return false;
+	}
+
+	@Override
+	public int tryPartialExtractFluid(Direction fromSide, Fluid fluid, int maxAmount, ContainerInteraction interaction) {
+		return 0;
 	}
 
 	@Override

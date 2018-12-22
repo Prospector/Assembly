@@ -1,19 +1,22 @@
 package teamreborn.assembly.blockentity;
 
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.container.Container;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
-import teamreborn.assembly.container.FabricContainerProvider;
 import teamreborn.assembly.recipe.IRecipeCrafterProvider;
 import teamreborn.assembly.recipe.RecipeCrafter;
 
-public abstract class MachineBaseBlockEntity extends InventoryBaseBlockEntity implements Tickable, IRecipeCrafterProvider, FabricContainerProvider {
+
+public abstract class MachineBaseBlockEntity extends InventoryBaseBlockEntity implements Tickable, IRecipeCrafterProvider {
 
 	RecipeCrafter recipeCrafter;
 
 	public MachineBaseBlockEntity(BlockEntityType<?> blockEntityType) {
 		super(blockEntityType);
-		recipeCrafter = new RecipeCrafter(getContainerIdentifier(), this, 1, 1, this, new int[]{0}, new int[]{1});
+		recipeCrafter = new RecipeCrafter(getId(), this, 1, 1, this, new int[]{0}, new int[]{1});
 	}
 
 	@Override
@@ -45,4 +48,8 @@ public abstract class MachineBaseBlockEntity extends InventoryBaseBlockEntity im
 		recipeCrafter.writeToNBT(compoundTag);
 		return super.toTag(compoundTag);
 	}
+
+	public abstract Identifier getId();
+
+	public abstract Container createContainer(PlayerEntity playerEntity);
 }

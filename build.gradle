@@ -6,11 +6,11 @@ buildscript {
 		mavenLocal()
 		maven {
 			name = 'Fabric'
-			url = 'http://maven.modmuss50.me/'
+			url = 'https://maven.modmuss50.me/'
 		}
 	}
 	dependencies {
-		classpath "net.fabricmc:fabric-loom:0.1.0-SNAPSHOT"
+		classpath "net.fabricmc:fabric-loom:0.2.0-SNAPSHOT"
 	}
 }
 
@@ -42,12 +42,12 @@ minecraft {
 
 dependencies {
 	minecraft "com.mojang:minecraft:18w50a"
-	mappings "net.fabricmc:yarn:18w50a.46"
-	modCompile "net.fabricmc:fabric-loader:0.2.0.71"
-	modCompile "net.fabricmc:fabric:0.1.1.58"
+	mappings "net.fabricmc:yarn:18w50a.64"
+	modCompile "net.fabricmc:fabric-loader:0.3.0.73"
+	modCompile "net.fabricmc:fabric:0.1.2.62"
 
-	modCompile "prospector.silk:SilkAPI:+"
-	modCompile "io.github.prospector.modmenu:ModMenu:1.0.0-12"
+	modCompile "io.github.prospector.silk:SilkAPI:1.0.0-25"
+	modCompile "io.github.prospector.modmenu:ModMenu:1.1.0-17"
 }
 
 uploadArchives {

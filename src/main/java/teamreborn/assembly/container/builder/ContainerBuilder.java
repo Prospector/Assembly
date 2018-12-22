@@ -32,6 +32,7 @@ import net.minecraft.container.Slot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.tuple.Pair;
 import teamreborn.assembly.blockentity.MachineBaseBlockEntity;
@@ -44,7 +45,7 @@ import java.util.function.Supplier;
 
 public class ContainerBuilder {
 
-	private final String name;
+	private final Identifier name;
 
 	private Predicate<PlayerEntity> canInteract = player -> true;
 
@@ -55,7 +56,7 @@ public class ContainerBuilder {
 
 	final List<Consumer<CraftingInventory>> craftEvents;
 
-	public ContainerBuilder(final String name) {
+	public ContainerBuilder(final Identifier name) {
 
 		this.name = name;
 

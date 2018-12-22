@@ -1,6 +1,5 @@
 package teamreborn.assembly.fluid;
 
-import com.sun.istack.internal.Nullable;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
@@ -64,7 +63,6 @@ public abstract class SapFluid extends BaseFluid {
 
 	}
 
-	@Nullable
 	@Environment(EnvType.CLIENT)
 	public ParticleType method_15787() {
 		return ParticleTypes.DRIPPING_WATER;

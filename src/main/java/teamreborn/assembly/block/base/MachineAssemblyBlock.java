@@ -1,6 +1,7 @@
 package teamreborn.assembly.block.base;
 
 import io.github.prospector.silk.block.SilkBlockWithEntity;
+import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -10,14 +11,17 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.state.StateFactory;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.Hand;
+import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import teamreborn.assembly.blockentity.MachineBaseBlockEntity;
 import teamreborn.assembly.container.AssemblyContainerHelper;
-import teamreborn.assembly.container.FabricContainerProvider;
 import teamreborn.assembly.util.block.BlockWithEntitySettings;
 import teamreborn.assembly.util.block.MachinePlacementContext;
+
+import java.util.function.Consumer;
 
 public abstract class MachineAssemblyBlock extends SilkBlockWithEntity {
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
@@ -66,9 +70,9 @@ public abstract class MachineAssemblyBlock extends SilkBlockWithEntity {
 	@Override
 	public boolean activate(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, Direction facing, float hitX, float hitY, float hitZ) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
-		if (blockEntity instanceof FabricContainerProvider) {
+		if (blockEntity instanceof MachineBaseBlockEntity) {
 			if (!world.isClient) {
-				AssemblyContainerHelper.openGui((FabricContainerProvider) blockEntity, pos, (ServerPlayerEntity) player);
+				ContainerProviderRegistry.INSTANCE.openContainer(((MachineBaseBlockEntity) blockEntity).getId(), (ServerPlayerEntity)player, packetByteBuf -> packetByteBuf.writeBlockPos(pos));
 			}
 			return true;
 		}
