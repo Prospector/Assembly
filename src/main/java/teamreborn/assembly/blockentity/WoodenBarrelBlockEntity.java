@@ -3,7 +3,6 @@ package teamreborn.assembly.blockentity;
 import io.github.prospector.silk.fluid.DropletValues;
 import io.github.prospector.silk.fluid.FluidContainer;
 import io.github.prospector.silk.fluid.FluidInstance;
-import io.github.prospector.silk.util.ContainerInteraction;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.entity.BlockEntity;

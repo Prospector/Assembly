@@ -1,29 +1,32 @@
 package teamreborn.assembly.registry;
 
-import net.fabricmc.api.ModInitializer;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.util.Identifier;
 import teamreborn.assembly.Assembly;
 import teamreborn.assembly.blockentity.GrinderBlockEntity;
 import teamreborn.assembly.blockentity.TreeTapBlockEntity;
 import teamreborn.assembly.blockentity.WoodenBarrelBlockEntity;
 
-public class AssemblyBlockEntities implements ModInitializer {
-	public static BlockEntityType<WoodenBarrelBlockEntity> WOODEN_BARREL;
-	public static BlockEntityType<TreeTapBlockEntity> TREE_TAP;
-	public static BlockEntityType<GrinderBlockEntity> GRINDER;
+import java.util.function.Supplier;
 
-	public static <T extends BlockEntity> BlockEntityType<T> register(String name, BlockEntityType.Builder<T> builder) {
-		BlockEntityType<T> blockEntityType = builder.method_11034(null);
-		Registry.register(Registry.BLOCK_ENTITY, Assembly.MOD_ID + ":" + name, blockEntityType);
+public class AssemblyBlockEntities {
+	public static final BlockEntityType<WoodenBarrelBlockEntity> WOODEN_BARREL = add("wooden_barrel", WoodenBarrelBlockEntity::new);
+	public static final BlockEntityType<TreeTapBlockEntity> TREE_TAP = add("tree_tap", TreeTapBlockEntity::new);
+	public static final BlockEntityType<GrinderBlockEntity> GRINDER = add("grinder", GrinderBlockEntity::new);
+
+	public static <T extends BlockEntity> BlockEntityType<T> add(String name, Supplier<? extends T> supplier) {
+		return add(name, BlockEntityType.Builder.create(supplier));
+	}
+
+	public static <T extends BlockEntity> BlockEntityType<T> add(String name, BlockEntityType.Builder<T> builder) {
+		return add(name, builder.method_11034(null));
+	}
+
+	public static <T extends BlockEntity> BlockEntityType<T> add(String name, BlockEntityType<T> blockEntityType) {
+		AssemblyRegistry.BLOCK_ENTITIES.put(new Identifier(Assembly.MOD_ID, name), blockEntityType);
 		return blockEntityType;
 	}
 
-	@Override
-	public void onInitialize() {
-		WOODEN_BARREL = register("wooden_barrel", BlockEntityType.Builder.create(WoodenBarrelBlockEntity::new));
-		TREE_TAP = register("tree_tap", BlockEntityType.Builder.create(TreeTapBlockEntity::new));
-		GRINDER = register("grinder", BlockEntityType.Builder.create(GrinderBlockEntity::new));
-	}
+	public static void loadClass() {}
 }

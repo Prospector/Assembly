@@ -4,10 +4,7 @@
   "version": "0.1.0",
   "side": "universal",
   "initializers": [
-	"teamreborn.assembly.registry.AssemblyItems",
-	"teamreborn.assembly.registry.AssemblyBlocks",
-	"teamreborn.assembly.registry.AssemblyBlockEntities",
-	"teamreborn.assembly.registry.AssemblyFluids",
+	"teamreborn.assembly.registry.AssemblyRegistry",
 	"teamreborn.assembly.network.AssemblyNetworking",
 	"teamreborn.assembly.container.AssemblyContainerHelper",
 	"teamreborn.assembly.client.AssemblyRenderers"
