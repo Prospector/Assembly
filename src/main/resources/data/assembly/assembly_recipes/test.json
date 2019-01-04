@@ -1,12 +1,12 @@
 {
-  "type" : "assembly:grinder",
-  "ingredients" : [
-    {
-      "item": "minecraft:diamond"
-    }
+  "type": "assembly:grinder",
+  "ingredients": [
+	{
+	  "item": "minecraft:diamond"
+	}
   ],
   "result": {
-    "item": "minecraft:stone"
+	"item": "minecraft:stone"
   },
   "tick_time": 120
 }

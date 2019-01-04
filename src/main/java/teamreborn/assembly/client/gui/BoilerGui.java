@@ -1,15 +1,15 @@
 package teamreborn.assembly.client.gui;
 
-import teamreborn.assembly.blockentity.GrinderBlockEntity;
+import teamreborn.assembly.blockentity.BoilerBlockEntity;
 import teamreborn.assembly.container.builder.BuiltContainer;
 
-public class GrinderGui extends GuiBase {
+public class BoilerGui extends GuiBase {
 
-	GrinderBlockEntity grinder;
+	BoilerBlockEntity blockEntity;
 
-	public GrinderGui(BuiltContainer container) {
+	public BoilerGui(BuiltContainer container) {
 		super(container);
-		this.grinder = (GrinderBlockEntity) container.getTile();
+		this.blockEntity = (BoilerBlockEntity) container.getBlockEntity();
 	}
 
 	@Override
@@ -22,7 +22,7 @@ public class GrinderGui extends GuiBase {
 	protected void drawForeground(int i, int i1) {
 		super.drawForeground(i, i1);
 
-		drawProgressBar(grinder.getProgressScaled(100), 100, 76, 48,  ProgressDirection.RIGHT);
+		drawProgressBar(blockEntity.getProgressScaled(100), 100, 76, 48,  ProgressDirection.RIGHT);
 		drawEnergyBar(9, 19, 50, 50, 100);
 	}
 }

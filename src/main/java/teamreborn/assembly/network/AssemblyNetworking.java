@@ -1,5 +1,6 @@
 package teamreborn.assembly.network;
 
+import io.github.prospector.silk.util.ObjectBufUtils;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

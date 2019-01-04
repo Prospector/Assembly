@@ -7,7 +7,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import teamreborn.assembly.blockentity.MachineBaseBlockEntity;
-import teamreborn.assembly.client.gui.GrinderGui;
+import teamreborn.assembly.client.gui.BoilerGui;
 
 public class AssemblyContainerHelper implements ModInitializer {
 
@@ -22,7 +22,7 @@ public class AssemblyContainerHelper implements ModInitializer {
 			return null;
 		});
 
-		GuiProviderRegistry.INSTANCE.registerFactory(new Identifier("assembly", "grinder"), GrinderGui::new);
+		GuiProviderRegistry.INSTANCE.registerFactory(new Identifier("assembly", "grinder"), BoilerGui::new);
 
 	}
 

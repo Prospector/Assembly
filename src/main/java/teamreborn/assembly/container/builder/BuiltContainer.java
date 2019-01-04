@@ -40,7 +40,7 @@ import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.tuple.MutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
 import teamreborn.assembly.blockentity.MachineBaseBlockEntity;
-import teamreborn.assembly.util.ItemUtils;
+import io.github.prospector.silk.util.ItemUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,27 +54,27 @@ public class BuiltContainer extends Container implements IExtendedContainerListe
 
 	private final Predicate<PlayerEntity> canInteract;
 	private final List<Range<Integer>> playerSlotRanges;
-	private final List<Range<Integer>> tileSlotRanges;
+	private final List<Range<Integer>> blockEntitySlotRange;
 
 	private final ArrayList<MutableTriple<Supplier, Consumer, Object>> objectValues;
 	private List<Consumer<CraftingInventory>> craftEvents;
 	private Integer[] integerParts;
 
-	private final MachineBaseBlockEntity tile;
+	private final MachineBaseBlockEntity blockEntity;
 
 	public BuiltContainer(final Identifier name, final Predicate<PlayerEntity> canInteract,
 	                      final List<Range<Integer>> playerSlotRange,
-	                      final List<Range<Integer>> tileSlotRange, MachineBaseBlockEntity tile) {
+	                      final List<Range<Integer>> blockEntitySlotRange, MachineBaseBlockEntity blockEntity) {
 		this.name = name;
 
 		this.canInteract = canInteract;
 
 		this.playerSlotRanges = playerSlotRange;
-		this.tileSlotRanges = tileSlotRange;
+		this.blockEntitySlotRange = blockEntitySlotRange;
 
 		this.objectValues = new ArrayList<>();
 
-		this.tile = tile;
+		this.blockEntity = blockEntity;
 
 		this.syncId = 120; //Wee :) Thanks asie, this is required to stop the odd container de-sycns
 	}
@@ -167,7 +167,7 @@ public class BuiltContainer extends Container implements IExtendedContainerListe
 				}
 
 			if (!shifted)
-				for (final Range<Integer> range : this.tileSlotRanges)
+				for (final Range<Integer> range : this.blockEntitySlotRange)
 					if (range.contains(index)) {
 						if (this.shiftToPlayer(stackInSlot))
 							shifted = true;
@@ -229,7 +229,7 @@ public class BuiltContainer extends Container implements IExtendedContainerListe
 	}
 
 	private boolean shiftToTile(final ItemStack stackToShift) {
-		for (final Range<Integer> range : this.tileSlotRanges)
+		for (final Range<Integer> range : this.blockEntitySlotRange)
 			if (this.shiftItemStack(stackToShift, range.getMinimum(), range.getMaximum() + 1))
 				return true;
 		return false;
@@ -246,7 +246,7 @@ public class BuiltContainer extends Container implements IExtendedContainerListe
 		return name;
 	}
 
-	public MachineBaseBlockEntity getTile() {
-		return tile;
+	public MachineBaseBlockEntity getBlockEntity() {
+		return blockEntity;
 	}
 }

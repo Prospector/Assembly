@@ -36,7 +36,7 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import teamreborn.assembly.util.ItemUtils;
+import io.github.prospector.silk.util.ItemUtils;
 
 import java.util.ArrayList;
 import java.util.List;

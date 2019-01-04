@@ -20,6 +20,7 @@ public class WoodenBarrelBlockEntityRenderer extends BlockEntityRenderer<WoodenB
 	@Override
 	public void render(WoodenBarrelBlockEntity barrel, double x, double y, double z, float ticksDelta, int destroyStage) {
 		if (barrel.fluidInstance != null && barrel.fluidInstance.getFluid() != Fluids.EMPTY) {
+			GlStateManager.pushMatrix();
 			final Tessellator tessellator = Tessellator.getInstance();
 			final BufferBuilder buffer = tessellator.getBufferBuilder();
 			buffer.setOffset(x, y, z);
@@ -32,7 +33,6 @@ public class WoodenBarrelBlockEntityRenderer extends BlockEntityRenderer<WoodenB
 			float r = (float) (color >> 16 & 255) / 255.0F;
 			float g = (float) (color >> 8 & 255) / 255.0F;
 			float b = (float) (color & 255) / 255.0F;
-			//			float r = 1F, g = 1F, b = 1F;
 			buffer.vertex(frac(3), frac(height), frac(3)).texture(sprite.getMinU(), sprite.getMinV()).color(r, g, b, 1F).next();
 			buffer.vertex(frac(3), frac(height), frac(13)).texture(sprite.getMaxU(), sprite.getMinV()).color(r, g, b, 1F).next();
 			buffer.vertex(frac(13), frac(height), frac(13)).texture(sprite.getMaxU(), sprite.getMaxV()).color(r, g, b, 1F).next();
@@ -40,6 +40,7 @@ public class WoodenBarrelBlockEntityRenderer extends BlockEntityRenderer<WoodenB
 			buffer.setOffset(0.0, 0.0, 0.0);
 			tessellator.draw();
 			GlStateManager.enableLighting();
+			GlStateManager.popMatrix();
 		}
 		super.render(barrel, x, y, z, ticksDelta, destroyStage);
 	}

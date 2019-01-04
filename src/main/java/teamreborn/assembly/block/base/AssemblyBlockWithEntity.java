@@ -23,11 +23,11 @@ import teamreborn.assembly.util.block.MachinePlacementContext;
 
 import java.util.function.Consumer;
 
-public abstract class MachineAssemblyBlock extends SilkBlockWithEntity {
+public abstract class AssemblyBlockWithEntity extends SilkBlockWithEntity {
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 	public BlockWithEntitySettings machineSettings;
 
-	public MachineAssemblyBlock(Settings settings) {
+	public AssemblyBlockWithEntity(Settings settings) {
 		super(settings);
 		setDefaultState(stateFactory.getDefaultState());
 		if (machineSettings.hasActive()) {

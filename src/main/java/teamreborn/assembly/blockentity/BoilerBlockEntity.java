@@ -7,8 +7,8 @@ import teamreborn.assembly.Assembly;
 import teamreborn.assembly.container.builder.ContainerBuilder;
 import teamreborn.assembly.registry.AssemblyBlockEntities;
 
-public class GrinderBlockEntity extends MachineBaseBlockEntity {
-	public GrinderBlockEntity() {
+public class BoilerBlockEntity extends MachineBaseBlockEntity {
+	public BoilerBlockEntity() {
 		super(AssemblyBlockEntities.GRINDER);
 	}
 

@@ -6,6 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.Direction;
+import teamreborn.assembly.block.TreeTapBlock;
 import teamreborn.assembly.registry.AssemblyBlockEntities;
 import teamreborn.assembly.registry.AssemblyFluids;
 import teamreborn.assembly.util.block.AssemblyProperties;
@@ -25,7 +26,7 @@ public class TreeTapBlockEntity extends BlockEntity implements Tickable {
 					pouring = ((FluidContainer) downEntity).tryInsertFluid(Direction.UP, AssemblyFluids.LATEX, 1, ContainerInteraction.EXECUTE);
 				}
 				BlockState state = world.getBlockState(pos);
-				if (state.get(AssemblyProperties.POURING) != pouring) {
+				if (state.getBlock() instanceof TreeTapBlock && state.get(AssemblyProperties.POURING) != pouring) {
 					world.setBlockState(pos, state.with(AssemblyProperties.POURING, pouring));
 				}
 			}

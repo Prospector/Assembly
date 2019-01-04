@@ -1,5 +1,6 @@
 package teamreborn.assembly.blockentity;
 
+import io.github.prospector.silk.blockentity.InventoryBlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.container.Container;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,7 +11,7 @@ import teamreborn.assembly.recipe.IRecipeCrafterProvider;
 import teamreborn.assembly.recipe.RecipeCrafter;
 
 
-public abstract class MachineBaseBlockEntity extends InventoryBaseBlockEntity implements Tickable, IRecipeCrafterProvider {
+public abstract class MachineBaseBlockEntity extends InventoryBlockEntity implements Tickable, IRecipeCrafterProvider {
 
 	RecipeCrafter recipeCrafter;
 
