@@ -37,7 +37,6 @@ if (ENV.BUILD_NUMBER) {
 }
 
 minecraft {
-
 }
 
 dependencies {
@@ -48,6 +47,16 @@ dependencies {
 
 	modCompile "io.github.prospector.silk:SilkAPI:1.0.0-25"
 	modCompile "io.github.prospector.modmenu:ModMenu:1.1.0-17"
+}
+
+processResources {
+	from(sourceSets.main.resources.srcDirs) {
+		include 'fabric.mod.json'
+		expand version: project.version
+	}
+	from(sourceSets.main.resources.srcDirs) {
+		exclude 'fabric.mod.json'
+	}
 }
 
 uploadArchives {
