@@ -1,7 +1,7 @@
 package teamreborn.assembly.client;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.client.render.BlockEntityRendererRegistry;
+import net.fabricmc.fabric.api.client.render.BlockEntityRendererRegistry;
 import teamreborn.assembly.blockentity.TreeTapBlockEntity;
 import teamreborn.assembly.blockentity.WoodenBarrelBlockEntity;
 import teamreborn.assembly.client.renderer.TreeTapBlockEntityRenderer;

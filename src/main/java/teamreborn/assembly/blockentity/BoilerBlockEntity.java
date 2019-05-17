@@ -17,7 +17,7 @@ public class BoilerBlockEntity extends MachineBaseBlockEntity {
 		return (new ContainerBuilder(getId()))
 			.player(playerEntity).inventory().hotbar().addInventory()
 			.blockEntity(this).slot(0, 55, 45).outputSlot(1, 101, 45).syncCrafterValue()
-			.addInventory().create(this);
+			.addInventory().create(this, 0);
 	}
 
 	@Override
@@ -28,5 +28,10 @@ public class BoilerBlockEntity extends MachineBaseBlockEntity {
 	@Override
 	public int getInvSize() {
 		return 3;
+	}
+
+	@Override
+	public void tick() {
+
 	}
 }

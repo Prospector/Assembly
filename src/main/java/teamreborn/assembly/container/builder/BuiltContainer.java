@@ -28,6 +28,7 @@
 
 package teamreborn.assembly.container.builder;
 
+import io.github.prospector.silk.util.ItemUtils;
 import net.minecraft.container.Container;
 import net.minecraft.container.ContainerListener;
 import net.minecraft.container.Slot;
@@ -40,7 +41,7 @@ import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.tuple.MutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
 import teamreborn.assembly.blockentity.MachineBaseBlockEntity;
-import io.github.prospector.silk.util.ItemUtils;
+import teamreborn.assembly.mixintf.GetContainerListeners;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +65,8 @@ public class BuiltContainer extends Container implements IExtendedContainerListe
 
 	public BuiltContainer(final Identifier name, final Predicate<PlayerEntity> canInteract,
 	                      final List<Range<Integer>> playerSlotRange,
-	                      final List<Range<Integer>> blockEntitySlotRange, MachineBaseBlockEntity blockEntity) {
+	                      final List<Range<Integer>> blockEntitySlotRange, MachineBaseBlockEntity blockEntity, int syncId) {
+		super(null, syncId);
 		this.name = name;
 
 		this.canInteract = canInteract;
@@ -75,8 +77,6 @@ public class BuiltContainer extends Container implements IExtendedContainerListe
 		this.objectValues = new ArrayList<>();
 
 		this.blockEntity = blockEntity;
-
-		this.syncId = 120; //Wee :) Thanks asie, this is required to stop the odd container de-sycns
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class BuiltContainer extends Container implements IExtendedContainerListe
 	public void sendContentUpdates() {
 		super.sendContentUpdates();
 
-		for (final ContainerListener listener : this.listeners) {
+		for (final ContainerListener listener : ((GetContainerListeners) (this)).assembly_getListeners()) {
 			if (!this.objectValues.isEmpty()) {
 				int objects = 0;
 				for (final MutableTriple<Supplier, Consumer, Object> value : this.objectValues) {

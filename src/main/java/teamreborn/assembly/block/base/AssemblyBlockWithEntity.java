@@ -11,17 +11,13 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.state.StateFactory;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.Hand;
-import net.minecraft.util.PacketByteBuf;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import teamreborn.assembly.blockentity.MachineBaseBlockEntity;
-import teamreborn.assembly.container.AssemblyContainerHelper;
 import teamreborn.assembly.util.block.BlockWithEntitySettings;
 import teamreborn.assembly.util.block.MachinePlacementContext;
-
-import java.util.function.Consumer;
 
 public abstract class AssemblyBlockWithEntity extends SilkBlockWithEntity {
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
@@ -52,10 +48,10 @@ public abstract class AssemblyBlockWithEntity extends SilkBlockWithEntity {
 			this.machineSettings = createMachineSettings();
 		}
 		if (machineSettings.hasActive()) {
-			builder.with(ACTIVE);
+			builder.add(ACTIVE);
 		}
 		if (machineSettings.hasFacing()) {
-			builder.with(machineSettings.getFacingProperty());
+			builder.add(machineSettings.getFacingProperty());
 		}
 	}
 
@@ -68,11 +64,11 @@ public abstract class AssemblyBlockWithEntity extends SilkBlockWithEntity {
 	}
 
 	@Override
-	public boolean activate(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, Direction facing, float hitX, float hitY, float hitZ) {
+	public boolean activate(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hitResult) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 		if (blockEntity instanceof MachineBaseBlockEntity) {
 			if (!world.isClient) {
-				ContainerProviderRegistry.INSTANCE.openContainer(((MachineBaseBlockEntity) blockEntity).getId(), (ServerPlayerEntity)player, packetByteBuf -> packetByteBuf.writeBlockPos(pos));
+				ContainerProviderRegistry.INSTANCE.openContainer(((MachineBaseBlockEntity) blockEntity).getId(), (ServerPlayerEntity) player, packetByteBuf -> packetByteBuf.writeBlockPos(pos));
 			}
 			return true;
 		}

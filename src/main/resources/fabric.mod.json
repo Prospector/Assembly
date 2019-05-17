@@ -1,17 +1,29 @@
 {
+  "schemaVersion": 1,
   "id": "assembly",
   "name": "Assembly",
   "version": "$version",
-  "side": "universal",
-  "initializers": [
-	"teamreborn.assembly.registry.AssemblyRegistry",
-	"teamreborn.assembly.network.AssemblyNetworking",
-	"teamreborn.assembly.container.AssemblyContainerHelper",
-	"teamreborn.assembly.client.AssemblyRenderers"
+  "environment": "*",
+  "license": "MIT",
+  "icon": "assets/assembly/icon.png",
+  "entrypoints": {
+	"main": [
+	  "teamreborn.assembly.registry.AssemblyRegistry",
+	  "teamreborn.assembly.network.AssemblyNetworking",
+	  "teamreborn.assembly.container.AssemblyContainerHelper"
+	],
+	"client": [
+	  "teamreborn.assembly.client.AssemblyRenderers"
+	]
+  },
+  "requires": {
+	"fabric": "*",
+	"silk": "*"
+  },
+  "authors": [
+	"Prospector",
+	"modmuss50"
   ],
   "description": "Expansion of Minecraft's technology into new ages",
-  "mixins": {
-	"client": "assembly.client.json",
-	"common": "assembly.common.json"
-  }
+  "mixins": [ "mixins.assembly.json" ]
 }

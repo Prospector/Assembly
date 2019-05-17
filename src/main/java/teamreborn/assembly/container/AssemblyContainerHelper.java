@@ -1,7 +1,7 @@
 package teamreborn.assembly.container;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.gui.GuiProviderRegistry;
+import net.fabricmc.fabric.api.client.screen.ScreenProviderRegistry;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.Identifier;
@@ -13,16 +13,16 @@ public class AssemblyContainerHelper implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		ContainerProviderRegistry.INSTANCE.registerFactory(new Identifier("assembly", "grinder"), (identifier, playerEntity, packetByteBuf) -> {
+		ContainerProviderRegistry.INSTANCE.registerFactory(new Identifier("assembly", "grinder"), (syncId, id, player, packetByteBuf) -> {
 			BlockPos pos = packetByteBuf.readBlockPos();
-			BlockEntity blockEntity = playerEntity.world.getBlockEntity(pos);
+			BlockEntity blockEntity = player.world.getBlockEntity(pos);
 			if (blockEntity instanceof MachineBaseBlockEntity) {
-				return ((MachineBaseBlockEntity) blockEntity).createContainer(playerEntity);
+				return ((MachineBaseBlockEntity) blockEntity).createContainer(player);
 			}
 			return null;
 		});
 
-		GuiProviderRegistry.INSTANCE.registerFactory(new Identifier("assembly", "grinder"), BoilerGui::new);
+		ScreenProviderRegistry.INSTANCE.registerFactory(new Identifier("assembly", "grinder"), BoilerGui::new);
 
 	}
 

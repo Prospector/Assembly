@@ -1,7 +1,7 @@
 package teamreborn.assembly.blockentity;
 
 import io.github.prospector.silk.fluid.FluidContainer;
-import io.github.prospector.silk.util.ContainerInteraction;
+import io.github.prospector.silk.util.ActionType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.Tickable;
@@ -23,7 +23,7 @@ public class TreeTapBlockEntity extends BlockEntity implements Tickable {
 				BlockEntity downEntity = world.getBlockEntity(pos.offset(Direction.DOWN));
 				boolean pouring = downEntity instanceof FluidContainer;
 				if (pouring) {
-					pouring = ((FluidContainer) downEntity).tryInsertFluid(Direction.UP, AssemblyFluids.LATEX, 1, ContainerInteraction.EXECUTE);
+					pouring = ((FluidContainer) downEntity).tryInsertFluid(Direction.UP, AssemblyFluids.LATEX, 1, ActionType.PERFORM);
 				}
 				BlockState state = world.getBlockState(pos);
 				if (state.getBlock() instanceof TreeTapBlock && state.get(AssemblyProperties.POURING) != pouring) {

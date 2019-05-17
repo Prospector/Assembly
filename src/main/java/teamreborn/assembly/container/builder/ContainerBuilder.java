@@ -95,10 +95,10 @@ public class ContainerBuilder {
 	 * The container have to know if the blockEntity is still available (the block was not destroyed)
 	 * and if the player is not to far from him to close the GUI if necessary
 	 */
-	public BuiltContainer create() {
+	public BuiltContainer create(int syncId) {
 		final BuiltContainer built = new BuiltContainer(this.name, this.canInteract,
 			this.playerInventoryRanges,
-			this.tileInventoryRanges, null);
+			this.tileInventoryRanges, null, syncId);
 		if (!this.objectValues.isEmpty())
 			built.addObjectSync(objectValues);
 		if (!this.craftEvents.isEmpty())
@@ -110,10 +110,10 @@ public class ContainerBuilder {
 		return built;
 	}
 
-	public BuiltContainer create(final MachineBaseBlockEntity tile) {
+	public BuiltContainer create(final MachineBaseBlockEntity tile, int syncId) {
 		final BuiltContainer built = new BuiltContainer(this.name, this.canInteract,
 			this.playerInventoryRanges,
-			this.tileInventoryRanges, tile);
+			this.tileInventoryRanges, tile, syncId);
 		if (!this.craftEvents.isEmpty())
 			built.addCraftEvents(this.craftEvents);
 		if (!this.objectValues.isEmpty())

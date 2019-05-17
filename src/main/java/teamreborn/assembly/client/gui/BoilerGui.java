@@ -3,12 +3,12 @@ package teamreborn.assembly.client.gui;
 import teamreborn.assembly.blockentity.BoilerBlockEntity;
 import teamreborn.assembly.container.builder.BuiltContainer;
 
-public class BoilerGui extends GuiBase {
+public class BoilerGui extends BaseScreen {
 
 	BoilerBlockEntity blockEntity;
 
 	public BoilerGui(BuiltContainer container) {
-		super(container);
+		super(container, "Boiler");
 		this.blockEntity = (BoilerBlockEntity) container.getBlockEntity();
 	}
 
@@ -22,7 +22,7 @@ public class BoilerGui extends GuiBase {
 	protected void drawForeground(int i, int i1) {
 		super.drawForeground(i, i1);
 
-		drawProgressBar(blockEntity.getProgressScaled(100), 100, 76, 48,  ProgressDirection.RIGHT);
+		drawProgressBar(25, 100, 76, 48, ProgressDirection.RIGHT);
 		drawEnergyBar(9, 19, 50, 50, 100);
 	}
 }

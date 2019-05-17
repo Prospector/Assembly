@@ -2,10 +2,10 @@ package teamreborn.assembly.client.renderer;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.color.world.BiomeColors;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
-import net.minecraft.client.render.block.BiomeColors;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.fluid.Fluids;
@@ -29,7 +29,7 @@ public class WoodenBarrelBlockEntityRenderer extends BlockEntityRenderer<WoodenB
 			double height = (barrel.fluidInstance.getAmount() / (float) WoodenBarrelBlockEntity.CAPACITY * 14) + 1;
 			buffer.begin(GL11.GL_QUADS, VertexFormats.POSITION_UV_COLOR);
 			boolean isLava = FluidTags.LAVA.contains(barrel.fluidInstance.getFluid());
-			int color = isLava ? 16777215 : BiomeColors.waterColorAt(barrel.getWorld(), barrel.getPos());
+			int color = isLava ? 16777215 : BiomeColors.getWaterColor(barrel.getWorld(), barrel.getPos());
 			float r = (float) (color >> 16 & 255) / 255.0F;
 			float g = (float) (color >> 8 & 255) / 255.0F;
 			float b = (float) (color & 255) / 255.0F;

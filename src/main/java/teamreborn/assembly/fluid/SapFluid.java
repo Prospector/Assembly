@@ -17,6 +17,7 @@ import net.minecraft.state.StateFactory;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.ViewableWorld;
 import net.minecraft.world.World;
@@ -49,9 +50,9 @@ public abstract class SapFluid extends BaseFluid {
 
 	@Environment(EnvType.CLIENT)
 	public void method_15776(World var1, BlockPos var2, FluidState var3, Random var4) {
-		if (!var3.isStill() && !var3.get(STILL)) {
+		if (!var3.isStill() && !var3.get(FALLING)) {
 			if (var4.nextInt(64) == 0) {
-				var1.playSound((double) var2.getX() + 0.5D, (double) var2.getY() + 0.5D, (double) var2.getZ() + 0.5D, SoundEvents.BLOCK_WATER_AMBIENT, SoundCategory.BLOCK, var4.nextFloat() * 0.25F + 0.75F, var4.nextFloat() + 0.5F, false);
+				var1.playSound((double) var2.getX() + 0.5D, (double) var2.getY() + 0.5D, (double) var2.getZ() + 0.5D, SoundEvents.BLOCK_WATER_AMBIENT, SoundCategory.BLOCKS, var4.nextFloat() * 0.25F + 0.75F, var4.nextFloat() + 0.5F, false);
 			}
 		} else if (var4.nextInt(10) == 0) {
 			var1.addParticle(ParticleTypes.UNDERWATER, (double) ((float) var2.getX() + var4.nextFloat()), (double) ((float) var2.getY() + var4.nextFloat()), (double) ((float) var2.getZ() + var4.nextFloat()), 0.0D, 0.0D, 0.0D);
@@ -64,11 +65,11 @@ public abstract class SapFluid extends BaseFluid {
 		return ParticleTypes.DRIPPING_WATER;
 	}
 
-	protected boolean method_15737() {
+	protected boolean isInfinite() {
 		return true;
 	}
 
-	protected void method_15730(IWorld var1, BlockPos var2, BlockState var3) {
+	protected void beforeBreakingBlock(IWorld var1, BlockPos var2, BlockState var3) {
 		BlockEntity var4 = var3.getBlock().hasBlockEntity() ? var1.getBlockEntity(var2) : null;
 		Block.dropStacks(var3, var1.getWorld(), var2, var4);
 	}
@@ -78,14 +79,14 @@ public abstract class SapFluid extends BaseFluid {
 	}
 
 	public BlockState toBlockState(FluidState var1) {
-		return Blocks.WATER.getDefaultState().with(FluidBlock.field_11278, method_15741(var1));
+		return Blocks.WATER.getDefaultState().with(FluidBlock.LEVEL, method_15741(var1));
 	}
 
 	public boolean matchesType(Fluid var1) {
 		return var1 == Fluids.WATER || var1 == Fluids.FLOWING_WATER;
 	}
 
-	public int method_15739(ViewableWorld var1) {
+	public int getLevelDecreasePerBlock(ViewableWorld var1) {
 		return 1;
 	}
 
@@ -101,18 +102,28 @@ public abstract class SapFluid extends BaseFluid {
 		return 100.0F;
 	}
 
-	public static class Flowing extends BiomassFluid {
+	public static class Flowing extends SapFluid {
 		public Flowing() {
 		}
 
 		@Override
 		protected void appendProperties(StateFactory.Builder<Fluid, FluidState> var1) {
 			super.appendProperties(var1);
-			var1.with(LEVEL);
+			var1.add(LEVEL);
 		}
 
 		@Override
-		public int method_15779(FluidState var1) {
+		protected boolean method_15777(FluidState var1, BlockView var2, BlockPos var3, Fluid var4, Direction var5) {
+			return false;
+		}
+
+		@Override
+		public int getTickRate(ViewableWorld var1) {
+			return 0;
+		}
+
+		@Override
+		public int getLevel(FluidState var1) {
 			return var1.get(LEVEL);
 		}
 
@@ -122,18 +133,28 @@ public abstract class SapFluid extends BaseFluid {
 		}
 	}
 
-	public static class Still extends BiomassFluid {
+	public static class Still extends SapFluid {
 		public Still() {
 		}
 
 		@Override
-		public int method_15779(FluidState var1) {
+		public int getLevel(FluidState var1) {
 			return 8;
 		}
 
 		@Override
 		public boolean isStill(FluidState var1) {
 			return true;
+		}
+
+		@Override
+		protected boolean method_15777(FluidState var1, BlockView var2, BlockPos var3, Fluid var4, Direction var5) {
+			return false;
+		}
+
+		@Override
+		public int getTickRate(ViewableWorld var1) {
+			return 0;
 		}
 	}
 }

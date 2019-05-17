@@ -1,7 +1,6 @@
 package teamreborn.assembly.mixin;
 
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.util.Profiler;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
@@ -49,14 +48,14 @@ public abstract class WorldMixin implements PowernetSimulator {
 		}
 	}
 
-	@Inject(method = "updateEntities", at = @At("RETURN"))
-	private void updateEntities(CallbackInfo info) {
-		if (!isClient) {
-			getProfiler().begin("Powernet");
-			getPowernet().simulate();
-			getProfiler().end();
-		}
-	}
+	//	@Inject(method = "updateEntities", at = @At("RETURN"))
+	//	private void updateEntities(CallbackInfo info) {
+	//		if (!isClient) {
+	//			getProfiler().begin("Powernet");
+	//			getPowernet().simulate();
+	//			getProfiler().end();
+	//		}
+	//	}
 
 	@Override
 	public Powernet getPowernet() {
@@ -66,7 +65,7 @@ public abstract class WorldMixin implements PowernetSimulator {
 	@Shadow
 	public abstract BlockEntity getBlockEntity(BlockPos var1);
 
-	@Shadow
-	public abstract Profiler getProfiler();
+	//	@Shadow
+	//	public abstract Profiler getProfiler();
 
 }

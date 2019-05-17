@@ -2,10 +2,10 @@ package teamreborn.assembly.client.renderer;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.color.world.BiomeColors;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
-import net.minecraft.client.render.block.BiomeColors;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.fluid.Fluids;
@@ -30,7 +30,7 @@ public class TreeTapBlockEntityRenderer extends BlockEntityRenderer<TreeTapBlock
 			GlStateManager.disableLighting();
 			Sprite sprite = MinecraftClient.getInstance().getBakedModelManager().getBlockStateMaps().getModel(Fluids.FLOWING_WATER.getDefaultState().getBlockState()).getSprite();
 			buffer.begin(GL11.GL_QUADS, VertexFormats.POSITION_UV_COLOR);
-			int color = BiomeColors.waterColorAt(treeTap.getWorld(), treeTap.getPos());
+			int color = BiomeColors.getWaterColor(treeTap.getWorld(), treeTap.getPos());
 			float r = (float) (color >> 16 & 255) / 255.0F;
 			float g = (float) (color >> 8 & 255) / 255.0F;
 			float b = (float) (color & 255) / 255.0F;

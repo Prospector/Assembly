@@ -31,10 +31,10 @@ public class RubberLogBlock extends LogBlock implements SapSource {
 	@Override
 	protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
-		builder.with(AssemblyProperties.NORTH_SAP);
-		builder.with(AssemblyProperties.SOUTH_SAP);
-		builder.with(AssemblyProperties.WEST_SAP);
-		builder.with(AssemblyProperties.EAST_SAP);
+		builder.add(AssemblyProperties.NORTH_SAP);
+		builder.add(AssemblyProperties.SOUTH_SAP);
+		builder.add(AssemblyProperties.WEST_SAP);
+		builder.add(AssemblyProperties.EAST_SAP);
 	}
 
 	@Override

@@ -2,23 +2,23 @@ package teamreborn.assembly.client.gui;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.ContainerGui;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.client.gui.screen.ingame.AbstractContainerScreen;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.util.Identifier;
 import teamreborn.assembly.Assembly;
 import teamreborn.assembly.container.builder.BuiltContainer;
 
-public class GuiBase extends ContainerGui {
+public class BaseScreen extends AbstractContainerScreen {
 
-	public static final Identifier GUI_SHEET = new Identifier(Assembly.MOD_ID, "textures/gui/gui_sheet.png");
+	public static final Identifier GUI_SHEET = new Identifier(Assembly.MOD_ID, "textures/screen/gui_sheet.png");
 	public int xSize = 176;
 	public int ySize = 176;
 
 	private Layer layer = Layer.BACKGROUND;
 	final BuiltContainer containerProvider;
 
-	public GuiBase(BuiltContainer container) {
-		super(container);
+	public BaseScreen(BuiltContainer container, String title) {
+		super(container, MinecraftClient.getInstance().player.inventory, new TextComponent(title));
 		this.containerProvider = container;
 	}
 
@@ -39,25 +39,25 @@ public class GuiBase extends ContainerGui {
 	@Override
 	protected void drawForeground(int i, int i1) {
 		super.drawForeground(i, i1);
-		fontRenderer.draw(containerProvider.getName().toString(), 10, 6, 4210752);
-		fontRenderer.draw("Inventory", 10, 80, 4210752);
+		font.draw(containerProvider.getName().toString(), 10, 6, 4210752);
+		font.draw("Inventory", 10, 80, 4210752);
 	}
 
 	@Override
-	public void draw(int mouseX, int mouseY, float partialTicks) {
-		this.drawBackground();
+	public void render(int mouseX, int mouseY, float partialTicks) {
+		this.renderBackground();
 		layer = Layer.FOREGROUND;
-		super.draw(mouseX, mouseY, partialTicks);
-		this.drawMousoverTooltip(mouseX, mouseY);
+		super.render(mouseX, mouseY, partialTicks);
+		this.drawMouseoverTooltip(mouseX, mouseY);
 	}
 
 	public void drawDefaultBackground(int x, int y, int width, int height) {
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
-		drawTexturedRect(x, y, 0, 0, width / 2, height / 2);
-		drawTexturedRect(x + width / 2, y, 150 - width / 2, 0, width / 2, height / 2);
-		drawTexturedRect(x, y + height / 2, 0, 150 - height / 2, width / 2, height / 2);
-		drawTexturedRect(x + width / 2, y + height / 2, 150 - width / 2, 150 - height / 2, width / 2, height / 2);
+		blit(x, y, 0, 0, width / 2, height / 2);
+		blit(x + width / 2, y, 150 - width / 2, 0, width / 2, height / 2);
+		blit(x, y + height / 2, 0, 150 - height / 2, width / 2, height / 2);
+		blit(x + width / 2, y + height / 2, 150 - width / 2, 150 - height / 2, width / 2, height / 2);
 	}
 
 	public void drawPlayerSlots(int posX, int posY, boolean center) {
@@ -67,12 +67,12 @@ public class GuiBase extends ContainerGui {
 
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 9; x++) {
-				drawTexturedRect(posX + x * 18, posY + y * 18, 150, 0, 18, 18);
+				blit(posX + x * 18, posY + y * 18, 150, 0, 18, 18);
 			}
 		}
 
 		for (int x = 0; x < 9; x++) {
-			drawTexturedRect(posX + x * 18, posY + 58, 150, 0, 18, 18);
+			blit(posX + x * 18, posY + 58, 150, 0, 18, 18);
 		}
 	}
 
@@ -83,7 +83,7 @@ public class GuiBase extends ContainerGui {
 		}
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
-		drawTexturedRect(posX - 1, posY - 1, 150, 0, 18, 18);
+		blit(posX - 1, posY - 1, 150, 0, 18, 18);
 	}
 
 	public void drawOutputSlot(int x, int y) {
@@ -93,17 +93,17 @@ public class GuiBase extends ContainerGui {
 		}
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
-		drawTexturedRect(x - 5, y - 5, 150, 18, 26, 26);
+		blit(x - 5, y - 5, 150, 18, 26, 26);
 	}
 
 	public void drawEnergyBar(int x, int y, int height, int energyStored, int maxEnergyStored) {
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
 
-		drawTexturedRect(x, y, 0, 150, 14, height);
-		drawTexturedRect(x, y + height - 1, 0, 255, 14, 1);
+		blit(x, y, 0, 150, 14, height);
+		blit(x, y + height - 1, 0, 255, 14, 1);
 		int draw = (int) ((double) energyStored / (double) maxEnergyStored * (height - 2));
-		drawTexturedRect(x + 1, y + height - draw - 1, 14, height + 150 - draw, 12, draw);
+		blit(x + 1, y + height - draw - 1, 14, height + 150 - draw, 12, draw);
 
 		//TODO hover tooltip
 	}
@@ -116,7 +116,7 @@ public class GuiBase extends ContainerGui {
 
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
-		drawTexturedRect(x, y, direction.x, direction.y, direction.width, direction.height);
+		blit(x, y, direction.x, direction.y, direction.width, direction.height);
 		int j = (int) ((double) progress / (double) maxProgress * 16);
 		if (j < 0) {
 			j = 0;
@@ -124,16 +124,16 @@ public class GuiBase extends ContainerGui {
 
 		switch (direction) {
 			case RIGHT:
-				drawTexturedRect(x, y, direction.xActive, direction.yActive, j, 10);
+				blit(x, y, direction.xActive, direction.yActive, j, 10);
 				break;
 			case LEFT:
-				drawTexturedRect(x + 16 - j, y, direction.xActive + 16 - j, direction.yActive, j, 10);
+				blit(x + 16 - j, y, direction.xActive + 16 - j, direction.yActive, j, 10);
 				break;
 			case UP:
-				drawTexturedRect(x, y + 16 - j, direction.xActive, direction.yActive + 16 - j, 10, j);
+				blit(x, y + 16 - j, direction.xActive, direction.yActive + 16 - j, 10, j);
 				break;
 			case DOWN:
-				drawTexturedRect(x, y, direction.xActive, direction.yActive, 10, j);
+				blit(x, y, direction.xActive, direction.yActive, 10, j);
 				break;
 			default:
 				return;

@@ -8,16 +8,17 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import teamreborn.assembly.recipe.MachineRecipeManager;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin {
 
-	@Shadow @Final private ReloadableResourceManager dataManager;
+	@Shadow
+	@Final
+	private ReloadableResourceManager dataManager;
 
 	@Inject(method = "<init>", at = @At("RETURN"))
-	public void init(CallbackInfo info){
-		dataManager.addListener(MachineRecipeManager.INSTANCE);
+	public void init(CallbackInfo info) {
+		//		dataManager.addListener(MachineRecipeManager.INSTANCE);
 	}
 
 }
