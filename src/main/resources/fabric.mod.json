@@ -16,7 +16,7 @@
 	  "teamreborn.assembly.client.AssemblyRenderers"
 	]
   },
-  "requires": {
+  "depends": {
 	"fabric": "*",
 	"silk": "*"
   },

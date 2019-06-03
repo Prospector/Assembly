@@ -33,10 +33,10 @@ public class WoodenBarrelBlockEntityRenderer extends BlockEntityRenderer<WoodenB
 			float r = (float) (color >> 16 & 255) / 255.0F;
 			float g = (float) (color >> 8 & 255) / 255.0F;
 			float b = (float) (color & 255) / 255.0F;
-			buffer.vertex(frac(3), frac(height), frac(3)).texture(sprite.getMinU(), sprite.getMinV()).color(r, g, b, 1F).next();
-			buffer.vertex(frac(3), frac(height), frac(13)).texture(sprite.getMaxU(), sprite.getMinV()).color(r, g, b, 1F).next();
-			buffer.vertex(frac(13), frac(height), frac(13)).texture(sprite.getMaxU(), sprite.getMaxV()).color(r, g, b, 1F).next();
-			buffer.vertex(frac(13), frac(height), frac(3)).texture(sprite.getMinU(), sprite.getMaxV()).color(r, g, b, 1F).next();
+			buffer.vertex(frac(3), frac(height), frac(3)).texture(sprite.getU(sprite.getXFromU(sprite.getMinU()) + 3), sprite.getV(sprite.getYFromV(sprite.getMinV()) + 3)).color(r, g, b, 1F).next();
+			buffer.vertex(frac(3), frac(height), frac(13)).texture(sprite.getU(sprite.getXFromU(sprite.getMaxU()) - 3), sprite.getV(sprite.getYFromV(sprite.getMinV()) + 3)).color(r, g, b, 1F).next();
+			buffer.vertex(frac(13), frac(height), frac(13)).texture(sprite.getU(sprite.getXFromU(sprite.getMaxU()) - 3), sprite.getV(sprite.getYFromV(sprite.getMaxV()) - 3)).color(r, g, b, 1F).next();
+			buffer.vertex(frac(13), frac(height), frac(3)).texture(sprite.getU(sprite.getXFromU(sprite.getMinU()) + 3), sprite.getV(sprite.getYFromV(sprite.getMaxV()) - 3)).color(r, g, b, 1F).next();
 			buffer.setOffset(0.0, 0.0, 0.0);
 			tessellator.draw();
 			GlStateManager.enableLighting();
