@@ -1,15 +1,19 @@
 package teamreborn.assembly.client.renderer;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.color.world.BiomeColors;
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.texture.Sprite;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.tag.FluidTags;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 import teamreborn.assembly.blockentity.WoodenBarrelBlockEntity;
 
@@ -25,11 +29,15 @@ public class WoodenBarrelBlockEntityRenderer extends BlockEntityRenderer<WoodenB
 			final BufferBuilder buffer = tessellator.getBufferBuilder();
 			buffer.setOffset(x, y, z);
 			GlStateManager.disableLighting();
-			Sprite sprite = MinecraftClient.getInstance().getBakedModelManager().getBlockStateMaps().getModel(barrel.fluidInstance.getFluid().getDefaultState().getBlockState()).getSprite();
+			Fluid fluid = barrel.fluidInstance.getFluid();
+			FluidRenderHandler handler = FluidRenderHandlerRegistry.INSTANCE.get(fluid);
+			BlockPos pos = barrel.getPos();
+			World world = getWorld();
+			FluidState state = fluid.getDefaultState();
+			Sprite sprite = handler.getFluidSprites(world, pos, state)[0];
 			double height = (barrel.fluidInstance.getAmount() / (float) WoodenBarrelBlockEntity.CAPACITY * 14) + 1;
 			buffer.begin(GL11.GL_QUADS, VertexFormats.POSITION_UV_COLOR);
-			boolean isLava = FluidTags.LAVA.contains(barrel.fluidInstance.getFluid());
-			int color = isLava ? 16777215 : BiomeColors.getWaterColor(barrel.getWorld(), barrel.getPos());
+			int color = handler.getFluidColor(world, pos, state);
 			float r = (float) (color >> 16 & 255) / 255.0F;
 			float g = (float) (color >> 8 & 255) / 255.0F;
 			float b = (float) (color & 255) / 255.0F;

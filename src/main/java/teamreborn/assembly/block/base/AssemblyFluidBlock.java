@@ -1,4 +1,4 @@
-package teamreborn.assembly.block;
+package teamreborn.assembly.block.base;
 
 import net.minecraft.block.FluidBlock;
 import net.minecraft.fluid.BaseFluid;

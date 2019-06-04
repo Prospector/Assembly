@@ -2,37 +2,42 @@ package teamreborn.assembly.fluid;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderLayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FluidBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.fluid.BaseFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.particle.ParticleType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateFactory;
-import net.minecraft.tag.FluidTags;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.ViewableWorld;
 import net.minecraft.world.World;
+import teamreborn.assembly.Assembly;
+import teamreborn.assembly.registry.AssemblyBlocks;
 import teamreborn.assembly.registry.AssemblyFluids;
 import teamreborn.assembly.registry.AssemblyItems;
+import teamreborn.assembly.tags.AssemblyFluidTags;
 
 import java.util.Random;
 
-public abstract class SapFluid extends BaseFluid {
+public abstract class LatexFluid extends BaseFluid implements TexturedFluid {
 
-	public SapFluid() {
+	public LatexFluid() {
 	}
 
 	public Fluid getFlowing() {
-		return AssemblyFluids.LATEX_FLOWING;
+		return AssemblyFluids.FLOWING_LATEX;
 	}
 
 	public Fluid getStill() {
@@ -79,11 +84,11 @@ public abstract class SapFluid extends BaseFluid {
 	}
 
 	public BlockState toBlockState(FluidState var1) {
-		return Blocks.WATER.getDefaultState().with(FluidBlock.LEVEL, method_15741(var1));
+		return AssemblyBlocks.LATEX.getDefaultState().with(FluidBlock.LEVEL, method_15741(var1));
 	}
 
 	public boolean matchesType(Fluid var1) {
-		return var1 == Fluids.WATER || var1 == Fluids.FLOWING_WATER;
+		return var1 == AssemblyFluids.LATEX || var1 == AssemblyFluids.FLOWING_LATEX;
 	}
 
 	public int getLevelDecreasePerBlock(ViewableWorld var1) {
@@ -95,14 +100,14 @@ public abstract class SapFluid extends BaseFluid {
 	}
 
 	public boolean method_15777(FluidState var1, Fluid var2, Direction var3) {
-		return var3 == Direction.DOWN && !var2.matches(FluidTags.WATER);
+		return var3 == Direction.DOWN && !var2.matches(AssemblyFluidTags.LATEX);
 	}
 
 	protected float getBlastResistance() {
 		return 100.0F;
 	}
 
-	public static class Flowing extends SapFluid {
+	public static class Flowing extends LatexFluid {
 		public Flowing() {
 		}
 
@@ -119,7 +124,7 @@ public abstract class SapFluid extends BaseFluid {
 
 		@Override
 		public int getTickRate(ViewableWorld var1) {
-			return 0;
+			return 15;
 		}
 
 		@Override
@@ -133,7 +138,7 @@ public abstract class SapFluid extends BaseFluid {
 		}
 	}
 
-	public static class Still extends SapFluid {
+	public static class Still extends LatexFluid {
 		public Still() {
 		}
 
@@ -154,7 +159,17 @@ public abstract class SapFluid extends BaseFluid {
 
 		@Override
 		public int getTickRate(ViewableWorld var1) {
-			return 0;
+			return 15;
 		}
+	}
+
+	@Override
+	public Identifier getFlowingTexture() {
+		return new Identifier(Assembly.MOD_ID, "fluid/latex_flowing");
+	}
+
+	@Override
+	public Identifier getStillTexture() {
+		return new Identifier(Assembly.MOD_ID, "fluid/latex_still");
 	}
 }
