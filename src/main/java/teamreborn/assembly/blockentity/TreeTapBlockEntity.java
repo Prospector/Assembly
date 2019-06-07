@@ -9,8 +9,7 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.Direction;
 import teamreborn.assembly.block.TreeTapBlock;
-import teamreborn.assembly.registry.AssemblyBlockEntities;
-import teamreborn.assembly.registry.AssemblyFluids;
+import teamreborn.assembly.fluid.AssemblyFluids;
 import teamreborn.assembly.util.block.AssemblyProperties;
 
 public class TreeTapBlockEntity extends BlockEntity implements Tickable {
@@ -22,7 +21,7 @@ public class TreeTapBlockEntity extends BlockEntity implements Tickable {
 
 	@Override
 	public void tick() {
-		pouringFluid = AssemblyFluids.LATEX;
+		pouringFluid = AssemblyFluids.LATEX.getStill();
 		if (world != null && !world.isClient) {
 			if (world.getTime() % (25 + world.getRandom().nextInt(15)) == 0) {
 				BlockEntity downEntity = world.getBlockEntity(pos.offset(Direction.DOWN));

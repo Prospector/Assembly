@@ -5,7 +5,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.LogBlock;
 import net.minecraft.block.MaterialColor;
 import net.minecraft.state.StateFactory;
-import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.ViewableWorld;
@@ -13,15 +12,11 @@ import teamreborn.assembly.api.SapSource;
 import teamreborn.assembly.util.block.AssemblyProperties;
 
 public class RubberLogBlock extends LogBlock implements SapSource {
-	public static final BooleanProperty NORTH_SAP = AssemblyProperties.NORTH_SAP;
-	public static final BooleanProperty SOUTH_SAP = AssemblyProperties.SOUTH_SAP;
-	public static final BooleanProperty WEST_SAP = AssemblyProperties.WEST_SAP;
-	public static final BooleanProperty EAST_SAP = AssemblyProperties.EAST_SAP;
-	public static final BooleanProperty POURING = AssemblyProperties.POURING;
 
 	public RubberLogBlock(MaterialColor materialColor, Settings settings) {
 		super(materialColor, settings);
 		setDefaultState(this.getDefaultState()
+			.with(AssemblyProperties.ALIVE, false)
 			.with(AssemblyProperties.NORTH_SAP, false)
 			.with(AssemblyProperties.SOUTH_SAP, false)
 			.with(AssemblyProperties.WEST_SAP, false)
@@ -31,6 +26,7 @@ public class RubberLogBlock extends LogBlock implements SapSource {
 	@Override
 	protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
+		builder.add(AssemblyProperties.ALIVE);
 		builder.add(AssemblyProperties.NORTH_SAP);
 		builder.add(AssemblyProperties.SOUTH_SAP);
 		builder.add(AssemblyProperties.WEST_SAP);
@@ -38,18 +34,23 @@ public class RubberLogBlock extends LogBlock implements SapSource {
 	}
 
 	@Override
-	public boolean isSideSapSource(ViewableWorld world, BlockPos pos, BlockState blockState, Direction side) {
+	public boolean isSideSapSource(ViewableWorld world, BlockPos pos, BlockState state, Direction side) {
 		switch (side) {
 			case NORTH:
-				return blockState.get(AssemblyProperties.NORTH_SAP);
+				return state.get(AssemblyProperties.NORTH_SAP);
 			case SOUTH:
-				return blockState.get(AssemblyProperties.SOUTH_SAP);
+				return state.get(AssemblyProperties.SOUTH_SAP);
 			case WEST:
-				return blockState.get(AssemblyProperties.WEST_SAP);
+				return state.get(AssemblyProperties.WEST_SAP);
 			case EAST:
-				return blockState.get(AssemblyProperties.EAST_SAP);
+				return state.get(AssemblyProperties.EAST_SAP);
 			default:
 				return false;
 		}
+	}
+
+	@Override
+	public boolean hasRandomTicks(BlockState state) {
+		return state.get(AssemblyProperties.ALIVE) && !(state.get(AssemblyProperties.NORTH_SAP) || state.get(AssemblyProperties.SOUTH_SAP) || state.get(AssemblyProperties.EAST_SAP) || state.get(AssemblyProperties.WEST_SAP));
 	}
 }

@@ -1,4 +1,4 @@
-package teamreborn.assembly.client.renderer;
+package teamreborn.assembly.client.renderer.blockentityrenderer;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;

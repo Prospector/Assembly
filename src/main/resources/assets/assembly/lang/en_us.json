@@ -3,5 +3,6 @@
   "block.assembly.wooden_barrel": "Wooden Barrel",
   "block.assembly.tree_tap": "Tree Tap",
   "item.assembly.latex_bucket": "Latex Bucket",
-  "item.assembly.biomass_bucket": "Biomass Bucket"
+  "item.assembly.biomass_bucket": "Biomass Bucket",
+  "item.assembly.oil_bucket": "Oil Bucket"
 }

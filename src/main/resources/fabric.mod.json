@@ -8,12 +8,12 @@
   "icon": "assets/assembly/icon.png",
   "entrypoints": {
 	"main": [
-	  "teamreborn.assembly.registry.AssemblyRegistry",
+	  "teamreborn.assembly.Assembly",
 	  "teamreborn.assembly.network.AssemblyNetworking",
 	  "teamreborn.assembly.container.AssemblyContainerHelper"
 	],
 	"client": [
-	  "teamreborn.assembly.client.AssemblyRenderers"
+	  "teamreborn.assembly.client.AssemblyClient"
 	]
   },
   "depends": {

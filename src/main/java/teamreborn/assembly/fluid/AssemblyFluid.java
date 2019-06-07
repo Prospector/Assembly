@@ -11,7 +11,7 @@ import net.minecraft.fluid.BaseFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
-import net.minecraft.particle.ParticleType;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -24,33 +24,37 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.ViewableWorld;
 import net.minecraft.world.World;
 import teamreborn.assembly.Assembly;
-import teamreborn.assembly.registry.AssemblyBlocks;
-import teamreborn.assembly.registry.AssemblyFluids;
-import teamreborn.assembly.registry.AssemblyItems;
+import teamreborn.assembly.block.AssemblyBlocks;
+import teamreborn.assembly.item.AssemblyItems;
 import teamreborn.assembly.tags.AssemblyFluidTags;
 
 import java.util.Random;
 
-public abstract class LatexFluid extends BaseFluid implements TexturedFluid {
+public abstract class AssemblyFluid extends BaseFluid implements TexturedFluid {
 
-	public LatexFluid() {
+	public final String name;
+	public final int tickRate;
+	public final int levelDecreasePerBlock;
+	public final float blastResistance;
+	public final boolean infinite;
+
+	public AssemblyFluid(Settings settings) {
+		this.name = settings.name;
+		this.tickRate = settings.tickRate;
+		this.levelDecreasePerBlock = settings.levelDecreasePerBlock;
+		this.blastResistance = settings.blastResistance;
+		this.infinite = settings.infinite;
 	}
 
-	public Fluid getFlowing() {
-		return AssemblyFluids.FLOWING_LATEX;
-	}
-
-	public Fluid getStill() {
-		return AssemblyFluids.LATEX;
-	}
-
+	@Override
 	@Environment(EnvType.CLIENT)
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 
+	@Override
 	public Item getBucketItem() {
-		return AssemblyItems.LATEX_BUCKET;
+		return AssemblyItems.getBucket(this);
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -66,65 +70,66 @@ public abstract class LatexFluid extends BaseFluid implements TexturedFluid {
 	}
 
 	@Environment(EnvType.CLIENT)
-	public ParticleType method_15787() {
+	@Override
+	public ParticleEffect getParticle() {
 		return ParticleTypes.DRIPPING_WATER;
 	}
 
+	@Override
 	protected boolean isInfinite() {
-		return true;
+		return infinite;
 	}
 
+	@Override
 	protected void beforeBreakingBlock(IWorld var1, BlockPos var2, BlockState var3) {
 		BlockEntity var4 = var3.getBlock().hasBlockEntity() ? var1.getBlockEntity(var2) : null;
 		Block.dropStacks(var3, var1.getWorld(), var2, var4);
 	}
 
+	@Override
 	public int method_15733(ViewableWorld var1) {
 		return 4;
 	}
 
+	@Override
 	public BlockState toBlockState(FluidState var1) {
-		return AssemblyBlocks.LATEX.getDefaultState().with(FluidBlock.LEVEL, method_15741(var1));
+		return AssemblyBlocks.getFluidBlock(this).getDefaultState().with(FluidBlock.LEVEL, method_15741(var1));
 	}
 
+	@Override
 	public boolean matchesType(Fluid var1) {
-		return var1 == AssemblyFluids.LATEX || var1 == AssemblyFluids.FLOWING_LATEX;
+		return var1 == this || var1 == AssemblyFluids.getInverse(this);
 	}
 
+	@Override
 	public int getLevelDecreasePerBlock(ViewableWorld var1) {
-		return 1;
+		return levelDecreasePerBlock;
 	}
 
-	public int method_15789(ViewableWorld var1) {
-		return 5;
+	@Override
+	protected boolean method_15777(FluidState state, BlockView world, BlockPos pos, Fluid fluid, Direction direction) {
+		return direction == Direction.DOWN && !fluid.matches(AssemblyFluidTags.get(this));
 	}
 
-	public boolean method_15777(FluidState var1, Fluid var2, Direction var3) {
-		return var3 == Direction.DOWN && !var2.matches(AssemblyFluidTags.LATEX);
-	}
-
+	@Override
 	protected float getBlastResistance() {
-		return 100.0F;
+		return blastResistance;
 	}
 
-	public static class Flowing extends LatexFluid {
-		public Flowing() {
+	@Override
+	public int getTickRate(ViewableWorld var1) {
+		return tickRate;
+	}
+
+	public static class Flowing extends AssemblyFluid {
+		public Flowing(Settings settings) {
+			super(settings);
 		}
 
 		@Override
 		protected void appendProperties(StateFactory.Builder<Fluid, FluidState> var1) {
 			super.appendProperties(var1);
 			var1.add(LEVEL);
-		}
-
-		@Override
-		protected boolean method_15777(FluidState var1, BlockView var2, BlockPos var3, Fluid var4, Direction var5) {
-			return false;
-		}
-
-		@Override
-		public int getTickRate(ViewableWorld var1) {
-			return 15;
 		}
 
 		@Override
@@ -136,10 +141,21 @@ public abstract class LatexFluid extends BaseFluid implements TexturedFluid {
 		public boolean isStill(FluidState var1) {
 			return false;
 		}
+
+		@Override
+		public Fluid getFlowing() {
+			return this;
+		}
+
+		@Override
+		public Fluid getStill() {
+			return AssemblyFluids.getStill(this);
+		}
 	}
 
-	public static class Still extends LatexFluid {
-		public Still() {
+	public static class Still extends AssemblyFluid {
+		public Still(Settings settings) {
+			super(settings);
 		}
 
 		@Override
@@ -153,23 +169,59 @@ public abstract class LatexFluid extends BaseFluid implements TexturedFluid {
 		}
 
 		@Override
-		protected boolean method_15777(FluidState var1, BlockView var2, BlockPos var3, Fluid var4, Direction var5) {
-			return false;
+		public Fluid getFlowing() {
+			return AssemblyFluids.getFlowing(this);
 		}
 
 		@Override
-		public int getTickRate(ViewableWorld var1) {
-			return 15;
+		public Fluid getStill() {
+			return this;
 		}
 	}
 
 	@Override
 	public Identifier getFlowingTexture() {
-		return new Identifier(Assembly.MOD_ID, "fluid/latex_flowing");
+		return new Identifier(Assembly.MOD_ID, "fluid/" + name + "_flowing");
 	}
 
 	@Override
 	public Identifier getStillTexture() {
-		return new Identifier(Assembly.MOD_ID, "fluid/latex_still");
+		return new Identifier(Assembly.MOD_ID, "fluid/" + name + "_still");
+	}
+
+	public static class Settings {
+		private String name;
+		private int tickRate = 5;
+		private int levelDecreasePerBlock = 1;
+		private float blastResistance = 100.0F;
+		private boolean infinite = false;
+
+		public Settings(String name) {
+			this.name = name;
+		}
+
+		public Settings tickRate(int tickRate) {
+			this.tickRate = tickRate;
+			return this;
+		}
+
+		public Settings levelDecreasePerBlock(int levelDecreasePerBlock) {
+			this.levelDecreasePerBlock = levelDecreasePerBlock;
+			return this;
+		}
+
+		public Settings blastResistance(int blastResistance) {
+			this.blastResistance = blastResistance;
+			return this;
+		}
+
+		public Settings infinite() {
+			this.infinite = true;
+			return this;
+		}
+
+		public String getName() {
+			return name;
+		}
 	}
 }

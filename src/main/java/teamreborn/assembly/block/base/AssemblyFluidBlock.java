@@ -1,10 +1,17 @@
 package teamreborn.assembly.block.base;
 
 import net.minecraft.block.FluidBlock;
-import net.minecraft.fluid.BaseFluid;
+import teamreborn.assembly.fluid.AssemblyFluid;
 
 public class AssemblyFluidBlock extends FluidBlock {
-	public AssemblyFluidBlock(BaseFluid fluid, Settings settings) {
+	private final AssemblyFluid fluid;
+
+	public AssemblyFluidBlock(AssemblyFluid fluid, Settings settings) {
 		super(fluid, settings);
+		this.fluid = fluid;
+	}
+
+	public AssemblyFluid getFluid() {
+		return fluid;
 	}
 }

@@ -1,5 +1,5 @@
 {
   "variants": {
-	"": { "model": "assembly:block/latex" }
+	"": { "model": "assembly:fluid/latex" }
   }
 }

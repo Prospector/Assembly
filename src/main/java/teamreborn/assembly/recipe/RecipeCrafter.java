@@ -29,7 +29,7 @@
 //package teamreborn.assembly.recipe;
 //
 //import io.github.prospector.silk.util.ItemUtils;
-//import net.minecraft.block.entity.BlockEntity;
+//import net.minecraft.fluidBlock.entity.BlockEntity;
 //import net.minecraft.inventory.Inventory;
 //import net.minecraft.item.ItemStack;
 //import net.minecraft.nbt.CompoundTag;
@@ -279,8 +279,8 @@
 //		}
 //	}
 //
-//	public void readFromNBT(CompoundTag tag) {
-//		CompoundTag data = tag.getCompound("Crater");
+//	public void readFromNBT(CompoundTag tagSupplier) {
+//		CompoundTag data = tagSupplier.getCompound("Crater");
 //
 //		if (data.containsKey("currentTickTime"))
 //			currentTickTime = data.getInt("currentTickTime");
@@ -295,13 +295,13 @@
 //		}
 //	}
 //
-//	public void writeToNBT(CompoundTag tag) {
+//	public void writeToNBT(CompoundTag tagSupplier) {
 //
 //		CompoundTag data = new CompoundTag();
 //
 //		data.putDouble("currentTickTime", currentTickTime);
 //
-//		tag.put("Crater", data);
+//		tagSupplier.put("Crater", data);
 //	}
 //
 //	private boolean isActive() {

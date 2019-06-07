@@ -1,5 +1,5 @@
 {
   "variants": {
-	"": { "model": "assembly:block/biomass" }
+	"": { "model": "assembly:fluid/biomass" }
   }
 }

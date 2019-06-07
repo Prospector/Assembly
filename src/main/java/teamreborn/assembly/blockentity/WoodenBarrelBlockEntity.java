@@ -15,7 +15,6 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BoundingBox;
 import net.minecraft.util.math.Direction;
 import teamreborn.assembly.network.AssemblyNetworking;
-import teamreborn.assembly.registry.AssemblyBlockEntities;
 
 import java.util.List;
 

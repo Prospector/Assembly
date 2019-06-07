@@ -92,7 +92,7 @@ public class ContainerBuilder {
 
 	@Deprecated
 	/**
-	 * The container have to know if the blockEntity is still available (the block was not destroyed)
+	 * The container have to know if the blockEntity is still available (the fluidBlock was not destroyed)
 	 * and if the player is not to far from him to close the GUI if necessary
 	 */
 	public BuiltContainer create(int syncId) {

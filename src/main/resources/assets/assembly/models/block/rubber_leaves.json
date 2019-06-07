@@ -1,0 +1,6 @@
+{
+  "parent": "block/leaves",
+  "textures": {
+	"all": "assembly:block/rubber_leaves"
+  }
+}
