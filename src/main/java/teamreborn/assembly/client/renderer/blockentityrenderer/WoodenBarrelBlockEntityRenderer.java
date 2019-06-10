@@ -28,6 +28,9 @@ public class WoodenBarrelBlockEntityRenderer extends BlockEntityRenderer<WoodenB
 			final Tessellator tessellator = Tessellator.getInstance();
 			final BufferBuilder buffer = tessellator.getBufferBuilder();
 			buffer.setOffset(x, y, z);
+			GlStateManager.enableBlend();
+			GlStateManager.disableAlphaTest();
+			GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 			GlStateManager.disableLighting();
 			Fluid fluid = barrel.fluidInstance.getFluid();
 			FluidRenderHandler handler = FluidRenderHandlerRegistry.INSTANCE.get(fluid);
@@ -48,6 +51,8 @@ public class WoodenBarrelBlockEntityRenderer extends BlockEntityRenderer<WoodenB
 			buffer.setOffset(0.0, 0.0, 0.0);
 			tessellator.draw();
 			GlStateManager.enableLighting();
+			GlStateManager.disableBlend();
+			GlStateManager.enableAlphaTest();
 			GlStateManager.popMatrix();
 		}
 		super.render(barrel, x, y, z, ticksDelta, destroyStage);

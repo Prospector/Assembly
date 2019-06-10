@@ -32,6 +32,9 @@ public class TreeTapBlockEntityRenderer extends BlockEntityRenderer<TreeTapBlock
 			Direction facing = treeTap.getWorld().getBlockState(treeTap.getPos()).get(Properties.FACING_HORIZONTAL);
 			final Tessellator tessellator = Tessellator.getInstance();
 			final BufferBuilder buffer = tessellator.getBufferBuilder();
+			GlStateManager.enableBlend();
+			GlStateManager.disableAlphaTest();
+			GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 			GlStateManager.disableLighting();
 			Fluid fluid = treeTap.getPouringFluid();
 			if (fluid != Fluids.EMPTY) {
@@ -115,6 +118,8 @@ public class TreeTapBlockEntityRenderer extends BlockEntityRenderer<TreeTapBlock
 				}
 			}
 			GlStateManager.enableLighting();
+			GlStateManager.disableBlend();
+			GlStateManager.enableAlphaTest();
 			GlStateManager.popMatrix();
 		}
 		super.render(treeTap, x, y, z, ticksDelta, destroyStage);
