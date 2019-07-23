@@ -10,13 +10,13 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class BlockWithEntitySettings {
-	public static final Function<MachinePlacementContext, BlockState> HIT_FACING = (context) -> context.block.getDefaultState().with(context.property, context.getFacing().getOpposite());
+	public static final Function<MachinePlacementContext, BlockState> HIT_FACING = (context) -> context.block.getDefaultState().with(context.property, context.getSide().getOpposite());
 	public static final Function<MachinePlacementContext, BlockState> PLAYER_FACING = (context) -> context.block.getDefaultState().with(context.property, context.getPlayerFacing().getOpposite());
-	public static final Function<MachinePlacementContext, BlockState> PLAYER_FACING_HORIZONTAL = (context) -> context.block.getDefaultState().with(context.property, context.getPlayerHorizontalFacing().getOpposite());
+	public static final Function<MachinePlacementContext, BlockState> PLAYER_FACING_HORIZONTAL = (context) -> context.block.getDefaultState().with(context.property, context.getPlayerFacing().getOpposite());
 
 	protected boolean hasActive = true;
 	protected boolean hasFacing = true;
-	protected DirectionProperty facingProperty = Properties.FACING_HORIZONTAL;
+	protected DirectionProperty facingProperty = Properties.HORIZONTAL_FACING;
 	protected Direction defaultFacing = Direction.NORTH;
 	protected Function<MachinePlacementContext, BlockState> placementLogic = PLAYER_FACING_HORIZONTAL;
 	protected Supplier<BlockEntity> blockEntity;
@@ -36,7 +36,7 @@ public class BlockWithEntitySettings {
 	}
 
 	public BlockWithEntitySettings setHorizontalFacing() {
-		return setFacing(Properties.FACING_HORIZONTAL, Direction.NORTH, PLAYER_FACING_HORIZONTAL);
+		return setFacing(Properties.HORIZONTAL_FACING, Direction.NORTH, PLAYER_FACING_HORIZONTAL);
 	}
 
 	public BlockWithEntitySettings setFacingPlayerPlacement() {

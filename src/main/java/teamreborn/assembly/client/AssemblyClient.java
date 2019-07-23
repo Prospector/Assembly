@@ -1,7 +1,7 @@
 package teamreborn.assembly.client;
 
-import net.fabricmc.api.ClientModInitializer;
 import teamreborn.assembly.client.renderer.fluid.AssemblyRenderers;
+import net.fabricmc.api.ClientModInitializer;
 
 public class AssemblyClient implements ClientModInitializer {
 	@Override

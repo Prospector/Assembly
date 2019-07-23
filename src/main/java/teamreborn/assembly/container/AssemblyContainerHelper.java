@@ -1,13 +1,11 @@
 package teamreborn.assembly.container;
 
+import teamreborn.assembly.blockentity.MachineBaseBlockEntity;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.screen.ScreenProviderRegistry;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import teamreborn.assembly.blockentity.MachineBaseBlockEntity;
-import teamreborn.assembly.client.gui.BoilerGui;
 
 public class AssemblyContainerHelper implements ModInitializer {
 
@@ -21,8 +19,6 @@ public class AssemblyContainerHelper implements ModInitializer {
 			}
 			return null;
 		});
-
-		ScreenProviderRegistry.INSTANCE.registerFactory(new Identifier("assembly", "grinder"), BoilerGui::new);
 
 	}
 

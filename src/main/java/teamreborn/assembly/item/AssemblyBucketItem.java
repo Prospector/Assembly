@@ -1,7 +1,7 @@
 package teamreborn.assembly.item;
 
-import net.minecraft.item.BucketItem;
 import teamreborn.assembly.fluid.AssemblyFluid;
+import net.minecraft.item.BucketItem;
 
 public class AssemblyBucketItem extends BucketItem {
 	private final AssemblyFluid fluid;

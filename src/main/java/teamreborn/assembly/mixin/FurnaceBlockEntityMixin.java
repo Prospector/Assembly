@@ -1,10 +1,10 @@
 package teamreborn.assembly.mixin;
 
+import teamreborn.assembly.powernet.PowernetConnector;
 import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import teamreborn.assembly.powernet.PowernetConnector;
 
 @Mixin(FurnaceBlockEntity.class)
 public abstract class FurnaceBlockEntityMixin implements PowernetConnector {

@@ -1,11 +1,11 @@
 package teamreborn.assembly.tags;
 
-import net.minecraft.fluid.Fluid;
-import net.minecraft.tag.Tag;
-import net.minecraft.util.Identifier;
 import teamreborn.assembly.Assembly;
 import teamreborn.assembly.fluid.AssemblyFluid;
 import teamreborn.assembly.fluid.AssemblyFluids;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.tag.Tag;
+import net.minecraft.util.Identifier;
 
 import java.util.HashMap;
 import java.util.Map;

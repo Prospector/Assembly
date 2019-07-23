@@ -3,9 +3,9 @@
   "package": "teamreborn.assembly.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-	"MinecraftServerMixin"
+    "MixinMinecraftServer"
   ],
   "injectors": {
-	"defaultRequire": 1
+    "defaultRequire": 1
   }
 }

@@ -3,6 +3,11 @@ package teamreborn.assembly.block;
 import io.github.prospector.silk.block.SilkLeavesBlock;
 import io.github.prospector.silk.block.SilkSaplingBlock;
 import io.github.prospector.silk.util.SilkSaplingGenerator;
+import teamreborn.assembly.Assembly;
+import teamreborn.assembly.block.base.AssemblyFluidBlock;
+import teamreborn.assembly.fluid.AssemblyFluid;
+import teamreborn.assembly.fluid.AssemblyFluids;
+import teamreborn.assembly.world.feature.RubberTreeFeature;
 import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.item.BlockItem;
@@ -12,11 +17,6 @@ import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
-import teamreborn.assembly.Assembly;
-import teamreborn.assembly.block.base.AssemblyFluidBlock;
-import teamreborn.assembly.fluid.AssemblyFluid;
-import teamreborn.assembly.fluid.AssemblyFluids;
-import teamreborn.assembly.world.feature.RubberTreeFeature;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,19 +32,18 @@ public class AssemblyBlocks {
 	public static final Block POTTED_RUBBER_SAPLING = add("potted_rubber_sapling", new FlowerPotBlock(RUBBER_SAPLING, FabricBlockSettings.copy(Blocks.POTTED_OAK_SAPLING).build()));
 	public static final Block WOODEN_BARREL = add("wooden_barrel", new WoodenBarrelBlock(FabricBlockSettings.copy(Blocks.OAK_LOG).build()), ItemGroup.DECORATIONS);
 	public static final Block TREE_TAP = add("tree_tap", new TreeTapBlock(FabricBlockSettings.of(Material.WOOD).breakInstantly().sounds(BlockSoundGroup.WOOD).build()), ItemGroup.DECORATIONS);
-	public static final Block GRINDER = add("grinder", new BoilerBlock(FabricBlockSettings.of(Material.METAL).build()), ItemGroup.DECORATIONS);
 	public static final FluidBlock LATEX = add("latex", new AssemblyFluidBlock(AssemblyFluids.LATEX, FabricBlockSettings.of(Material.WATER).noCollision().hardness(100.0F).dropsNothing().build()));
 	public static final FluidBlock BIOMASS = add("biomass", new AssemblyFluidBlock(AssemblyFluids.BIOMASS, FabricBlockSettings.of(Material.WATER).noCollision().hardness(100.0F).dropsNothing().build()));
 	public static final FluidBlock OIL = add("oil", new AssemblyFluidBlock(AssemblyFluids.OIL, FabricBlockSettings.of(Material.WATER).noCollision().hardness(100.0F).dropsNothing().build()));
 
 	private static <B extends Block> B add(String name, B block, ItemGroup tab) {
-		return add(name, block, new BlockItem(block, new Item.Settings().itemGroup(tab)));
+		return add(name, block, new BlockItem(block, new Item.Settings().group(tab)));
 	}
 
 	private static <B extends Block> B add(String name, B block, BlockItem item) {
 		add(name, block);
 		if (item != null) {
-			item.registerBlockItemMap(Item.BLOCK_ITEM_MAP, item);
+			item.appendBlocks(Item.BLOCK_ITEMS, item);
 			ITEMS.put(new Identifier(Assembly.MOD_ID, name), item);
 		}
 		return block;

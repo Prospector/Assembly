@@ -1,11 +1,11 @@
 package teamreborn.assembly.world.feature;
 
+import teamreborn.assembly.Assembly;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.FeatureConfig;
-import teamreborn.assembly.Assembly;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,9 +25,5 @@ public class AssemblyFeatures {
 		for (Identifier id : FEATURES.keySet()) {
 			Registry.register(Registry.FEATURE, id, FEATURES.get(id));
 		}
-	}
-
-	public Map<Identifier, Feature<? extends FeatureConfig>> getFeatures() {
-		return FEATURES;
 	}
 }

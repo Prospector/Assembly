@@ -2,6 +2,7 @@ package teamreborn.assembly.block;
 
 import io.github.prospector.silk.block.SilkBlockWithEntity;
 import io.github.prospector.silk.fluid.DropletValues;
+import teamreborn.assembly.blockentity.WoodenBarrelBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -15,7 +16,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import teamreborn.assembly.blockentity.WoodenBarrelBlockEntity;
 
 public class WoodenBarrelBlock extends SilkBlockWithEntity {
 	protected static final VoxelShape BOUNDING_SHAPE = Block.createCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 16.0D, 14.0D);
@@ -43,7 +43,7 @@ public class WoodenBarrelBlock extends SilkBlockWithEntity {
 			if (!player.isSneaking() && player.getStackInHand(hand).getItem().equals(Items.BUCKET) && barrel.canExtractFluid(hitResult.getSide(), fluid, DropletValues.BUCKET)) {
 				barrel.extractFluid(hitResult.getSide(), fluid, DropletValues.BUCKET);
 				if (!player.abilities.creativeMode) {
-					player.setStackInHand(hand, fluid.getBucketItem().getDefaultStack());
+					player.setStackInHand(hand, fluid.getBucketItem().getStackForRender());
 				}
 			}
 		}

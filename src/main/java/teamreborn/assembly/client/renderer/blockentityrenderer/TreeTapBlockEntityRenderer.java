@@ -1,6 +1,9 @@
 package teamreborn.assembly.client.renderer.blockentityrenderer;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import teamreborn.assembly.blockentity.TreeTapBlockEntity;
+import teamreborn.assembly.blockentity.WoodenBarrelBlockEntity;
+import teamreborn.assembly.util.block.AssemblyProperties;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.minecraft.block.entity.BlockEntity;
@@ -17,9 +20,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
-import teamreborn.assembly.blockentity.TreeTapBlockEntity;
-import teamreborn.assembly.blockentity.WoodenBarrelBlockEntity;
-import teamreborn.assembly.util.block.AssemblyProperties;
 
 import static io.github.prospector.silk.util.MathUtil.frac;
 
@@ -28,18 +28,13 @@ public class TreeTapBlockEntityRenderer extends BlockEntityRenderer<TreeTapBlock
 	@Override
 	public void render(TreeTapBlockEntity treeTap, double x, double y, double z, float ticksDelta, int destroyStage) {
 		if (treeTap.getWorld().getBlockState(treeTap.getPos()).get(AssemblyProperties.POURING)) {
-			GlStateManager.pushMatrix();
-			Direction facing = treeTap.getWorld().getBlockState(treeTap.getPos()).get(Properties.FACING_HORIZONTAL);
-			final Tessellator tessellator = Tessellator.getInstance();
-			final BufferBuilder buffer = tessellator.getBufferBuilder();
-			GlStateManager.enableBlend();
-			GlStateManager.disableAlphaTest();
-			GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-			GlStateManager.disableLighting();
+			Direction facing = treeTap.getWorld().getBlockState(treeTap.getPos()).get(Properties.HORIZONTAL_FACING);
 			Fluid fluid = treeTap.getPouringFluid();
 			if (fluid != Fluids.EMPTY) {
 				FluidRenderHandler handler = FluidRenderHandlerRegistry.INSTANCE.get(fluid);
 				if (handler != null) {
+					final Tessellator tessellator = Tessellator.getInstance();
+					final BufferBuilder buffer = tessellator.getBufferBuilder();
 					BlockPos pos = treeTap.getPos();
 					World world = getWorld();
 					FluidState state = fluid.getDefaultState();
@@ -55,6 +50,7 @@ public class TreeTapBlockEntityRenderer extends BlockEntityRenderer<TreeTapBlock
 					double radiansAngle = Math.toRadians(angle);
 					double bottomAngled = topHeight - (16 - endOfFlow) * Math.tan(radiansAngle);
 					double flowingMultiplier = 0.5;
+
 					//Top stream
 					buffer.vertex(frac(endOfFlow), frac(bottomAngled), frac(7.5)).texture(sprite.getU((sprite.getXFromU(sprite.getMinU()) + 7) * flowingMultiplier), sprite.getV((sprite.getYFromV(sprite.getMaxV()) + 0.44) * flowingMultiplier)).color(r, g, b, 1F).next();
 					buffer.vertex(frac(endOfFlow), frac(bottomAngled), frac(9.5)).texture(sprite.getU((sprite.getXFromU(sprite.getMaxU()) - 7) * flowingMultiplier), sprite.getV((sprite.getYFromV(sprite.getMaxV()) + 0.44) * flowingMultiplier)).color(r, g, b, 1F).next();
@@ -111,16 +107,23 @@ public class TreeTapBlockEntityRenderer extends BlockEntityRenderer<TreeTapBlock
 					buffer.vertex(frac(endOfFlow + 0.58), frac(bottomAngled), frac(9.5)).texture(sprite.getU(flowingMultiplier * (sprite.getXFromU(sprite.getMaxU()) - 7)), sprite.getV(flowingMultiplier * (sprite.getYFromV(sprite.getMinV()) + 1))).color(r, g, b, 1F).next();
 					buffer.vertex(frac(endOfFlow + 0.58), frac(bottomAngled + 0.58 * Math.tan(radiansAngle)), frac(9.5)).texture(sprite.getU(flowingMultiplier * (sprite.getXFromU(sprite.getMaxU()) - 7)), sprite.getV(flowingMultiplier * sprite.getYFromV(sprite.getMinV()))).color(r, g, b, 1F).next();
 
+					GlStateManager.pushMatrix();
+					GlStateManager.enableBlend();
+					GlStateManager.disableAlphaTest();
+					GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+					GlStateManager.disableLighting();
+					GlStateManager.enableTexture();
+					GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 					GlStateManager.translated(x + 0.5, y + 0.5, z + 0.5);
 					GlStateManager.rotated(270 - facing.asRotation(), 0.0, 1.0, 0.0);
 					GlStateManager.translated(-0.5, -0.5, -0.5);
 					tessellator.draw();
+					GlStateManager.enableLighting();
+					GlStateManager.enableAlphaTest(); ;
+					GlStateManager.disableBlend();
+					GlStateManager.popMatrix();
 				}
 			}
-			GlStateManager.enableLighting();
-			GlStateManager.disableBlend();
-			GlStateManager.enableAlphaTest();
-			GlStateManager.popMatrix();
 		}
 		super.render(treeTap, x, y, z, ticksDelta, destroyStage);
 	}

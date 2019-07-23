@@ -3,6 +3,9 @@ package teamreborn.assembly.network;
 import io.github.prospector.silk.fluid.FluidContainer;
 import io.github.prospector.silk.fluid.FluidInstance;
 import io.github.prospector.silk.util.ObjectBufUtils;
+import teamreborn.assembly.Assembly;
+import teamreborn.assembly.blockentity.WoodenBarrelBlockEntity;
+import teamreborn.assembly.container.builder.IExtendedContainerListener;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -21,9 +24,6 @@ import net.minecraft.server.network.packet.CustomPayloadC2SPacket;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
-import teamreborn.assembly.Assembly;
-import teamreborn.assembly.blockentity.WoodenBarrelBlockEntity;
-import teamreborn.assembly.container.builder.IExtendedContainerListener;
 
 public class AssemblyNetworking implements ModInitializer {
 

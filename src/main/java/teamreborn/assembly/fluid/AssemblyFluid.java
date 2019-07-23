@@ -1,5 +1,7 @@
 package teamreborn.assembly.fluid;
 
+import teamreborn.assembly.Assembly;
+import teamreborn.assembly.block.AssemblyBlocks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
@@ -23,8 +25,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.ViewableWorld;
 import net.minecraft.world.World;
-import teamreborn.assembly.Assembly;
-import teamreborn.assembly.block.AssemblyBlocks;
 import teamreborn.assembly.item.AssemblyItems;
 import teamreborn.assembly.tags.AssemblyFluidTags;
 

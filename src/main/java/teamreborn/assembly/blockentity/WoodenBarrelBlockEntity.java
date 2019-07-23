@@ -3,6 +3,7 @@ package teamreborn.assembly.blockentity;
 import io.github.prospector.silk.fluid.DropletValues;
 import io.github.prospector.silk.fluid.FluidContainer;
 import io.github.prospector.silk.fluid.FluidInstance;
+import teamreborn.assembly.network.AssemblyNetworking;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.entity.BlockEntity;
@@ -12,9 +13,8 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Tickable;
-import net.minecraft.util.math.BoundingBox;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
-import teamreborn.assembly.network.AssemblyNetworking;
 
 import java.util.List;
 
@@ -43,7 +43,7 @@ public class WoodenBarrelBlockEntity extends BlockEntity implements FluidContain
 			firstTick = false;
 		}
 		if (!world.isClient && world.getTime() % 10 == 0) {
-			List<Entity> nearbyEntities = world.getEntities((Entity) null, new BoundingBox(pos.getX() - 32, pos.getY() - 32, pos.getZ() - 32, pos.getX() + 32, pos.getY() + 32, pos.getZ() + 32), entity -> entity instanceof ServerPlayerEntity);
+			List<Entity> nearbyEntities = world.getEntities((Entity) null, new Box(pos.getX() - 32, pos.getY() - 32, pos.getZ() - 32, pos.getX() + 32, pos.getY() + 32, pos.getZ() + 32), entity -> entity instanceof ServerPlayerEntity);
 			boolean entitiesChanged = entitiesLastSync != null && !entitiesLastSync.equals(nearbyEntities);
 			if (!fluidLastSync.equals(fluidInstance) || entitiesChanged) {
 				for (Entity entity : nearbyEntities) {

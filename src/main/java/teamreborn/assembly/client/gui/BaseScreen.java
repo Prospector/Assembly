@@ -1,12 +1,12 @@
 package teamreborn.assembly.client.gui;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ingame.AbstractContainerScreen;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.util.Identifier;
 import teamreborn.assembly.Assembly;
 import teamreborn.assembly.container.builder.BuiltContainer;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ingame.AbstractContainerScreen;
+import net.minecraft.text.LiteralText;
+import net.minecraft.util.Identifier;
 
 public class BaseScreen extends AbstractContainerScreen {
 
@@ -18,7 +18,7 @@ public class BaseScreen extends AbstractContainerScreen {
 	final BuiltContainer containerProvider;
 
 	public BaseScreen(BuiltContainer container, String title) {
-		super(container, MinecraftClient.getInstance().player.inventory, new TextComponent(title));
+		super(container, MinecraftClient.getInstance().player.inventory, new LiteralText(title));
 		this.containerProvider = container;
 	}
 

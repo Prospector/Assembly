@@ -1,8 +1,18 @@
 {
   "block.assembly.rubber_log": "Rubber Log",
+  "block.assembly.rubber_leaves": "Rubber Leaves",
+  "block.assembly.rubber_sapling": "Rubber Sapling",
   "block.assembly.wooden_barrel": "Wooden Barrel",
+
   "block.assembly.tree_tap": "Tree Tap",
+
+  "block.assembly.latex": "Latex",
+  "block.assembly.flowing_latex": "Flowing Latex",
   "item.assembly.latex_bucket": "Latex Bucket",
+  "block.assembly.biomass": "Biomass",
+  "block.assembly.flowing_biomass": "Flowing Biomass",
   "item.assembly.biomass_bucket": "Biomass Bucket",
+  "block.assembly.oil": "Oil",
+  "block.assembly.flowing_oil": "Flowing Oil",
   "item.assembly.oil_bucket": "Oil Bucket"
 }

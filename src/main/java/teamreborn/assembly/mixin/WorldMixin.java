@@ -1,5 +1,8 @@
 package teamreborn.assembly.mixin;
 
+import teamreborn.assembly.powernet.Powernet;
+import teamreborn.assembly.powernet.PowernetConnector;
+import teamreborn.assembly.powernet.PowernetSimulator;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -10,9 +13,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import teamreborn.assembly.powernet.Powernet;
-import teamreborn.assembly.powernet.PowernetConnector;
-import teamreborn.assembly.powernet.PowernetSimulator;
 
 @Mixin(World.class)
 public abstract class WorldMixin implements PowernetSimulator {

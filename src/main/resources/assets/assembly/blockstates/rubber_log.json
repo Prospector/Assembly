@@ -13,20 +13,20 @@
 	  "apply": { "model": "assembly:block/rubber_log", "x": 90, "y": 90 }
 	},
 	{
-	  "when": { "north_sap": true },
-	  "apply": { "model": "assembly:block/rubber_log_sap_spot" }
+	  "when": { "north_latex": true },
+	  "apply": { "model": "assembly:block/rubber_log_latex" }
 	},
 	{
-	  "when": { "south_sap": true },
-	  "apply": { "model": "assembly:block/rubber_log_sap_spot", "y": 180 }
+	  "when": { "south_latex": true },
+	  "apply": { "model": "assembly:block/rubber_log_latex", "y": 180 }
 	},
 	{
-	  "when": { "west_sap": true },
-	  "apply": { "model": "assembly:block/rubber_log_sap_spot", "y": 270 }
+	  "when": { "west_latex": true },
+	  "apply": { "model": "assembly:block/rubber_log_latex", "y": 270 }
 	},
 	{
-	  "when": { "east_sap": true },
-	  "apply": { "model": "assembly:block/rubber_log_sap_spot", "y": 90 }
+	  "when": { "east_latex": true },
+	  "apply": { "model": "assembly:block/rubber_log_latex", "y": 90 }
 	}
   ]
 }
