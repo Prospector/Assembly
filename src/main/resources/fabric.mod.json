@@ -13,7 +13,7 @@
 	  "teamreborn.assembly.container.AssemblyContainerHelper"
 	],
 	"client": [
-	  "io.github.techreborn.assembly.client.AssemblyClient"
+	  "teamreborn.assembly.client.AssemblyClient"
 	]
   },
   "depends": {
