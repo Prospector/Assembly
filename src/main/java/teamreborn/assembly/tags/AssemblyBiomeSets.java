@@ -9,9 +9,9 @@ import java.util.Arrays;
 import java.util.Set;
 
 public class AssemblyBiomeSets {
-	public static final Set<Biome> RUBBER_TREE_SPAWNING = fromKeys("minecraft:forest", "minecraft:wooded_hills", "minecraft:flower_forest", "minecraft:dark_forest", "minecraft:birch_forest", "minecraft:wooded_mountains", "minecraft:badlands_plateau", "minecraft:swamp");
+    public static final Set<Biome> RUBBER_TREE_SPAWNING = fromKeys("minecraft:forest", "minecraft:wooded_hills", "minecraft:flower_forest", "minecraft:dark_forest", "minecraft:birch_forest", "minecraft:wooded_mountains", "minecraft:badlands_plateau", "minecraft:swamp");
 
-	private static Set<Biome> fromKeys(String... keys) {
-		return Arrays.stream(keys).map(key -> Registry.BIOME.get(new Identifier(key))).collect(ImmutableSet.toImmutableSet());
-	}
+    private static Set<Biome> fromKeys(String... keys) {
+        return Arrays.stream(keys).map(key -> Registry.BIOME.get(new Identifier(key))).collect(ImmutableSet.toImmutableSet());
+    }
 }

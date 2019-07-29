@@ -102,7 +102,7 @@
 //		this.inputSlots = inputSlots;
 //		this.outputSlots = outputSlots;
 //		if (!(parentTile instanceof IRecipeCrafterProvider)) {
-//			LOGGER.error(parentTile.getClass().getName() + " does not use IRecipeCrafterProvider report this to the issue tracker!");
+//			LOGGER.error(parentTile.getClass().getTranslationKey() + " does not use IRecipeCrafterProvider report this to the issue tracker!");
 //		}
 //	}
 //

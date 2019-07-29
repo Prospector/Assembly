@@ -1,4 +1,9 @@
 {
+  "item.assembly.salt": "Salt",
+  "item.assembly.sulfur": "Sulfur",
+  "item.assembly.crude_rubber": "Crude Rubber",
+  "item.assembly.vulcanized_rubber": "Vulcanized Rubber",
+
   "block.assembly.rubber_log": "Rubber Log",
   "block.assembly.rubber_leaves": "Rubber Leaves",
   "block.assembly.rubber_sapling": "Rubber Sapling",

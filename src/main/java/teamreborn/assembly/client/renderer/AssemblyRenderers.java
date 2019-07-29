@@ -1,4 +1,4 @@
-package teamreborn.assembly.client.renderer.fluid;
+package teamreborn.assembly.client.renderer;
 
 import net.fabricmc.fabric.api.client.render.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;

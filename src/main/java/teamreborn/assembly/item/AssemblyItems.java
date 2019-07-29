@@ -1,13 +1,13 @@
 package teamreborn.assembly.item;
 
-import teamreborn.assembly.Assembly;
-import teamreborn.assembly.fluid.AssemblyFluid;
-import teamreborn.assembly.fluid.AssemblyFluids;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import teamreborn.assembly.Assembly;
+import teamreborn.assembly.fluid.AssemblyFluid;
+import teamreborn.assembly.fluid.AssemblyFluids;
 
 import java.util.HashMap;
 import java.util.Map;
