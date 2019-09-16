@@ -1,0 +1,123 @@
+{
+  "multipart": [
+	{
+	  "when": {
+		"OR": [
+		  { "connection_1": "east", "connection_2": "west" },
+		  { "connection_1": "west", "connection_2": "east" }
+		]
+	  },
+	  "apply": { "model": "assembly:block/tube_core_straight", "y": 270 }
+	},
+	{
+	  "when": {
+		"OR": [
+		  { "connection_1": "north", "connection_2": "south" },
+		  { "connection_1": "south", "connection_2": "north" }
+		]
+	  },
+	  "apply": { "model": "assembly:block/tube_core_straight" }
+	},
+	{
+	  "when": {
+		"OR": [
+		  { "connection_1": "up", "connection_2": "down" },
+		  { "connection_1": "down", "connection_2": "up" }
+		]
+	  },
+	  "apply": { "model": "assembly:block/tube_core_straight", "x": 90 }
+	},
+	{
+	  "when": {
+		"OR": [
+		  { "connection_1": "up", "connection_2": "north" },
+		  { "connection_1": "up", "connection_2": "south" },
+		  { "connection_1": "up", "connection_2": "east" },
+		  { "connection_1": "up", "connection_2": "west" },
+		  { "connection_1": "up", "connection_2": "none" },
+		  { "connection_1": "down", "connection_2": "north" },
+		  { "connection_1": "down", "connection_2": "south" },
+		  { "connection_1": "down", "connection_2": "east" },
+		  { "connection_1": "down", "connection_2": "west" },
+		  { "connection_1": "down", "connection_2": "none" },
+		  { "connection_1": "north", "connection_2": "up" },
+		  { "connection_1": "north", "connection_2": "down" },
+		  { "connection_1": "north", "connection_2": "east" },
+		  { "connection_1": "north", "connection_2": "west" },
+		  { "connection_1": "north", "connection_2": "none" },
+		  { "connection_1": "south", "connection_2": "up" },
+		  { "connection_1": "south", "connection_2": "down" },
+		  { "connection_1": "south", "connection_2": "east" },
+		  { "connection_1": "south", "connection_2": "west" },
+		  { "connection_1": "south", "connection_2": "none" },
+		  { "connection_1": "east", "connection_2": "north" },
+		  { "connection_1": "east", "connection_2": "south" },
+		  { "connection_1": "east", "connection_2": "up" },
+		  { "connection_1": "east", "connection_2": "down" },
+		  { "connection_1": "east", "connection_2": "none" },
+		  { "connection_1": "west", "connection_2": "north" },
+		  { "connection_1": "west", "connection_2": "south" },
+		  { "connection_1": "west", "connection_2": "up" },
+		  { "connection_1": "west", "connection_2": "down" },
+		  { "connection_1": "west", "connection_2": "none" },
+		  { "connection_1": "none", "connection_2": "north" },
+		  { "connection_1": "none", "connection_2": "south" },
+		  { "connection_1": "none", "connection_2": "up" },
+		  { "connection_1": "none", "connection_2": "down" },
+		  { "connection_1": "none", "connection_2": "east" },
+		  { "connection_1": "none", "connection_2": "west" },
+		  { "connection_1": "none", "connection_2": "none" }
+		]
+	  },
+	  "apply": { "model": "assembly:block/tube_core" }
+	},
+	{
+	  "when": { "connection_1": "east" },
+	  "apply": { "model": "assembly:block/tube_connector_flipped", "y": 270 }
+	},
+	{
+	  "when": { "connection_1": "west" },
+	  "apply": { "model": "assembly:block/tube_connector", "y": 90 }
+	},
+	{
+	  "when": { "connection_1": "north" },
+	  "apply": { "model": "assembly:block/tube_connector", "y": 180 }
+	},
+	{
+	  "when": { "connection_1": "south" },
+	  "apply": { "model": "assembly:block/tube_connector_flipped" }
+	},
+	{
+	  "when": { "connection_1": "up" },
+	  "apply": { "model": "assembly:block/tube_connector_flipped", "x": 90 }
+	},
+	{
+	  "when": { "connection_1": "down" },
+	  "apply": { "model": "assembly:block/tube_connector", "x": 270 }
+	},
+	{
+	  "when": { "connection_2": "up" },
+	  "apply": { "model": "assembly:block/tube_connector_flipped", "x": 90 }
+	},
+	{
+	  "when": { "connection_2": "down" },
+	  "apply": { "model": "assembly:block/tube_connector", "x": 270 }
+	},
+	{
+	  "when": { "connection_2": "east" },
+	  "apply": { "model": "assembly:block/tube_connector_flipped", "y": 270 }
+	},
+	{
+	  "when": { "connection_2": "west" },
+	  "apply": { "model": "assembly:block/tube_connector", "y": 90 }
+	},
+	{
+	  "when": { "connection_2": "north" },
+	  "apply": { "model": "assembly:block/tube_connector", "y": 180 }
+	},
+	{
+	  "when": { "connection_2": "south" },
+	  "apply": { "model": "assembly:block/tube_connector_flipped" }
+	}
+  ]
+}

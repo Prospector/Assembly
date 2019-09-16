@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=y": {
+      "model": "assembly:block/stripped_hevea_wood"
+    },
+    "axis=z": {
+      "model": "assembly:block/stripped_hevea_wood",
+      "x": 90
+    },
+    "axis=x": {
+      "model": "assembly:block/stripped_hevea_wood",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

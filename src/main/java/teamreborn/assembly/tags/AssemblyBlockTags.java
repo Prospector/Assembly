@@ -6,5 +6,5 @@ import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 
 public class AssemblyBlockTags {
-	public static final Tag<Block> RUBBER_LOGS = new Tag<>(new Identifier(Assembly.MOD_ID, "rubber_logs"));
+	public static final Tag<Block> HEVEA_LOGS = new Tag<>(new Identifier(Assembly.MOD_ID, "hevea_logs"));
 }

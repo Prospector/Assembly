@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=y": {
+      "model": "assembly:block/stripped_hevea_log"
+    },
+    "axis=z": {
+      "model": "assembly:block/stripped_hevea_log",
+      "x": 90
+    },
+    "axis=x": {
+      "model": "assembly:block/stripped_hevea_log",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

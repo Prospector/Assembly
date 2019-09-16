@@ -3,13 +3,12 @@
   "item.assembly.sulfur": "Sulfur",
   "item.assembly.crude_rubber": "Crude Rubber",
   "item.assembly.vulcanized_rubber": "Vulcanized Rubber",
+  "item.assembly.venomous_fang": "Venomous Fang",
+  "item.assembly.formic_acid": "Formic Acid",
 
-  "block.assembly.rubber_log": "Rubber Log",
-  "block.assembly.rubber_leaves": "Rubber Leaves",
-  "block.assembly.rubber_sapling": "Rubber Sapling",
   "block.assembly.wooden_barrel": "Wooden Barrel",
-
   "block.assembly.tree_tap": "Tree Tap",
+  "block.assembly.tube": "Tube",
 
   "block.assembly.latex": "Latex",
   "block.assembly.flowing_latex": "Flowing Latex",
@@ -19,5 +18,25 @@
   "item.assembly.biomass_bucket": "Biomass Bucket",
   "block.assembly.oil": "Oil",
   "block.assembly.flowing_oil": "Flowing Oil",
-  "item.assembly.oil_bucket": "Oil Bucket"
+  "item.assembly.oil_bucket": "Oil Bucket",
+
+  "block.assembly.hevea_log": "Hevea Log",
+  "block.assembly.stripped_hevea_log": "Stripped Hevea Log",
+  "block.assembly.stripped_hevea_wood": "Stripped Hevea Wood",
+  "block.assembly.hevea_wood": "Hevea Wood",
+  "block.assembly.hevea_leaves": "Hevea Leaves",
+  "block.assembly.hevea_sapling": "Hevea Sapling",
+  "block.assembly.potted_hevea_sapling": "Potted Hevea Sapling",
+  "block.assembly.hevea_planks": "Hevea Planks",
+  "block.assembly.hevea_stairs": "Hevea Stairs",
+  "block.assembly.hevea_slab": "Hevea Slab",
+  "block.assembly.hevea_sign": "Hevea Sign",
+  "block.assembly.hevea_button": "Hevea Button",
+  "block.assembly.hevea_pressure_plate": "Hevea Pressure Plate",
+  "block.assembly.hevea_fence": "Hevea Fence",
+  "block.assembly.hevea_fence_gate": "Hevea Fence Gate",
+  "block.assembly.hevea_door": "Hevea Door",
+  "block.assembly.hevea_trapdoor": "Hevea Trapdoor",
+  "item.assembly.hevea_boat": "Hevea Boat",
+  "entity.assembly.hevea_boat": "Hevea Boat"
 }

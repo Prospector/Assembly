@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "assembly:block/stripped_hevea_log_top",
+    "side": "assembly:block/stripped_hevea_log"
+  }
+}

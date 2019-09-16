@@ -2,11 +2,7 @@ package teamreborn.assembly.block;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import io.github.prospector.silk.block.SilkBlockWithEntity;
 import io.github.prospector.silk.fluid.FluidContainer;
-import teamreborn.assembly.api.SapSource;
-import teamreborn.assembly.blockentity.TreeTapBlockEntity;
-import teamreborn.assembly.util.block.AssemblyProperties;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -22,10 +18,14 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.ViewableWorld;
 import net.minecraft.world.World;
+import teamreborn.assembly.api.SapSource;
+import teamreborn.assembly.block.base.AssemblyBlockWithEntity;
+import teamreborn.assembly.blockentity.TreeTapBlockEntity;
+import teamreborn.assembly.util.block.AssemblyProperties;
 
 import java.util.Map;
 
-public class TreeTapBlock extends SilkBlockWithEntity {
+public class TreeTapBlock extends AssemblyBlockWithEntity {
 	private static final Map<Direction, VoxelShape> BOUNDING_SHAPES = Maps.newEnumMap(ImmutableMap.of(
 		Direction.NORTH, Block.createCuboidShape(6.5D, 1.0D, 0.0D, 10.5D, 5.5D, 6.5D),
 		Direction.SOUTH, Block.createCuboidShape(16 - 6.5D, 1.0D, 16 - 0.0D, 16 - 10.5D, 5.5D, 16 - 6.5D).simplify(),

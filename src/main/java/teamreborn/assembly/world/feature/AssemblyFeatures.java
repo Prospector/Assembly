@@ -14,7 +14,7 @@ public class AssemblyFeatures {
 
 	private static final Map<Identifier, Feature<? extends FeatureConfig>> FEATURES = new HashMap<>();
 
-	public static final RubberTreeFeature RUBBER_TREE = add("rubber_tree", new RubberTreeFeature(DefaultFeatureConfig::deserialize, false));
+	public static final HeveaTreeFeature HEVEA_TREE = add("hevea_tree", new HeveaTreeFeature(DefaultFeatureConfig::deserialize, false));
 
 	public static <F extends Feature<? extends FeatureConfig>> F add(String name, F feature) {
 		FEATURES.put(new Identifier(Assembly.MOD_ID, name), feature);

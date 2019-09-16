@@ -1,0 +1,21 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"tube": "assembly:block/tube",
+		"particle": "assembly:block/tube"
+	},
+	"elements": [
+		{
+			"name": "Connector",
+			"from": [4, 4, 12],
+			"to": [12, 12, 16],
+			"faces": {
+				"east": {"uv": [0, 8, 4, 16], "texture": "#tube"},
+				"west": {"uv": [0, 8, 4, 16], "rotation": 180, "texture": "#tube"},
+				"up": {"uv": [0, 8, 4, 16], "rotation": 270, "texture": "#tube"},
+				"down": {"uv": [0, 8, 4, 16], "rotation": 90, "texture": "#tube"}
+			}
+		}
+	]
+}

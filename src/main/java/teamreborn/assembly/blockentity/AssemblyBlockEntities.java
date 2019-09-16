@@ -1,12 +1,12 @@
 package teamreborn.assembly.blockentity;
 
-import teamreborn.assembly.Assembly;
-import teamreborn.assembly.block.AssemblyBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import teamreborn.assembly.Assembly;
+import teamreborn.assembly.block.AssemblyBlocks;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +17,7 @@ public class AssemblyBlockEntities {
 
 	public static final BlockEntityType<WoodenBarrelBlockEntity> WOODEN_BARREL = add("wooden_barrel", WoodenBarrelBlockEntity::new, AssemblyBlocks.WOODEN_BARREL);
 	public static final BlockEntityType<TreeTapBlockEntity> TREE_TAP = add("tree_tap", TreeTapBlockEntity::new, AssemblyBlocks.TREE_TAP);
+//	public static final BlockEntityType<TubeBlockEntity> TUBE = add("tube", TubeBlockEntity::new, AssemblyBlocks.TUBE);
 
 	private static <T extends BlockEntity> BlockEntityType<T> add(String name, Supplier<? extends T> supplier, Block... blocks) {
 		return add(name, BlockEntityType.Builder.create(supplier, blocks));
