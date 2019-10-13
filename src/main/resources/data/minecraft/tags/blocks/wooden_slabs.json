@@ -1,5 +1,12 @@
 {
   "values": [
-	"assembly:hevea_slab"
+    "minecraft:oak_slab",
+    "minecraft:jungle_slab",
+    "minecraft:spruce_slab",
+    "minecraft:birch_slab",
+    "minecraft:acacia_slab",
+    "minecraft:dark_oak_slab",
+
+    "assembly:hevea_slab"
   ]
 }

@@ -19,6 +19,7 @@ public class AssemblyItems {
 
 	public static Item SALT = add("salt", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 	public static Item SULFUR = add("sulfur", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
+	public static Item COAGULATED_LATEX = add("coagulated_latex", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 	public static Item CRUDE_RUBBER = add("crude_rubber", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 	public static Item VULCANIZED_RUBBER = add("vulcanized_rubber", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 	public static Item VENOMOUS_FANG = add("venomous_fang", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));

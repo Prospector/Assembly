@@ -1,5 +1,12 @@
 {
   "values": [
-	"assembly:hevea_trapdoor"
+    "minecraft:oak_trapdoor",
+    "minecraft:jungle_trapdoor",
+    "minecraft:spruce_trapdoor",
+    "minecraft:birch_trapdoor",
+    "minecraft:acacia_trapdoor",
+    "minecraft:dark_oak_trapdoor",
+
+    "assembly:hevea_trapdoor"
   ]
 }

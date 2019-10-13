@@ -1,6 +1,13 @@
 {
   "replace": false,
   "values": [
+    "#minecraft:oak_logs",
+    "#minecraft:jungle_logs",
+    "#minecraft:spruce_logs",
+    "#minecraft:birch_logs",
+    "#minecraft:acacia_logs",
+    "#minecraft:dark_oak_logs",
+    
 	"#assembly:hevea_logs"
   ]
 }

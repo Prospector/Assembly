@@ -1,5 +1,12 @@
 {
   "values": [
-	"assembly:hevea_fence"
+    "minecraft:oak_fence",
+    "minecraft:jungle_fence",
+    "minecraft:spruce_fence",
+    "minecraft:birch_fence",
+    "minecraft:acacia_fence",
+    "minecraft:dark_oak_fence",
+
+    "assembly:hevea_fence"
   ]
 }

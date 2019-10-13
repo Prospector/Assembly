@@ -1,5 +1,12 @@
 {
   "values": [
-	"assembly:hevea_door"
+    "minecraft:oak_door",
+    "minecraft:jungle_door",
+    "minecraft:spruce_door",
+    "minecraft:birch_door",
+    "minecraft:acacia_door",
+    "minecraft:dark_oak_door",
+
+    "assembly:hevea_door"
   ]
 }

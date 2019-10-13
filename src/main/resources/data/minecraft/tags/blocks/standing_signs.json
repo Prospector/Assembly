@@ -1,5 +1,12 @@
 {
   "values": [
+    "minecraft:oak_sign",
+    "minecraft:jungle_sign",
+    "minecraft:spruce_sign",
+    "minecraft:birch_sign",
+    "minecraft:acacia_sign",
+    "minecraft:dark_oak_sign",
+
 	"assembly:hevea_sign"
   ]
 }

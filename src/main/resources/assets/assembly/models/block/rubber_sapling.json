@@ -1,6 +1,0 @@
-{
-  "parent": "block/cross",
-  "textures": {
-	"cross": "assembly:block/rubber_sapling"
-  }
-}

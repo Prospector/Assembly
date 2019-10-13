@@ -54,7 +54,7 @@ public class WoodenBarrelBlock extends AssemblyBlockWithEntity {
 				if (player.getStackInHand(hand).getItem().equals(AssemblyItems.FORMIC_ACID) && fluid == AssemblyFluids.LATEX && barrel.fluidInstance.getAmount() >= DropletValues.BUCKET / 6) {
 					int count = barrel.fluidInstance.getAmount() / (DropletValues.BUCKET / 6);
 					barrel.extractFluid(hitResult.getSide(), fluid, DropletValues.BUCKET / 6 * count);
-					player.giveItemStack(new ItemStack(AssemblyItems.CRUDE_RUBBER, count));
+					player.giveItemStack(new ItemStack(AssemblyItems.COAGULATED_LATEX, count));
 					return true;
 				}
 			}

@@ -1,5 +1,12 @@
 {
   "values": [
-	"assembly:hevea_stairs"
+    "minecraft:oak_stairs",
+    "minecraft:jungle_stairs",
+    "minecraft:spruce_stairs",
+    "minecraft:birch_stairs",
+    "minecraft:acacia_stairs",
+    "minecraft:dark_oak_stairs",
+
+    "assembly:hevea_stairs"
   ]
 }

@@ -1,5 +1,12 @@
 {
   "values": [
+    "minecraft:oak_button",
+    "minecraft:jungle_button",
+    "minecraft:spruce_button",
+    "minecraft:birch_button",
+    "minecraft:acacia_button",
+    "minecraft:dark_oak_button",
+    
 	"assembly:hevea_button"
   ]
 }
