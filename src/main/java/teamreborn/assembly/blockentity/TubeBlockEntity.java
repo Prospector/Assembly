@@ -1,14 +1,15 @@
 package teamreborn.assembly.blockentity;
 
-import io.github.prospector.silk.fluid.DropletValues;
-import io.github.prospector.silk.fluid.FluidInstance;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.Direction;
+import reborncore.common.fluid.FluidValue;
+import reborncore.common.fluid.container.FluidInstance;
 import teamreborn.assembly.api.AttachableFluidContainer;
 import teamreborn.assembly.block.TubeBlock;
+
+import javax.annotation.Nonnull;
 
 public class TubeBlockEntity extends BlockEntity implements AttachableFluidContainer {
 
@@ -19,33 +20,19 @@ public class TubeBlockEntity extends BlockEntity implements AttachableFluidConta
 	}
 
 	@Override
-	public int getMaxCapacity() {
-		return DropletValues.BLOCK / 6;
+	public void setFluid(Direction type, @Nonnull FluidInstance fluid) {
+		this.fluid = fluid;
+	}
+
+	@Nonnull
+	@Override
+	public FluidInstance getFluidInstance(Direction type) {
+		return fluid;
 	}
 
 	@Override
-	public boolean canInsertFluid(Direction fromSide, Fluid fluid, int amount) {
-		return false;
-	}
-
-	@Override
-	public boolean canExtractFluid(Direction fromSide, Fluid fluid, int amount) {
-		return false;
-	}
-
-	@Override
-	public void insertFluid(Direction fromSide, Fluid fluid, int amount) {
-
-	}
-
-	@Override
-	public void extractFluid(Direction fromSide, Fluid fluid, int amount) {
-
-	}
-
-	@Override
-	public void setFluid(Direction fromSide, FluidInstance instance) {
-
+	public FluidValue getCapacity(Direction direction) {
+		return FluidValue.fromRaw(FluidValue.BUCKET.getRawValue() / 8);
 	}
 
 	@Override
@@ -64,11 +51,6 @@ public class TubeBlockEntity extends BlockEntity implements AttachableFluidConta
 			return TubeBlock.getAvailableConnection(state, side) != null || TubeBlock.getConnection(state, side) != null;
 		}
 		return false;
-	}
-
-	@Override
-	public FluidInstance[] getFluids(Direction fromSide) {
-		return new FluidInstance[0];
 	}
 
 	@Override

@@ -4,12 +4,13 @@ import com.terraformersmc.terraform.block.StrippableLogBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.MaterialColor;
-import net.minecraft.state.StateFactory;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.ViewableWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldView;
 import teamreborn.assembly.api.SapSource;
 import teamreborn.assembly.util.block.AssemblyProperties;
 
@@ -29,7 +30,7 @@ public class HeveaLogBlock extends StrippableLogBlock implements SapSource {
 	}
 
 	@Override
-	protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
 		builder.add(AssemblyProperties.ALIVE);
 		builder.add(AssemblyProperties.NORTH_LATEX);
@@ -39,7 +40,7 @@ public class HeveaLogBlock extends StrippableLogBlock implements SapSource {
 	}
 
 	@Override
-	public boolean isSideSapSource(ViewableWorld world, BlockPos pos, BlockState state, Direction side) {
+	public boolean isSideSapSource(WorldView world, BlockPos pos, BlockState state, Direction side) {
 		switch (side) {
 			case NORTH:
 				return state.get(AssemblyProperties.NORTH_LATEX);
@@ -73,7 +74,7 @@ public class HeveaLogBlock extends StrippableLogBlock implements SapSource {
 	}
 
 	@Override
-	public void onScheduledTick(BlockState state, World world, BlockPos pos, Random random) {
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (random.nextInt(40) == 0) {
 			if (random.nextInt(5) == 0) {
 				world.setBlockState(pos, state.with(AssemblyProperties.ALIVE, false));
@@ -82,5 +83,4 @@ public class HeveaLogBlock extends StrippableLogBlock implements SapSource {
 			}
 		}
 	}
-
 }

@@ -26,8 +26,8 @@ public class BaseScreen extends AbstractContainerScreen {
 	protected void drawBackground(float v, int i, int i1) {
 		layer = Layer.BACKGROUND;
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		drawDefaultBackground(left, top, xSize, ySize);
-		drawPlayerSlots(left + xSize / 2, top + 93, true);
+		drawDefaultBackground(this.x, this.y, xSize, ySize);
+		drawPlayerSlots(this.x + xSize / 2, this.y + 93, true);
 		drawSlots();
 	}
 
@@ -78,8 +78,8 @@ public class BaseScreen extends AbstractContainerScreen {
 
 	public void drawSlot(int posX, int posY) {
 		if (layer == Layer.BACKGROUND) {
-			posX += left;
-			posY += top;
+			posX += this.x;
+			posY += this.y;
 		}
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
@@ -88,8 +88,8 @@ public class BaseScreen extends AbstractContainerScreen {
 
 	public void drawOutputSlot(int x, int y) {
 		if (layer == Layer.BACKGROUND) {
-			x += left;
-			y += top;
+			x += this.x;
+			y += this.y;
 		}
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);

@@ -1,14 +1,13 @@
 package teamreborn.assembly.block;
 
-import io.github.prospector.silk.fluid.FluidContainer;
-import io.github.prospector.silk.util.NullableDirection;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.EntityContext;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.state.StateFactory;
+import net.minecraft.state.StateManager;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -16,8 +15,10 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.IWorld;
+import reborncore.common.fluid.container.GenericFluidContainer;
 import teamreborn.assembly.api.AttachableFluidContainer;
 import teamreborn.assembly.block.base.AssemblyBlockWithEntity;
+import teamreborn.assembly.util.NullableDirection;
 import teamreborn.assembly.util.block.AssemblyProperties;
 
 import java.util.EnumMap;
@@ -48,11 +49,11 @@ public class TubeBlock extends AssemblyBlockWithEntity {
 
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, EntityContext entityPosition) {
-		return method_9571(state, world, pos);
+		return getCullingShape(state, world, pos);
 	}
 
 	@Override
-	public VoxelShape method_9571(BlockState state, BlockView world, BlockPos pos) {
+	public VoxelShape getCullingShape(BlockState state, BlockView world, BlockPos pos) {
 		if (STATE_SHAPE_CACHE.containsKey(state)) {
 			return STATE_SHAPE_CACHE.get(state);
 		}
@@ -68,11 +69,11 @@ public class TubeBlock extends AssemblyBlockWithEntity {
 		}
 
 		STATE_SHAPE_CACHE.put(state, shape);
-		return method_9571(state, world, pos);
+		return getCullingShape(state, world, pos);
 	}
 
 	@Override
-	protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		super.appendProperties(builder.add(CONNECTION_1, CONNECTION_2));
 	}
 
@@ -89,11 +90,6 @@ public class TubeBlock extends AssemblyBlockWithEntity {
 			return disconnected;
 		}
 		return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
-	}
-
-	@Override
-	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.CUTOUT;
 	}
 
 	@Override
@@ -136,7 +132,7 @@ public class TubeBlock extends AssemblyBlockWithEntity {
 
 	public static BlockState tryConnect(BlockView world, BlockPos pos, Direction direction, BlockState state) {
 		BlockEntity blockEntity = world.getBlockEntity(pos.offset(direction));
-		if (blockEntity instanceof FluidContainer) {
+		if (blockEntity instanceof GenericFluidContainer) {
 			if (blockEntity instanceof AttachableFluidContainer) {
 				if (!((AttachableFluidContainer) blockEntity).canAttach(direction.getOpposite())) {
 					return null;
@@ -151,7 +147,7 @@ public class TubeBlock extends AssemblyBlockWithEntity {
 	}
 
 	public static BlockState tryDisconnect(BlockView world, BlockPos pos, Direction direction, BlockState state) {
-		if (!(world.getBlockEntity(pos.offset(direction)) instanceof FluidContainer)) {
+		if (!(world.getBlockEntity(pos.offset(direction)) instanceof GenericFluidContainer)) {
 			EnumProperty<NullableDirection> property = getConnection(state, direction);
 			if (property != null) {
 				return state.with(property, NullableDirection.NONE);

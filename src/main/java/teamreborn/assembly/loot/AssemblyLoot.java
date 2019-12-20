@@ -2,10 +2,10 @@ package teamreborn.assembly.loot;
 
 import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
+import net.minecraft.loot.condition.KilledByPlayerLootCondition;
+import net.minecraft.loot.condition.RandomChanceWithLootingLootCondition;
+import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.loot.condition.KilledByPlayerLootCondition;
-import net.minecraft.world.loot.condition.RandomChanceWithLootingLootCondition;
-import net.minecraft.world.loot.entry.ItemEntry;
 import teamreborn.assembly.item.AssemblyItems;
 
 public class AssemblyLoot {

@@ -2,13 +2,12 @@ package teamreborn.assembly.block;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import io.github.prospector.silk.fluid.FluidContainer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityContext;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.state.StateFactory;
+import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
@@ -16,8 +15,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.ViewableWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldView;
+import reborncore.common.fluid.container.GenericFluidContainer;
 import teamreborn.assembly.api.SapSource;
 import teamreborn.assembly.block.base.AssemblyBlockWithEntity;
 import teamreborn.assembly.blockentity.TreeTapBlockEntity;
@@ -49,7 +49,7 @@ public class TreeTapBlock extends AssemblyBlockWithEntity {
 	@Override
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean boolean_1) {
 		super.neighborUpdate(state, world, pos, neighborBlock, neighborPos, boolean_1);
-		if (!(world.getBlockEntity(pos.down()) instanceof FluidContainer)) {
+		if (!(world.getBlockEntity(pos.down()) instanceof GenericFluidContainer)) {
 			if (state.get(AssemblyProperties.POURING)) {
 				world.setBlockState(pos, state.with(AssemblyProperties.POURING, false));
 			}
@@ -57,7 +57,7 @@ public class TreeTapBlock extends AssemblyBlockWithEntity {
 	}
 
 	@Override
-	protected void appendProperties(StateFactory.Builder<Block, BlockState> builder) {
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		builder.add(Properties.HORIZONTAL_FACING, AssemblyProperties.POURING);
 	}
 
@@ -67,7 +67,7 @@ public class TreeTapBlock extends AssemblyBlockWithEntity {
 	}
 
 	@Override
-	public boolean canPlaceAt(BlockState state, ViewableWorld world, BlockPos pos) {
+	public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
 		Direction side = state.get(Properties.HORIZONTAL_FACING);
 		BlockState placedOn = world.getBlockState(pos.offset(side));
 		Block placedOnBlock = placedOn.getBlock();
@@ -77,7 +77,7 @@ public class TreeTapBlock extends AssemblyBlockWithEntity {
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
 		Direction direction = context.getSide().getOpposite();
-		return Direction.Type.HORIZONTAL.method_10182(direction) ? getDefaultState().with(Properties.HORIZONTAL_FACING, direction) : null;
+		return Direction.Type.HORIZONTAL.test(direction) ? getDefaultState().with(Properties.HORIZONTAL_FACING, direction) : null;
 	}
 
 	@Override

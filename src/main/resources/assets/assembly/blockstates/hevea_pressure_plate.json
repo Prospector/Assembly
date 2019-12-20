@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "powered=false": { "model": "assembly:block/hevea_pressure_plate" },
+    "powered=true": { "model": "assembly:block/hevea_pressure_plate_down" }
+  }
+}

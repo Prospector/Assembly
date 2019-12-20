@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "wooden_trapdoor",
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "assembly:hevea_planks"
+    }
+  },
+  "result": {
+    "item": "assembly:hevea_trapdoor",
+    "count": 2
+  }
+}

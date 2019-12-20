@@ -28,7 +28,11 @@
 
 package teamreborn.assembly.container.builder.slot;
 
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.util.Identifier;
+
+import javax.annotation.Nullable;
 
 public class SpriteSlot extends FilteredSlot {
 
@@ -50,8 +54,9 @@ public class SpriteSlot extends FilteredSlot {
 		return this.stacksize;
 	}
 
+	@Nullable
 	@Override
-	public String getBackgroundSprite() {
-		return this.spriteName;
+	public Pair<Identifier, Identifier> getBackgroundSprite() {
+		return super.getBackgroundSprite();
 	}
 }

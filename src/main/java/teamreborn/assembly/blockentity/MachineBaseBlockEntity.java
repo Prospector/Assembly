@@ -1,6 +1,5 @@
 package teamreborn.assembly.blockentity;
 
-import io.github.prospector.silk.blockentity.InventoryBlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.container.Container;
 import net.minecraft.entity.player.PlayerEntity;

@@ -1,30 +1,31 @@
 package teamreborn.assembly.world.feature;
 
 import com.mojang.datafixers.Dynamic;
+import net.minecraft.block.BlockState;
+import net.minecraft.util.math.BlockBox;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ModifiableTestableWorld;
+import net.minecraft.world.gen.feature.AbstractTreeFeature;
+import net.minecraft.world.gen.feature.BranchedTreeFeatureConfig;
+import net.minecraft.world.gen.feature.TreeFeatureConfig;
 import teamreborn.assembly.block.AssemblyBlocks;
 import teamreborn.assembly.block.HeveaLogBlock;
 import teamreborn.assembly.util.block.AssemblyProperties;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableIntBoundingBox;
-import net.minecraft.world.ModifiableTestableWorld;
-import net.minecraft.world.gen.feature.AbstractTreeFeature;
-import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 
-public class HeveaTreeFeature extends AbstractTreeFeature<DefaultFeatureConfig> {
+public class HeveaTreeFeature extends AbstractTreeFeature<BranchedTreeFeatureConfig> {
 	public static final BlockState LOG = AssemblyBlocks.HEVEA_LOG.getDefaultState().with(AssemblyProperties.ALIVE, true);
 	public static final BlockState LEAVES = AssemblyBlocks.HEVEA_LEAVES.getDefaultState();
 
-	public HeveaTreeFeature(Function<Dynamic<?>, DefaultFeatureConfig> function, boolean worldGen) {
-		super(function, worldGen);
+	public HeveaTreeFeature(Function<Dynamic<?>, BranchedTreeFeatureConfig> function) {
+		super(function);
 	}
 
 	@Override
-	protected boolean generate(Set feature, ModifiableTestableWorld world, Random random, BlockPos pos, MutableIntBoundingBox box) {
+	protected boolean generate(ModifiableTestableWorld world, Random random, BlockPos pos, Set<BlockPos> logPositions, Set<BlockPos> leavesPositions, BlockBox box, BranchedTreeFeatureConfig config) {
 		int height = this.getTreeHeight(random);
 		boolean generate = true;
 		if (pos.getY() >= 1 && pos.getY() + height + 1 <= 256) {
@@ -40,12 +41,12 @@ public class HeveaTreeFeature extends AbstractTreeFeature<DefaultFeatureConfig> 
 					int_3 = 2;
 				}
 
-				BlockPos.Mutable blockPos$Mutable_1 = new BlockPos.Mutable();
+				BlockPos.Mutable mutablePos = new BlockPos.Mutable();
 
 				for (int_9 = pos.getX() - int_3; int_9 <= pos.getX() + int_3 && generate; ++int_9) {
 					for (int_18 = pos.getZ() - int_3; int_18 <= pos.getZ() + int_3 && generate; ++int_18) {
 						if (int_2 >= 0 && int_2 < 256) {
-							if (!canTreeReplace(world, blockPos$Mutable_1.set(int_9, int_2, int_18))) {
+							if (!canTreeReplace(world, mutablePos.set(int_9, int_2, int_18))) {
 								generate = false;
 							}
 						} else {
@@ -75,7 +76,7 @@ public class HeveaTreeFeature extends AbstractTreeFeature<DefaultFeatureConfig> 
 							if (Math.abs(int_19) != int_18 || Math.abs(int_14) != int_18 || random.nextInt(2) != 0 && int_9 != 0) {
 								leavesPos = new BlockPos(x, y, z);
 								if (isAirOrLeaves(world, leavesPos) || isReplaceablePlant(world, leavesPos)) {
-									this.setBlockState(feature, world, leavesPos, LEAVES, box);
+									this.setBlockState(world, leavesPos, LEAVES, box);
 								}
 							}
 						}
@@ -85,9 +86,9 @@ public class HeveaTreeFeature extends AbstractTreeFeature<DefaultFeatureConfig> 
 				for (y = 0; y < height; ++y) {
 					if (isAirOrLeaves(world, pos.up(y)) || isReplaceablePlant(world, pos.up(y))) {
 						if (random.nextInt(5) == 0) {
-							this.setBlockState(feature, world, pos.up(y), LOG.with(HeveaLogBlock.getRandomLatexProperty(random), true), box);
+							this.setBlockState(world, pos.up(y), LOG.with(HeveaLogBlock.getRandomLatexProperty(random), true), box);
 						} else {
-							this.setBlockState(feature, world, pos.up(y), LOG, box);
+							this.setBlockState(world, pos.up(y), LOG, box);
 						}
 					}
 				}

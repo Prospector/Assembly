@@ -1,0 +1,6 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "assembly:block/hevea_sapling"
+  }
+}

@@ -28,8 +28,6 @@
 
 package teamreborn.assembly.container.builder;
 
-import io.github.prospector.silk.util.ItemUtils;
-import teamreborn.assembly.blockentity.MachineBaseBlockEntity;
 import net.minecraft.container.Container;
 import net.minecraft.container.ContainerListener;
 import net.minecraft.container.Slot;
@@ -41,7 +39,9 @@ import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.tuple.MutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
+import teamreborn.assembly.blockentity.MachineBaseBlockEntity;
 import teamreborn.assembly.mixintf.GetContainerListeners;
+import teamreborn.assembly.util.ItemUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,8 +64,8 @@ public class BuiltContainer extends Container implements IExtendedContainerListe
 	private final MachineBaseBlockEntity blockEntity;
 
 	public BuiltContainer(final Identifier name, final Predicate<PlayerEntity> canInteract,
-	                      final List<Range<Integer>> playerSlotRange,
-	                      final List<Range<Integer>> blockEntitySlotRange, MachineBaseBlockEntity blockEntity, int syncId) {
+						  final List<Range<Integer>> playerSlotRange,
+						  final List<Range<Integer>> blockEntitySlotRange, MachineBaseBlockEntity blockEntity, int syncId) {
 		super(null, syncId);
 		this.name = name;
 
