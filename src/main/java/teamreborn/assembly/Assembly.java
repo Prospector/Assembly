@@ -8,6 +8,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import teamreborn.assembly.block.AssemblyBlocks;
 import teamreborn.assembly.blockentity.AssemblyBlockEntities;
+import teamreborn.assembly.entity.AssemblyEntities;
 import teamreborn.assembly.fluid.AssemblyFluids;
 import teamreborn.assembly.item.AssemblyItems;
 import teamreborn.assembly.loot.AssemblyLoot;
@@ -23,6 +24,7 @@ public class Assembly implements ModInitializer {
 		AssemblyItems.register();
 		AssemblyBlocks.register();
 		AssemblyBlockEntities.register();
+		AssemblyEntities.register();
 		AssemblyFeatures.register();
 		AssemblyWorldgen.register();
 		AssemblyLoot.register();

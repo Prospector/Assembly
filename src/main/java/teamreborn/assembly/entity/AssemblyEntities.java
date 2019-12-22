@@ -27,7 +27,7 @@ public class AssemblyEntities {
 
 	private static EntityType<TerraformBoatEntity> registerBoat(String name, ItemConvertible planks, BoatEntity.Type vanilla, Supplier<EntityType<TerraformBoatEntity>> boatSupplier) {
 		Identifier id = new Identifier(Assembly.MOD_ID, name + "_boat");
-		Identifier skin = new Identifier(Assembly.MOD_ID, "textures/entity/boat/" + name + ".png");
+		Identifier skin = new Identifier(Assembly.MOD_ID, "textures/entity/boat/" + name + "_boat.png");
 		Item item = Registry.register(Registry.ITEM, id, new TerraformBoatItem((world, x, y, z) -> {
 			TerraformBoatEntity entity = boatSupplier.get().create(world);
 			if (entity != null) {

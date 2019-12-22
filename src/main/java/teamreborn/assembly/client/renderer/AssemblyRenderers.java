@@ -2,14 +2,17 @@ package teamreborn.assembly.client.renderer;
 
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.entity.BoatEntityRenderer;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.util.Identifier;
 import teamreborn.assembly.blockentity.AssemblyBlockEntities;
 import teamreborn.assembly.client.renderer.blockentityrenderer.TreeTapBlockEntityRenderer;
 import teamreborn.assembly.client.renderer.blockentityrenderer.WoodenBarrelBlockEntityRenderer;
+import teamreborn.assembly.entity.AssemblyEntities;
 import teamreborn.assembly.fluid.AssemblyFluid;
 import teamreborn.assembly.fluid.AssemblyFluids;
 import teamreborn.assembly.fluid.TexturedFluid;
@@ -18,8 +21,13 @@ import java.util.Map;
 
 public class AssemblyRenderers {
 	public static void register() {
+		registerEntityRenderers();
 		registerBlockEntityRenderers();
 		registerFluidRenderers();
+	}
+
+	private static void registerEntityRenderers() {
+		EntityRendererRegistry.INSTANCE.register(AssemblyEntities.HEVEA_BOAT, (dispatcher, context) -> new BoatEntityRenderer(dispatcher));
 	}
 
 	private static void registerBlockEntityRenderers() {

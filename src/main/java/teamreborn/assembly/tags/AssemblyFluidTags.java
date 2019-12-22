@@ -14,7 +14,7 @@ public class AssemblyFluidTags {
 	private static final Map<AssemblyFluid, Tag<Fluid>> TAGS = new HashMap<>();
 
 	public static final Tag<Fluid> LATEX = add(AssemblyFluids.LATEX, new Identifier(Assembly.MOD_ID, "latex"));
-	public static final Tag<Fluid> BIOMASS = add(AssemblyFluids.BIOMASS, new Identifier(Assembly.MOD_ID, "biomass"));
+//	public static final Tag<Fluid> BIOMASS = add(AssemblyFluids.BIOMASS, new Identifier(Assembly.MOD_ID, "biomass"));
 	public static final Tag<Fluid> OIL = add(AssemblyFluids.OIL, new Identifier(Assembly.MOD_ID, "oil"));
 
 	private static Tag<Fluid> add(AssemblyFluid fluid, Identifier id) {

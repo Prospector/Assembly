@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "assembly:block/boiler_chamber"
+    }
+  }
+}

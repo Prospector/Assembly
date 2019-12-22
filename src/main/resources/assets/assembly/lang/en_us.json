@@ -1,4 +1,6 @@
 {
+  "itemGroup.assembly.assembly": "Assembly Items",
+
   "item.assembly.salt": "Salt",
   "item.assembly.sulfur": "Sulfur",
   "item.assembly.coagulated_latex": "Coagulated Latex",
@@ -10,6 +12,10 @@
   "block.assembly.wooden_barrel": "Wooden Barrel",
   "block.assembly.tree_tap": "Tree Tap",
   "block.assembly.tube": "Tube",
+
+  "block.assembly.boiler": "Boiler",
+  "block.assembly.boiler_chamber": "Boiler Chamber",
+  "block.assembly.steam_press": "Steam Press",
 
   "block.assembly.latex": "Latex",
   "block.assembly.flowing_latex": "Flowing Latex",

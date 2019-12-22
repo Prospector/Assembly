@@ -28,6 +28,9 @@ public class TreeTapBlockEntity extends BlockEntity implements Tickable {
 				boolean pouring = downEntity instanceof GenericFluidContainer;
 				if (pouring) {
 					pouring = ((GenericFluidContainer<Direction>) downEntity).canInsertFluid(Direction.UP, pouringFluid, FluidValues.THOUSANDTH_BUCKET);
+					if (pouring) {
+						((GenericFluidContainer<Direction>) downEntity).insertFluid(Direction.UP, pouringFluid, FluidValues.THOUSANDTH_BUCKET);
+					}
 				}
 				BlockState state = world.getBlockState(pos);
 				if (state.getBlock() instanceof TreeTapBlock && state.get(AssemblyProperties.POURING) != pouring) {

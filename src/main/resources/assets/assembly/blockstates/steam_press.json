@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=upper": {
+      "model": "assembly:block/steam_press_upper"
+    },
+    "half=lower": {
+      "model": "assembly:block/steam_press_lower"
+    }
+  }
+}

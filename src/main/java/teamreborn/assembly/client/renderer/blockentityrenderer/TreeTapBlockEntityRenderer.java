@@ -9,6 +9,7 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.Matrix3f;
@@ -42,8 +43,6 @@ public class TreeTapBlockEntityRenderer extends BlockEntityRenderer<TreeTapBlock
 			if (fluid != Fluids.EMPTY) {
 				FluidRenderHandler handler = FluidRenderHandlerRegistry.INSTANCE.get(fluid);
 				if (handler != null) {
-//					final Tessellator tessellator = Tessellator.getInstance();
-//					final BufferBuilder buffer = tessellator.getBuffer();
 					BlockPos pos = treeTap.getPos();
 					World world = treeTap.getWorld();
 					FluidState state = fluid.getDefaultState();
@@ -62,20 +61,19 @@ public class TreeTapBlockEntityRenderer extends BlockEntityRenderer<TreeTapBlock
 
 					VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayer.getTranslucent());
 
+					matrices.push();
+					matrices.translate(0.5, 0.5, 0.5);
+					matrices.multiply(Vector3f.NEGATIVE_Y.getDegreesQuaternion(90F + facing.asRotation()));
+					matrices.translate(-0.5, -0.5, -0.5);
+
 					Matrix4f modelMatrix = matrices.peek().getModel();
 					Matrix3f normalMatrix = matrices.peek().getNormal();
 
-
-					matrices.push();
-					matrices.translate(0.5, 0.5, 0.5);
-					matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(270F + facing.asRotation()));
-					matrices.translate(-0.5, -0.5, -0.5);
-
 					//Top stream;
-					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomAngled), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU((getXFromU(sprite, sprite.getMinU()) + 7) * flowingMultiplier), sprite.getFrameV((getYFromV(sprite, sprite.getMaxV()) + 0.44) * flowingMultiplier)).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
-					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomAngled), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU((getXFromU(sprite, sprite.getMaxU()) - 7) * flowingMultiplier), sprite.getFrameV((getYFromV(sprite, sprite.getMaxV()) + 0.44) * flowingMultiplier)).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
-					buffer.vertex(modelMatrix, fracf(16), fracf(topHeight), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU((getXFromU(sprite, sprite.getMaxU()) - 7) * flowingMultiplier), sprite.getFrameV((getYFromV(sprite, sprite.getMinV()) + 9.96) * flowingMultiplier)).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
-					buffer.vertex(modelMatrix, fracf(16), fracf(topHeight), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU((getXFromU(sprite, sprite.getMinU()) + 7) * flowingMultiplier), sprite.getFrameV((getYFromV(sprite, sprite.getMinV()) + 9.96) * flowingMultiplier)).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomAngled), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU((getXFromU(sprite, sprite.getMinU()) + 7) * flowingMultiplier), sprite.getFrameV((getYFromV(sprite, sprite.getMaxV()) + 0.44) * flowingMultiplier)).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomAngled), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU((getXFromU(sprite, sprite.getMaxU()) - 7) * flowingMultiplier), sprite.getFrameV((getYFromV(sprite, sprite.getMaxV()) + 0.44) * flowingMultiplier)).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(16), fracf(topHeight), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU((getXFromU(sprite, sprite.getMaxU()) - 7) * flowingMultiplier), sprite.getFrameV((getYFromV(sprite, sprite.getMinV()) + 9.96) * flowingMultiplier)).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(16), fracf(topHeight), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU((getXFromU(sprite, sprite.getMinU()) + 7) * flowingMultiplier), sprite.getFrameV((getYFromV(sprite, sprite.getMinV()) + 9.96) * flowingMultiplier)).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
 
 					double bottomStream = 0;
 					BlockEntity below = world.getBlockEntity(treeTap.getPos().down());
@@ -91,40 +89,40 @@ public class TreeTapBlockEntityRenderer extends BlockEntityRenderer<TreeTapBlock
 					}
 
 					//front stream
-					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomAngled), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMinU()) + 7)), sprite.getFrameV(flowingMultiplier * getYFromV(sprite, sprite.getMinV()))).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
-					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomStream), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMinU()) + 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMaxV()) - (16 - streamHeight)))).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
-					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomStream), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMaxU()) - 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMaxV()) - (16 - streamHeight)))).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
-					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomAngled), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMaxU()) - 7)), sprite.getFrameV(flowingMultiplier * getYFromV(sprite, sprite.getMinV()))).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomAngled), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMinU()) + 7)), sprite.getFrameV(flowingMultiplier * getYFromV(sprite, sprite.getMinV()))).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomStream), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMinU()) + 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMaxV()) - (16 - streamHeight)))).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomStream), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMaxU()) - 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMaxV()) - (16 - streamHeight)))).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomAngled), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMaxU()) - 7)), sprite.getFrameV(flowingMultiplier * getYFromV(sprite, sprite.getMinV()))).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
 
 					//Back stream
-					buffer.vertex(modelMatrix, fracf(endOfFlow + 0.58), fracf(bottomAngled), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMinU()) + 7)), sprite.getFrameV(getYFromV(sprite, sprite.getMinV()))).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
-					buffer.vertex(modelMatrix, fracf(endOfFlow + 0.58), fracf(bottomAngled), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMaxU()) - 7)), sprite.getFrameV(getYFromV(sprite, sprite.getMinV()))).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
-					buffer.vertex(modelMatrix, fracf(endOfFlow + 0.58), fracf(bottomStream), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMaxU()) - 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMaxV()) - (16 - streamHeight)))).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
-					buffer.vertex(modelMatrix, fracf(endOfFlow + 0.58), fracf(bottomStream), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMinU()) + 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMaxV()) - (16 - streamHeight)))).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow + 0.58), fracf(bottomAngled), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMinU()) + 7)), sprite.getFrameV(getYFromV(sprite, sprite.getMinV()))).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow + 0.58), fracf(bottomAngled), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMaxU()) - 7)), sprite.getFrameV(getYFromV(sprite, sprite.getMinV()))).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow + 0.58), fracf(bottomStream), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMaxU()) - 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMaxV()) - (16 - streamHeight)))).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow + 0.58), fracf(bottomStream), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMinU()) + 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMaxV()) - (16 - streamHeight)))).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
 
 					//Left Stream
-					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomAngled), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMinU()) + 7.5)), sprite.getFrameV(flowingMultiplier * getYFromV(sprite, sprite.getMinV()))).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
-					buffer.vertex(modelMatrix, fracf(endOfFlow + 0.58), fracf(bottomAngled), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMinU()) + 7)), sprite.getFrameV(flowingMultiplier * getYFromV(sprite, sprite.getMinV()))).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
-					buffer.vertex(modelMatrix, fracf(endOfFlow + 0.58), fracf(bottomStream), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMinU()) + 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMaxV()) - (16 - streamHeight)))).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
-					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomStream), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMinU()) + 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMaxV()) - (16 - streamHeight)))).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomAngled), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMinU()) + 7.5)), sprite.getFrameV(flowingMultiplier * getYFromV(sprite, sprite.getMinV()))).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow + 0.58), fracf(bottomAngled), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMinU()) + 7)), sprite.getFrameV(flowingMultiplier * getYFromV(sprite, sprite.getMinV()))).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow + 0.58), fracf(bottomStream), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMinU()) + 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMaxV()) - (16 - streamHeight)))).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomStream), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMinU()) + 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMaxV()) - (16 - streamHeight)))).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
 
 					//Left angled bit
-					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomAngled), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMinU()) + 7.5)), sprite.getFrameV(flowingMultiplier * getYFromV(sprite, sprite.getMinV()))).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
-					buffer.vertex(modelMatrix, fracf(endOfFlow + 0.58), fracf(bottomAngled + 0.58 * Math.tan(radiansAngle)), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMinU()) + 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMinV())))).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
-					buffer.vertex(modelMatrix, fracf(endOfFlow + 0.58), fracf(bottomAngled), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMinU()) + 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMinV()) + 1))).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
-					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomAngled), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMinU()) + 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMinV()) + 1))).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomAngled), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMinU()) + 7.5)), sprite.getFrameV(flowingMultiplier * getYFromV(sprite, sprite.getMinV()))).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow + 0.58), fracf(bottomAngled + 0.58 * Math.tan(radiansAngle)), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMinU()) + 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMinV())))).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow + 0.58), fracf(bottomAngled), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMinU()) + 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMinV()) + 1))).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomAngled), fracf(7.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMinU()) + 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMinV()) + 1))).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
 
 					//Right Stream
-					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomAngled), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMaxU()) - 7.5)), sprite.getFrameV(flowingMultiplier * getYFromV(sprite, sprite.getMinV()))).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
-					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomStream), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMaxU()) - 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMaxV()) - (16 - streamHeight)))).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
-					buffer.vertex(modelMatrix, fracf(endOfFlow + 0.58), fracf(bottomStream), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMaxU()) - 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMaxV()) - (16 - streamHeight)))).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
-					buffer.vertex(modelMatrix, fracf(endOfFlow + 0.58), fracf(bottomAngled), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMaxU()) - 7)), sprite.getFrameV(flowingMultiplier * getYFromV(sprite, sprite.getMinV()))).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomAngled), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMaxU()) - 7.5)), sprite.getFrameV(flowingMultiplier * getYFromV(sprite, sprite.getMinV()))).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomStream), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMaxU()) - 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMaxV()) - (16 - streamHeight)))).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow + 0.58), fracf(bottomStream), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMaxU()) - 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMaxV()) - (16 - streamHeight)))).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow + 0.58), fracf(bottomAngled), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMaxU()) - 7)), sprite.getFrameV(flowingMultiplier * getYFromV(sprite, sprite.getMinV()))).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
 
 					//Right angled bit
-					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomAngled), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMaxU()) - 7.5)), sprite.getFrameV(flowingMultiplier * getYFromV(sprite, sprite.getMinV()))).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
-					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomAngled), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMaxU()) - 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMinV()) + 1))).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
-					buffer.vertex(modelMatrix, fracf(endOfFlow + 0.58), fracf(bottomAngled), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMaxU()) - 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMinV()) + 1))).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
-					buffer.vertex(modelMatrix, fracf(endOfFlow + 0.58), fracf(bottomAngled + 0.58 * Math.tan(radiansAngle)), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMaxU()) - 7)), sprite.getFrameV(flowingMultiplier * getYFromV(sprite, sprite.getMinV()))).light(0xf000f0).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomAngled), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMaxU()) - 7.5)), sprite.getFrameV(flowingMultiplier * getYFromV(sprite, sprite.getMinV()))).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow), fracf(bottomAngled), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMaxU()) - 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMinV()) + 1))).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow + 0.58), fracf(bottomAngled), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMaxU()) - 7)), sprite.getFrameV(flowingMultiplier * (getYFromV(sprite, sprite.getMinV()) + 1))).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
+					buffer.vertex(modelMatrix, fracf(endOfFlow + 0.58), fracf(bottomAngled + 0.58 * Math.tan(radiansAngle)), fracf(9.5)).color(r, g, b, 1F).texture(sprite.getFrameU(flowingMultiplier * (getXFromU(sprite, sprite.getMaxU()) - 7)), sprite.getFrameV(flowingMultiplier * getYFromV(sprite, sprite.getMinV()))).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
 
 					matrices.pop();
 				}
