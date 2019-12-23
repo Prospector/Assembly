@@ -1,9 +1,6 @@
 package team.reborn.assembly.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FurnaceBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.entity.EntityContext;
@@ -15,11 +12,12 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import team.reborn.assembly.blockentity.AssemblyBlockEntities;
 import team.reborn.assembly.blockentity.BoilerBlockEntity;
 
 import javax.annotation.Nullable;
 
-public class BoilerChamberBlock extends Block {
+public class BoilerChamberBlock extends Block implements BlockEntityProvider {
 
 	public static final VoxelShape SHAPE;
 
@@ -35,19 +33,15 @@ public class BoilerChamberBlock extends Block {
 	@Override
 	public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
 		super.onPlaced(world, pos, state, placer, itemStack);
-		if (!world.isClient) {
-			BlockPos downPos = pos.down();
-			furnaceToBoiler(world, downPos, world.getBlockState(downPos), world.getBlockEntity(downPos));
-		}
+		BlockPos downPos = pos.down();
+		furnaceToBoiler(world, downPos, world.getBlockState(downPos), world.getBlockEntity(downPos));
 	}
 
 	@Override
 	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos neighborPos, boolean moved) {
 		super.neighborUpdate(state, world, pos, block, neighborPos, moved);
-		if (!world.isClient) {
-			if (neighborPos.equals(pos.down())) {
-				furnaceToBoiler(world, neighborPos, world.getBlockState(neighborPos), world.getBlockEntity(neighborPos));
-			}
+		if (neighborPos.equals(pos.down())) {
+			furnaceToBoiler(world, neighborPos, world.getBlockState(neighborPos), world.getBlockEntity(neighborPos));
 		}
 	}
 
@@ -74,6 +68,17 @@ public class BoilerChamberBlock extends Block {
 			}
 
 		}
+	}
+
+	@Override
+	public boolean hasBlockEntity() {
+		return true;
+	}
+
+	@Nullable
+	@Override
+	public BlockEntity createBlockEntity(BlockView view) {
+		return AssemblyBlockEntities.BOILER_CHAMBER.instantiate();
 	}
 
 	static {

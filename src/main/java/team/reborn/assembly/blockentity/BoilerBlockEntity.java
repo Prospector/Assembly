@@ -2,6 +2,7 @@ package team.reborn.assembly.blockentity;
 
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.container.Container;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
@@ -10,17 +11,37 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import reborncore.common.fluid.FluidValue;
+import reborncore.common.fluid.container.FluidInstance;
+import reborncore.common.fluid.container.GenericFluidContainer;
 import team.reborn.assembly.Assembly;
 import team.reborn.assembly.block.AssemblyBlocks;
 import team.reborn.assembly.block.BoilerBlock;
 import team.reborn.assembly.container.builder.MenuBuilder;
+import team.reborn.assembly.util.FluidTank;
 
-public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements Tickable {
+import javax.annotation.Nonnull;
+import java.util.HashMap;
+import java.util.Map;
+
+public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements Tickable, GenericFluidContainer<Direction> {
 	private int burnTime;
 	private int fuelTime;
 
+	public Map<BlockPos, BlockEntity> chambers = new HashMap<>();
+
+	public static final FluidValue OUTPUT_CAPACITY_PER_CHAMBER = FluidValue.BUCKET.multiply(4);
+	public FluidTank outputTank;
+
+	public static final FluidValue INPUT_CAPACITY = FluidValue.BUCKET.multiply(4);
+	public FluidTank inputTank;
+
 	public BoilerBlockEntity() {
 		super(AssemblyBlockEntities.BOILER);
+		inputTank = new FluidTank("", INPUT_CAPACITY, this);
+		outputTank = new FluidTank("", FluidValue.EMPTY, this);
 	}
 
 	@Override
@@ -61,6 +82,19 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 			--this.burnTime;
 		}
 
+		chambers.clear();
+		for (int i = 1; i < 255; i++) {
+			BlockPos chamberPos = pos.offset(Direction.UP, i);
+			BlockEntity chamber = world.getBlockEntity(chamberPos);
+			if (chamber instanceof BoilerChamberBlockEntity) {
+				chambers.put(chamberPos, chamber);
+				((BoilerChamberBlockEntity) chamber).updateBoiler(pos);
+			} else {
+				outputTank.setCapacity(OUTPUT_CAPACITY_PER_CHAMBER.multiply(chambers.size()));
+				break;
+			}
+		}
+
 		if (!this.world.isClient) {
 			ItemStack fuelStack = this.contents.get(0);
 			if (!this.isBurning() && !fuelStack.isEmpty()) {
@@ -96,5 +130,21 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 
 	public int getFuelTime() {
 		return fuelTime;
+	}
+
+	@Override
+	public void setFluid(Direction type, @Nonnull FluidInstance instance) {
+		inputTank.setFluid(type, instance);
+	}
+
+	@Nonnull
+	@Override
+	public FluidInstance getFluidInstance(Direction type) {
+		return inputTank.getFluidInstance(type);
+	}
+
+	@Override
+	public FluidValue getCapacity(Direction type) {
+		return inputTank.getCapacity();
 	}
 }

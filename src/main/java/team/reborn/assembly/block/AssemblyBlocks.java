@@ -56,6 +56,7 @@ public class AssemblyBlocks {
 	public static final FluidBlock LATEX = add("latex", new AssemblyFluidBlock(AssemblyFluids.LATEX, FabricBlockSettings.of(Material.WATER).noCollision().hardness(100.0F).dropsNothing().build()));
 	//	public static final FluidBlock BIOMASS = add("biomass", new AssemblyFluidBlock(AssemblyFluids.BIOMASS, FabricBlockSettings.of(Material.WATER).noCollision().hardness(100.0F).dropsNothing().build()));
 	public static final FluidBlock OIL = add("oil", new AssemblyFluidBlock(AssemblyFluids.OIL, FabricBlockSettings.of(Material.WATER).noCollision().hardness(100.0F).dropsNothing().build()));
+	public static final FluidBlock STEAM = add("steam", new AssemblyFluidBlock(AssemblyFluids.STEAM, FabricBlockSettings.of(Material.AIR).noCollision().hardness(100.0F).dropsNothing().build()));
 
 	public static final Block BOILER = add("boiler", new BoilerBlock(FabricBlockSettings.of(Material.METAL).hardness(1.0F).build()));
 	public static final Block BOILER_CHAMBER = add("boiler_chamber", new BoilerChamberBlock(FabricBlockSettings.of(Material.METAL).hardness(1.0F).build()), ItemGroup.DECORATIONS);

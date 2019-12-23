@@ -6,10 +6,10 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import team.reborn.assembly.Assembly;
 import team.reborn.assembly.block.AssemblyBlocks;
 import team.reborn.assembly.fluid.AssemblyFluid;
 import team.reborn.assembly.fluid.AssemblyFluids;
-import team.reborn.assembly.Assembly;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,8 +30,12 @@ public class AssemblyItems {
 	public static final Item LATEX_BUCKET = add("latex_bucket", new AssemblyBucketItem(AssemblyFluids.LATEX, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1).group(ItemGroup.MISC)));
 	//	public static final  Item BIOMASS_BUCKET = add("biomass_bucket", new AssemblyBucketItem(AssemblyFluids.BIOMASS, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1).group(ItemGroup.MISC)));
 	public static final Item OIL_BUCKET = add("oil_bucket", new AssemblyBucketItem(AssemblyFluids.OIL, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1).group(ItemGroup.MISC)));
+	public static final Item STEAM_BUCKET = add("steam_bucket", new AssemblyBucketItem(AssemblyFluids.STEAM, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1).group(ItemGroup.MISC)));
 
 	public static final Item STEAM_PRESS = add("steam_press", new BedItem(AssemblyBlocks.STEAM_PRESS, new Item.Settings().group(ItemGroup.DECORATIONS)));
+
+	public static final Item DIPSTICK = add("dipstick", new DipstickItem(new Item.Settings().group(ItemGroup.TOOLS)));
+
 
 	private static Item add(String name, Item item) {
 		ITEMS.put(new Identifier(Assembly.MOD_ID, name), item);
