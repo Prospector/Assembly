@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
@@ -111,10 +112,12 @@ public class BoilerBlock extends HorizontalFacingBlock implements BlockEntityPro
 				if (blockEntity instanceof BoilerBlockEntity) {
 					ItemStack fuelStack = ((BoilerBlockEntity) blockEntity).getInvStack(0).copy();
 					((BoilerBlockEntity) blockEntity).setInvStack(0, ItemStack.EMPTY);
+					Text customName = ((BoilerBlockEntity) blockEntity).getCustomName();
 					world.setBlockState(pos, Blocks.FURNACE.getDefaultState().with(AbstractFurnaceBlock.FACING, state.get(FACING)));
 					blockEntity = world.getBlockEntity(pos);
 					if (blockEntity instanceof FurnaceBlockEntity) {
 						((FurnaceBlockEntity) blockEntity).setInvStack(1, fuelStack);
+						((FurnaceBlockEntity) blockEntity).setCustomName(customName);
 					}
 				}
 			}

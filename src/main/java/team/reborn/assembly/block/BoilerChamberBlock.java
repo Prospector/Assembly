@@ -9,6 +9,7 @@ import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -36,7 +37,7 @@ public class BoilerChamberBlock extends Block {
 		super.onPlaced(world, pos, state, placer, itemStack);
 		if (!world.isClient) {
 			BlockPos downPos = pos.down();
-			updateBoiler(world, downPos, world.getBlockState(downPos), world.getBlockEntity(downPos));
+			furnaceToBoiler(world, downPos, world.getBlockState(downPos), world.getBlockEntity(downPos));
 		}
 	}
 
@@ -45,15 +46,16 @@ public class BoilerChamberBlock extends Block {
 		super.neighborUpdate(state, world, pos, block, neighborPos, moved);
 		if (!world.isClient) {
 			if (neighborPos.equals(pos.down())) {
-				updateBoiler(world, neighborPos, world.getBlockState(neighborPos), world.getBlockEntity(neighborPos));
+				furnaceToBoiler(world, neighborPos, world.getBlockState(neighborPos), world.getBlockEntity(neighborPos));
 			}
 		}
 	}
 
-	public void updateBoiler(World world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
+	public static void furnaceToBoiler(World world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
 		if (state.getBlock() == Blocks.FURNACE && blockEntity instanceof FurnaceBlockEntity) {
 			FurnaceBlockEntity furnace = ((FurnaceBlockEntity) blockEntity);
 			ItemStack fuelStack = furnace.getInvStack(1).copy();
+			Text customName = furnace.getCustomName();
 			boolean empty = true;
 			for (int i = 0; i < furnace.getInvSize(); i++) {
 				if (i != 1 && !furnace.getInvStack(i).isEmpty()) {
@@ -64,8 +66,10 @@ public class BoilerChamberBlock extends Block {
 			if (empty) {
 				furnace.setInvStack(1, ItemStack.EMPTY);
 				world.setBlockState(pos, AssemblyBlocks.BOILER.getDefaultState().with(BoilerBlock.FACING, state.get(FurnaceBlock.FACING)));
-				if (world.getBlockEntity(pos) instanceof BoilerBlockEntity) {
-					((BoilerBlockEntity) world.getBlockEntity(pos)).setInvStack(0, fuelStack);
+				BlockEntity newBlockEntity = world.getBlockEntity(pos);
+				if (newBlockEntity instanceof BoilerBlockEntity) {
+					((BoilerBlockEntity) newBlockEntity).setInvStack(0, fuelStack);
+					((BoilerBlockEntity) newBlockEntity).setCustomName(customName);
 				}
 			}
 
