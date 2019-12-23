@@ -7,22 +7,22 @@
   "license": "MIT",
   "icon": "assets/assembly/icon.png",
   "entrypoints": {
-	"main": [
-	  "teamreborn.assembly.Assembly",
-	  "teamreborn.assembly.network.AssemblyNetworking",
-	  "teamreborn.assembly.container.AssemblyContainerHelper"
-	],
-	"client": [
-	  "teamreborn.assembly.client.AssemblyClient"
-	]
+    "main": [
+      "team.reborn.assembly.Assembly"
+    ],
+    "client": [
+      "team.reborn.assembly.client.AssemblyClient"
+    ]
   },
   "depends": {
-	"fabric": "*"
+    "fabric": "*"
   },
   "authors": [
-	"Prospector",
-	"modmuss50"
+    "Prospector",
+    "modmuss50"
   ],
   "description": "Expansion of Minecraft's technology into new ages",
-  "mixins": [ "mixins.assembly.json" ]
+  "mixins": [
+    "mixins.assembly.json"
+  ]
 }

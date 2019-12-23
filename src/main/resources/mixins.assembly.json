@@ -1,9 +1,9 @@
 {
   "required": true,
-  "package": "teamreborn.assembly.mixin",
+  "package": "team.reborn.assembly.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "MixinMinecraftServer"
+    "ContainerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
