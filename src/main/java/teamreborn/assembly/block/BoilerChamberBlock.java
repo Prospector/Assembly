@@ -10,7 +10,7 @@ import net.minecraft.world.BlockView;
 
 public class BoilerChamberBlock extends Block {
 
-//	public static final VoxelShape
+	public static final VoxelShape SHAPE;
 
 	public BoilerChamberBlock(Settings settings) {
 		super(settings);
@@ -18,9 +18,13 @@ public class BoilerChamberBlock extends Block {
 
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, EntityContext ePos) {
+		return SHAPE;
+	}
+
+	static {
 		VoxelShape bottom = Block.createCuboidShape(2, 0, 2, 14, 3, 14);
-		VoxelShape middle = Block.createCuboidShape(3, 4, 3, 13, 12, 3);
+		VoxelShape middle = Block.createCuboidShape(3, 3, 3, 13, 13, 13);
 		VoxelShape top = Block.createCuboidShape(2, 13, 2, 14, 16, 14);
-		return VoxelShapes.union(bottom, middle, top);
+		SHAPE = VoxelShapes.union(bottom, middle, top);
 	}
 }

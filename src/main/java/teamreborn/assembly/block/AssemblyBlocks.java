@@ -44,7 +44,7 @@ public class AssemblyBlocks {
 	public static final Block HEVEA_STAIRS = add("hevea_stairs", new TerraformStairsBlock(HEVEA_PLANKS, FabricBlockSettings.copy(Blocks.OAK_STAIRS).build()), ItemGroup.BUILDING_BLOCKS);
 	public static final Block HEVEA_BUTTON = add("hevea_button", new TerraformButtonBlock(FabricBlockSettings.copy(Blocks.OAK_BUTTON).build()), ItemGroup.REDSTONE);
 	public static final Block HEVEA_DOOR = add("hevea_door", new TerraformDoorBlock(FabricBlockSettings.copy(Blocks.OAK_DOOR).build()), ItemGroup.REDSTONE);
-	private static final Identifier HEVEA_SIGN_TEXTURE = new Identifier(Assembly.MOD_ID, "textures/entity/sign/hevea_sign");
+	private static final Identifier HEVEA_SIGN_TEXTURE = new Identifier(Assembly.MOD_ID, "entity/sign/hevea_sign");
 	public static final TerraformSignBlock HEVEA_SIGN = add("hevea_sign", new TerraformSignBlock(HEVEA_SIGN_TEXTURE, FabricBlockSettings.copy(Blocks.OAK_SIGN).build()));
 	public static final Block HEVEA_WALL_SIGN = add("hevea_wall_sign", new TerraformWallSignBlock(HEVEA_SIGN_TEXTURE, FabricBlockSettings.copy(Blocks.OAK_WALL_SIGN).build()));
 	public static final Item HEVEA_SIGN_ITEM = add("hevea_sign", new SignItem(new Item.Settings().maxCount(16).group(ItemGroup.DECORATIONS), HEVEA_SIGN, HEVEA_WALL_SIGN));
