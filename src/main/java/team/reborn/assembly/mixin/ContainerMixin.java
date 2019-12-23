@@ -1,6 +1,6 @@
 package team.reborn.assembly.mixin;
 
-import team.reborn.assembly.mixintf.GetContainerListeners;
+import team.reborn.assembly.mixintf.GetMenuListeners;
 import net.minecraft.container.Container;
 import net.minecraft.container.ContainerListener;
 import org.spongepowered.asm.mixin.Final;
@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.List;
 
 @Mixin(Container.class)
-public class ContainerMixin implements GetContainerListeners {
+public class ContainerMixin implements GetMenuListeners {
 	@Final
 	@Shadow
 	private List<ContainerListener> listeners;

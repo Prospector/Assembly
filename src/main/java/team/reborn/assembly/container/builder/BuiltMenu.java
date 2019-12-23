@@ -40,7 +40,7 @@ import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.tuple.MutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
 import team.reborn.assembly.blockentity.AssemblyContainerBlockEntity;
-import team.reborn.assembly.mixintf.GetContainerListeners;
+import team.reborn.assembly.mixintf.GetMenuListeners;
 import team.reborn.assembly.util.ItemUtils;
 
 import java.util.ArrayList;
@@ -110,7 +110,7 @@ public class BuiltMenu extends Container implements ExtendedMenuListener {
 	public void sendContentUpdates() {
 		super.sendContentUpdates();
 
-		for (final ContainerListener listener : ((GetContainerListeners) (this)).assembly_getListeners()) {
+		for (final ContainerListener listener : ((GetMenuListeners) (this)).assembly_getListeners()) {
 			if (!this.objectValues.isEmpty()) {
 				int objects = 0;
 				for (final MutableTriple<Supplier, Consumer, Object> value : this.objectValues) {

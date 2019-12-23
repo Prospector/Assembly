@@ -10,7 +10,6 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.DefaultedList;
-import team.reborn.assembly.util.ItemUtils;
 
 public abstract class AssemblyContainerBlockEntity extends LockableContainerBlockEntity implements Inventory {
 
@@ -55,9 +54,6 @@ public abstract class AssemblyContainerBlockEntity extends LockableContainerBloc
 	@Override
 	public void setInvStack(int slot, ItemStack stack) {
 		this.contents.set(slot, stack);
-		if (stack.getCount() > this.getInvMaxStackAmount()) {
-			stack.setCount(this.getInvMaxStackAmount());
-		}
 	}
 
 	@Override

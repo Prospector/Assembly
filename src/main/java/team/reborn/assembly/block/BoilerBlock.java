@@ -1,16 +1,15 @@
 package team.reborn.assembly.block;
 
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.container.Container;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
@@ -21,7 +20,9 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import team.reborn.assembly.blockentity.AssemblyBlockEntities;
 import team.reborn.assembly.blockentity.BoilerBlockEntity;
@@ -62,7 +63,6 @@ public class BoilerBlock extends HorizontalFacingBlock implements BlockEntityPro
 				((AbstractFurnaceBlockEntity) blockEntity).setCustomName(stack.getName());
 			}
 		}
-
 	}
 
 	public void onBlockRemoved(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
@@ -100,5 +100,35 @@ public class BoilerBlock extends HorizontalFacingBlock implements BlockEntityPro
 	@Override
 	public BlockEntity createBlockEntity(BlockView view) {
 		return AssemblyBlockEntities.BOILER.instantiate();
+	}
+
+	@Override
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos neighborPos, boolean moved) {
+		super.neighborUpdate(state, world, pos, block, neighborPos, moved);
+		if (pos.up().equals(neighborPos)) {
+			if (world.getBlockState(neighborPos).getBlock() != AssemblyBlocks.BOILER_CHAMBER) {
+				BlockEntity blockEntity = world.getBlockEntity(pos);
+				if (blockEntity instanceof BoilerBlockEntity) {
+					ItemStack fuelStack = ((BoilerBlockEntity) blockEntity).getInvStack(0).copy();
+					((BoilerBlockEntity) blockEntity).setInvStack(0, ItemStack.EMPTY);
+					world.setBlockState(pos, Blocks.FURNACE.getDefaultState().with(AbstractFurnaceBlock.FACING, state.get(FACING)));
+					blockEntity = world.getBlockEntity(pos);
+					if (blockEntity instanceof FurnaceBlockEntity) {
+						((FurnaceBlockEntity) blockEntity).setInvStack(1, fuelStack);
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction facing, BlockState neighborState, IWorld world, BlockPos pos, BlockPos neighborPos) {
+
+		return super.getStateForNeighborUpdate(state, facing, neighborState, world, pos, neighborPos);
+	}
+
+	@Override
+	public Item asItem() {
+		return Blocks.FURNACE.asItem();
 	}
 }

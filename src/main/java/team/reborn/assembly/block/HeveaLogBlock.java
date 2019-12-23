@@ -18,37 +18,43 @@ import java.util.function.Supplier;
 
 public class HeveaLogBlock extends StrippableLogBlock implements SapSource {
 
+	public static final BooleanProperty ALIVE = AssemblyProperties.ALIVE;
+	public static final BooleanProperty NORTH_LATEX = AssemblyProperties.NORTH_LATEX;
+	public static final BooleanProperty EAST_LATEX = AssemblyProperties.EAST_LATEX;
+	public static final BooleanProperty SOUTH_LATEX = AssemblyProperties.SOUTH_LATEX;
+	public static final BooleanProperty WEST_LATEX = AssemblyProperties.WEST_LATEX;
+
 	public HeveaLogBlock(Supplier<Block> stripped, MaterialColor materialColor, Settings settings) {
 		super(stripped, materialColor, settings);
 		setDefaultState(this.getDefaultState()
-			.with(AssemblyProperties.ALIVE, false)
-			.with(AssemblyProperties.NORTH_LATEX, false)
-			.with(AssemblyProperties.SOUTH_LATEX, false)
-			.with(AssemblyProperties.WEST_LATEX, false)
-			.with(AssemblyProperties.EAST_LATEX, false));
+			.with(ALIVE, false)
+			.with(NORTH_LATEX, false)
+			.with(SOUTH_LATEX, false)
+			.with(WEST_LATEX, false)
+			.with(EAST_LATEX, false));
 	}
 
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
-		builder.add(AssemblyProperties.ALIVE);
-		builder.add(AssemblyProperties.NORTH_LATEX);
-		builder.add(AssemblyProperties.SOUTH_LATEX);
-		builder.add(AssemblyProperties.WEST_LATEX);
-		builder.add(AssemblyProperties.EAST_LATEX);
+		builder.add(ALIVE);
+		builder.add(NORTH_LATEX);
+		builder.add(SOUTH_LATEX);
+		builder.add(WEST_LATEX);
+		builder.add(EAST_LATEX);
 	}
 
 	@Override
 	public boolean isSideSapSource(WorldView world, BlockPos pos, BlockState state, Direction side) {
 		switch (side) {
 			case NORTH:
-				return state.get(AssemblyProperties.NORTH_LATEX);
+				return state.get(NORTH_LATEX);
 			case SOUTH:
-				return state.get(AssemblyProperties.SOUTH_LATEX);
+				return state.get(SOUTH_LATEX);
 			case WEST:
-				return state.get(AssemblyProperties.WEST_LATEX);
+				return state.get(WEST_LATEX);
 			case EAST:
-				return state.get(AssemblyProperties.EAST_LATEX);
+				return state.get(EAST_LATEX);
 			default:
 				return false;
 		}
@@ -57,26 +63,41 @@ public class HeveaLogBlock extends StrippableLogBlock implements SapSource {
 	public static BooleanProperty getRandomLatexProperty(Random random) {
 		int side = random.nextInt(4);
 		if (side == 0) {
-			return AssemblyProperties.NORTH_LATEX;
+			return NORTH_LATEX;
 		} else if (side == 1) {
-			return AssemblyProperties.EAST_LATEX;
+			return EAST_LATEX;
 		} else if (side == 2) {
-			return AssemblyProperties.SOUTH_LATEX;
+			return SOUTH_LATEX;
 		} else {
-			return AssemblyProperties.WEST_LATEX;
+			return WEST_LATEX;
+		}
+	}
+
+	public static BooleanProperty getLatexProperty(Direction direction) {
+		switch (direction) {
+			case NORTH:
+				return NORTH_LATEX;
+			case SOUTH:
+				return SOUTH_LATEX;
+			case EAST:
+				return EAST_LATEX;
+			case WEST:
+				return WEST_LATEX;
+			default:
+				return null;
 		}
 	}
 
 	@Override
 	public boolean hasRandomTicks(BlockState state) {
-		return state.get(AssemblyProperties.ALIVE) && !(state.get(AssemblyProperties.NORTH_LATEX) || state.get(AssemblyProperties.SOUTH_LATEX) || state.get(AssemblyProperties.EAST_LATEX) || state.get(AssemblyProperties.WEST_LATEX));
+		return state.get(ALIVE) && !(state.get(NORTH_LATEX) || state.get(SOUTH_LATEX) || state.get(EAST_LATEX) || state.get(WEST_LATEX));
 	}
 
 	@Override
 	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (random.nextInt(40) == 0) {
 			if (random.nextInt(5) == 0) {
-				world.setBlockState(pos, state.with(AssemblyProperties.ALIVE, false));
+				world.setBlockState(pos, state.with(ALIVE, false));
 			} else {
 				world.setBlockState(pos, state.with(getRandomLatexProperty(random), true));
 			}

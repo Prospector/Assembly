@@ -18,6 +18,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import team.reborn.assembly.blockentity.AssemblyBlockEntities;
+import team.reborn.assembly.blockentity.SteamPressBlockEntity;
 import team.reborn.assembly.item.AssemblyItems;
 
 import javax.annotation.Nullable;
@@ -69,8 +70,13 @@ public class SteamPressBlock extends HorizontalFacingBlock implements BlockEntit
 	}
 
 	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, EntityContext ePos) {
-		return state.get(HALF) == DoubleBlockHalf.LOWER ? LOWER_SHAPE : UPPER_SHAPE;
+	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, EntityContext ePos) {
+		BlockEntity blockEntity = world.getBlockEntity(pos);
+		DoubleBlockHalf half = state.get(HALF);
+		if (blockEntity instanceof SteamPressBlockEntity) {
+			return VoxelShapes.union(half == DoubleBlockHalf.LOWER ? LOWER_SHAPE : UPPER_SHAPE, ((SteamPressBlockEntity) blockEntity).getArmVoxelShape(half));
+		}
+		return half == DoubleBlockHalf.LOWER ? LOWER_SHAPE : UPPER_SHAPE;
 	}
 
 	@Override

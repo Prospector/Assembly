@@ -3,6 +3,7 @@
   "package": "team.reborn.assembly.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "AbstractFurnaceBlockMixin",
     "ContainerMixin"
   ],
   "injectors": {
