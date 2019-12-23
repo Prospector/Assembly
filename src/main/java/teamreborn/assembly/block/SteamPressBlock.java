@@ -1,9 +1,6 @@
 package teamreborn.assembly.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.DoubleBlockHalf;
 import net.minecraft.entity.EntityContext;
@@ -20,12 +17,13 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import teamreborn.assembly.blockentity.AssemblyBlockEntities;
 import teamreborn.assembly.item.AssemblyItems;
 
 import javax.annotation.Nullable;
 
 
-public class SteamPressBlock extends HorizontalFacingBlock {
+public class SteamPressBlock extends HorizontalFacingBlock implements BlockEntityProvider {
 
 	public static final EnumProperty<DoubleBlockHalf> HALF = Properties.DOUBLE_BLOCK_HALF;
 	private static final VoxelShape UPPER_SHAPE;
@@ -40,12 +38,12 @@ public class SteamPressBlock extends HorizontalFacingBlock {
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
 		BlockPos pos = context.getBlockPos();
-		return pos.getY() < 255 && context.getWorld().getBlockState(pos.up()).canReplace(context) ? this.getDefaultState() : null;
+		return pos.getY() < 255 && context.getWorld().getBlockState(pos.up()).canReplace(context) ? this.getDefaultState().with(FACING, context.getPlayerFacing().getOpposite()) : null;
 	}
 
 	@Override
 	public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
-		world.setBlockState(pos.up(), this.getDefaultState().with(HALF, DoubleBlockHalf.UPPER), 3);
+		world.setBlockState(pos.up(), this.getDefaultState().with(HALF, DoubleBlockHalf.UPPER).with(FACING, state.get(FACING)), 3);
 	}
 
 	@Override
@@ -83,6 +81,17 @@ public class SteamPressBlock extends HorizontalFacingBlock {
 	@Override
 	public Item asItem() {
 		return AssemblyItems.STEAM_PRESS;
+	}
+
+	@Override
+	public boolean hasBlockEntity() {
+		return true;
+	}
+
+	@Nullable
+	@Override
+	public BlockEntity createBlockEntity(BlockView view) {
+		return AssemblyBlockEntities.STEAM_PRESS.instantiate();
 	}
 
 	static {

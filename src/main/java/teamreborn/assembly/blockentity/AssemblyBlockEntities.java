@@ -17,6 +17,7 @@ public class AssemblyBlockEntities {
 
 	public static final BlockEntityType<WoodenBarrelBlockEntity> WOODEN_BARREL = add("wooden_barrel", WoodenBarrelBlockEntity::new, AssemblyBlocks.WOODEN_BARREL);
 	public static final BlockEntityType<TreeTapBlockEntity> TREE_TAP = add("tree_tap", TreeTapBlockEntity::new, AssemblyBlocks.TREE_TAP);
+	public static final BlockEntityType<SteamPressBlockEntity> STEAM_PRESS = add("steam_press", SteamPressBlockEntity::new, AssemblyBlocks.STEAM_PRESS);
 //	public static final BlockEntityType<TubeBlockEntity> TUBE = add("tube", TubeBlockEntity::new, AssemblyBlocks.TUBE);
 
 	private static <T extends BlockEntity> BlockEntityType<T> add(String name, Supplier<? extends T> supplier, Block... blocks) {

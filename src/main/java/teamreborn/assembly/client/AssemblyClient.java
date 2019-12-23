@@ -9,5 +9,6 @@ public class AssemblyClient implements ClientModInitializer {
 		AssemblyRenderers.register();
 		AssemblyTextures.register();
 		AssemblyRenderLayers.register();
+		AssemblyModels.register();
 	}
 }

@@ -10,6 +10,7 @@ import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.util.Identifier;
 import teamreborn.assembly.blockentity.AssemblyBlockEntities;
+import teamreborn.assembly.client.renderer.blockentityrenderer.SteamPressBlockEntityRenderer;
 import teamreborn.assembly.client.renderer.blockentityrenderer.TreeTapBlockEntityRenderer;
 import teamreborn.assembly.client.renderer.blockentityrenderer.WoodenBarrelBlockEntityRenderer;
 import teamreborn.assembly.entity.AssemblyEntities;
@@ -33,6 +34,7 @@ public class AssemblyRenderers {
 	private static void registerBlockEntityRenderers() {
 		BlockEntityRendererRegistry.INSTANCE.register(AssemblyBlockEntities.WOODEN_BARREL, WoodenBarrelBlockEntityRenderer::new);
 		BlockEntityRendererRegistry.INSTANCE.register(AssemblyBlockEntities.TREE_TAP, TreeTapBlockEntityRenderer::new);
+		BlockEntityRendererRegistry.INSTANCE.register(AssemblyBlockEntities.STEAM_PRESS, SteamPressBlockEntityRenderer::new);
 	}
 
 	private static void registerFluidRenderers() {
