@@ -35,14 +35,13 @@ public class AssemblyItems {
 
 	public static final Item STEAM_PRESS = add("steam_press", new BedItem(AssemblyBlocks.STEAM_PRESS, new Item.Settings().group(ItemGroup.DECORATIONS)));
 
-	public static final Item DIPSTICK = add("dipstick", new DipstickItem(new Item.Settings().group(ItemGroup.TOOLS)));
+	public static final Item DIPSTICK = add("dipstick", new DipstickItem(new Item.Settings().group(ItemGroup.TOOLS).maxCount(1)));
 
 	public static final Item WOODEN_HAMMER = add("wooden_hammer", new HammerItem(ToolMaterials.WOOD, 3.0F, -3.2F, new Item.Settings().group(ItemGroup.TOOLS)));
 	public static final Item STONE_HAMMER = add("stone_hammer", new HammerItem(ToolMaterials.STONE, 3.0F, -3.2F, new Item.Settings().group(ItemGroup.TOOLS)));
 	public static final Item IRON_HAMMER = add("iron_hammer", new HammerItem(ToolMaterials.IRON, 3.0F, -3.1F, new Item.Settings().group(ItemGroup.TOOLS)));
 	public static final Item GOLDEN_HAMMER = add("golden_hammer", new HammerItem(ToolMaterials.GOLD, 3.0F, -3.0F, new Item.Settings().group(ItemGroup.TOOLS)));
 	public static final Item DIAMOND_HAMMER = add("diamond_hammer", new HammerItem(ToolMaterials.DIAMOND, 3.0F, -3.0F, new Item.Settings().group(ItemGroup.TOOLS)));
-
 
 	private static Item add(String name, Item item) {
 		ITEMS.put(new Identifier(Assembly.MOD_ID, name), item);

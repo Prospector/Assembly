@@ -1,7 +1,5 @@
 package team.reborn.assembly.block;
 
-import alexiil.mc.lib.attributes.AttributeList;
-import alexiil.mc.lib.attributes.AttributeProvider;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.DoubleBlockHalf;
@@ -83,6 +81,23 @@ public class SteamPressBlock extends HorizontalFacingBlock implements BlockEntit
 	}
 
 	@Override
+	public VoxelShape getCollisionShape(BlockState state, BlockView view, BlockPos pos, EntityContext ePos) {
+		DoubleBlockHalf half = state.get(HALF);
+		return half == DoubleBlockHalf.LOWER ? LOWER_SHAPE : UPPER_SHAPE;
+	}
+
+	@Override
+	public VoxelShape getCullingShape(BlockState state, BlockView view, BlockPos pos) {
+		DoubleBlockHalf half = state.get(HALF);
+		return half == DoubleBlockHalf.LOWER ? LOWER_SHAPE : UPPER_SHAPE;
+	}
+
+	@Override
+	public boolean isTranslucent(BlockState state, BlockView view, BlockPos pos) {
+		return true;
+	}
+
+	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		builder.add(FACING, HALF);
 	}
@@ -104,16 +119,14 @@ public class SteamPressBlock extends HorizontalFacingBlock implements BlockEntit
 	}
 
 	static {
-		VoxelShape baseBottom = Block.createCuboidShape(0, 0, 0, 16, 4, 16);
-		VoxelShape baseMiddle = Block.createCuboidShape(1, 4, 1, 15, 6, 15);
-		VoxelShape baseTop = Block.createCuboidShape(0, 6, 0, 16, 10, 16);
+		VoxelShape base = Block.createCuboidShape(0, 0, 0, 16, 10, 16);
 		VoxelShape platform = Block.createCuboidShape(2, 10, 2, 14, 11, 14);
 		VoxelShape pillarNW = Block.createCuboidShape(0, 10, 0, 2, 22, 2);
 		VoxelShape pillarNE = Block.createCuboidShape(14, 10, 0, 16, 22, 2);
 		VoxelShape pillarSE = Block.createCuboidShape(14, 10, 14, 16, 22, 16);
 		VoxelShape pillarSW = Block.createCuboidShape(0, 10, 14, 2, 22, 16);
 		VoxelShape top = Block.createCuboidShape(0, 22, 0, 16, 26, 16);
-		LOWER_SHAPE = VoxelShapes.union(baseBottom, baseMiddle, baseTop, platform, pillarNW, pillarNE, pillarSE, pillarSW, top);
+		LOWER_SHAPE = VoxelShapes.union(base, platform, pillarNW, pillarNE, pillarSE, pillarSW, top);
 		UPPER_SHAPE = LOWER_SHAPE.offset(0, -1, 0);
 
 		VoxelShape plate = Block.createCuboidShape(3, 4, 3, 13, 5, 13);

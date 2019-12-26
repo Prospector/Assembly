@@ -2,36 +2,35 @@
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
 	"textures": {
-		"0": "assembly:block/steam_press",
-		"particle": "assembly:block/steam_press"
+		"1": "assembly:block/steam_press_arm",
+        "particle": "assembly:block/steam_press_particle"
 	},
 	"elements": [
 		{
 			"name": "Plate",
 			"from": [3, 4, 3],
 			"to": [13, 5, 13],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8, -4, 8]},
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 12, 8]},
 			"faces": {
-				"north": {"uv": [3, 3, 13, 4], "texture": "#0"},
-				"east": {"uv": [3, 3, 13, 4], "texture": "#0"},
-				"south": {"uv": [3, 3, 13, 4], "texture": "#0"},
-				"west": {"uv": [3, 3, 13, 4], "texture": "#0"},
-				"up": {"uv": [3, 3, 13, 13], "texture": "#0"},
-				"down": {"uv": [3, 3, 13, 13], "texture": "#0"}
+				"north": {"uv": [6, 9, 16, 10], "texture": "#1"},
+				"east": {"uv": [15, 0, 16, 10], "rotation": 270, "texture": "#1"},
+				"south": {"uv": [6, 0, 16, 1], "rotation": 180, "texture": "#1"},
+				"west": {"uv": [15, 0, 16, 10], "rotation": 90, "texture": "#1"},
+				"up": {"uv": [6, 0, 16, 10], "texture": "#1"},
+				"down": {"uv": [6, 0, 16, 10], "texture": "#1"}
 			}
 		},
 		{
 			"name": "Arm",
 			"from": [6, 5, 6],
 			"to": [10, 16, 10],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8, -4, 8]},
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 12, 8]},
 			"faces": {
-				"north": {"uv": [6, 2, 10, 13], "texture": "#0"},
-				"east": {"uv": [6, 2, 10, 13], "texture": "#0"},
-				"south": {"uv": [6, 2, 10, 13], "texture": "#0"},
-				"west": {"uv": [6, 2, 10, 13], "texture": "#0"},
-				"up": {"uv": [6, 6, 10, 10], "texture": "#0"},
-				"down": {"uv": [6, 6, 10, 10], "texture": "#0"}
+				"north": {"uv": [0, 0, 4, 11], "texture": "#1"},
+				"east": {"uv": [0, 0, 4, 11], "texture": "#1"},
+				"south": {"uv": [0, 0, 4, 11], "texture": "#1"},
+				"west": {"uv": [0, 0, 4, 11], "texture": "#1"},
+				"up": {"uv": [0, 12, 4, 16], "texture": "#1"}
 			}
 		}
 	],

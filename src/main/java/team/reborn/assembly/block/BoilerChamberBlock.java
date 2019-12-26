@@ -41,7 +41,10 @@ public class BoilerChamberBlock extends HorizontalFacingBlock implements BlockEn
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof BoilerChamberBlockEntity) {
 			BoilerChamberBlockEntity chamber = (BoilerChamberBlockEntity) be;
-			to.offer(chamber.getBoiler().getOutputTank(), VoxelShapes.fullCube());
+			BoilerBlockEntity boiler = chamber.getBoiler();
+			if (boiler != null) {
+				to.offer(boiler.getOutputTank(), SHAPE);
+			}
 		}
 	}
 

@@ -1,6 +1,8 @@
 package team.reborn.assembly.blockentity;
 
 import alexiil.mc.lib.attributes.Simulation;
+import alexiil.mc.lib.attributes.fluid.FluidExtractable;
+import alexiil.mc.lib.attributes.fluid.FluidInsertable;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKeys;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
@@ -19,10 +21,8 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import team.reborn.assembly.Assembly;
-import team.reborn.assembly.attributes.InputFluidContainer;
-import team.reborn.assembly.attributes.OutputFluidContainer;
-import team.reborn.assembly.attributes.SimpleInputFluidContainer;
-import team.reborn.assembly.attributes.SimpleOutputFluidContainer;
+import team.reborn.assembly.attributes.IOFluidContainer;
+import team.reborn.assembly.attributes.SimpleIOFluidContainer;
 import team.reborn.assembly.block.AssemblyBlocks;
 import team.reborn.assembly.block.BoilerBlock;
 import team.reborn.assembly.container.builder.MenuBuilder;
@@ -40,17 +40,17 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 
 	private static final String INPUT_FLUID_KEY = "InputFluids";
 	private static final FluidAmount INPUT_CAPACITY = FluidAmount.BUCKET.checkedMul(4);
-	private final InputFluidContainer inputTank;
+	private final IOFluidContainer inputTank;
 
 	private static final String OUTPUT_TANK_KEY = "OutputFluids";
 	private static final FluidAmount OUTPUT_CAPACITY_PER_CHAMBER = FluidAmount.BUCKET.checkedMul(4);
-	private final OutputFluidContainer outputTank;
+	private final IOFluidContainer outputTank;
 	private FluidAmount outputCapacity = FluidAmount.ZERO;
 
 	public BoilerBlockEntity() {
 		super(AssemblyBlockEntities.BOILER);
-		inputTank = new SimpleInputFluidContainer(1, INPUT_CAPACITY);
-		outputTank = new SimpleOutputFluidContainer(1, () -> outputCapacity);
+		inputTank = new SimpleIOFluidContainer(1, INPUT_CAPACITY);
+		outputTank = new SimpleIOFluidContainer(1, () -> outputCapacity);
 	}
 
 	@Override
@@ -59,7 +59,12 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 		boolean dirty = false;
 		if (this.isBurning()) {
 			--this.burnTime;
-			// Vaporize water into steam
+			FluidVolume input = inputTank.getInvFluid(0);
+			FluidVolume output = outputTank.getInvFluid(0);
+			if (input.getRawFluid() == Fluids.WATER && output.getRawFluid() == Fluids.EMPTY || output.getRawFluid() == AssemblyFluids.STEAM && output.getAmount_F().isLessThan(outputTank.getCapacity(0))) {
+				FluidAmount amount = inputTank.attemptAnyExtraction(FluidAmount.BUCKET.roundedDiv(1000), Simulation.ACTION).getAmount_F();
+				outputTank.attemptInsertion(FluidKeys.get(AssemblyFluids.STEAM).withAmount(amount), Simulation.ACTION);
+			}
 		}
 
 		chambers.clear();
@@ -77,7 +82,7 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 
 		if (!this.world.isClient) {
 			ItemStack fuelStack = this.contents.get(0);
-			if (!this.isBurning() && !fuelStack.isEmpty()) {
+			if (!this.isBurning() && !fuelStack.isEmpty() && inputTank.getInvFluid(0).getRawFluid() == Fluids.WATER && !inputTank.getInvFluid(0).isEmpty()) {
 				this.burnTime = FuelRegistry.INSTANCE.get(fuelStack.getItem());
 				this.fuelTime = this.burnTime;
 				if (this.isBurning()) {
@@ -159,11 +164,19 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 		return fuelTime;
 	}
 
-	public InputFluidContainer getInputTank() {
+	public FluidInsertable getInputTank() {
+		return inputTank.getInsertable().getPureInsertable();
+	}
+
+	public FluidExtractable getOutputTank() {
+		return outputTank.getExtractable().getPureExtractable();
+	}
+
+	public IOFluidContainer getInputView() {
 		return inputTank;
 	}
 
-	public OutputFluidContainer getOutputTank() {
+	public IOFluidContainer getOutputView() {
 		return outputTank;
 	}
 }
