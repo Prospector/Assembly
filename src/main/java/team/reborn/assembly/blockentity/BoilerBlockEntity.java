@@ -1,10 +1,15 @@
 package team.reborn.assembly.blockentity;
 
+import alexiil.mc.lib.attributes.Simulation;
+import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
+import alexiil.mc.lib.attributes.fluid.volume.FluidKeys;
+import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.container.Container;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -13,65 +18,39 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import reborncore.common.fluid.FluidValue;
-import reborncore.common.fluid.container.FluidInstance;
-import reborncore.common.fluid.container.GenericFluidContainer;
 import team.reborn.assembly.Assembly;
+import team.reborn.assembly.attributes.InputFluidContainer;
+import team.reborn.assembly.attributes.OutputFluidContainer;
+import team.reborn.assembly.attributes.SimpleInputFluidContainer;
+import team.reborn.assembly.attributes.SimpleOutputFluidContainer;
 import team.reborn.assembly.block.AssemblyBlocks;
 import team.reborn.assembly.block.BoilerBlock;
 import team.reborn.assembly.container.builder.MenuBuilder;
-import team.reborn.assembly.util.FluidTank;
+import team.reborn.assembly.fluid.AssemblyFluids;
 
-import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements Tickable, GenericFluidContainer<Direction> {
+public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements Tickable {
+	private static final String BURN_TIME_KEY = "BurnTime";
 	private int burnTime;
 	private int fuelTime;
 
-	public Map<BlockPos, BlockEntity> chambers = new HashMap<>();
+	private Map<BlockPos, BlockEntity> chambers = new HashMap<>();
 
-	public static final FluidValue OUTPUT_CAPACITY_PER_CHAMBER = FluidValue.BUCKET.multiply(4);
-	public FluidTank outputTank;
+	private static final String INPUT_FLUID_KEY = "InputFluids";
+	private static final FluidAmount INPUT_CAPACITY = FluidAmount.BUCKET.checkedMul(4);
+	private final InputFluidContainer inputTank;
 
-	public static final FluidValue INPUT_CAPACITY = FluidValue.BUCKET.multiply(4);
-	public FluidTank inputTank;
+	private static final String OUTPUT_TANK_KEY = "OutputFluids";
+	private static final FluidAmount OUTPUT_CAPACITY_PER_CHAMBER = FluidAmount.BUCKET.checkedMul(4);
+	private final OutputFluidContainer outputTank;
+	private FluidAmount outputCapacity = FluidAmount.ZERO;
 
 	public BoilerBlockEntity() {
 		super(AssemblyBlockEntities.BOILER);
-		inputTank = new FluidTank("", INPUT_CAPACITY, this);
-		outputTank = new FluidTank("", FluidValue.EMPTY, this);
-	}
-
-	@Override
-	public int getInvSize() {
-		return 1;
-	}
-
-	@Override
-	protected Text getContainerName() {
-		return AssemblyBlocks.BOILER.getName();
-	}
-
-	@Override
-	public Container createContainer(int syncId, PlayerInventory inventory) {
-		return new MenuBuilder(new Identifier(Assembly.MOD_ID, "boiler")).player(inventory.player).inventory().hotbar().addInventory().blockEntity(this).filterSlot(0, 20, 20, AbstractFurnaceBlockEntity::canUseAsFuel).addContainer().create(this, syncId);
-	}
-
-	private boolean isBurning() {
-		return this.burnTime > 0;
-	}
-
-	public void fromTag(CompoundTag tag) {
-		super.fromTag(tag);
-		this.burnTime = tag.getShort("BurnTime");
-	}
-
-	public CompoundTag toTag(CompoundTag tag) {
-		tag.putShort("BurnTime", (short) this.burnTime);
-		super.toTag(tag);
-		return tag;
+		inputTank = new SimpleInputFluidContainer(1, INPUT_CAPACITY);
+		outputTank = new SimpleOutputFluidContainer(1, () -> outputCapacity);
 	}
 
 	@Override
@@ -80,6 +59,7 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 		boolean dirty = false;
 		if (this.isBurning()) {
 			--this.burnTime;
+			// Vaporize water into steam
 		}
 
 		chambers.clear();
@@ -90,7 +70,7 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 				chambers.put(chamberPos, chamber);
 				((BoilerChamberBlockEntity) chamber).updateBoiler(pos);
 			} else {
-				outputTank.setCapacity(OUTPUT_CAPACITY_PER_CHAMBER.multiply(chambers.size()));
+				outputCapacity = OUTPUT_CAPACITY_PER_CHAMBER.checkedMul(chambers.size());
 				break;
 			}
 		}
@@ -124,6 +104,53 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 		}
 	}
 
+	@Override
+	public int getInvSize() {
+		return 1;
+	}
+
+	@Override
+	protected Text getContainerName() {
+		return AssemblyBlocks.BOILER.getName();
+	}
+
+	@Override
+	public Container createContainer(int syncId, PlayerInventory inventory) {
+		return new MenuBuilder(new Identifier(Assembly.MOD_ID, "boiler")).player(inventory.player).inventory().hotbar().addInventory().blockEntity(this).filterSlot(0, 20, 20, AbstractFurnaceBlockEntity::canUseAsFuel).addContainer().create(this, syncId);
+	}
+
+	private boolean isBurning() {
+		return this.burnTime > 0;
+	}
+
+	@Override
+	public void fromTag(CompoundTag tag) {
+		super.fromTag(tag);
+		if (tag.contains(INPUT_FLUID_KEY)) {
+			FluidVolume fluid = FluidVolume.fromTag(tag.getCompound(INPUT_FLUID_KEY));
+			this.inputTank.setInvFluid(0, fluid, Simulation.ACTION);
+		}
+		if (tag.contains(OUTPUT_TANK_KEY)) {
+			FluidVolume fluid = FluidVolume.fromTag(tag.getCompound(OUTPUT_TANK_KEY));
+			this.outputTank.setInvFluid(0, fluid, Simulation.ACTION);
+		}
+		this.burnTime = tag.getShort(BURN_TIME_KEY);
+	}
+
+	public CompoundTag toTag(CompoundTag tag) {
+		tag = super.toTag(tag);
+		FluidVolume inputFluid = this.inputTank.getInvFluid(0);
+		if (!inputFluid.isEmpty()) {
+			tag.put(INPUT_FLUID_KEY, inputFluid.toTag());
+		}
+		FluidVolume outputFluid = this.outputTank.getInvFluid(0);
+		if (!outputFluid.isEmpty()) {
+			tag.put(OUTPUT_TANK_KEY, outputFluid.toTag());
+		}
+		tag.putShort(BURN_TIME_KEY, (short) this.burnTime);
+		return tag;
+	}
+
 	public int getBurnTime() {
 		return burnTime;
 	}
@@ -132,19 +159,11 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 		return fuelTime;
 	}
 
-	@Override
-	public void setFluid(Direction type, @Nonnull FluidInstance instance) {
-		inputTank.setFluid(type, instance);
+	public InputFluidContainer getInputTank() {
+		return inputTank;
 	}
 
-	@Nonnull
-	@Override
-	public FluidInstance getFluidInstance(Direction type) {
-		return inputTank.getFluidInstance(type);
-	}
-
-	@Override
-	public FluidValue getCapacity(Direction type) {
-		return inputTank.getCapacity();
+	public OutputFluidContainer getOutputTank() {
+		return outputTank;
 	}
 }

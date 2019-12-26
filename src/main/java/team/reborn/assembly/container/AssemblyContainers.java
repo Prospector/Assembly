@@ -24,7 +24,7 @@ public class AssemblyContainers {
 		});
 		ScreenProviderRegistry.INSTANCE.registerFactory(BOILER, container -> {
 			if (container instanceof BuiltMenu) {
-				return new BaseScreen((BuiltMenu) container, "hi");
+				return new BaseScreen((BuiltMenu) container, "boiler");
 			}
 			return null;
 		});

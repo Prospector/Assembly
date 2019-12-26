@@ -6,12 +6,12 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import team.reborn.assembly.Assembly;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class AssemblyFluids {
 
-	private static final Map<Identifier, AssemblyFluid> FLUIDS = new HashMap<>();
+	private static final Map<Identifier, AssemblyFluid> FLUIDS = new LinkedHashMap<>();
 	private static final BiMap<AssemblyFluid, AssemblyFluid> STILL_FLOWING_MAP = HashBiMap.create();
 
 	public static AssemblyFluid LATEX = add(new AssemblyFluid.Settings("latex").tickRate(15));

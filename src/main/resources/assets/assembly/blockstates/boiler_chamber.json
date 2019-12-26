@@ -1,7 +1,8 @@
 {
   "variants": {
-    "": {
-      "model": "assembly:block/boiler_chamber"
-    }
+    "facing=north": { "model": "assembly:block/boiler_chamber" },
+    "facing=east": { "model": "assembly:block/boiler_chamber", "y": 90 },
+    "facing=south": { "model": "assembly:block/boiler_chamber", "y": 180 },
+    "facing=west": { "model": "assembly:block/boiler_chamber", "y": 270 }
   }
 }

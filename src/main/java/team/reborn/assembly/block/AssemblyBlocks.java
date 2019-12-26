@@ -4,6 +4,7 @@ import com.terraformersmc.terraform.block.*;
 import com.terraformersmc.terraform.util.RecipeUtil;
 import com.terraformersmc.terraform.util.TerraformSaplingGenerator;
 import net.fabricmc.fabric.api.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.tools.FabricToolTags;
 import net.minecraft.block.*;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -14,18 +15,19 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.BranchedTreeFeatureConfig;
 import net.minecraft.world.gen.feature.OakTreeFeature;
+import team.reborn.assembly.Assembly;
 import team.reborn.assembly.block.base.AssemblyFluidBlock;
 import team.reborn.assembly.fluid.AssemblyFluid;
 import team.reborn.assembly.fluid.AssemblyFluids;
 import team.reborn.assembly.world.AssemblyWorldgen;
-import team.reborn.assembly.Assembly;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class AssemblyBlocks {
-	private static final Map<Identifier, BlockItem> ITEMS = new HashMap<>();
-	private static final Map<Identifier, Block> BLOCKS = new HashMap<>();
+	private static final Map<Identifier, BlockItem> ITEMS = new LinkedHashMap<>();
+	private static final Map<Identifier, Block> BLOCKS = new LinkedHashMap<>();
 	private static final Map<AssemblyFluid, AssemblyFluidBlock> FLUID_BLOCKS = new HashMap<>();
 
 	public static final Block HEVEA_PLANKS = add("hevea_planks", new Block(FabricBlockSettings.copy(Blocks.OAK_PLANKS).build()), ItemGroup.BUILDING_BLOCKS);
@@ -60,7 +62,13 @@ public class AssemblyBlocks {
 
 	public static final Block BOILER = add("boiler", new BoilerBlock(FabricBlockSettings.of(Material.METAL).hardness(1.0F).build()));
 	public static final Block BOILER_CHAMBER = add("boiler_chamber", new BoilerChamberBlock(FabricBlockSettings.of(Material.METAL).hardness(1.0F).build()), ItemGroup.DECORATIONS);
-	public static final Block STEAM_PRESS = add("steam_press", new SteamPressBlock(FabricBlockSettings.of(Material.METAL).hardness(1.0F).build()));
+	public static final Block STEAM_PRESS = add("steam_press", new SteamPressBlock(FabricBlockSettings.of(Material.METAL).dynamicBounds().hardness(1.0F).build()));
+
+	public static final Block COPPER_ORE = add("copper_ore", new AssemblyOreBlock(FabricBlockSettings.of(Material.STONE).strength(2.5F, 2.5F).breakByTool(FabricToolTags.PICKAXES, 1).build()), ItemGroup.BUILDING_BLOCKS);
+
+	public static final Block COPPER_BLOCK = add("copper_block", new Block(FabricBlockSettings.copy(Blocks.IRON_BLOCK).breakByTool(FabricToolTags.PICKAXES, 1).build()), ItemGroup.BUILDING_BLOCKS);
+	public static final Block ZINC_BLOCK = add("zinc_block", new Block(FabricBlockSettings.copy(Blocks.IRON_BLOCK).breakByTool(FabricToolTags.PICKAXES, 1).build()), ItemGroup.BUILDING_BLOCKS);
+	public static final Block BRASS_BLOCK = add("brass_block", new Block(FabricBlockSettings.copy(Blocks.IRON_BLOCK).breakByTool(FabricToolTags.PICKAXES, 1).build()), ItemGroup.BUILDING_BLOCKS);
 
 	private static <B extends Block> B add(String name, B block, ItemGroup tab) {
 		return add(name, block, new BlockItem(block, new Item.Settings().group(tab)));

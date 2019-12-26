@@ -1,5 +1,7 @@
 package team.reborn.assembly.block;
 
+import alexiil.mc.lib.attributes.AttributeList;
+import alexiil.mc.lib.attributes.AttributeProvider;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
@@ -22,6 +24,7 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -31,7 +34,7 @@ import team.reborn.assembly.container.AssemblyContainers;
 
 import javax.annotation.Nullable;
 
-public class BoilerBlock extends HorizontalFacingBlock implements BlockEntityProvider {
+public class BoilerBlock extends HorizontalFacingBlock implements BlockEntityProvider, AttributeProvider {
 	public static final BooleanProperty LIT = Properties.LIT;
 
 	public BoilerBlock(Settings settings) {
@@ -40,10 +43,23 @@ public class BoilerBlock extends HorizontalFacingBlock implements BlockEntityPro
 	}
 
 	@Override
+	public void addAllAttributes(World world, BlockPos pos, BlockState state, AttributeList<?> to) {
+		BlockEntity be = world.getBlockEntity(pos);
+		if (be instanceof BoilerBlockEntity) {
+			BoilerBlockEntity boiler = (BoilerBlockEntity) be;
+			to.offer(boiler.getInputTank(), VoxelShapes.fullCube());
+		}
+	}
+
+	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		if (world.isClient) {
 			return ActionResult.SUCCESS;
 		} else {
+			//Fluid filling/draining
+			ItemStack stack = player.getStackInHand(hand);
+//			if () {
+//			}
 			ContainerProviderRegistry.INSTANCE.openContainer(AssemblyContainers.BOILER, player, buf -> buf.writeBlockPos(pos));
 			return ActionResult.SUCCESS;
 		}

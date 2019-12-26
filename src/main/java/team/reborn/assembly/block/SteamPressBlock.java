@@ -1,5 +1,7 @@
 package team.reborn.assembly.block;
 
+import alexiil.mc.lib.attributes.AttributeList;
+import alexiil.mc.lib.attributes.AttributeProvider;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.DoubleBlockHalf;
@@ -28,7 +30,8 @@ public class SteamPressBlock extends HorizontalFacingBlock implements BlockEntit
 
 	public static final EnumProperty<DoubleBlockHalf> HALF = Properties.DOUBLE_BLOCK_HALF;
 	private static final VoxelShape UPPER_SHAPE;
-	public static final VoxelShape LOWER_SHAPE;
+	private static final VoxelShape LOWER_SHAPE;
+	public static final VoxelShape ARM_SHAPE;
 
 	public SteamPressBlock(Settings settings) {
 		super(settings);
@@ -112,5 +115,9 @@ public class SteamPressBlock extends HorizontalFacingBlock implements BlockEntit
 		VoxelShape top = Block.createCuboidShape(0, 22, 0, 16, 26, 16);
 		LOWER_SHAPE = VoxelShapes.union(baseBottom, baseMiddle, baseTop, platform, pillarNW, pillarNE, pillarSE, pillarSW, top);
 		UPPER_SHAPE = LOWER_SHAPE.offset(0, -1, 0);
+
+		VoxelShape plate = Block.createCuboidShape(3, 4, 3, 13, 5, 13);
+		VoxelShape arm = Block.createCuboidShape(6, 5, 6, 10, 16, 10);
+		ARM_SHAPE = VoxelShapes.union(plate, arm);
 	}
 }

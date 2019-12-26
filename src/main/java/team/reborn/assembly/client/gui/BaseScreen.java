@@ -3,6 +3,7 @@ package team.reborn.assembly.client.gui;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.AbstractContainerScreen;
+import net.minecraft.container.Slot;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import team.reborn.assembly.Assembly;
@@ -15,11 +16,11 @@ public class BaseScreen extends AbstractContainerScreen {
 	public int ySize = 176;
 
 	private Layer layer = Layer.BACKGROUND;
-	final BuiltMenu containerProvider;
+	final BuiltMenu menu;
 
 	public BaseScreen(BuiltMenu menu, String title) {
 		super(menu, MinecraftClient.getInstance().player.inventory, new LiteralText(title));
-		this.containerProvider = menu;
+		this.menu = menu;
 	}
 
 	@Override
@@ -33,13 +34,15 @@ public class BaseScreen extends AbstractContainerScreen {
 
 	//Best time to draw slots
 	public void drawSlots() {
-
+		for (Slot slot : menu.slotList) {
+			drawSlot(slot.xPosition, slot.yPosition);
+		}
 	}
 
 	@Override
 	protected void drawForeground(int i, int i1) {
 		super.drawForeground(i, i1);
-		font.draw(containerProvider.getName().toString(), 10, 6, 4210752);
+		font.draw(menu.getName().toString(), 10, 6, 4210752);
 		font.draw("Inventory", 10, 80, 4210752);
 	}
 

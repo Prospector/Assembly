@@ -15,9 +15,9 @@ import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-import team.reborn.assembly.client.AssemblyModels;
 import team.reborn.assembly.block.SteamPressBlock;
 import team.reborn.assembly.blockentity.SteamPressBlockEntity;
+import team.reborn.assembly.client.AssemblyModels;
 
 import java.util.Random;
 
@@ -51,7 +51,8 @@ public class SteamPressBlockEntityRenderer extends BlockEntityRenderer<SteamPres
 			long time = world.getTime() % speed;
 			float lowestPosition = 9 / 16F; //9/16 because the lowest the arm should go is 9 pixels down.
 			lowestPosition = lowestPosition / 2; //Divide by 2 because the sine wave will go 9/16 above AND below when the difference between the min and the max should be 9/16.
-			matrices.translate(0, lowestPosition * Math.sin(2 * Math.PI / speed * (time)) - lowestPosition, 0);
+			double y = lowestPosition * Math.sin(2 * Math.PI / speed * (time)) - lowestPosition;
+			matrices.translate(0, y, 0);
 			client.getBlockRenderManager().getModelRenderer().render(world, armModel, state, pos, matrices, vertexConsumers.getBuffer(RenderLayer.getSolid()), false, new Random(), state.getRenderingSeed(pos), overlay);
 		}
 	}

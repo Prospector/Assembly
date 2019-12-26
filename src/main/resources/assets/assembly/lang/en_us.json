@@ -1,5 +1,5 @@
 {
-  "itemGroup.assembly.assembly": "Assembly Items",
+  "itemGroup.assembly.items": "Assembly Items",
 
   "item.assembly.salt": "Salt",
   "item.assembly.sulfur": "Sulfur",
@@ -8,6 +8,18 @@
   "item.assembly.vulcanized_rubber": "Vulcanized Rubber",
   "item.assembly.venomous_fang": "Venomous Fang",
   "item.assembly.formic_acid": "Formic Acid",
+
+  "item.assembly.copper_ingot": "Copper Ingot",
+  "item.assembly.zinc_ingot": "Zinc Ingot",
+  "item.assembly.brass_ingot": "Brass Ingot",
+
+  "item.assembly.dipstick": "Dipstick",
+
+  "item.assembly.wooden_hammer": "Wooden Hammer",
+  "item.assembly.stone_hammer": "Stone Hammer",
+  "item.assembly.iron_hammer": "Iron Hammer",
+  "item.assembly.golden_hammer": "Golden Hammer",
+  "item.assembly.diamond_hammer": "Diamond Hammer",
 
   "block.assembly.wooden_barrel": "Wooden Barrel",
   "block.assembly.tree_tap": "Tree Tap",
@@ -26,6 +38,9 @@
   "block.assembly.oil": "Oil",
   "block.assembly.flowing_oil": "Flowing Oil",
   "item.assembly.oil_bucket": "Oil Bucket",
+  "block.assembly.steam": "Steam",
+  "block.assembly.flowing_steam": "Flowing Steam",
+  "item.assembly.steam_bucket": "Steam Bucket",
 
   "block.assembly.hevea_log": "Hevea Log",
   "block.assembly.stripped_hevea_log": "Stripped Hevea Log",
@@ -45,5 +60,11 @@
   "block.assembly.hevea_door": "Hevea Door",
   "block.assembly.hevea_trapdoor": "Hevea Trapdoor",
   "item.assembly.hevea_boat": "Hevea Boat",
-  "entity.assembly.hevea_boat": "Hevea Boat"
+  "entity.assembly.hevea_boat": "Hevea Boat",
+
+  "block.assembly.copper_ore": "Copper Ore",
+
+  "block.assembly.copper_block": "Copper Block",
+  "block.assembly.zinc_block": "Zinc Block",
+  "block.assembly.brass_block": "Brass Block"
 }

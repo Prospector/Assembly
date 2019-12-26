@@ -1,28 +1,48 @@
 package team.reborn.assembly.block;
 
+import alexiil.mc.lib.attributes.AttributeList;
+import alexiil.mc.lib.attributes.AttributeProvider;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import team.reborn.assembly.blockentity.AssemblyBlockEntities;
 import team.reborn.assembly.blockentity.BoilerBlockEntity;
+import team.reborn.assembly.blockentity.BoilerChamberBlockEntity;
 
 import javax.annotation.Nullable;
 
-public class BoilerChamberBlock extends Block implements BlockEntityProvider {
+public class BoilerChamberBlock extends HorizontalFacingBlock implements BlockEntityProvider, Waterloggable, AttributeProvider {
 
 	public static final VoxelShape SHAPE;
+	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
 	public BoilerChamberBlock(Settings settings) {
 		super(settings);
+	}
+
+	@Override
+	public void addAllAttributes(World world, BlockPos pos, BlockState state, AttributeList<?> to) {
+		BlockEntity be = world.getBlockEntity(pos);
+		if (be instanceof BoilerChamberBlockEntity) {
+			BoilerChamberBlockEntity chamber = (BoilerChamberBlockEntity) be;
+			to.offer(chamber.getBoiler().getOutputTank(), VoxelShapes.fullCube());
+		}
 	}
 
 	@Override
@@ -79,6 +99,24 @@ public class BoilerChamberBlock extends Block implements BlockEntityProvider {
 	@Override
 	public BlockEntity createBlockEntity(BlockView view) {
 		return AssemblyBlockEntities.BOILER_CHAMBER.instantiate();
+	}
+
+	@Override
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+		builder.add(FACING, WATERLOGGED);
+	}
+
+	@Override
+	public BlockState getPlacementState(ItemPlacementContext context) {
+		return getDefaultState().with(FACING, context.getPlayerFacing().getOpposite()).with(WATERLOGGED, context.getWorld().getFluidState(context.getBlockPos()).getFluid() == Fluids.WATER);
+	}
+
+	@Override
+	public BlockState getStateForNeighborUpdate(BlockState ourState, Direction ourFacing, BlockState otherState, IWorld world, BlockPos ourPos, BlockPos otherPos) {
+		if (ourState.get(WATERLOGGED)) {
+			world.getFluidTickScheduler().schedule(ourPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+		}
+		return ourState;
 	}
 
 	static {

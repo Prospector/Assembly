@@ -2,11 +2,7 @@ package team.reborn.assembly;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
-import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -37,7 +33,7 @@ public class Assembly implements ModInitializer {
 		AssemblyWorldgen.register();
 		AssemblyLoot.register();
 
-		FabricItemGroupBuilder.create(new Identifier(MOD_ID, "assembly")).icon(() -> AssemblyItems.OIL_BUCKET.getStackForRender()).appendItems(stacks -> Registry.ITEM.forEach(item -> {
+		FabricItemGroupBuilder.create(new Identifier(MOD_ID, "items")).icon(AssemblyItems.OIL_BUCKET::getStackForRender).appendItems(stacks -> Registry.ITEM.forEach(item -> {
 			if (Registry.ITEM.getId(item).getNamespace().equals(MOD_ID)) {
 				item.appendStacks(item.getGroup(), (DefaultedList<ItemStack>) stacks);
 			}

@@ -1,9 +1,6 @@
 package team.reborn.assembly.item;
 
-import net.minecraft.item.BedItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import team.reborn.assembly.Assembly;
@@ -12,13 +9,17 @@ import team.reborn.assembly.fluid.AssemblyFluid;
 import team.reborn.assembly.fluid.AssemblyFluids;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class AssemblyItems {
 
-	private static final Map<Identifier, Item> ITEMS = new HashMap<>();
+	private static final Map<Identifier, Item> ITEMS = new LinkedHashMap<>();
 	private static final Map<AssemblyFluid, AssemblyBucketItem> BUCKETS = new HashMap<>();
 
+	public static final Item COPPER_INGOT = add("copper_ingot", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
+	public static final Item ZINC_INGOT = add("zinc_ingot", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
+	public static final Item BRASS_INGOT = add("brass_ingot", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 	public static final Item SALT = add("salt", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 	public static final Item SULFUR = add("sulfur", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 	public static final Item COAGULATED_LATEX = add("coagulated_latex", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
@@ -35,6 +36,12 @@ public class AssemblyItems {
 	public static final Item STEAM_PRESS = add("steam_press", new BedItem(AssemblyBlocks.STEAM_PRESS, new Item.Settings().group(ItemGroup.DECORATIONS)));
 
 	public static final Item DIPSTICK = add("dipstick", new DipstickItem(new Item.Settings().group(ItemGroup.TOOLS)));
+
+	public static final Item WOODEN_HAMMER = add("wooden_hammer", new HammerItem(ToolMaterials.WOOD, 3.0F, -3.2F, new Item.Settings().group(ItemGroup.TOOLS)));
+	public static final Item STONE_HAMMER = add("stone_hammer", new HammerItem(ToolMaterials.STONE, 3.0F, -3.2F, new Item.Settings().group(ItemGroup.TOOLS)));
+	public static final Item IRON_HAMMER = add("iron_hammer", new HammerItem(ToolMaterials.IRON, 3.0F, -3.1F, new Item.Settings().group(ItemGroup.TOOLS)));
+	public static final Item GOLDEN_HAMMER = add("golden_hammer", new HammerItem(ToolMaterials.GOLD, 3.0F, -3.0F, new Item.Settings().group(ItemGroup.TOOLS)));
+	public static final Item DIAMOND_HAMMER = add("diamond_hammer", new HammerItem(ToolMaterials.DIAMOND, 3.0F, -3.0F, new Item.Settings().group(ItemGroup.TOOLS)));
 
 
 	private static Item add(String name, Item item) {
