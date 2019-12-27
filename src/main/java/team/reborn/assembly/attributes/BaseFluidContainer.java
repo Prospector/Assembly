@@ -98,10 +98,10 @@ public class BaseFluidContainer implements AssemblyFluidContainer, Saveable {
 	public FluidFilter getFilterForTank(int tank) {
 		if (AttributeUtil.EXPENSIVE_DEBUG_CHECKS) {
 			Class<?> cls = getClass();
-			if (cls != SimpleFixedFluidInv.class) {
+			if (cls != BaseFluidContainer.class) {
 				try {
 					Method method = cls.getMethod("isFluidValidForTank", int.class, FluidKey.class);
-					if (method.getDeclaringClass() != SimpleFixedFluidInv.class) {
+					if (method.getDeclaringClass() != BaseFluidContainer.class) {
 						// it's been overriden, but we haven't
 						throw new IllegalStateException(
 							"The subclass " + method.getDeclaringClass()

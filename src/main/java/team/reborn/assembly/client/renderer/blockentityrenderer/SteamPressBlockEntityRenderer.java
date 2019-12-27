@@ -28,9 +28,9 @@ public class SteamPressBlockEntityRenderer extends BlockEntityRenderer<SteamPres
 	}
 
 	@Override
-	public void render(SteamPressBlockEntity barrel, float delta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-		World world = barrel.getWorld();
-		BlockPos pos = barrel.getPos();
+	public void render(SteamPressBlockEntity steamPress, float delta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+		World world = steamPress.getWorld();
+		BlockPos pos = steamPress.getPos();
 		BlockState state = world.getBlockState(pos);
 		if (state.getBlock() instanceof SteamPressBlock && state.get(SteamPressBlock.HALF) == DoubleBlockHalf.UPPER) {
 			MinecraftClient client = MinecraftClient.getInstance();
@@ -47,12 +47,7 @@ public class SteamPressBlockEntityRenderer extends BlockEntityRenderer<SteamPres
 
 			// Arm Rendering
 			BakedModel armModel = client.getBakedModelManager().getModel(AssemblyModels.STEAM_PRESS_UPPER_ARM);
-			int speed = 75;
-			long time = world.getTime() % speed;
-			float lowestPosition = 9 / 16F; //9/16 because the lowest the arm should go is 9 pixels down.
-			lowestPosition = lowestPosition / 2; //Divide by 2 because the sine wave will go 9/16 above AND below when the difference between the min and the max should be 9/16.
-			double y = lowestPosition * Math.sin(2 * Math.PI / speed * (time)) - lowestPosition;
-			matrices.translate(0, y, 0);
+			matrices.translate(0, steamPress.getArmOffset(), 0);
 			client.getBlockRenderManager().getModelRenderer().render(world, armModel, state, pos, matrices, vertexConsumers.getBuffer(RenderLayer.getSolid()), false, new Random(), state.getRenderingSeed(pos), overlay);
 		}
 	}

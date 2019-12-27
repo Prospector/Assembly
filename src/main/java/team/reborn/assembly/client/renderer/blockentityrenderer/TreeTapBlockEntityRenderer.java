@@ -18,14 +18,13 @@ import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import team.reborn.assembly.block.TreeTapBlock;
 import team.reborn.assembly.blockentity.TreeTapBlockEntity;
 import team.reborn.assembly.blockentity.WoodenBarrelBlockEntity;
 import team.reborn.assembly.util.MathUtil;
-import team.reborn.assembly.util.block.AssemblyProperties;
 
 public class TreeTapBlockEntityRenderer extends BlockEntityRenderer<TreeTapBlockEntity> {
 
@@ -35,14 +34,14 @@ public class TreeTapBlockEntityRenderer extends BlockEntityRenderer<TreeTapBlock
 
 	@Override
 	public void render(TreeTapBlockEntity treeTap, float delta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-		if (treeTap.getWorld().getBlockState(treeTap.getPos()).get(AssemblyProperties.POURING)) {
-			Direction facing = treeTap.getWorld().getBlockState(treeTap.getPos()).get(Properties.HORIZONTAL_FACING);
+		World world = treeTap.getWorld();
+		if (world != null && world.getBlockState(treeTap.getPos()).get(TreeTapBlock.POURING)) {
+			Direction facing = world.getBlockState(treeTap.getPos()).get(TreeTapBlock.FACING);
 			Fluid fluid = treeTap.getPouringFluid();
 			if (fluid != Fluids.EMPTY) {
 				FluidRenderHandler handler = FluidRenderHandlerRegistry.INSTANCE.get(fluid);
 				if (handler != null) {
 					BlockPos pos = treeTap.getPos();
-					World world = treeTap.getWorld();
 					FluidState state = fluid.getDefaultState();
 					Sprite sprite = handler.getFluidSprites(world, pos, state)[1];
 					MinecraftClient.getInstance().getTextureManager().bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
@@ -76,7 +75,7 @@ public class TreeTapBlockEntityRenderer extends BlockEntityRenderer<TreeTapBlock
 					double bottomStream = 0;
 					BlockEntity below = world.getBlockEntity(treeTap.getPos().down());
 					if (below instanceof WoodenBarrelBlockEntity) {
-						bottomStream = -16 + (((WoodenBarrelBlockEntity) below).fluidInstance.getAmount().getRawValue() / (double) WoodenBarrelBlockEntity.CAPACITY.getRawValue() * 14) + 1;
+						bottomStream = -16 + (((WoodenBarrelBlockEntity) below).getTank().getInvFluid(0).getAmount_F().asInexactDouble() / (double) ((WoodenBarrelBlockEntity) below).getTank().getCapacity(0).asInexactDouble() * 14) + 1;
 					}
 
 					double streamHeight = bottomAngled - bottomStream;

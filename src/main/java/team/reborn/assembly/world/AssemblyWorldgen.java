@@ -15,7 +15,6 @@ import net.minecraft.world.gen.stateprovider.WeightedStateProvider;
 import team.reborn.assembly.block.AssemblyBlocks;
 import team.reborn.assembly.block.HeveaLogBlock;
 import team.reborn.assembly.tags.AssemblyBiomeSets;
-import team.reborn.assembly.util.block.AssemblyProperties;
 
 public class AssemblyWorldgen {
 	public static final BranchedTreeFeatureConfig HEVEA_TREE_CONFIG;
@@ -29,7 +28,7 @@ public class AssemblyWorldgen {
 	}
 
 	static {
-		BlockState heveaLog = AssemblyBlocks.HEVEA_LOG.getDefaultState().with(AssemblyProperties.ALIVE, true);
+		BlockState heveaLog = AssemblyBlocks.HEVEA_LOG.getDefaultState().with(HeveaLogBlock.ALIVE, true);
 		WeightedStateProvider heveaStateProvider = new WeightedStateProvider().addState(heveaLog, 400);
 		for (Direction direction : Direction.Type.HORIZONTAL) {
 			heveaStateProvider.addState(heveaLog.with(HeveaLogBlock.getLatexProperty(direction), true), 10);

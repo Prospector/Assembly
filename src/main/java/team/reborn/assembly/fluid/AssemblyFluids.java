@@ -16,8 +16,8 @@ public class AssemblyFluids {
 
 	public static AssemblyFluid LATEX = add(new AssemblyFluid.Settings("latex").tickRate(15));
 	public static AssemblyFluid FLOWING_LATEX = getFlowing(LATEX);
-	//	public static AssemblyFluid BIOMASS = add(new AssemblyFluid.Settings("biomass").tickRate(8));
-//	public static AssemblyFluid FLOWING_BIOMASS = getFlowing(BIOMASS);
+	public static AssemblyFluid BIOMASS = add(new AssemblyFluid.Settings("biomass").tickRate(8));
+	public static AssemblyFluid FLOWING_BIOMASS = getFlowing(BIOMASS);
 	public static AssemblyFluid OIL = add(new AssemblyFluid.Settings("oil").tickRate(20));
 	public static AssemblyFluid FLOWING_OIL = getFlowing(OIL);
 	public static AssemblyFluid STEAM = add(new AssemblyFluid.Settings("steam").tickRate(100));

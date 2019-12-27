@@ -20,7 +20,6 @@ public class AssemblyBlockEntities {
 	public static final BlockEntityType<SteamPressBlockEntity> STEAM_PRESS = add("steam_press", SteamPressBlockEntity::new, AssemblyBlocks.STEAM_PRESS);
 	public static final BlockEntityType<BoilerBlockEntity> BOILER = add("boiler", BoilerBlockEntity::new, AssemblyBlocks.BOILER);
 	public static final BlockEntityType<BoilerChamberBlockEntity> BOILER_CHAMBER = add("boiler_chamber", BoilerChamberBlockEntity::new, AssemblyBlocks.BOILER_CHAMBER);
-//	public static final BlockEntityType<TubeBlockEntity> TUBE = add("tube", TubeBlockEntity::new, AssemblyBlocks.TUBE);
 
 	private static <T extends BlockEntity> BlockEntityType<T> add(String name, Supplier<? extends T> supplier, Block... blocks) {
 		return add(name, BlockEntityType.Builder.create(supplier, blocks));

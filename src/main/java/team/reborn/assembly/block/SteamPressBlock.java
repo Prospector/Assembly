@@ -1,5 +1,7 @@
 package team.reborn.assembly.block;
 
+import alexiil.mc.lib.attributes.AttributeList;
+import alexiil.mc.lib.attributes.AttributeProvider;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.DoubleBlockHalf;
@@ -24,7 +26,7 @@ import team.reborn.assembly.item.AssemblyItems;
 import javax.annotation.Nullable;
 
 
-public class SteamPressBlock extends HorizontalFacingBlock implements BlockEntityProvider {
+public class SteamPressBlock extends HorizontalFacingBlock implements BlockEntityProvider, AttributeProvider {
 
 	public static final EnumProperty<DoubleBlockHalf> HALF = Properties.DOUBLE_BLOCK_HALF;
 	private static final VoxelShape UPPER_SHAPE;
@@ -34,6 +36,17 @@ public class SteamPressBlock extends HorizontalFacingBlock implements BlockEntit
 	public SteamPressBlock(Settings settings) {
 		super(settings);
 		setDefaultState(this.getStateManager().getDefaultState().with(HALF, DoubleBlockHalf.LOWER));
+	}
+
+	@Override
+	public void addAllAttributes(World world, BlockPos pos, BlockState state, AttributeList<?> to) {
+		if (state.get(HALF) == DoubleBlockHalf.LOWER) {
+			BlockEntity be = world.getBlockEntity(pos);
+			if (be instanceof SteamPressBlockEntity) {
+				SteamPressBlockEntity steamPress = (SteamPressBlockEntity) be;
+				to.offer(steamPress.getInputTank().getInsertable().getPureInsertable(), LOWER_SHAPE);
+			}
+		}
 	}
 
 	@Nullable
@@ -126,11 +139,11 @@ public class SteamPressBlock extends HorizontalFacingBlock implements BlockEntit
 		VoxelShape pillarSE = Block.createCuboidShape(14, 10, 14, 16, 22, 16);
 		VoxelShape pillarSW = Block.createCuboidShape(0, 10, 14, 2, 22, 16);
 		VoxelShape top = Block.createCuboidShape(0, 22, 0, 16, 26, 16);
-		LOWER_SHAPE = VoxelShapes.union(base, platform, pillarNW, pillarNE, pillarSE, pillarSW, top);
+		LOWER_SHAPE = VoxelShapes.union(base, platform, pillarNW, pillarNE, pillarSE, pillarSW, top).simplify();
 		UPPER_SHAPE = LOWER_SHAPE.offset(0, -1, 0);
 
 		VoxelShape plate = Block.createCuboidShape(3, 4, 3, 13, 5, 13);
 		VoxelShape arm = Block.createCuboidShape(6, 5, 6, 10, 16, 10);
-		ARM_SHAPE = VoxelShapes.union(plate, arm);
+		ARM_SHAPE = VoxelShapes.union(plate, arm).simplify();
 	}
 }

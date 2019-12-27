@@ -43,7 +43,7 @@ public class BoilerChamberBlock extends HorizontalFacingBlock implements BlockEn
 			BoilerChamberBlockEntity chamber = (BoilerChamberBlockEntity) be;
 			BoilerBlockEntity boiler = chamber.getBoiler();
 			if (boiler != null) {
-				to.offer(boiler.getOutputTank(), SHAPE);
+				to.offer(boiler.getOutputTank().getExtractable().getPureExtractable(), SHAPE);
 			}
 		}
 	}
@@ -68,7 +68,7 @@ public class BoilerChamberBlock extends HorizontalFacingBlock implements BlockEn
 		}
 	}
 
-	public static void furnaceToBoiler(World world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
+	private static void furnaceToBoiler(World world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
 		if (state.getBlock() == Blocks.FURNACE && blockEntity instanceof FurnaceBlockEntity) {
 			FurnaceBlockEntity furnace = ((FurnaceBlockEntity) blockEntity);
 			ItemStack fuelStack = furnace.getInvStack(1).copy();

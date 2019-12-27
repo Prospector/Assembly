@@ -11,18 +11,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.WorldView;
 import team.reborn.assembly.api.SapSource;
-import team.reborn.assembly.util.block.AssemblyProperties;
+import team.reborn.assembly.util.AssemblyConstants;
 
 import java.util.Random;
 import java.util.function.Supplier;
 
 public class HeveaLogBlock extends StrippableLogBlock implements SapSource {
 
-	public static final BooleanProperty ALIVE = AssemblyProperties.ALIVE;
-	public static final BooleanProperty NORTH_LATEX = AssemblyProperties.NORTH_LATEX;
-	public static final BooleanProperty EAST_LATEX = AssemblyProperties.EAST_LATEX;
-	public static final BooleanProperty SOUTH_LATEX = AssemblyProperties.SOUTH_LATEX;
-	public static final BooleanProperty WEST_LATEX = AssemblyProperties.WEST_LATEX;
+	public static final BooleanProperty ALIVE = AssemblyConstants.Properties.ALIVE;
+	public static final BooleanProperty NORTH_LATEX = AssemblyConstants.Properties.NORTH_LATEX;
+	public static final BooleanProperty EAST_LATEX = AssemblyConstants.Properties.EAST_LATEX;
+	public static final BooleanProperty SOUTH_LATEX = AssemblyConstants.Properties.SOUTH_LATEX;
+	public static final BooleanProperty WEST_LATEX = AssemblyConstants.Properties.WEST_LATEX;
 
 	public HeveaLogBlock(Supplier<Block> stripped, MaterialColor materialColor, Settings settings) {
 		super(stripped, materialColor, settings);

@@ -47,7 +47,7 @@ public class BoilerBlock extends HorizontalFacingBlock implements BlockEntityPro
 		BlockEntity be = world.getBlockEntity(pos);
 		if (be instanceof BoilerBlockEntity) {
 			BoilerBlockEntity boiler = (BoilerBlockEntity) be;
-			to.offer(boiler.getInputTank(), VoxelShapes.fullCube());
+			to.offer(boiler.getInputTank().getInsertable().getPureInsertable(), VoxelShapes.fullCube());
 		}
 	}
 

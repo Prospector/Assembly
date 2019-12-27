@@ -16,33 +16,32 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import team.reborn.assembly.Assembly;
 import team.reborn.assembly.attributes.IOFluidContainer;
 import team.reborn.assembly.attributes.SimpleIOFluidContainer;
 import team.reborn.assembly.block.AssemblyBlocks;
 import team.reborn.assembly.block.BoilerBlock;
 import team.reborn.assembly.container.builder.MenuBuilder;
 import team.reborn.assembly.fluid.AssemblyFluids;
+import team.reborn.assembly.util.AssemblyConstants;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements Tickable {
-	private static final String BURN_TIME_KEY = "BurnTime";
+	private static final String BURN_TIME_KEY = AssemblyConstants.NbtKeys.BURN_TIME;
 	private int burnTime;
 	private int fuelTime;
 
 	private Map<BlockPos, BlockEntity> chambers = new HashMap<>();
 
-	private static final String INPUT_FLUID_KEY = "InputFluids";
+	private static final String INPUT_FLUIDS_KEY = AssemblyConstants.NbtKeys.INPUT_FLUIDS;
 	private static final FluidAmount INPUT_CAPACITY = FluidAmount.BUCKET.checkedMul(4);
 	private final IOFluidContainer inputTank;
 
-	private static final String OUTPUT_TANK_KEY = "OutputFluids";
+	private static final String OUTPUT_FLUIDS_KEY = AssemblyConstants.NbtKeys.OUTPUT_FLUIDS;
 	private static final FluidAmount OUTPUT_CAPACITY_PER_CHAMBER = FluidAmount.BUCKET.checkedMul(4);
 	private final IOFluidContainer outputTank;
 	private FluidAmount outputCapacity = FluidAmount.ZERO;
@@ -121,7 +120,7 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 
 	@Override
 	public Container createContainer(int syncId, PlayerInventory inventory) {
-		return new MenuBuilder(new Identifier(Assembly.MOD_ID, "boiler")).player(inventory.player).inventory().hotbar().addInventory().blockEntity(this).filterSlot(0, 20, 20, AbstractFurnaceBlockEntity::canUseAsFuel).addContainer().create(this, syncId);
+		return new MenuBuilder(AssemblyConstants.Ids.BOILER).player(inventory.player).inventory().hotbar().addInventory().blockEntity(this).filterSlot(0, 20, 20, AbstractFurnaceBlockEntity::canUseAsFuel).addContainer().create(this, syncId);
 	}
 
 	private boolean isBurning() {
@@ -131,12 +130,13 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 	@Override
 	public void fromTag(CompoundTag tag) {
 		super.fromTag(tag);
-		if (tag.contains(INPUT_FLUID_KEY)) {
-			FluidVolume fluid = FluidVolume.fromTag(tag.getCompound(INPUT_FLUID_KEY));
+		if (tag.contains(INPUT_FLUIDS_KEY)) {
+			FluidVolume fluid = FluidVolume.fromTag(tag.getCompound(INPUT_FLUIDS_KEY));
 			this.inputTank.setInvFluid(0, fluid, Simulation.ACTION);
 		}
-		if (tag.contains(OUTPUT_TANK_KEY)) {
-			FluidVolume fluid = FluidVolume.fromTag(tag.getCompound(OUTPUT_TANK_KEY));
+		if (tag.contains(OUTPUT_FLUIDS_KEY)) {
+			FluidVolume fluid = FluidVolume.fromTag(tag.getCompound(OUTPUT_FLUIDS_KEY));
+			this.outputCapacity = fluid.getAmount_F();
 			this.outputTank.setInvFluid(0, fluid, Simulation.ACTION);
 		}
 		this.burnTime = tag.getShort(BURN_TIME_KEY);
@@ -146,11 +146,11 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 		tag = super.toTag(tag);
 		FluidVolume inputFluid = this.inputTank.getInvFluid(0);
 		if (!inputFluid.isEmpty()) {
-			tag.put(INPUT_FLUID_KEY, inputFluid.toTag());
+			tag.put(INPUT_FLUIDS_KEY, inputFluid.toTag());
 		}
 		FluidVolume outputFluid = this.outputTank.getInvFluid(0);
 		if (!outputFluid.isEmpty()) {
-			tag.put(OUTPUT_TANK_KEY, outputFluid.toTag());
+			tag.put(OUTPUT_FLUIDS_KEY, outputFluid.toTag());
 		}
 		tag.putShort(BURN_TIME_KEY, (short) this.burnTime);
 		return tag;
@@ -164,19 +164,11 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 		return fuelTime;
 	}
 
-	public FluidInsertable getInputTank() {
-		return inputTank.getInsertable().getPureInsertable();
-	}
-
-	public FluidExtractable getOutputTank() {
-		return outputTank.getExtractable().getPureExtractable();
-	}
-
-	public IOFluidContainer getInputView() {
+	public IOFluidContainer getInputTank() {
 		return inputTank;
 	}
 
-	public IOFluidContainer getOutputView() {
+	public IOFluidContainer getOutputTank() {
 		return outputTank;
 	}
 }

@@ -14,11 +14,12 @@ import team.reborn.assembly.fluid.AssemblyFluids;
 import team.reborn.assembly.item.AssemblyItems;
 import team.reborn.assembly.loot.AssemblyLoot;
 import team.reborn.assembly.network.AssemblyNetworking;
+import team.reborn.assembly.util.AssemblyConstants;
 import team.reborn.assembly.world.AssemblyWorldgen;
 import team.reborn.assembly.world.feature.AssemblyFeatures;
 
 public class Assembly implements ModInitializer {
-	public static final String MOD_ID = "assembly";
+	public static final String MOD_ID = AssemblyConstants.MOD_ID;
 
 	@Override
 	public void onInitialize() {

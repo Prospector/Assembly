@@ -6,7 +6,6 @@ import net.minecraft.util.math.BlockPos;
 public class BoilerChamberBlockEntity extends BlockEntity {
 
 	private BoilerBlockEntity boiler;
-	private BlockPos boilerPos;
 
 	public BoilerChamberBlockEntity() {
 		super(AssemblyBlockEntities.BOILER_CHAMBER);
@@ -16,7 +15,6 @@ public class BoilerChamberBlockEntity extends BlockEntity {
 		if (world == null || pos == null) {
 			return;
 		}
-		boilerPos = pos;
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 		if (blockEntity instanceof BoilerBlockEntity) {
 			boiler = (BoilerBlockEntity) blockEntity;
@@ -29,7 +27,4 @@ public class BoilerChamberBlockEntity extends BlockEntity {
 		return boiler;
 	}
 
-	public BlockPos getBoilerPos() {
-		return boilerPos;
-	}
 }

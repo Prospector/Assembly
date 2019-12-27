@@ -1,5 +1,6 @@
 package team.reborn.assembly.client.renderer.blockentityrenderer;
 
+import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.minecraft.client.MinecraftClient;
@@ -15,7 +16,6 @@ import net.minecraft.client.util.math.Matrix4f;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import team.reborn.assembly.blockentity.WoodenBarrelBlockEntity;
@@ -29,15 +29,16 @@ public class WoodenBarrelBlockEntityRenderer extends BlockEntityRenderer<WoodenB
 
 	@Override
 	public void render(WoodenBarrelBlockEntity barrel, float delta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-		if (barrel.fluidInstance != null && barrel.fluidInstance.getFluid() != Fluids.EMPTY) {
-			Fluid fluid = barrel.fluidInstance.getFluid();
+		FluidVolume volume = barrel.getTank().getInvFluid(0);
+		if (!volume.isEmpty()) {
+			Fluid fluid = volume.getRawFluid();
 			FluidRenderHandler handler = FluidRenderHandlerRegistry.INSTANCE.get(fluid);
 			BlockPos pos = barrel.getPos();
 			World world = barrel.getWorld();
 			FluidState state = fluid.getDefaultState();
 			Sprite sprite = handler.getFluidSprites(world, pos, state)[0];
 			MinecraftClient.getInstance().getTextureManager().bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEX);
-			double height = (barrel.fluidInstance.getAmount().getRawValue() / (float) WoodenBarrelBlockEntity.CAPACITY.getRawValue() * 14) + 1;
+			double height = (volume.getAmount_F().asInexactDouble() / barrel.getTank().getCapacity(0).asInexactDouble() * 14) + 1;
 			int color = handler.getFluidColor(world, pos, state);
 			float r = (float) (color >> 16 & 255) / 255.0F;
 			float g = (float) (color >> 8 & 255) / 255.0F;
