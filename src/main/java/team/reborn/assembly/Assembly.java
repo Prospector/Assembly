@@ -14,6 +14,8 @@ import team.reborn.assembly.fluid.AssemblyFluids;
 import team.reborn.assembly.item.AssemblyItems;
 import team.reborn.assembly.loot.AssemblyLoot;
 import team.reborn.assembly.network.AssemblyNetworking;
+import team.reborn.assembly.recipe.AssemblyRecipeTypes;
+import team.reborn.assembly.recipe.serializer.AssemblyRecipeSerializers;
 import team.reborn.assembly.util.AssemblyConstants;
 import team.reborn.assembly.world.AssemblyWorldgen;
 import team.reborn.assembly.world.feature.AssemblyFeatures;
@@ -29,6 +31,8 @@ public class Assembly implements ModInitializer {
 		AssemblyBlocks.register();
 		AssemblyBlockEntities.register();
 		AssemblyContainers.register();
+		AssemblyRecipeTypes.register();
+		AssemblyRecipeSerializers.register();
 		AssemblyEntities.register();
 		AssemblyFeatures.register();
 		AssemblyWorldgen.register();

@@ -1,5 +1,6 @@
 package team.reborn.assembly.fluid;
 
+import alexiil.mc.lib.attributes.fluid.volume.FluidKey;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -30,6 +31,7 @@ import team.reborn.assembly.item.AssemblyItems;
 import team.reborn.assembly.tags.AssemblyFluidTags;
 
 import java.util.Random;
+import java.util.function.Function;
 
 public abstract class AssemblyFluid extends BaseFluid implements TexturedFluid {
 
@@ -187,13 +189,16 @@ public abstract class AssemblyFluid extends BaseFluid implements TexturedFluid {
 
 	public static class Settings {
 		private String name;
+		private Identifier id;
 		private int tickRate = 5;
 		private int levelDecreasePerBlock = 1;
 		private float blastResistance = 100.0F;
 		private boolean infinite = false;
+		private FluidKey.FluidKeyBuilder fluidKeyBuilder = null;
 
 		public Settings(String name) {
 			this.name = name;
+			this.id = new Identifier(Assembly.MOD_ID, name);
 		}
 
 		public Settings tickRate(int tickRate) {
@@ -216,8 +221,17 @@ public abstract class AssemblyFluid extends BaseFluid implements TexturedFluid {
 			return this;
 		}
 
+		public Settings fluidKey(Function<FluidKey.FluidKeyBuilder, FluidKey.FluidKeyBuilder> builder) {
+			this.fluidKeyBuilder = builder.apply(new FluidKey.FluidKeyBuilder(getId()));
+			return this;
+		}
+
 		public String getName() {
 			return name;
+		}
+
+		public Identifier getId() {
+			return id;
 		}
 	}
 }

@@ -1,8 +1,6 @@
 package team.reborn.assembly.blockentity;
 
 import alexiil.mc.lib.attributes.Simulation;
-import alexiil.mc.lib.attributes.fluid.FluidExtractable;
-import alexiil.mc.lib.attributes.fluid.FluidInsertable;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKeys;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
@@ -25,12 +23,13 @@ import team.reborn.assembly.block.AssemblyBlocks;
 import team.reborn.assembly.block.BoilerBlock;
 import team.reborn.assembly.container.builder.MenuBuilder;
 import team.reborn.assembly.fluid.AssemblyFluids;
+import team.reborn.assembly.recipe.provider.BoilingRecipeProvider;
 import team.reborn.assembly.util.AssemblyConstants;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements Tickable {
+public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements Tickable, BoilingRecipeProvider {
 	private static final String BURN_TIME_KEY = AssemblyConstants.NbtKeys.BURN_TIME;
 	private int burnTime;
 	private int fuelTime;
@@ -170,5 +169,10 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 
 	public IOFluidContainer getOutputTank() {
 		return outputTank;
+	}
+
+	@Override
+	public FluidVolume getFluidInput() {
+		return inputTank.getInvFluid(0);
 	}
 }

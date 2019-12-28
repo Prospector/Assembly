@@ -1,5 +1,8 @@
 package team.reborn.assembly.fluid;
 
+import alexiil.mc.lib.attributes.fluid.volume.FluidKey;
+import alexiil.mc.lib.attributes.fluid.volume.FluidKeys;
+import alexiil.mc.lib.attributes.fluid.volume.SimpleFluidKey;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import net.minecraft.util.Identifier;
@@ -20,13 +23,13 @@ public class AssemblyFluids {
 	public static AssemblyFluid FLOWING_BIOMASS = getFlowing(BIOMASS);
 	public static AssemblyFluid OIL = add(new AssemblyFluid.Settings("oil").tickRate(20));
 	public static AssemblyFluid FLOWING_OIL = getFlowing(OIL);
-	public static AssemblyFluid STEAM = add(new AssemblyFluid.Settings("steam").tickRate(100));
+	public static AssemblyFluid STEAM = add(new AssemblyFluid.Settings("steam").tickRate(100).fluidKey(FluidKey.FluidKeyBuilder::setGas));
 	public static AssemblyFluid FLOWING_STEAM = getFlowing(STEAM);
 
 	public static AssemblyFluid add(AssemblyFluid.Settings settings) {
 		AssemblyFluid still = new AssemblyFluid.Still(settings);
 		AssemblyFluid flowing = new AssemblyFluid.Flowing(settings);
-		FLUIDS.put(new Identifier(Assembly.MOD_ID, settings.getName()), still);
+		FLUIDS.put(settings.getId(), still);
 		FLUIDS.put(new Identifier(Assembly.MOD_ID, "flowing_" + settings.getName()), flowing);
 		STILL_FLOWING_MAP.put(still, flowing);
 		return still;

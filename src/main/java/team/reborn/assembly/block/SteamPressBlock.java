@@ -44,7 +44,7 @@ public class SteamPressBlock extends HorizontalFacingBlock implements BlockEntit
 			BlockEntity be = world.getBlockEntity(pos);
 			if (be instanceof SteamPressBlockEntity) {
 				SteamPressBlockEntity steamPress = (SteamPressBlockEntity) be;
-				to.offer(steamPress.getInputTank().getInsertable().getPureInsertable(), LOWER_SHAPE);
+				to.offer(steamPress.getTank().getInsertable().getPureInsertable(), LOWER_SHAPE);
 			}
 		}
 	}

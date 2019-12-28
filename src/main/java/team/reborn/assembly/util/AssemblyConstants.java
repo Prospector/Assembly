@@ -14,6 +14,8 @@ public class AssemblyConstants {
 		public static final String BURN_TIME = "BurnTime";
 		public static final String PRESS_PROGRESS = "Progress";
 		public static final String PRESS_RESET = "Reset";
+		public static final String RECIPE = "Recipe";
+		public static final String CURRENT_PRESSES = "CurrentPresses";
 	}
 
 	public static class Ids {

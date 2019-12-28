@@ -2,6 +2,9 @@ package team.reborn.assembly.block;
 
 import alexiil.mc.lib.attributes.AttributeList;
 import alexiil.mc.lib.attributes.AttributeProvider;
+import alexiil.mc.lib.attributes.fluid.FluidAttributes;
+import alexiil.mc.lib.attributes.fluid.GroupedFluidInv;
+import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
@@ -28,6 +31,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import team.reborn.assembly.attributes.IOFluidContainer;
 import team.reborn.assembly.blockentity.AssemblyBlockEntities;
 import team.reborn.assembly.blockentity.BoilerBlockEntity;
 import team.reborn.assembly.container.AssemblyContainers;
@@ -58,9 +62,14 @@ public class BoilerBlock extends HorizontalFacingBlock implements BlockEntityPro
 		} else {
 			//Fluid filling/draining
 			ItemStack stack = player.getStackInHand(hand);
-//			if () {
-//			}
-			ContainerProviderRegistry.INSTANCE.openContainer(AssemblyContainers.BOILER, player, buf -> buf.writeBlockPos(pos));
+			BlockEntity boiler = world.getBlockEntity(pos);
+			boolean filledTank = false;
+			if (boiler instanceof BoilerBlockEntity) {
+				//Todo: fill tank
+			}
+			if (!filledTank) {
+				ContainerProviderRegistry.INSTANCE.openContainer(AssemblyContainers.BOILER, player, buf -> buf.writeBlockPos(pos));
+			}
 			return ActionResult.SUCCESS;
 		}
 	}

@@ -1,0 +1,8 @@
+{
+  "type": "assembly:steam_pressing",
+  "ingredient": {
+    "item": "minecraft:dirt"
+  },
+  "presses": 1,
+  "result": "minecraft:diamond"
+}

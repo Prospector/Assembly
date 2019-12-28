@@ -39,9 +39,9 @@ public class DipstickItem extends Item {
 				return ActionResult.SUCCESS;
 			}
 			if (blockEntity instanceof SteamPressBlockEntity) {
-				context.getPlayer().sendMessage(new LiteralText(format + "Fluid: " + Registry.FLUID.getId(((SteamPressBlockEntity) blockEntity).getInputTank().getInvFluid(0).getRawFluid())));
-				context.getPlayer().sendMessage(new LiteralText(format + "Amount: " + ((SteamPressBlockEntity) blockEntity).getInputTank().getInvFluid(0).getAmount_F().toDisplayString()));
-				context.getPlayer().sendMessage(new LiteralText(format + "Capacity: " + ((SteamPressBlockEntity) blockEntity).getInputTank().getMaxAmount_F(0).toDisplayString()));
+				context.getPlayer().sendMessage(new LiteralText(format + "Fluid: " + Registry.FLUID.getId(((SteamPressBlockEntity) blockEntity).getTank().getInvFluid(0).getRawFluid())));
+				context.getPlayer().sendMessage(new LiteralText(format + "Amount: " + ((SteamPressBlockEntity) blockEntity).getTank().getInvFluid(0).getAmount_F().toDisplayString()));
+				context.getPlayer().sendMessage(new LiteralText(format + "Capacity: " + ((SteamPressBlockEntity) blockEntity).getTank().getMaxAmount_F(0).toDisplayString()));
 				return ActionResult.SUCCESS;
 			}
 			if (blockEntity instanceof WoodenBarrelBlockEntity) {
