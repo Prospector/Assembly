@@ -21,6 +21,7 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}"
 	modCompile "net.fabricmc:fabric-loade	r:${project.loader_version}"
 	modCompile "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	modCompile "com.terraformersmc:terraform:${project.terraform_version}"
 	modCompile "RebornCore:RebornCore-1.15:${project.reborn_core_version}"
 	modCompile "alexiil.mc.lib:libblockattributes-fluids:${project.lba_version}"
 }
