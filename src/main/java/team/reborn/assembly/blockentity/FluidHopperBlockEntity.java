@@ -22,11 +22,11 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Nameable;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
-import team.reborn.assembly.util.fluid.IOFluidContainer;
-import team.reborn.assembly.util.fluid.SimpleIOFluidContainer;
 import team.reborn.assembly.block.AssemblyBlocks;
 import team.reborn.assembly.block.FluidHopperBlock;
 import team.reborn.assembly.util.AssemblyConstants;
+import team.reborn.assembly.util.fluid.IOFluidContainer;
+import team.reborn.assembly.util.fluid.SimpleIOFluidContainer;
 import team.reborn.assembly.util.interaction.interactable.TankIOInteractable;
 
 import javax.annotation.Nullable;
@@ -87,13 +87,16 @@ public class FluidHopperBlockEntity extends BlockEntity implements FluidHopper, 
 					// Pull fluid from BlockState
 					BlockState upBlockState = world.getBlockState(upPos);
 					if (upBlockState.getBlock() instanceof FluidDrainable) {
-						Fluid fluid = ((FluidDrainable) upBlockState.getBlock()).tryDrainFluid(world, upPos, upBlockState);
-						if (fluid != Fluids.EMPTY) {
-							FluidVolume upFluidVolume = FluidKeys.get(fluid).withAmount(FluidAmount.BUCKET);
-							if (tank.attemptInsertion(upFluidVolume, Simulation.SIMULATE).isEmpty()) {
-								tank.attemptInsertion(upFluidVolume, Simulation.ACTION);
-								world.playSound(null, upPos, fluid.matches(FluidTags.LAVA) ? SoundEvents.ITEM_BUCKET_FILL_LAVA : SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
-								didWork = true;
+						Fluid stateFluid = upBlockState.getFluidState().getFluid();
+						if (stateFluid != Fluids.EMPTY && tank.attemptInsertion(FluidKeys.get(stateFluid).withAmount(FluidAmount.BUCKET), Simulation.SIMULATE).isEmpty()) {
+							Fluid fluid = ((FluidDrainable) upBlockState.getBlock()).tryDrainFluid(world, upPos, upBlockState);
+							if (fluid != Fluids.EMPTY) {
+								FluidVolume upFluidVolume = FluidKeys.get(fluid).withAmount(FluidAmount.BUCKET);
+								if (tank.attemptInsertion(upFluidVolume, Simulation.SIMULATE).isEmpty()) {
+									tank.attemptInsertion(upFluidVolume, Simulation.ACTION);
+									world.playSound(null, upPos, fluid.matches(FluidTags.LAVA) ? SoundEvents.ITEM_BUCKET_FILL_LAVA : SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+									didWork = true;
+								}
 							}
 						}
 					}
