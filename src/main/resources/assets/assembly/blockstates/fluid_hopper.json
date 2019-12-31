@@ -1,0 +1,9 @@
+{
+  "variants": {
+    "facing=down": { "model": "assembly:block/fluid_hopper" },
+    "facing=north": { "model": "assembly:block/fluid_hopper_side" },
+    "facing=south": { "model": "assembly:block/fluid_hopper_side", "y": 180 },
+    "facing=west": { "model": "assembly:block/fluid_hopper_side", "y": 270 },
+    "facing=east": { "model": "assembly:block/fluid_hopper_side", "y": 90 }
+  }
+}

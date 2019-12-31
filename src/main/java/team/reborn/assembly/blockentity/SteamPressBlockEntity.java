@@ -1,12 +1,11 @@
 package team.reborn.assembly.blockentity;
 
 import alexiil.mc.lib.attributes.Simulation;
+import alexiil.mc.lib.attributes.fluid.FluidInsertable;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKey;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKeys;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.DoubleBlockHalf;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,37 +25,42 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
-import team.reborn.assembly.attributes.IOFluidContainer;
-import team.reborn.assembly.attributes.SimpleIOFluidContainer;
 import team.reborn.assembly.block.SteamPressBlock;
+import team.reborn.assembly.blockentity.base.AssemblySyncedNbtBlockEntity;
 import team.reborn.assembly.fluid.AssemblyFluids;
 import team.reborn.assembly.recipe.AssemblyRecipeTypes;
 import team.reborn.assembly.recipe.PressingRecipe;
 import team.reborn.assembly.recipe.provider.PressingRecipeProvider;
 import team.reborn.assembly.util.AssemblyConstants;
+import team.reborn.assembly.util.fluid.IOFluidContainer;
+import team.reborn.assembly.util.fluid.SimpleIOFluidContainer;
+import team.reborn.assembly.util.interaction.interactable.TankInputInteractable;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
 
-public class SteamPressBlockEntity extends BlockEntity implements Tickable, BlockEntityClientSerializable, Clearable, SidedInventory, PressingRecipeProvider {
+public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implements Tickable, Clearable, SidedInventory, PressingRecipeProvider, TankInputInteractable {
+
+	private static final String MASTER_KEY = AssemblyConstants.NbtKeys.MASTER;
+	private Boolean master = null;
 
 	private static int MAX_PROGRESS = 5;
-	private static int MAX_RESET = 30;
+	private static int MAX_RESET = 50;
 	private static final String PROGRESS_KEY = AssemblyConstants.NbtKeys.PRESS_PROGRESS;
 	private int progress = 0;
 	private static final String RESET_KEY = AssemblyConstants.NbtKeys.PRESS_RESET;
 	private int reset = MAX_RESET;
 
 	private static final FluidKey STEAM = FluidKeys.get(AssemblyFluids.STEAM);
-	private static final FluidAmount STEAM_COST_PER_PROGRESS = FluidAmount.BUCKET.roundedDiv(100);
-	private static final FluidAmount STEAM_COST_PER_RESET = FluidAmount.BUCKET.roundedDiv(100);
+	private static final FluidAmount STEAM_COST_PER_PROGRESS_INCREMENT = FluidAmount.BUCKET.roundedDiv(50);
+	private static final FluidAmount STEAM_COST_PER_RESET_INCREMENT = FluidAmount.BUCKET.roundedDiv(200);
 
 	private static final String FLUIDS_KEY = AssemblyConstants.NbtKeys.FLUIDS;
 	private static final FluidAmount TANK_CAPACITY = FluidAmount.BUCKET.checkedMul(4);
 	private final IOFluidContainer tank;
 
-	private static final int INPUT_SLOT = 0;
-	private static final int OUTPUT_SLOT = 1;
+	public static final int INPUT_SLOT = 0;
+	public static final int OUTPUT_SLOT = 1;
 	private static final int[] TOP_SLOTS = new int[]{INPUT_SLOT};
 	private static final int[] SIDE_SLOTS = new int[]{INPUT_SLOT, OUTPUT_SLOT};
 	private static final int[] BOTTOM_SLOTS = new int[]{OUTPUT_SLOT};
@@ -77,23 +81,24 @@ public class SteamPressBlockEntity extends BlockEntity implements Tickable, Bloc
 
 	@Override
 	public void tick() {
-		MAX_PROGRESS = 5;
-		MAX_RESET = 50;
 		if (world != null) {
 			if (!world.isClient && isMaster()) {
+				boolean sync = false;
 				if (reset < MAX_RESET) {
-					if (!tank.attemptExtraction(STEAM::equals, STEAM_COST_PER_RESET, Simulation.SIMULATE).isEmpty()) {
-						tank.attemptExtraction(STEAM::equals, STEAM_COST_PER_RESET, Simulation.ACTION);
+					if (!tank.attemptExtraction(STEAM::equals, STEAM_COST_PER_RESET_INCREMENT, Simulation.SIMULATE).isEmpty()) {
+						tank.attemptExtraction(STEAM::equals, STEAM_COST_PER_RESET_INCREMENT, Simulation.ACTION);
 						reset++;
+						sync = true;
 					}
 					if (reset == MAX_RESET) {
 						progress = 0;
+						sync = true;
 					}
-					sync();
 				} else if (recipe != null) {
-					if (!tank.attemptExtraction(STEAM::equals, STEAM_COST_PER_PROGRESS, Simulation.SIMULATE).isEmpty()) {
-						tank.attemptExtraction(STEAM::equals, STEAM_COST_PER_PROGRESS, Simulation.ACTION);
+					if (!tank.attemptExtraction(STEAM::equals, STEAM_COST_PER_PROGRESS_INCREMENT, Simulation.SIMULATE).isEmpty()) {
+						tank.attemptExtraction(STEAM::equals, STEAM_COST_PER_PROGRESS_INCREMENT, Simulation.ACTION);
 						progress++;
+						sync = true;
 					}
 					if (progress == MAX_PROGRESS) {
 						world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 0.6F, 0.5F + (world.random.nextFloat() - world.random.nextFloat()) * 0.4F);
@@ -101,6 +106,7 @@ public class SteamPressBlockEntity extends BlockEntity implements Tickable, Bloc
 							((ServerWorld) world).spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, getRenderStack()), pos.getX() + 0.5, pos.getY() + 0.7, pos.getZ() + 0.5, 10, 0.1, 0.1, 0.1, 0.05);
 						}
 						currentPresses++;
+						sync = true;
 						reset = 0;
 						if (recipe.presses <= currentPresses) {
 							items.set(INPUT_SLOT, ItemStack.EMPTY);
@@ -108,6 +114,8 @@ public class SteamPressBlockEntity extends BlockEntity implements Tickable, Bloc
 							updateRecipe();
 						}
 					}
+				}
+				if (sync) {
 					sync();
 				}
 			}
@@ -119,8 +127,67 @@ public class SteamPressBlockEntity extends BlockEntity implements Tickable, Bloc
 			recipe = this.world.getRecipeManager().getFirstMatch(AssemblyRecipeTypes.STEAM_PRESSING, getMaster(), world).orElse(null);
 			if (recipe == null) {
 				currentPresses = 0;
+				ItemStack input = getInvStack(INPUT_SLOT);
+				if (!input.isEmpty()) {
+					setInvStack(INPUT_SLOT, ItemStack.EMPTY);
+					setInvStack(OUTPUT_SLOT, input);
+				}
 			}
 		}
+	}
+
+	@Override
+	public void fromTag(CompoundTag tag, boolean syncing) {
+		if (tag.contains(MASTER_KEY)) {
+			this.master = tag.getBoolean(MASTER_KEY);
+		}
+		this.items = DefaultedList.ofSize(this.getInvSize(), ItemStack.EMPTY);
+		Inventories.fromTag(tag, this.items);
+		this.progress = tag.getInt(PROGRESS_KEY);
+		this.reset = tag.getInt(RESET_KEY);
+		if (!syncing) {
+			if (isMaster()) {
+				if (tag.contains(FLUIDS_KEY)) {
+					FluidVolume fluid = FluidVolume.fromTag(tag.getCompound(FLUIDS_KEY));
+					this.tank.setInvFluid(0, fluid, Simulation.ACTION);
+				}
+			}
+			String recipeValue = tag.getString(RECIPE_KEY);
+			if (!recipeValue.equals("null")) {
+				PressingRecipe recipe = null;
+				if (world != null) {
+					Recipe<?> gottenRecipe = world.getRecipeManager().get(new Identifier(recipeValue)).orElse(null);
+					if (gottenRecipe instanceof PressingRecipe) {
+						recipe = (PressingRecipe) gottenRecipe;
+					}
+				}
+				this.recipe = recipe;
+			}
+			this.currentPresses = tag.getInt(CURRENT_PRESSES_KEY);
+			updateRecipe();
+		}
+	}
+
+	@Override
+	public CompoundTag toTag(CompoundTag tag, boolean syncing) {
+		if (master != null) {
+			tag.putBoolean(MASTER_KEY, master);
+		}
+		Inventories.toTag(tag, this.items);
+		tag.putInt(PROGRESS_KEY, progress);
+		tag.putInt(RESET_KEY, reset);
+		if (!syncing) {
+			if (isMaster()) {
+				FluidVolume inputFluid = this.tank.getInvFluid(0);
+				if (!inputFluid.isEmpty()) {
+					tag.put(FLUIDS_KEY, inputFluid.toTag());
+				}
+			}
+			tag.putString(RECIPE_KEY, recipe == null ? "null" : recipe.getId().toString());
+			tag.putInt(CURRENT_PRESSES_KEY, currentPresses);
+			updateRecipe();
+		}
+		return tag;
 	}
 
 	public ItemStack getRenderStack() {
@@ -129,83 +196,28 @@ public class SteamPressBlockEntity extends BlockEntity implements Tickable, Bloc
 		return isInvEmpty() ? ItemStack.EMPTY : !input.isEmpty() ? input : output;
 	}
 
-	@Override
-	public void fromTag(CompoundTag tag) {
-		super.fromTag(tag);
-		this.items = DefaultedList.ofSize(this.getInvSize(), ItemStack.EMPTY);
-		Inventories.fromTag(tag, this.items);
-		if (tag.contains(FLUIDS_KEY)) {
-			FluidVolume fluid = FluidVolume.fromTag(tag.getCompound(FLUIDS_KEY));
-			this.tank.setInvFluid(0, fluid, Simulation.ACTION);
-		}
-		this.progress = tag.getInt(PROGRESS_KEY);
-		this.reset = tag.getInt(RESET_KEY);
-		String recipeValue = tag.getString(RECIPE_KEY);
-		if (!recipeValue.equals("null")) {
-			PressingRecipe recipe = null;
-			if (world != null) {
-				Recipe<?> gottenRecipe = world.getRecipeManager().get(new Identifier(recipeValue)).orElse(null);
-				if (gottenRecipe instanceof PressingRecipe) {
-					recipe = (PressingRecipe) gottenRecipe;
-				}
-			}
-			this.recipe = recipe;
-		}
-		this.currentPresses = tag.getInt(CURRENT_PRESSES_KEY);
-	}
-
-	@Override
-	public CompoundTag toTag(CompoundTag tag) {
-		tag = super.toTag(tag);
-		Inventories.toTag(tag, this.items);
-		FluidVolume inputFluid = this.tank.getInvFluid(0);
-		if (!inputFluid.isEmpty()) {
-			tag.put(FLUIDS_KEY, inputFluid.toTag());
-		}
-		tag.putInt(PROGRESS_KEY, progress);
-		tag.putInt(RESET_KEY, reset);
-		tag.putString(RECIPE_KEY, recipe == null ? "null" : recipe.getId().toString());
-		tag.putInt(CURRENT_PRESSES_KEY, currentPresses);
-		return tag;
-	}
-
 	public VoxelShape getArmVoxelShape(DoubleBlockHalf half) {
 		return SteamPressBlock.ARM_SHAPE.offset(0, half == DoubleBlockHalf.LOWER ? getArmOffset() + 1 : getArmOffset(), 0);
 	}
 
 	public IOFluidContainer getTank() {
-		if (world != null) {
-			BlockState state = world.getBlockState(pos);
-			BlockEntity lowerHalf = world.getBlockEntity(pos.down());
-			if (state.getBlock() instanceof SteamPressBlock && state.get(SteamPressBlock.HALF) == DoubleBlockHalf.UPPER && lowerHalf instanceof SteamPressBlockEntity) {
-				return ((SteamPressBlockEntity) lowerHalf).tank;
-			}
-		}
-		return tank;
-	}
-
-	@Override
-	public void fromClientTag(CompoundTag tag) {
-		fromTag(tag);
-	}
-
-	@Override
-	public CompoundTag toClientTag(CompoundTag tag) {
-		return toTag(tag);
+		return getMaster().tank;
 	}
 
 	private boolean isMaster() {
-		if (world != null) {
-			BlockState state = world.getBlockState(pos);
-			return state.getBlock() instanceof SteamPressBlock && state.get(SteamPressBlock.HALF) == DoubleBlockHalf.LOWER;
+		if (master == null) {
+			if (world != null) {
+				master = getCachedState().getBlock() instanceof SteamPressBlock && getCachedState().get(SteamPressBlock.HALF) == DoubleBlockHalf.LOWER;
+			} else {
+				return false;
+			}
 		}
-		return false;
+		return master;
 	}
 
 	private SteamPressBlockEntity getMaster() {
 		if (world != null) {
-			BlockState state = world.getBlockState(pos);
-			if (state.getBlock() instanceof SteamPressBlock && state.get(SteamPressBlock.HALF) == DoubleBlockHalf.UPPER) {
+			if (getCachedState().getBlock() instanceof SteamPressBlock && getCachedState().get(SteamPressBlock.HALF) == DoubleBlockHalf.UPPER) {
 				BlockEntity lowerHalf = world.getBlockEntity(pos.down());
 				if (lowerHalf instanceof SteamPressBlockEntity) {
 					return ((SteamPressBlockEntity) lowerHalf);
@@ -251,7 +263,7 @@ public class SteamPressBlockEntity extends BlockEntity implements Tickable, Bloc
 
 	@Override
 	public boolean canInsertInvStack(int slot, ItemStack stack, @Nullable Direction dir) {
-		return slot == INPUT_SLOT && isInvEmpty();
+		return slot == INPUT_SLOT && isInvEmpty() && stack.getCount() == 1;
 	}
 
 	@Override
@@ -288,7 +300,9 @@ public class SteamPressBlockEntity extends BlockEntity implements Tickable, Bloc
 		if (slot == INPUT_SLOT && amount > 0) {
 			updateRecipe();
 		}
-		sync();
+		if (world != null && !world.isClient) {
+			sync();
+		}
 		return Inventories.splitStack(getMaster().items, slot, amount);
 	}
 
@@ -297,7 +311,9 @@ public class SteamPressBlockEntity extends BlockEntity implements Tickable, Bloc
 		if (slot == INPUT_SLOT) {
 			updateRecipe();
 		}
-		sync();
+		if (world != null && !world.isClient) {
+			sync();
+		}
 		return Inventories.removeStack(getMaster().items, slot);
 	}
 
@@ -314,7 +330,9 @@ public class SteamPressBlockEntity extends BlockEntity implements Tickable, Bloc
 			this.markDirty();
 			updateRecipe();
 		}
-		sync();
+		if (world != null && !world.isClient) {
+			sync();
+		}
 	}
 
 	@Override
@@ -332,5 +350,10 @@ public class SteamPressBlockEntity extends BlockEntity implements Tickable, Bloc
 	@Override
 	public int getCurrentPresses() {
 		return currentPresses;
+	}
+
+	@Override
+	public FluidInsertable getInteractableInsertable() {
+		return getTank().getInsertable().getPureInsertable();
 	}
 }

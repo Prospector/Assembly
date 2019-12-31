@@ -1,6 +1,7 @@
 package team.reborn.assembly.blockentity;
 
 import alexiil.mc.lib.attributes.Simulation;
+import alexiil.mc.lib.attributes.fluid.FluidInsertable;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKeys;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
@@ -10,26 +11,35 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.container.Container;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.text.Text;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import team.reborn.assembly.attributes.IOFluidContainer;
-import team.reborn.assembly.attributes.SimpleIOFluidContainer;
+import team.reborn.assembly.util.fluid.IOFluidContainer;
+import team.reborn.assembly.util.fluid.SimpleIOFluidContainer;
 import team.reborn.assembly.block.AssemblyBlocks;
 import team.reborn.assembly.block.BoilerBlock;
 import team.reborn.assembly.container.builder.MenuBuilder;
 import team.reborn.assembly.fluid.AssemblyFluids;
 import team.reborn.assembly.recipe.provider.BoilingRecipeProvider;
 import team.reborn.assembly.util.AssemblyConstants;
+import team.reborn.assembly.util.interaction.interactable.TankInputInteractable;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements Tickable, BoilingRecipeProvider {
+public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements Tickable, BoilingRecipeProvider, TankInputInteractable, SidedInventory {
+
+	private static final int FUEL_SLOT = 0;
+	private static final int[] BOTTOM_SLOTS = new int[]{FUEL_SLOT};
+	private static final int[] SIDE_SLOTS = new int[]{FUEL_SLOT};
+
 	private static final String BURN_TIME_KEY = AssemblyConstants.NbtKeys.BURN_TIME;
 	private int burnTime;
 	private int fuelTime;
@@ -174,5 +184,31 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 	@Override
 	public FluidVolume getFluidInput() {
 		return inputTank.getInvFluid(0);
+	}
+
+	@Override
+	public FluidInsertable getInteractableInsertable() {
+		return getInputTank().getInsertable().getPureInsertable();
+	}
+
+	public int[] getInvAvailableSlots(Direction side) {
+		if (side == Direction.DOWN) {
+			return BOTTOM_SLOTS;
+		} else {
+			return SIDE_SLOTS;
+		}
+	}
+
+	public boolean canInsertInvStack(int slot, ItemStack stack, @Nullable Direction dir) {
+		return this.isValidInvStack(slot, stack);
+	}
+
+	public boolean canExtractInvStack(int slot, ItemStack stack, Direction dir) {
+		if (dir == Direction.DOWN && slot == 1) {
+			Item item = stack.getItem();
+			return item == Items.WATER_BUCKET || item == Items.BUCKET;
+		}
+
+		return true;
 	}
 }

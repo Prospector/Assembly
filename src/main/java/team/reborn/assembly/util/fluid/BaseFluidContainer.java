@@ -1,4 +1,4 @@
-package team.reborn.assembly.attributes;
+package team.reborn.assembly.util.fluid;
 
 import alexiil.mc.lib.attributes.AttributeUtil;
 import alexiil.mc.lib.attributes.ListenerRemovalToken;
@@ -11,7 +11,6 @@ import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.filter.ConstantFluidFilter;
 import alexiil.mc.lib.attributes.fluid.filter.FluidFilter;
 import alexiil.mc.lib.attributes.fluid.impl.GroupedFluidInvFixedWrapper;
-import alexiil.mc.lib.attributes.fluid.impl.SimpleFixedFluidInv;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKey;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import alexiil.mc.lib.attributes.misc.Saveable;

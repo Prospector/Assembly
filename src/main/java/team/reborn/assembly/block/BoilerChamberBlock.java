@@ -7,6 +7,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.FurnaceBlockEntity;
 import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
@@ -14,6 +15,9 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
@@ -24,12 +28,14 @@ import net.minecraft.world.World;
 import team.reborn.assembly.blockentity.AssemblyBlockEntities;
 import team.reborn.assembly.blockentity.BoilerBlockEntity;
 import team.reborn.assembly.blockentity.BoilerChamberBlockEntity;
+import team.reborn.assembly.util.interaction.InteractionUtil;
+import team.reborn.assembly.util.interaction.interactable.InteractionBypass;
 
 import javax.annotation.Nullable;
 
-public class BoilerChamberBlock extends HorizontalFacingBlock implements BlockEntityProvider, Waterloggable, AttributeProvider {
-
+public class BoilerChamberBlock extends HorizontalFacingBlock implements BlockEntityProvider, Waterloggable, AttributeProvider, InteractionBypass {
 	public static final VoxelShape SHAPE;
+
 	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
 	public BoilerChamberBlock(Settings settings) {
@@ -37,10 +43,20 @@ public class BoilerChamberBlock extends HorizontalFacingBlock implements BlockEn
 	}
 
 	@Override
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		return InteractionUtil.handleDefaultInteractions(state, world, pos, player, hand, hit);
+	}
+
+	@Override
+	public boolean bypassesInteractions(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		return state.getBlock() instanceof BoilerChamberBlock;
+	}
+
+	@Override
 	public void addAllAttributes(World world, BlockPos pos, BlockState state, AttributeList<?> to) {
-		BlockEntity be = world.getBlockEntity(pos);
-		if (be instanceof BoilerChamberBlockEntity) {
-			BoilerChamberBlockEntity chamber = (BoilerChamberBlockEntity) be;
+		BlockEntity blockEntity = world.getBlockEntity(pos);
+		if (blockEntity instanceof BoilerChamberBlockEntity) {
+			BoilerChamberBlockEntity chamber = (BoilerChamberBlockEntity) blockEntity;
 			BoilerBlockEntity boiler = chamber.getBoiler();
 			if (boiler != null) {
 				to.offer(boiler.getOutputTank().getExtractable().getPureExtractable(), SHAPE);

@@ -14,6 +14,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -22,6 +25,8 @@ import net.minecraft.world.World;
 import team.reborn.assembly.blockentity.AssemblyBlockEntities;
 import team.reborn.assembly.blockentity.SteamPressBlockEntity;
 import team.reborn.assembly.item.AssemblyItems;
+import team.reborn.assembly.util.interaction.InteractionActionResult;
+import team.reborn.assembly.util.interaction.InteractionUtil;
 
 import javax.annotation.Nullable;
 
@@ -41,12 +46,40 @@ public class SteamPressBlock extends HorizontalFacingBlock implements BlockEntit
 	@Override
 	public void addAllAttributes(World world, BlockPos pos, BlockState state, AttributeList<?> to) {
 		if (state.get(HALF) == DoubleBlockHalf.LOWER) {
-			BlockEntity be = world.getBlockEntity(pos);
-			if (be instanceof SteamPressBlockEntity) {
-				SteamPressBlockEntity steamPress = (SteamPressBlockEntity) be;
+			BlockEntity blockEntity = world.getBlockEntity(pos);
+			if (blockEntity instanceof SteamPressBlockEntity) {
+				SteamPressBlockEntity steamPress = (SteamPressBlockEntity) blockEntity;
 				to.offer(steamPress.getTank().getInsertable().getPureInsertable(), LOWER_SHAPE);
 			}
 		}
+	}
+
+	@Override
+	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		return InteractionUtil.handleDefaultInteractions(state, world, pos, player, hand, hit, (state1, world1, pos1, player1, hand1, hit1) -> {
+			if (world != null) {
+				BlockEntity blockEntity = world.getBlockEntity(pos);
+				if (blockEntity instanceof SteamPressBlockEntity) {
+					SteamPressBlockEntity steamPress = ((SteamPressBlockEntity) blockEntity);
+					if (!steamPress.getInvStack(SteamPressBlockEntity.OUTPUT_SLOT).isEmpty() && player.inventory.insertStack(steamPress.getInvStack(SteamPressBlockEntity.OUTPUT_SLOT))) {
+						steamPress.removeInvStack(SteamPressBlockEntity.OUTPUT_SLOT);
+						return InteractionActionResult.SUCCESS;
+					} else {
+						if (steamPress.canInsertInvStack(SteamPressBlockEntity.INPUT_SLOT, player.getStackInHand(hand).copy().split(1), hit.getSide())) {
+							ItemStack stack;
+							if (!player.isCreative()) {
+								stack = player.getStackInHand(hand).split(1);
+							} else {
+								stack = player.getStackInHand(hand).copy().split(1);
+							}
+							steamPress.setInvStack(SteamPressBlockEntity.INPUT_SLOT, stack);
+						}
+						return InteractionActionResult.SUCCESS;
+					}
+				}
+			}
+			return InteractionActionResult.PASS;
+		});
 	}
 
 	@Nullable

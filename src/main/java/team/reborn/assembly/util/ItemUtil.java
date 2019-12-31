@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 
-public class ItemUtils {
+public class ItemUtil {
 
 	public static boolean isItemEqual(final ItemStack a, final ItemStack b, final boolean matchDamage,
 									  final boolean matchNBT) {

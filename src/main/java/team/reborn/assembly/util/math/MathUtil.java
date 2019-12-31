@@ -1,4 +1,4 @@
-package team.reborn.assembly.util;
+package team.reborn.assembly.util.math;
 
 import net.minecraft.client.texture.Sprite;
 

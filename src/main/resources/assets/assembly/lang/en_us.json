@@ -66,5 +66,15 @@
 
   "block.assembly.copper_block": "Copper Block",
   "block.assembly.zinc_block": "Zinc Block",
-  "block.assembly.brass_block": "Brass Block"
+  "block.assembly.brass_block": "Brass Block",
+
+  "block.minecraft.hopper": "Item Hopper",
+  "container.hopper": "Item Hopper",
+  "item.minecraft.hopper_minecart": "Minecart with Item Hopper",
+  "stat.minecraft.inspect_hopper": "Item Hoppers Searched",
+
+  "block.assembly.fluid_hopper": "Fluid Hopper",
+  "item.assembly.fluid_hopper_minecart": "Minecart with Fluid Hopper",
+
+  "block.assembly.spigot": "Spigot"
 }

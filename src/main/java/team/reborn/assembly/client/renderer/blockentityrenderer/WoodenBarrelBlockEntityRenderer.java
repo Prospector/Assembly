@@ -19,7 +19,7 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import team.reborn.assembly.blockentity.WoodenBarrelBlockEntity;
-import team.reborn.assembly.util.MathUtil;
+import team.reborn.assembly.util.math.MathUtil;
 
 public class WoodenBarrelBlockEntityRenderer extends BlockEntityRenderer<WoodenBarrelBlockEntity> {
 

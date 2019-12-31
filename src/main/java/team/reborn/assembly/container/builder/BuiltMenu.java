@@ -41,7 +41,7 @@ import org.apache.commons.lang3.tuple.MutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
 import team.reborn.assembly.blockentity.AssemblyContainerBlockEntity;
 import team.reborn.assembly.mixintf.GetMenuListeners;
-import team.reborn.assembly.util.ItemUtils;
+import team.reborn.assembly.util.ItemUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -192,7 +192,7 @@ public class BuiltMenu extends Container implements ExtendedMenuListener {
 			for (int slotIndex = start; stackToShift.getCount() > 0 && slotIndex < end; slotIndex++) {
 				final Slot slot = this.slotList.get(slotIndex);
 				final ItemStack stackInSlot = slot.getStack();
-				if (!stackInSlot.isEmpty() && ItemUtils.isItemEqual(stackInSlot, stackToShift, true, true)
+				if (!stackInSlot.isEmpty() && ItemUtil.isItemEqual(stackInSlot, stackToShift, true, true)
 					&& slot.canInsert(stackToShift)) {
 					final int resultingStackSize = stackInSlot.getCount() + stackToShift.getCount();
 					final int max = Math.min(stackToShift.getMaxCount(), slot.getMaxStackAmount());

@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 import team.reborn.assembly.block.TreeTapBlock;
 import team.reborn.assembly.blockentity.TreeTapBlockEntity;
 import team.reborn.assembly.blockentity.WoodenBarrelBlockEntity;
-import team.reborn.assembly.util.MathUtil;
+import team.reborn.assembly.util.math.MathUtil;
 
 public class TreeTapBlockEntityRenderer extends BlockEntityRenderer<TreeTapBlockEntity> {
 

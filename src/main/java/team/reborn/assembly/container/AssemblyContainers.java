@@ -8,10 +8,11 @@ import net.minecraft.util.math.BlockPos;
 import team.reborn.assembly.blockentity.BoilerBlockEntity;
 import team.reborn.assembly.client.gui.BaseScreen;
 import team.reborn.assembly.container.builder.BuiltMenu;
+import team.reborn.assembly.util.AssemblyConstants;
 
 public class AssemblyContainers {
 
-	public static final Identifier BOILER = new Identifier("assembly", "grinder");
+	public static final Identifier BOILER = AssemblyConstants.Ids.BOILER;
 
 	public static void register() {
 		ContainerProviderRegistry.INSTANCE.registerFactory(BOILER, (syncId, id, player, buf) -> {

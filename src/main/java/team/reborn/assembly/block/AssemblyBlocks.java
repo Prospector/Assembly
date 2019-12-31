@@ -18,6 +18,8 @@ import net.minecraft.world.gen.feature.OakTreeFeature;
 import team.reborn.assembly.Assembly;
 import team.reborn.assembly.fluid.AssemblyFluid;
 import team.reborn.assembly.fluid.AssemblyFluids;
+import team.reborn.assembly.item.InteractionBypassBlockItem;
+import team.reborn.assembly.util.interaction.interactable.InteractionBypass;
 import team.reborn.assembly.world.AssemblyWorldgen;
 
 import java.util.HashMap;
@@ -68,7 +70,13 @@ public class AssemblyBlocks {
 	public static final Block ZINC_BLOCK = add("zinc_block", new Block(FabricBlockSettings.copy(Blocks.IRON_BLOCK).breakByTool(FabricToolTags.PICKAXES, 1).build()), ItemGroup.BUILDING_BLOCKS);
 	public static final Block BRASS_BLOCK = add("brass_block", new Block(FabricBlockSettings.copy(Blocks.IRON_BLOCK).breakByTool(FabricToolTags.PICKAXES, 1).build()), ItemGroup.BUILDING_BLOCKS);
 
+	public static final Block FLUID_HOPPER = add("fluid_hopper", new FluidHopperBlock(FabricBlockSettings.copy(Blocks.HOPPER).breakByTool(FabricToolTags.PICKAXES, 0).build()), ItemGroup.REDSTONE);
+	public static final Block SPIGOT = add("spigot", new SpigotBlock(FabricBlockSettings.copy(Blocks.HOPPER).breakByTool(FabricToolTags.PICKAXES, 0).build()), ItemGroup.REDSTONE);
+
 	private static <B extends Block> B add(String name, B block, ItemGroup tab) {
+		if (block instanceof InteractionBypass) {
+			return add(name, block, new InteractionBypassBlockItem((Block & InteractionBypass) block, new Item.Settings().group(tab)));
+		}
 		return add(name, block, new BlockItem(block, new Item.Settings().group(tab)));
 	}
 

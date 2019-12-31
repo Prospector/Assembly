@@ -1,4 +1,4 @@
-package team.reborn.assembly.attributes;
+package team.reborn.assembly.util.fluid;
 
 import alexiil.mc.lib.attributes.fluid.FixedFluidInv;
 import alexiil.mc.lib.attributes.fluid.FluidInvTankChangeListener;

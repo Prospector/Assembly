@@ -1,0 +1,146 @@
+{
+  "multipart": [
+    {
+      "when": { "facing": "north" },
+      "apply": { "model": "assembly:block/spigot" }
+    },
+    {
+      "when": { "facing": "south" },
+      "apply": { "model": "assembly:block/spigot", "y": 180 }
+    },
+    {
+      "when": { "facing": "west" },
+      "apply": { "model": "assembly:block/spigot", "y": 270 }
+    },
+    {
+      "when": { "facing": "east" },
+      "apply": { "model": "assembly:block/spigot", "y": 90 }
+    },
+
+
+    {
+      "when": { "facing": "north", "valve": "open" },
+      "apply": { "model": "assembly:block/spigot_valve_open" }
+    },
+    {
+      "when": { "facing": "south", "valve": "open" },
+      "apply": { "model": "assembly:block/spigot_valve_open", "y": 180 }
+    },
+    {
+      "when": { "facing": "west", "valve": "open" },
+      "apply": { "model": "assembly:block/spigot_valve_open", "y": 270 }
+    },
+    {
+      "when": { "facing": "east", "valve": "open" },
+      "apply": { "model": "assembly:block/spigot_valve_open", "y": 90 }
+    },
+
+
+    {
+      "when": { "facing": "north", "valve": "closed_left" },
+      "apply": { "model": "assembly:block/spigot_valve_closed_left" }
+    },
+    {
+      "when": { "facing": "south", "valve": "closed_left" },
+      "apply": { "model": "assembly:block/spigot_valve_closed_left", "y": 180 }
+    },
+    {
+      "when": { "facing": "west", "valve": "closed_left" },
+      "apply": { "model": "assembly:block/spigot_valve_closed_left", "y": 270 }
+    },
+    {
+      "when": { "facing": "east", "valve": "closed_left" },
+      "apply": { "model": "assembly:block/spigot_valve_closed_left", "y": 90 }
+    },
+
+
+    {
+      "when": { "facing": "north", "valve": "closed_right" },
+      "apply": { "model": "assembly:block/spigot_valve_closed_right" }
+    },
+    {
+      "when": { "facing": "south", "valve": "closed_right" },
+      "apply": { "model": "assembly:block/spigot_valve_closed_right", "y": 180 }
+    },
+    {
+      "when": { "facing": "west", "valve": "closed_right" },
+      "apply": { "model": "assembly:block/spigot_valve_closed_right", "y": 270 }
+    },
+    {
+      "when": { "facing": "east", "valve": "closed_right" },
+      "apply": { "model": "assembly:block/spigot_valve_closed_right", "y": 90 }
+    },
+
+
+    {
+      "when": { "facing": "north", "extension": 1 },
+      "apply": { "model": "assembly:block/spigot_extended_1" }
+    },
+    {
+      "when": { "facing": "south", "extension": 1 },
+      "apply": { "model": "assembly:block/spigot_extended_1", "y": 180 }
+    },
+    {
+      "when": { "facing": "west", "extension": 1 },
+      "apply": { "model": "assembly:block/spigot_extended_1", "y": 270 }
+    },
+    {
+      "when": { "facing": "east", "extension": 1 },
+      "apply": { "model": "assembly:block/spigot_extended_1", "y": 90 }
+    },
+
+
+    {
+      "when": { "facing": "north", "extension": 2 },
+      "apply": { "model": "assembly:block/spigot_extended_2" }
+    },
+    {
+      "when": { "facing": "south", "extension": 2 },
+      "apply": { "model": "assembly:block/spigot_extended_2", "y": 180 }
+    },
+    {
+      "when": { "facing": "west", "extension": 2 },
+      "apply": { "model": "assembly:block/spigot_extended_2", "y": 270 }
+    },
+    {
+      "when": { "facing": "east", "extension": 2 },
+      "apply": { "model": "assembly:block/spigot_extended_2", "y": 90 }
+    },
+
+
+    {
+      "when": { "facing": "north", "extension": 3 },
+      "apply": { "model": "assembly:block/spigot_extended_3" }
+    },
+    {
+      "when": { "facing": "south", "extension": 3 },
+      "apply": { "model": "assembly:block/spigot_extended_3", "y": 180 }
+    },
+    {
+      "when": { "facing": "west", "extension": 3 },
+      "apply": { "model": "assembly:block/spigot_extended_3", "y": 270 }
+    },
+    {
+      "when": { "facing": "east", "extension": 3 },
+      "apply": { "model": "assembly:block/spigot_extended_3", "y": 90 }
+    },
+
+
+    {
+      "when": { "facing": "north", "extension": 4 },
+      "apply": { "model": "assembly:block/spigot_extended_4" }
+    },
+    {
+      "when": { "facing": "south", "extension": 4 },
+      "apply": { "model": "assembly:block/spigot_extended_4", "y": 180 }
+    },
+    {
+      "when": { "facing": "west", "extension": 4 },
+      "apply": { "model": "assembly:block/spigot_extended_4", "y": 270 }
+    },
+    {
+      "when": { "facing": "east", "extension": 4 },
+      "apply": { "model": "assembly:block/spigot_extended_4", "y": 90 }
+    }
+  ]
+}
