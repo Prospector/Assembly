@@ -20,21 +20,20 @@ import team.reborn.assembly.util.interaction.interactable.TankOutputInteractable
 
 public interface Interaction {
 	Interaction HANDLE_FLUIDS = (state, world, pos, player, hand, hit) -> {
-		if (!world.isClient) {
-			FluidInsertable insertable = RejectingFluidInsertable.NULL;
-			FluidExtractable extractable = EmptyFluidExtractable.NULL;
-			BlockEntity blockEntity = world.getBlockEntity(pos);
-			if (blockEntity instanceof TankInputInteractable) {
-				insertable = ((TankInputInteractable) blockEntity).getInteractableInsertable();
-			}
-			if (blockEntity instanceof TankOutputInteractable) {
-				extractable = ((TankOutputInteractable) blockEntity).getInteractableExtractable();
-			}
-			if (FluidVolumeUtil.interactWithTank(insertable, extractable, player, hand)) {
-				return InteractionActionResult.SUCCESS;
-			}
+		FluidInsertable insertable = RejectingFluidInsertable.NULL;
+		FluidExtractable extractable = EmptyFluidExtractable.NULL;
+		BlockEntity blockEntity = world.getBlockEntity(pos);
+		if (blockEntity instanceof TankInputInteractable) {
+			insertable = ((TankInputInteractable) blockEntity).getInteractableInsertable();
 		}
-		return InteractionActionResult.PASS;
+		if (blockEntity instanceof TankOutputInteractable) {
+			extractable = ((TankOutputInteractable) blockEntity).getInteractableExtractable();
+		}
+		if (FluidVolumeUtil.interactWithTank(insertable, extractable, player, hand)) {
+			return InteractionActionResult.SUCCESS;
+		} else {
+			return InteractionActionResult.PASS;
+		}
 	};
 	Interaction OPEN_MENU = (state, world, pos, player, hand, hit) -> {
 		Block block = state.getBlock();

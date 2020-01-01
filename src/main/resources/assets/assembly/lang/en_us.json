@@ -12,6 +12,7 @@
   "item.assembly.copper_ingot": "Copper Ingot",
   "item.assembly.zinc_ingot": "Zinc Ingot",
   "item.assembly.brass_ingot": "Brass Ingot",
+  "item.assembly.brass_gear": "Brass Gear",
 
   "item.assembly.dipstick": "Dipstick",
 
@@ -32,12 +33,7 @@
   "block.assembly.latex": "Latex",
   "block.assembly.flowing_latex": "Flowing Latex",
   "item.assembly.latex_bucket": "Latex Bucket",
-  "block.assembly.biomass": "Biomass",
-  "block.assembly.flowing_biomass": "Flowing Biomass",
-  "item.assembly.biomass_bucket": "Biomass Bucket",
-  "block.assembly.oil": "Oil",
-  "block.assembly.flowing_oil": "Flowing Oil",
-  "item.assembly.oil_bucket": "Oil Bucket",
+
   "block.assembly.steam": "Steam",
   "block.assembly.flowing_steam": "Flowing Steam",
   "item.assembly.steam_bucket": "Steam Bucket",

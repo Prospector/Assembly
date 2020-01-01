@@ -1,6 +1,5 @@
 package team.reborn.assembly.util.fluid;
 
-import alexiil.mc.lib.attributes.AttributeUtil;
 import alexiil.mc.lib.attributes.ListenerRemovalToken;
 import alexiil.mc.lib.attributes.ListenerToken;
 import alexiil.mc.lib.attributes.Simulation;
@@ -20,7 +19,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Util;
 
-import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -38,6 +36,7 @@ public class BaseFluidContainer implements AssemblyFluidContainer, Saveable {
 	private FluidAmount capacity;
 	private Supplier<FluidAmount> capacitySupplier = null;
 	private final DefaultedList<FluidVolume> tanks;
+	private FluidFilter filter;
 
 	// TO-DO: Optimise this to cache more information!
 	private final GroupedFluidInv groupedVersion = new GroupedFluidInvFixedWrapper(this);
@@ -52,14 +51,25 @@ public class BaseFluidContainer implements AssemblyFluidContainer, Saveable {
 
 
 	public BaseFluidContainer(int invSize, FluidAmount capacity) {
-		tanks = DefaultedList.ofSize(invSize, FluidVolumeUtil.EMPTY);
-		this.capacity = capacity;
+		this(invSize, capacity, ConstantFluidFilter.ANYTHING);
 	}
 
 	public BaseFluidContainer(int invSize, Supplier<FluidAmount> capacitySupplier) {
+		this(invSize, capacitySupplier, ConstantFluidFilter.ANYTHING);
+	}
+
+
+	public BaseFluidContainer(int invSize, FluidAmount capacity, FluidFilter filter) {
+		tanks = DefaultedList.ofSize(invSize, FluidVolumeUtil.EMPTY);
+		this.capacity = capacity;
+		this.filter = filter;
+	}
+
+	public BaseFluidContainer(int invSize, Supplier<FluidAmount> capacitySupplier, FluidFilter filter) {
 		tanks = DefaultedList.ofSize(invSize, FluidVolumeUtil.EMPTY);
 		this.capacity = capacitySupplier.get();
 		this.capacitySupplier = capacitySupplier;
+		this.filter = filter;
 	}
 
 	// AssemblyFluidContainer
@@ -90,32 +100,12 @@ public class BaseFluidContainer implements AssemblyFluidContainer, Saveable {
 
 	@Override
 	public boolean isFluidValidForTank(int tank, FluidKey fluid) {
-		return true;
+		return filter.matches(fluid);
 	}
 
 	@Override
 	public FluidFilter getFilterForTank(int tank) {
-		if (AttributeUtil.EXPENSIVE_DEBUG_CHECKS) {
-			Class<?> cls = getClass();
-			if (cls != BaseFluidContainer.class) {
-				try {
-					Method method = cls.getMethod("isFluidValidForTank", int.class, FluidKey.class);
-					if (method.getDeclaringClass() != BaseFluidContainer.class) {
-						// it's been overriden, but we haven't
-						throw new IllegalStateException(
-							"The subclass " + method.getDeclaringClass()
-								+ " has overriden isFluidValidForTank() but hasn't overriden getFilterForTank()"
-						);
-					}
-				} catch (ReflectiveOperationException roe) {
-					throw new Error(
-						"Failed to get the isFluidValidForTank method! I'm not sure what to do now, as this shouldn't happen normally :(",
-						roe
-					);
-				}
-			}
-		}
-		return ConstantFluidFilter.ANYTHING;
+		return filter;
 	}
 
 	@Override

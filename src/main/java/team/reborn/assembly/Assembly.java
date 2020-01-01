@@ -38,7 +38,7 @@ public class Assembly implements ModInitializer {
 		AssemblyWorldgen.register();
 		AssemblyLoot.register();
 
-		FabricItemGroupBuilder.create(new Identifier(MOD_ID, "items")).icon(AssemblyItems.OIL_BUCKET::getStackForRender).appendItems(stacks -> Registry.ITEM.forEach(item -> {
+		FabricItemGroupBuilder.create(new Identifier(MOD_ID, "items")).icon(AssemblyItems.BRASS_GEAR::getStackForRender).appendItems(stacks -> Registry.ITEM.forEach(item -> {
 			if (Registry.ITEM.getId(item).getNamespace().equals(MOD_ID)) {
 				item.appendStacks(item.getGroup(), (DefaultedList<ItemStack>) stacks);
 			}

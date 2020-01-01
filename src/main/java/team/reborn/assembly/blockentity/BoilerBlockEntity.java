@@ -1,6 +1,7 @@
 package team.reborn.assembly.blockentity;
 
 import alexiil.mc.lib.attributes.Simulation;
+import alexiil.mc.lib.attributes.fluid.FluidExtractable;
 import alexiil.mc.lib.attributes.fluid.FluidInsertable;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKeys;
@@ -10,31 +11,33 @@ import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.container.Container;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.recipe.Recipe;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import team.reborn.assembly.util.fluid.IOFluidContainer;
-import team.reborn.assembly.util.fluid.SimpleIOFluidContainer;
 import team.reborn.assembly.block.AssemblyBlocks;
 import team.reborn.assembly.block.BoilerBlock;
 import team.reborn.assembly.container.builder.MenuBuilder;
-import team.reborn.assembly.fluid.AssemblyFluids;
+import team.reborn.assembly.recipe.AssemblyRecipeTypes;
+import team.reborn.assembly.recipe.BoilingRecipe;
 import team.reborn.assembly.recipe.provider.BoilingRecipeProvider;
 import team.reborn.assembly.util.AssemblyConstants;
-import team.reborn.assembly.util.interaction.interactable.TankInputInteractable;
+import team.reborn.assembly.util.fluid.IOFluidContainer;
+import team.reborn.assembly.util.fluid.SimpleIOFluidContainer;
+import team.reborn.assembly.util.interaction.interactable.TankIOInteractable;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements Tickable, BoilingRecipeProvider, TankInputInteractable, SidedInventory {
+public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements Tickable, BoilingRecipeProvider, TankIOInteractable, SidedInventory {
 
 	private static final int FUEL_SLOT = 0;
 	private static final int[] BOTTOM_SLOTS = new int[]{FUEL_SLOT};
@@ -55,25 +58,27 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 	private final IOFluidContainer outputTank;
 	private FluidAmount outputCapacity = FluidAmount.ZERO;
 
+	private static final FluidAmount RECIPE_OUTPUT_INCREMENT = FluidAmount.BUCKET.roundedDiv(1000);
+	private static final String RECIPE_KEY = AssemblyConstants.NbtKeys.RECIPE;
+	private BoilingRecipe recipe = null;
+
 	public BoilerBlockEntity() {
 		super(AssemblyBlockEntities.BOILER);
 		inputTank = new SimpleIOFluidContainer(1, INPUT_CAPACITY);
 		outputTank = new SimpleIOFluidContainer(1, () -> outputCapacity);
+		inputTank.addListener((inv, tank, previous, current) -> {
+			if (previous.getFluidKey() != current.getFluidKey() || previous.isEmpty() && !current.isEmpty()) {
+				//Todo: cache recipes
+				//updateRecipe();
+			}
+		}, () -> {
+		});
 	}
 
 	@Override
 	public void tick() {
 		boolean wasBurning = this.isBurning();
 		boolean dirty = false;
-		if (this.isBurning()) {
-			--this.burnTime;
-			FluidVolume input = inputTank.getInvFluid(0);
-			FluidVolume output = outputTank.getInvFluid(0);
-			if (input.getRawFluid() == Fluids.WATER && output.getRawFluid() == Fluids.EMPTY || output.getRawFluid() == AssemblyFluids.STEAM && output.getAmount_F().isLessThan(outputTank.getCapacity(0))) {
-				FluidAmount amount = inputTank.attemptAnyExtraction(FluidAmount.BUCKET.roundedDiv(1000), Simulation.ACTION).getAmount_F();
-				outputTank.attemptInsertion(FluidKeys.get(AssemblyFluids.STEAM).withAmount(amount), Simulation.ACTION);
-			}
-		}
 
 		chambers.clear();
 		for (int i = 1; i < 255; i++) {
@@ -88,27 +93,38 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 			}
 		}
 
-		if (!this.world.isClient) {
-			ItemStack fuelStack = this.contents.get(0);
-			if (!this.isBurning() && !fuelStack.isEmpty() && inputTank.getInvFluid(0).getRawFluid() == Fluids.WATER && !inputTank.getInvFluid(0).isEmpty()) {
-				this.burnTime = FuelRegistry.INSTANCE.get(fuelStack.getItem());
-				this.fuelTime = this.burnTime;
-				if (this.isBurning()) {
-					dirty = true;
-					if (!fuelStack.isEmpty()) {
-						Item item = fuelStack.getItem();
-						fuelStack.decrement(1);
-						if (fuelStack.isEmpty()) {
-							Item remainder = item.getRecipeRemainder();
-							this.contents.set(0, remainder == null ? ItemStack.EMPTY : new ItemStack(remainder));
+		if (this.world != null && !this.world.isClient) {
+			updateRecipe();
+			if (this.recipe != null) {
+				ItemStack fuelStack = this.contents.get(0);
+				if (isBurning() || !fuelStack.isEmpty()) {
+					FluidVolume inputSim = simulateCraft();
+					if (inputSim != null) {
+						if (this.isBurning()) {
+							--this.burnTime;
+							inputTank.attemptExtraction(inputSim.fluidKey::equals, inputSim.getAmount_F(), Simulation.ACTION);
+							outputTank.attemptInsertion(FluidKeys.get(recipe.output).withAmount(RECIPE_OUTPUT_INCREMENT), Simulation.ACTION);
+						} else {
+							this.burnTime = FuelRegistry.INSTANCE.get(fuelStack.getItem());
+							this.fuelTime = this.burnTime;
+							if (this.isBurning()) {
+								dirty = true;
+								if (!fuelStack.isEmpty()) {
+									Item item = fuelStack.getItem();
+									fuelStack.decrement(1);
+									if (fuelStack.isEmpty()) {
+										Item remainder = item.getRecipeRemainder();
+										this.contents.set(0, remainder == null ? ItemStack.EMPTY : new ItemStack(remainder));
+									}
+								}
+							}
 						}
 					}
+					if (wasBurning != this.isBurning()) {
+						dirty = true;
+						this.world.setBlockState(this.pos, this.world.getBlockState(this.pos).with(BoilerBlock.LIT, this.isBurning()), 3);
+					}
 				}
-			}
-
-			if (wasBurning != this.isBurning()) {
-				dirty = true;
-				this.world.setBlockState(this.pos, this.world.getBlockState(this.pos).with(BoilerBlock.LIT, this.isBurning()), 3);
 			}
 		}
 
@@ -117,9 +133,25 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 		}
 	}
 
-	@Override
-	public int getInvSize() {
-		return 1;
+	private void updateRecipe() {
+		if (world != null) {
+			recipe = this.world.getRecipeManager().getFirstMatch(AssemblyRecipeTypes.BOILING, this, world).orElse(null);
+		}
+	}
+
+	@Nullable
+	private FluidVolume simulateCraft() {
+		FluidVolume output = outputTank.getInvFluid(0);
+		if (!inputTank.getInvFluid(0).isEmpty() && (output.isEmpty() || (output.getRawFluid() == recipe.output && output.getAmount_F().isLessThan(outputTank.getCapacity(0))))) {
+			FluidVolume inputSim = inputTank.attemptExtraction(fluidKey -> FluidKeys.get(recipe.input).equals(fluidKey), RECIPE_OUTPUT_INCREMENT.roundedMul(recipe.ratio), Simulation.SIMULATE);
+			if (!inputSim.isEmpty()) {
+				FluidVolume outputSim = outputTank.attemptInsertion(FluidKeys.get(recipe.output).withAmount(RECIPE_OUTPUT_INCREMENT), Simulation.SIMULATE);
+				if (outputSim.isEmpty()) {
+					return inputSim;
+				}
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -149,6 +181,19 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 			this.outputTank.setInvFluid(0, fluid, Simulation.ACTION);
 		}
 		this.burnTime = tag.getShort(BURN_TIME_KEY);
+		String recipeValue = tag.getString(RECIPE_KEY);
+		if (!recipeValue.equals("null")) {
+			BoilingRecipe recipe = null;
+			if (world != null) {
+				Recipe<?> gottenRecipe = world.getRecipeManager().get(new Identifier(recipeValue)).orElse(null);
+				if (gottenRecipe instanceof BoilingRecipe) {
+					recipe = (BoilingRecipe) gottenRecipe;
+				}
+			}
+			this.recipe = recipe;
+		}
+		//Todo: cache recipes
+		//updateRecipe();
 	}
 
 	public CompoundTag toTag(CompoundTag tag) {
@@ -162,6 +207,9 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 			tag.put(OUTPUT_FLUIDS_KEY, outputFluid.toTag());
 		}
 		tag.putShort(BURN_TIME_KEY, (short) this.burnTime);
+		//Todo: cache recipes
+		//updateRecipe();
+		tag.putString(RECIPE_KEY, recipe == null ? "null" : recipe.getId().toString());
 		return tag;
 	}
 
@@ -191,12 +239,22 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 		return getInputTank().getInsertable().getPureInsertable();
 	}
 
+	@Override
+	public FluidExtractable getInteractableExtractable() {
+		return getInputTank().getExtractable().getPureExtractable();
+	}
+
 	public int[] getInvAvailableSlots(Direction side) {
 		if (side == Direction.DOWN) {
 			return BOTTOM_SLOTS;
 		} else {
 			return SIDE_SLOTS;
 		}
+	}
+
+	@Override
+	public int getInvSize() {
+		return 1;
 	}
 
 	public boolean canInsertInvStack(int slot, ItemStack stack, @Nullable Direction dir) {

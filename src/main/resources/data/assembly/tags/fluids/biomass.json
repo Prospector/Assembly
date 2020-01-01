@@ -1,7 +1,0 @@
-{
-  "replace": false,
-  "values": [
-	"assembly:biomass",
-	"assembly:flowing_biomass"
-  ]
-}

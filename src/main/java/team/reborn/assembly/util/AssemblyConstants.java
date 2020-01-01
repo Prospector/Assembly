@@ -1,18 +1,27 @@
 package team.reborn.assembly.util;
 
+import alexiil.mc.lib.attributes.fluid.filter.FluidFilter;
+import com.google.common.collect.ImmutableSet;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.Identifier;
 import team.reborn.assembly.block.enums.ValveState;
+import team.reborn.assembly.tags.AssemblyFluidTags;
+
+import java.util.Set;
 
 public class AssemblyConstants {
 	public static final String MOD_ID = "assembly";
+	public static final Set<String> AUTHORS = ImmutableSet.of("9927b75a-89d9-4ff7-8bac-58aaed08911a");
 
 	public static class NbtKeys {
 		public static final String FLUIDS = "Fluids";
 		public static final String INPUT_FLUIDS = "InputFluids";
 		public static final String OUTPUT_FLUIDS = "OutputFluids";
+
+		public static final String RECIPE = "Recipe";
 
 		//Fluid Hopper & Spigot
 		public static final String TRANSFER_COOLDOWN = "TransferCooldown";
@@ -25,7 +34,6 @@ public class AssemblyConstants {
 		public static final String BURN_TIME = "BurnTime";
 		public static final String PRESS_PROGRESS = "Progress";
 		public static final String PRESS_RESET = "Reset";
-		public static final String RECIPE = "Recipe";
 		public static final String CURRENT_PRESSES = "CurrentPresses";
 		public static final String MASTER = "Master";
 	}
@@ -34,6 +42,9 @@ public class AssemblyConstants {
 		public static final Identifier BOILER = id("boiler");
 		public static final Identifier BOILER_CHAMBER = id("boiler_chamber");
 		public static final Identifier STEAM_PRESS = id("steam_press");
+
+		public static final Identifier AUTHOR_CAPE = id("textures/entity/player/author_cape.png");
+		public static final Identifier CONTRIBUTOR_CAPE = id("textures/entity/player/contributor_cape.png");
 	}
 
 	public static class Properties {
@@ -50,6 +61,13 @@ public class AssemblyConstants {
 		// Spigot
 		public static final EnumProperty<ValveState> VALVE = EnumProperty.of("valve", ValveState.class);
 		public static final IntProperty EXTENSION = IntProperty.of("extension", 0, 4);
+	}
+
+	public static class FluidFilters {
+		public static final FluidFilter STEAM = fluidKey -> {
+			Fluid rawFluid = fluidKey.getRawFluid();
+			return rawFluid != null && rawFluid.matches(AssemblyFluidTags.STEAM);
+		};
 	}
 
 	private static Identifier id(String path) {

@@ -2,7 +2,7 @@
   "type": "assembly:boiling",
   "input": {
     "fluid": "minecraft:water",
-    "ratio": 1.0
+    "ratio": 1
   },
   "output": "assembly:steam"
 }

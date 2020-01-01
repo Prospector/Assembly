@@ -33,10 +33,8 @@ public class WoodenBarrelBlockEntity extends AssemblySyncedNbtBlockEntity implem
 			if (!fluidLastSync.equals(tank.getInvFluid(0))) {
 				sync();
 				fluidLastSync = tank.getInvFluid(0).copy();
-
 			}
 		}
-
 	}
 
 	public IOFluidContainer getTank() {

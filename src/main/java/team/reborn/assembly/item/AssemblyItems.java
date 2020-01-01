@@ -20,6 +20,7 @@ public class AssemblyItems {
 	public static final Item COPPER_INGOT = add("copper_ingot", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 	public static final Item ZINC_INGOT = add("zinc_ingot", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 	public static final Item BRASS_INGOT = add("brass_ingot", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
+	public static final Item BRASS_GEAR = add("brass_gear", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 	public static final Item SALT = add("salt", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 	public static final Item SULFUR = add("sulfur", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 	public static final Item COAGULATED_LATEX = add("coagulated_latex", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
@@ -29,8 +30,8 @@ public class AssemblyItems {
 	public static final Item FORMIC_ACID = add("formic_acid", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 
 	public static final Item LATEX_BUCKET = add("latex_bucket", new AssemblyBucketItem(AssemblyFluids.LATEX, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1).group(ItemGroup.MISC)));
-	public static final Item BIOMASS_BUCKET = add("biomass_bucket", new AssemblyBucketItem(AssemblyFluids.BIOMASS, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1).group(ItemGroup.MISC)));
-	public static final Item OIL_BUCKET = add("oil_bucket", new AssemblyBucketItem(AssemblyFluids.OIL, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1).group(ItemGroup.MISC)));
+//	public static final Item BIOMASS_BUCKET = add("biomass_bucket", new AssemblyBucketItem(AssemblyFluids.BIOMASS, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1).group(ItemGroup.MISC)));
+//	public static final Item OIL_BUCKET = add("oil_bucket", new AssemblyBucketItem(AssemblyFluids.OIL, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1).group(ItemGroup.MISC)));
 	public static final Item STEAM_BUCKET = add("steam_bucket", new AssemblyBucketItem(AssemblyFluids.STEAM, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1).group(ItemGroup.MISC)));
 
 	public static final Item STEAM_PRESS = add("steam_press", new BedItem(AssemblyBlocks.STEAM_PRESS, new Item.Settings().group(ItemGroup.DECORATIONS)));

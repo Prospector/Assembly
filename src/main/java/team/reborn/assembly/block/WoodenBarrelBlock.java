@@ -61,7 +61,7 @@ public class WoodenBarrelBlock extends Block implements BlockEntityProvider, Att
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		return InteractionUtil.handleDefaultInteractions(state, world, pos, player, hand, hit, (state1, world1, pos1, player1, hand1, hit1) -> {
+		ActionResult result = InteractionUtil.handleDefaultInteractions(state, world, pos, player, hand, hit, (state1, world1, pos1, player1, hand1, hit1) -> {
 			BlockEntity blockEntity = world.getBlockEntity(pos);
 			if (blockEntity instanceof WoodenBarrelBlockEntity) {
 				WoodenBarrelBlockEntity barrel = (WoodenBarrelBlockEntity) blockEntity;
@@ -80,5 +80,6 @@ public class WoodenBarrelBlock extends Block implements BlockEntityProvider, Att
 			}
 			return InteractionActionResult.PASS;
 		});
+		return result;
 	}
 }

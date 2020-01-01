@@ -15,7 +15,7 @@ public class AssemblyRecipeTypes {
 	private static final Map<Identifier, RecipeType<?>> RECIPE_TYPES = new LinkedHashMap<>();
 
 	public static final RecipeType<BoilingRecipe> BOILING = add("boiling");
-	public static final RecipeType<PressingRecipe> STEAM_PRESSING = add("steam_pressing");
+	public static final RecipeType<SteamPressingRecipe> STEAM_PRESSING = add("steam_pressing");
 
 	private static <R extends Recipe<? extends Inventory>> RecipeType<R> add(String name) {
 		Identifier id = new Identifier(Assembly.MOD_ID, name);
