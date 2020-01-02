@@ -23,7 +23,7 @@ public class AssemblyFluids {
 //	public static AssemblyFluid FLOWING_BIOMASS = getFlowing(BIOMASS);
 //	public static AssemblyFluid OIL = add(new AssemblyFluid.Settings("oil").tickRate(20));
 //	public static AssemblyFluid FLOWING_OIL = getFlowing(OIL);
-	public static AssemblyFluid STEAM = add(new AssemblyFluid.Settings("steam").tickRate(100).fluidKey(FluidKey.FluidKeyBuilder::setGas));
+	public static AssemblyFluid STEAM = add(new AssemblyFluid.Settings("steam").tickRate(1).fluidKey(FluidKey.FluidKeyBuilder::setGas));
 	public static AssemblyFluid FLOWING_STEAM = getFlowing(STEAM);
 
 	public static AssemblyFluid add(AssemblyFluid.Settings settings) {

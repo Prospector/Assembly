@@ -22,7 +22,7 @@ import team.reborn.assembly.block.AssemblyBlocks;
 import team.reborn.assembly.blockentity.BoilerBlockEntity;
 
 @Mixin(AbstractFurnaceBlock.class)
-public abstract class AbstractFurnaceBlockMixin {
+public abstract class MixinAbstractFurnaceBlock {
 
 	@Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
 	private void onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> info) {

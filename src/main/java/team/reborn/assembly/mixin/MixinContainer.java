@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.List;
 
 @Mixin(Container.class)
-public class ContainerMixin implements GetMenuListeners {
+public class MixinContainer implements GetMenuListeners {
 	@Final
 	@Shadow
 	private List<ContainerListener> listeners;

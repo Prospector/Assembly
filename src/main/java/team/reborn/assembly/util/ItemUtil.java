@@ -61,14 +61,14 @@ public class ItemUtil {
 		}
 	}
 
-	public static void stackToTag(ItemStack stack, CompoundTag data) {
+	public static void stackToTag(ItemStack stack, CompoundTag tag) {
 		if (stack.isEmpty() || stack.getCount() <= 0)
 			return;
-		stack.toTag(data);
+		stack.toTag(tag);
 	}
 
-	public static ItemStack stackFromTag(CompoundTag data) {
-		return ItemStack.fromTag(data);
+	public static ItemStack stackFromTag(CompoundTag tag) {
+		return ItemStack.fromTag(tag);
 	}
 
 }

@@ -14,6 +14,7 @@ import java.util.Set;
 
 public class AssemblyConstants {
 	public static final String MOD_ID = "assembly";
+	public static final String COMMON_NAMESPACE = "c";
 	public static final Set<String> AUTHORS = ImmutableSet.of("9927b75a-89d9-4ff7-8bac-58aaed08911a");
 
 	public static class NbtKeys {
@@ -36,6 +37,9 @@ public class AssemblyConstants {
 		public static final String PRESS_RESET = "Reset";
 		public static final String CURRENT_PRESSES = "CurrentPresses";
 		public static final String MASTER = "Master";
+
+		//Exoframe
+		public static final String MODULE = "Module";
 	}
 
 	public static class Ids {

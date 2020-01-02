@@ -1,5 +1,6 @@
 package team.reborn.assembly.item;
 
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -7,6 +8,7 @@ import team.reborn.assembly.Assembly;
 import team.reborn.assembly.block.AssemblyBlocks;
 import team.reborn.assembly.fluid.AssemblyFluid;
 import team.reborn.assembly.fluid.AssemblyFluids;
+import team.reborn.assembly.item.mecharmor.ExoframePieceItem;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -21,6 +23,7 @@ public class AssemblyItems {
 	public static final Item ZINC_INGOT = add("zinc_ingot", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 	public static final Item BRASS_INGOT = add("brass_ingot", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 	public static final Item BRASS_GEAR = add("brass_gear", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
+	public static final Item BRASS_PLATE = add("brass_plate", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 	public static final Item SALT = add("salt", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 	public static final Item SULFUR = add("sulfur", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 	public static final Item COAGULATED_LATEX = add("coagulated_latex", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
@@ -30,7 +33,7 @@ public class AssemblyItems {
 	public static final Item FORMIC_ACID = add("formic_acid", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 
 	public static final Item LATEX_BUCKET = add("latex_bucket", new AssemblyBucketItem(AssemblyFluids.LATEX, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1).group(ItemGroup.MISC)));
-//	public static final Item BIOMASS_BUCKET = add("biomass_bucket", new AssemblyBucketItem(AssemblyFluids.BIOMASS, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1).group(ItemGroup.MISC)));
+	//	public static final Item BIOMASS_BUCKET = add("biomass_bucket", new AssemblyBucketItem(AssemblyFluids.BIOMASS, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1).group(ItemGroup.MISC)));
 //	public static final Item OIL_BUCKET = add("oil_bucket", new AssemblyBucketItem(AssemblyFluids.OIL, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1).group(ItemGroup.MISC)));
 	public static final Item STEAM_BUCKET = add("steam_bucket", new AssemblyBucketItem(AssemblyFluids.STEAM, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1).group(ItemGroup.MISC)));
 
@@ -43,6 +46,11 @@ public class AssemblyItems {
 	public static final Item IRON_HAMMER = add("iron_hammer", new HammerItem(ToolMaterials.IRON, 3.0F, -3.1F, new Item.Settings().group(ItemGroup.TOOLS)));
 	public static final Item GOLDEN_HAMMER = add("golden_hammer", new HammerItem(ToolMaterials.GOLD, 3.0F, -3.0F, new Item.Settings().group(ItemGroup.TOOLS)));
 	public static final Item DIAMOND_HAMMER = add("diamond_hammer", new HammerItem(ToolMaterials.DIAMOND, 3.0F, -3.0F, new Item.Settings().group(ItemGroup.TOOLS)));
+
+	public static final Item EXOFRAME_HEADPIECE = add("exoframe_headpiece", new ExoframePieceItem(EquipmentSlot.HEAD, new Item.Settings().group(ItemGroup.COMBAT)));
+	public static final Item EXOFRAME_CHESTPIECE = add("exoframe_chestpiece", new ExoframePieceItem(EquipmentSlot.CHEST, new Item.Settings().group(ItemGroup.COMBAT)));
+	public static final Item EXOFRAME_LEGPIECE = add("exoframe_legpiece", new ExoframePieceItem(EquipmentSlot.LEGS, new Item.Settings().group(ItemGroup.COMBAT)));
+	public static final Item EXOFRAME_FOOTPIECE = add("exoframe_footpiece", new ExoframePieceItem(EquipmentSlot.FEET, new Item.Settings().group(ItemGroup.COMBAT)));
 
 	private static Item add(String name, Item item) {
 		ITEMS.put(new Identifier(Assembly.MOD_ID, name), item);

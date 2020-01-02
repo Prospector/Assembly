@@ -1,5 +1,6 @@
 package team.reborn.assembly.recipe;
 
+import io.github.cottonmc.libcd.api.CustomOutputRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
@@ -34,6 +35,11 @@ public class SteamPressingRecipe extends AssemblyRecipe<PressingRecipeProvider> 
 	@Override
 	public ItemStack craft(PressingRecipeProvider inv) {
 		return this.output.copy();
+	}
+
+	@Override
+	public ItemStack getOutput() {
+		return this.output;
 	}
 
 	@Override

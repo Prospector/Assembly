@@ -15,7 +15,7 @@ import team.reborn.assembly.util.AssemblyConstants;
 import java.util.Map;
 
 @Mixin(PlayerListEntry.class)
-public class PlayerListEntryMixin {
+public class MixinPlayerListEntry {
 	@Shadow
 	@Final
 	private GameProfile profile;

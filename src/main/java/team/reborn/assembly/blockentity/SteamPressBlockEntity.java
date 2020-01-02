@@ -62,6 +62,7 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 	private static final int[] SIDE_SLOTS = new int[]{INPUT_SLOT, OUTPUT_SLOT};
 	private static final int[] BOTTOM_SLOTS = new int[]{OUTPUT_SLOT};
 	protected DefaultedList<ItemStack> items;
+	private int extractCooldown = 0;
 
 	private static final double LOWEST_ARM_OFFSET = -9 / 16F; // 9/16 because the lowest the arm should go is 9 pixels down.
 
@@ -80,6 +81,9 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 	public void tick() {
 		if (world != null) {
 			if (!world.isClient && isMaster()) {
+				if (extractCooldown > 0) {
+					extractCooldown--;
+				}
 				boolean sync = false;
 				if (reset < MAX_RESET) {
 					if (!tank.attemptExtraction(AssemblyConstants.FluidFilters.STEAM, STEAM_COST_PER_RESET_INCREMENT, Simulation.SIMULATE).isEmpty()) {
@@ -110,6 +114,7 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 							if (recipe.presses <= currentPresses) {
 								items.set(INPUT_SLOT, ItemStack.EMPTY);
 								items.set(OUTPUT_SLOT, recipe.craft(this));
+								extractCooldown = 5;
 							}
 						}
 					}
@@ -130,6 +135,7 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 				if (!input.isEmpty()) {
 					setInvStack(INPUT_SLOT, ItemStack.EMPTY);
 					setInvStack(OUTPUT_SLOT, input);
+					extractCooldown = 5;
 				}
 			}
 		}
@@ -269,7 +275,7 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 
 	@Override
 	public boolean canExtractInvStack(int slot, ItemStack stack, Direction dir) {
-		return slot == OUTPUT_SLOT;
+		return slot == OUTPUT_SLOT && extractCooldown == 0;
 	}
 
 	@Override
@@ -279,7 +285,7 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 
 	@Override
 	public boolean isInvEmpty() {
-		Iterator iterator = getMaster().items.iterator();
+		Iterator<ItemStack> iterator = getMaster().items.iterator();
 		ItemStack stack;
 		do {
 			if (!iterator.hasNext()) {

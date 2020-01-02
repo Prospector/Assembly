@@ -3,9 +3,10 @@
   "package": "team.reborn.assembly.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "AbstractFurnaceBlockMixin",
-    "ContainerMixin",
-    "PlayerListEntryMixin"
+    "AccessorBlockTags",
+    "MixinAbstractFurnaceBlock",
+    "MixinContainer",
+    "MixinPlayerListEntry"
   ],
   "injectors": {
     "defaultRequire": 1

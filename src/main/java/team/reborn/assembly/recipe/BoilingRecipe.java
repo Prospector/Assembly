@@ -2,7 +2,9 @@ package team.reborn.assembly.recipe;
 
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
+import io.github.cottonmc.libcd.api.CustomOutputRecipe;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.item.Item;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
@@ -10,7 +12,10 @@ import net.minecraft.world.World;
 import team.reborn.assembly.recipe.provider.BoilingRecipeProvider;
 import team.reborn.assembly.recipe.serializer.AssemblyRecipeSerializers;
 
-public class BoilingRecipe extends AssemblyRecipe<BoilingRecipeProvider> {
+import java.util.Collection;
+import java.util.Collections;
+
+public class BoilingRecipe extends AssemblyRecipe<BoilingRecipeProvider> implements CustomOutputRecipe {
 	public Fluid input;
 	public FluidAmount ratio;
 	public Fluid output;
@@ -40,6 +45,11 @@ public class BoilingRecipe extends AssemblyRecipe<BoilingRecipeProvider> {
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return AssemblyRecipeSerializers.BOILING;
+	}
+
+	@Override
+	public Collection<Item> getOutputItems() {
+		return Collections.emptySet();
 	}
 
 }

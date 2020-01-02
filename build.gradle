@@ -3,7 +3,7 @@ plugins {
 	id 'maven-publish'
 	id 'idea'
 	id 'eclipse'
-	id 'fabric-loom' version '0.2.4-SNAPSHOT'
+	id 'fabric-loom' version '0.2.7-SNAPSHOT'
 }
 
 sourceCompatibility = 1.8
@@ -16,14 +16,39 @@ group = project.maven_group
 def ENV = System.getenv()
 version = version + "+" + (ENV.BUILD_NUMBER ? ("build." + ENV.BUILD_NUMBER) : "custom")
 
+repositories {
+	maven {
+		name = "LibCD"
+		url 'http://server.bbkr.space:8081/artifactory/libs-release'
+	}
+	maven {
+		name = "BuildCraft"
+		url = "https://mod-buildcraft.com/maven"
+	}
+}
+
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}"
-	modCompile "net.fabricmc:fabric-loade	r:${project.loader_version}"
+	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
+	modCompile "net.fabricmc:fabric-loader:${project.loader_version}"
 	modCompile "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	modCompile "com.terraformersmc:terraform:${project.terraform_version}"
-	modCompile "RebornCore:RebornCore-1.15:${project.reborn_core_version}"
+	modCompile "RebornCore:RebornCore-${project.rc_version}"
 	modCompile "alexiil.mc.lib:libblockattributes-fluids:${project.lba_version}"
+	optionalDependency "me.shedaniel:RoughlyEnoughItems:${project.rei_version}"
+	optionalDependency "io.github.cottonmc:LibCD:${project.libcd_version}"
+}
+
+def optionalDependency(String dep) {
+	dependencies.modRuntime(dep) {
+		exclude group: "net.fabricmc"
+		exclude module: "nbt-crafting"
+	}
+	dependencies.modCompileOnly(dep) {
+		exclude group: "net.fabricmc"
+		exclude module: "nbt-crafting"
+	}
 }
 
 processResources {

@@ -1,8 +1,8 @@
 {
   "type": "assembly:steam_pressing",
   "ingredient": {
-    "item": "minecraft:dirt"
+    "tag": "c:brass_ingots"
   },
   "presses": 1,
-  "result": "minecraft:diamond"
+  "result": "assembly:brass_plate"
 }

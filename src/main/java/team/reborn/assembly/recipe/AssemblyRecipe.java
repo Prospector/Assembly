@@ -4,10 +4,9 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
-public abstract class AssemblyRecipe<C extends Inventory> implements Recipe<C> {
+public abstract class AssemblyRecipe<BE extends Inventory> implements Recipe<BE> {
 	private final Identifier id;
 	private final boolean dummy;
 
@@ -21,19 +20,19 @@ public abstract class AssemblyRecipe<C extends Inventory> implements Recipe<C> {
 	}
 
 	@Override
-	public final boolean matches(C inv, World world) {
+	public final boolean matches(BE inv, World world) {
 		return !isDummy() && recipeMatches(inv, world);
 	}
 
-	protected abstract boolean recipeMatches(C inv, World world);
+	protected abstract boolean recipeMatches(BE inv, World world);
 
 	private boolean isDummy() {
 		return dummy;
 	}
 
 	@Override
-	public ItemStack craft(C inv) {
-		throw new UnsupportedOperationException("Recipe '" + id + "' of type '" + Registry.RECIPE_TYPE.getId(getType()) + "' does not support Recipe#craft");
+	public ItemStack craft(BE inv) {
+		return ItemStack.EMPTY;
 	}
 
 	@Override
@@ -43,7 +42,7 @@ public abstract class AssemblyRecipe<C extends Inventory> implements Recipe<C> {
 
 	@Override
 	public ItemStack getOutput() {
-		throw new UnsupportedOperationException("Recipe '" + id + "' of type '" + Registry.RECIPE_TYPE.getId(getType()) + "' does not support Recipe#getOutput");
+		return ItemStack.EMPTY;
 	}
 
 	@Override
