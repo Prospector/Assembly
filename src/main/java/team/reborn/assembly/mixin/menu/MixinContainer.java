@@ -1,4 +1,4 @@
-package team.reborn.assembly.mixin;
+package team.reborn.assembly.mixin.menu;
 
 import team.reborn.assembly.mixintf.GetMenuListeners;
 import net.minecraft.container.Container;

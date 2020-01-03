@@ -73,5 +73,11 @@
   "block.assembly.fluid_hopper": "Fluid Hopper",
   "item.assembly.fluid_hopper_minecart": "Minecart with Fluid Hopper",
 
-  "block.assembly.spigot": "Spigot"
+  "block.assembly.spigot": "Spigot",
+  
+  "item.assembly.exoframe_headpiece": "Exoframe Headpiece",
+  "item.assembly.exoframe_chestpiece": "Exoframe Chestpiece",
+  "item.assembly.exoframe_legpiece": "Exoframe Legpiece",
+  "item.assembly.exoframe_footpiece": "Exoframe Footpiece",
+  "item.assembly.spring_boots": "Spring Boots"
 }

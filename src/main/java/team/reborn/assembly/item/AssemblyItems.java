@@ -8,7 +8,8 @@ import team.reborn.assembly.Assembly;
 import team.reborn.assembly.block.AssemblyBlocks;
 import team.reborn.assembly.fluid.AssemblyFluid;
 import team.reborn.assembly.fluid.AssemblyFluids;
-import team.reborn.assembly.item.mecharmor.ExoframePieceItem;
+import team.reborn.assembly.item.exoframe.ExoframePieceItem;
+import team.reborn.assembly.item.exoframe.PistonBootsItem;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -51,6 +52,8 @@ public class AssemblyItems {
 	public static final Item EXOFRAME_CHESTPIECE = add("exoframe_chestpiece", new ExoframePieceItem(EquipmentSlot.CHEST, new Item.Settings().group(ItemGroup.COMBAT)));
 	public static final Item EXOFRAME_LEGPIECE = add("exoframe_legpiece", new ExoframePieceItem(EquipmentSlot.LEGS, new Item.Settings().group(ItemGroup.COMBAT)));
 	public static final Item EXOFRAME_FOOTPIECE = add("exoframe_footpiece", new ExoframePieceItem(EquipmentSlot.FEET, new Item.Settings().group(ItemGroup.COMBAT)));
+
+	public static final Item PISTON_BOOTS = add("piston_boots", new PistonBootsItem(new Item.Settings().group(ItemGroup.COMBAT)));
 
 	private static Item add(String name, Item item) {
 		ITEMS.put(new Identifier(Assembly.MOD_ID, name), item);

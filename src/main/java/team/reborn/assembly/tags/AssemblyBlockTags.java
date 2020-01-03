@@ -6,7 +6,7 @@ import net.minecraft.tag.Tag;
 import net.minecraft.tag.TagContainer;
 import net.minecraft.util.Identifier;
 import team.reborn.assembly.Assembly;
-import team.reborn.assembly.mixin.AccessorBlockTags;
+import team.reborn.assembly.mixin.tag.AccessorBlockTags;
 import team.reborn.assembly.util.AssemblyConstants;
 
 import java.util.Collection;
