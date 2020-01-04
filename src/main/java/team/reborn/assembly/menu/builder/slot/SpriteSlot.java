@@ -26,7 +26,7 @@
  * THE SOFTWARE.
  */
 
-package team.reborn.assembly.container.builder.slot;
+package team.reborn.assembly.menu.builder.slot;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.inventory.Inventory;

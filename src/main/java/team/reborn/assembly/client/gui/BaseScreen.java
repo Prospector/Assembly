@@ -7,7 +7,7 @@ import net.minecraft.container.Slot;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import team.reborn.assembly.Assembly;
-import team.reborn.assembly.container.builder.BuiltMenu;
+import team.reborn.assembly.menu.builder.BuiltMenu;
 
 public class BaseScreen extends AbstractContainerScreen {
 

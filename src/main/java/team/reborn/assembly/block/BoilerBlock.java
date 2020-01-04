@@ -30,7 +30,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import team.reborn.assembly.blockentity.AssemblyBlockEntities;
 import team.reborn.assembly.blockentity.BoilerBlockEntity;
-import team.reborn.assembly.container.AssemblyContainers;
+import team.reborn.assembly.menu.AssemblyMenus;
 import team.reborn.assembly.util.interaction.InteractionUtil;
 import team.reborn.assembly.util.interaction.interactable.MenuInteractable;
 
@@ -144,6 +144,6 @@ public class BoilerBlock extends HorizontalFacingBlock implements BlockEntityPro
 
 	@Override
 	public Identifier getMenuId() {
-		return AssemblyContainers.BOILER;
+		return AssemblyMenus.BOILER;
 	}
 }

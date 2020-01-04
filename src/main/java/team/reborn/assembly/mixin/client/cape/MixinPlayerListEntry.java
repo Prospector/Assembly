@@ -1,4 +1,4 @@
-package team.reborn.assembly.mixin.cape;
+package team.reborn.assembly.mixin.client.cape;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;

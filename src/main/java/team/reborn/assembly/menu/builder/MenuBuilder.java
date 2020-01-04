@@ -26,7 +26,7 @@
  * THE SOFTWARE.
  */
 
-package team.reborn.assembly.container.builder;
+package team.reborn.assembly.menu.builder;
 
 import net.minecraft.container.Slot;
 import net.minecraft.entity.player.PlayerEntity;

@@ -26,7 +26,7 @@
  * THE SOFTWARE.
  */
 
-package team.reborn.assembly.container.builder;
+package team.reborn.assembly.menu.builder;
 
 import net.minecraft.container.Slot;
 import net.minecraft.inventory.CraftingInventory;
@@ -34,8 +34,8 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.tuple.Pair;
-import team.reborn.assembly.container.builder.slot.FilteredSlot;
-import team.reborn.assembly.container.builder.slot.SlotOutput;
+import team.reborn.assembly.menu.builder.slot.FilteredSlot;
+import team.reborn.assembly.menu.builder.slot.SlotOutput;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;

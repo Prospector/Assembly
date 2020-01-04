@@ -31,7 +31,8 @@
   "contributors": [
     "modmuss50",
     "Spearkiller",
-    "Yulife"
+    "Yulife",
+    "AlexIIL"
   ],
   "mixins": [
     "mixins.assembly.json"

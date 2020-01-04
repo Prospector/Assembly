@@ -3,12 +3,15 @@
   "package": "team.reborn.assembly.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "boiler.MixinAbstractFurnaceBlock",
-    "cape.MixinPlayerListEntry",
-    "exoframe.MixinBlock",
-    "exoframe.MixinLivingEntity",
-    "menu.MixinContainer",
-    "tag.AccessorBlockTags"
+    "common.boiler.MixinAbstractFurnaceBlock",
+    "common.exoframe.MixinBlock",
+    "common.exoframe.MixinLivingEntity",
+    "common.menu.MixinContainer",
+    "common.tag.AccessorBlockTags"
+  ],
+  "client": [
+    "client.cape.MixinPlayerListEntry",
+    "client.exoframe.MixinArmorFeatureRenderer"
   ],
   "injectors": {
     "defaultRequire": 1

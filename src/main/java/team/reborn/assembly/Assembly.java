@@ -8,7 +8,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import team.reborn.assembly.block.AssemblyBlocks;
 import team.reborn.assembly.blockentity.AssemblyBlockEntities;
-import team.reborn.assembly.container.AssemblyContainers;
+import team.reborn.assembly.menu.AssemblyMenus;
 import team.reborn.assembly.entity.AssemblyEntities;
 import team.reborn.assembly.fluid.AssemblyFluids;
 import team.reborn.assembly.item.AssemblyItems;
@@ -30,7 +30,7 @@ public class Assembly implements ModInitializer {
 		AssemblyItems.register();
 		AssemblyBlocks.register();
 		AssemblyBlockEntities.register();
-		AssemblyContainers.register();
+		AssemblyMenus.register();
 		AssemblyRecipeTypes.register();
 		AssemblyRecipeSerializers.register();
 		AssemblyEntities.register();

@@ -1,4 +1,4 @@
-package team.reborn.assembly.mixin.tag;
+package team.reborn.assembly.mixin.common.tag;
 
 import net.minecraft.block.Block;
 import net.minecraft.tag.BlockTags;

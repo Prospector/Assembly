@@ -1,4 +1,4 @@
-package team.reborn.assembly.mixin.exoframe;
+package team.reborn.assembly.mixin.common.exoframe;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -26,7 +26,7 @@ public class MixinBlock {
 
 	@Inject(method = "onEntityLand", at = @At("HEAD"), cancellable = true)
 	private void hijackEntityLand(BlockView world, Entity entity, CallbackInfo info) {
-		if (entity instanceof LivingEntity && ((LivingEntity) entity).getEquippedStack(EquipmentSlot.FEET).getItem() instanceof FallDamageTransformingBoots && ((FallDamageTransformingBoots) ((LivingEntity) entity).getEquippedStack(EquipmentSlot.FEET).getItem()).onEntityLand(world, entity)) {
+		if (entity instanceof LivingEntity && ((LivingEntity) entity).getEquippedStack(EquipmentSlot.FEET).getItem() instanceof FallDamageTransformingBoots && ((FallDamageTransformingBoots) ((LivingEntity) entity).getEquippedStack(EquipmentSlot.FEET).getItem()).onEntityLand(world, entity, ((LivingEntity) entity).getEquippedStack(EquipmentSlot.FEET))) {
 			info.cancel();
 		}
 	}

@@ -1,4 +1,4 @@
-package team.reborn.assembly.container;
+package team.reborn.assembly.menu;
 
 import net.fabricmc.fabric.api.client.screen.ScreenProviderRegistry;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
@@ -7,10 +7,10 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import team.reborn.assembly.blockentity.BoilerBlockEntity;
 import team.reborn.assembly.client.gui.BaseScreen;
-import team.reborn.assembly.container.builder.BuiltMenu;
+import team.reborn.assembly.menu.builder.BuiltMenu;
 import team.reborn.assembly.util.AssemblyConstants;
 
-public class AssemblyContainers {
+public class AssemblyMenus {
 
 	public static final Identifier BOILER = AssemblyConstants.Ids.BOILER;
 

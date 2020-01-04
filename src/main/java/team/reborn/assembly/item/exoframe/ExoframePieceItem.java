@@ -21,6 +21,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import team.reborn.assembly.item.CustomArmorTexture;
 import team.reborn.assembly.util.AssemblyConstants;
 import team.reborn.assembly.util.fluid.IOFluidContainer;
 import team.reborn.assembly.util.fluid.SimpleIOFluidContainer;
@@ -28,7 +29,7 @@ import team.reborn.assembly.util.fluid.SimpleIOFluidContainer;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ExoframePieceItem extends ArmorItem implements AttributeProviderItem {
+public class ExoframePieceItem extends ArmorItem implements AttributeProviderItem, CustomArmorTexture {
 	private static final FluidAmount STEAM_TANK_CAPACITY = FluidAmount.BUCKET.roundedMul(8);
 	private static final String FLUIDS_KEY = AssemblyConstants.NbtKeys.INPUT_FLUIDS;
 	private static final ItemPropertyGetter STEAM_TANK_PROPERTY_GETTER = (stack, world, entity) -> MathHelper.clamp((float) FluidAttributes.FIXED_INV_VIEW.get(stack).getInvFluid(0).getAmount_F().asInexactDouble() / (float) STEAM_TANK_CAPACITY.asInexactDouble(), 0.0F, 1.0F);
@@ -48,8 +49,11 @@ public class ExoframePieceItem extends ArmorItem implements AttributeProviderIte
 	public void addAllAttributes(Reference<ItemStack> stack, LimitedConsumer<ItemStack> excess, ItemAttributeList<?> to) {
 		IOFluidContainer tank = new SimpleIOFluidContainer(1, STEAM_TANK_CAPACITY);
 		tank.addListener((inv, tank1, previous, current) -> {
-			CompoundTag tag = stack.get().getOrCreateTag().copy();
+			ItemStack copy = stack.get().copy();
+			CompoundTag tag = copy.getOrCreateTag();
 			tag.put(FLUIDS_KEY, tank.toTag());
+			copy.setTag(tag);
+			stack.set(copy);
 		}, () -> {
 		});
 		CompoundTag tag = stack.get().getOrCreateTag().copy();

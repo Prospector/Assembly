@@ -1,4 +1,4 @@
-package team.reborn.assembly.container.builder;
+package team.reborn.assembly.menu.builder;
 
 import net.minecraft.container.Container;
 import net.minecraft.container.ContainerListener;

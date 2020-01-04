@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableSet;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.recipe.Ingredient;
@@ -16,7 +15,6 @@ import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Lazy;
-import net.minecraft.util.registry.Registry;
 import team.reborn.assembly.block.enums.ValveState;
 import team.reborn.assembly.item.AssemblyItems;
 import team.reborn.assembly.tags.AssemblyFluidTags;
@@ -49,6 +47,9 @@ public class AssemblyConstants {
 		public static final String PRESS_RESET = "Reset";
 		public static final String CURRENT_PRESSES = "CurrentPresses";
 		public static final String MASTER = "Master";
+
+		//Piston Boots
+		public static final String EXTENDED = "Extended";
 	}
 
 	public static class Ids {
@@ -125,7 +126,7 @@ public class AssemblyConstants {
 		}
 
 		public Ingredient getRepairIngredient() {
-			return (Ingredient) this.repairIngredientSupplier.get();
+			return this.repairIngredientSupplier.get();
 		}
 
 		@Environment(EnvType.CLIENT)

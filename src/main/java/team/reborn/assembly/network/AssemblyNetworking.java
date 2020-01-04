@@ -21,7 +21,7 @@ import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 import team.reborn.assembly.Assembly;
 import team.reborn.assembly.blockentity.WoodenBarrelBlockEntity;
-import team.reborn.assembly.container.builder.ExtendedMenuListener;
+import team.reborn.assembly.menu.builder.ExtendedMenuListener;
 import team.reborn.assembly.util.ObjectBufUtils;
 
 public class AssemblyNetworking {

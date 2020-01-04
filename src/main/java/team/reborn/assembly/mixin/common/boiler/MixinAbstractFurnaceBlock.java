@@ -1,4 +1,4 @@
-package team.reborn.assembly.mixin.boiler;
+package team.reborn.assembly.mixin.common.boiler;
 
 import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.BlockState;

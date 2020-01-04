@@ -15,7 +15,7 @@ public interface FallDamageTransformingBoots {
 	/**
 	 * @return overrides vanilla handling
 	 */
-	default boolean onEntityLand(BlockView world, Entity entity) {
+	default boolean onEntityLand(BlockView world, Entity entity, ItemStack stack) {
 		return false;
 	}
 }

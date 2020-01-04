@@ -1,4 +1,4 @@
-package team.reborn.assembly.mixin.exoframe;
+package team.reborn.assembly.mixin.common.exoframe;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;

@@ -24,7 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import team.reborn.assembly.block.AssemblyBlocks;
 import team.reborn.assembly.block.BoilerBlock;
-import team.reborn.assembly.container.builder.MenuBuilder;
+import team.reborn.assembly.menu.builder.MenuBuilder;
 import team.reborn.assembly.recipe.AssemblyRecipeTypes;
 import team.reborn.assembly.recipe.BoilingRecipe;
 import team.reborn.assembly.recipe.provider.BoilingRecipeProvider;
