@@ -1,8 +1,3 @@
-The whole of Assembly is NOT licensed under MPLv2, however the following files in this project are:
-
-- src/main/java/team/reborn/assembly/util/ShapeUtil.java
-- src/main/java/team/reborn/assembly/util/PositionUtil.java
-
 Mozilla Public License Version 2.0
 ==================================
 
