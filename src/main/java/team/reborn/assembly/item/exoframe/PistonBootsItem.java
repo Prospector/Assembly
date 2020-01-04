@@ -60,7 +60,7 @@ public class PistonBootsItem extends ExoframePieceItem implements ExoframeModule
 			if (changeVelocity) {
 				Vec3d vec3d = entity.getVelocity();
 				if (vec3d.y < 0) {
-					double d = vec3d.y > -0.6 ? 0.2D : 0.9D;
+					double d = vec3d.y > -0.8 ? 0D : 1D;
 					entity.setVelocity(vec3d.x, -vec3d.y * d, vec3d.z);
 					if (entity.getVelocity().y > 0.2) {
 						tag.putBoolean(EXTENDED_KEY, true);

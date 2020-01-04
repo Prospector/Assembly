@@ -19,6 +19,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import team.reborn.assembly.item.CustomArmorTexture;
@@ -33,6 +34,7 @@ public class ExoframePieceItem extends ArmorItem implements AttributeProviderIte
 	private static final FluidAmount STEAM_TANK_CAPACITY = FluidAmount.BUCKET.roundedMul(8);
 	private static final String FLUIDS_KEY = AssemblyConstants.NbtKeys.INPUT_FLUIDS;
 	private static final ItemPropertyGetter STEAM_TANK_PROPERTY_GETTER = (stack, world, entity) -> MathHelper.clamp((float) FluidAttributes.FIXED_INV_VIEW.get(stack).getInvFluid(0).getAmount_F().asInexactDouble() / (float) STEAM_TANK_CAPACITY.asInexactDouble(), 0.0F, 1.0F);
+	private static final Identifier TEXTURE_ID = AssemblyConstants.Ids.EXOFRAME;
 
 	public ExoframePieceItem(EquipmentSlot slot, Settings settings) {
 		super(AssemblyConstants.ArmorMaterials.EXOFRAME, slot, settings);
@@ -71,5 +73,10 @@ public class ExoframePieceItem extends ArmorItem implements AttributeProviderIte
 		if (context.isAdvanced()) {
 			tooltip.add(new LiteralText("assembly:steam_tank property value=" + STEAM_TANK_PROPERTY_GETTER.call(stack, world, null)));
 		}
+	}
+
+	@Override
+	public Identifier getId(ArmorItem armorItem, boolean lowerParts, @Nullable String suffix) {
+		return TEXTURE_ID;
 	}
 }
