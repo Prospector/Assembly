@@ -2,20 +2,12 @@ package team.reborn.assembly.item.exoframe;
 
 import alexiil.mc.lib.attributes.AttributeProviderItem;
 import alexiil.mc.lib.attributes.ItemAttributeList;
-import alexiil.mc.lib.attributes.ListenerRemovalToken;
-import alexiil.mc.lib.attributes.ListenerToken;
-import alexiil.mc.lib.attributes.Simulation;
-import alexiil.mc.lib.attributes.fluid.FixedFluidInv;
 import alexiil.mc.lib.attributes.fluid.FluidAttributes;
-import alexiil.mc.lib.attributes.fluid.FluidInvTankChangeListener;
 import alexiil.mc.lib.attributes.fluid.FluidVolumeUtil;
-import alexiil.mc.lib.attributes.fluid.GroupedFluidInv;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
-import alexiil.mc.lib.attributes.fluid.filter.ExactFluidFilter;
 import alexiil.mc.lib.attributes.fluid.filter.FluidFilter;
 import alexiil.mc.lib.attributes.fluid.item.ItemBasedSingleFluidInv;
 import alexiil.mc.lib.attributes.fluid.item.ItemBasedSingleFluidInv.HeldFluidInfo;
-import alexiil.mc.lib.attributes.fluid.volume.FluidKey;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKeys;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import alexiil.mc.lib.attributes.misc.LimitedConsumer;
@@ -32,7 +24,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -44,9 +35,7 @@ import team.reborn.assembly.util.AssemblyConstants.FluidFilters;
 
 import javax.annotation.Nullable;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 public class ExoframePieceItem extends ArmorItem implements AttributeProviderItem, CustomArmorTexture {
 	private static final FluidAmount STEAM_TANK_CAPACITY = FluidAmount.BUCKET.roundedMul(8);
