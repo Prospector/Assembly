@@ -31,6 +31,7 @@ import team.reborn.assembly.item.AssemblyItems;
 import team.reborn.assembly.tags.AssemblyFluidTags;
 
 import java.util.Random;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public abstract class AssemblyFluid extends BaseFluid implements TexturedFluid {
@@ -194,7 +195,7 @@ public abstract class AssemblyFluid extends BaseFluid implements TexturedFluid {
 		private int levelDecreasePerBlock = 1;
 		private float blastResistance = 100.0F;
 		private boolean infinite = false;
-		private FluidKey.FluidKeyBuilder fluidKeyBuilder = null;
+		Consumer<FluidKey.FluidKeyBuilder> fluidKeyBuilder = null;
 
 		public Settings(String name) {
 			this.name = name;
@@ -221,8 +222,8 @@ public abstract class AssemblyFluid extends BaseFluid implements TexturedFluid {
 			return this;
 		}
 
-		public Settings fluidKey(Function<FluidKey.FluidKeyBuilder, FluidKey.FluidKeyBuilder> builder) {
-			this.fluidKeyBuilder = builder.apply(new FluidKey.FluidKeyBuilder(getId()));
+		public Settings fluidKey(Consumer<FluidKey.FluidKeyBuilder> builder) {
+			this.fluidKeyBuilder = builder;
 			return this;
 		}
 
