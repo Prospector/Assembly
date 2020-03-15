@@ -17,6 +17,7 @@ def ENV = System.getenv()
 version = version + "+" + (ENV.BUILD_NUMBER ? ("build." + ENV.BUILD_NUMBER) : "custom")
 
 repositories {
+    mavenLocal()
 	maven {
 		name = "LibCD"
 		url 'http://server.bbkr.space:8081/artifactory/libs-release'

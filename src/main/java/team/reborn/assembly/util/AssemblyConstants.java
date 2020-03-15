@@ -1,6 +1,8 @@
 package team.reborn.assembly.util;
 
 import alexiil.mc.lib.attributes.fluid.filter.FluidFilter;
+import alexiil.mc.lib.attributes.fluid.filter.RawFluidTagFilter;
+
 import com.google.common.collect.ImmutableSet;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -85,10 +87,7 @@ public class AssemblyConstants {
 	}
 
 	public static class FluidFilters {
-		public static final FluidFilter STEAM = fluidKey -> {
-			Fluid rawFluid = fluidKey.getRawFluid();
-			return rawFluid != null && rawFluid.matches(AssemblyFluidTags.STEAM);
-		};
+		public static final FluidFilter STEAM = new RawFluidTagFilter(AssemblyFluidTags.STEAM);
 	}
 
 	public enum ArmorMaterials implements ArmorMaterial {

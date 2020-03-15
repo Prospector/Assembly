@@ -100,7 +100,7 @@ public class BaseFluidContainer implements AssemblyFluidContainer, Saveable {
 
 	@Override
 	public boolean isFluidValidForTank(int tank, FluidKey fluid) {
-		return filter.matches(fluid);
+		return fluid.isEmpty() || filter.matches(fluid);
 	}
 
 	@Override
