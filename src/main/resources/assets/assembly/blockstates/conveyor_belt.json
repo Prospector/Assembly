@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "assembly:block/conveyor_belt" },
+    "facing=east": { "model": "assembly:block/conveyor_belt", "y": 90 },
+    "facing=south": { "model": "assembly:block/conveyor_belt", "y": 180 },
+    "facing=west": { "model": "assembly:block/conveyor_belt", "y": 270 }
+  }
+}

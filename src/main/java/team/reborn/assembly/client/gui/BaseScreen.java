@@ -2,14 +2,14 @@ package team.reborn.assembly.client.gui;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ingame.AbstractContainerScreen;
+import net.minecraft.client.gui.screen.ingame.ContainerScreen;
 import net.minecraft.container.Slot;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import team.reborn.assembly.Assembly;
 import team.reborn.assembly.menu.builder.BuiltMenu;
 
-public class BaseScreen extends AbstractContainerScreen {
+public class BaseScreen extends ContainerScreen<BuiltMenu> {
 
 	public static final Identifier GUI_SHEET = new Identifier(Assembly.MOD_ID, "textures/gui/gui_sheet.png");
 	public int xSize = 176;
@@ -34,7 +34,7 @@ public class BaseScreen extends AbstractContainerScreen {
 
 	//Best time to draw slots
 	public void drawSlots() {
-		for (Slot slot : menu.slotList) {
+		for (Slot slot : menu.slots) {
 			drawSlot(slot.xPosition, slot.yPosition);
 		}
 	}

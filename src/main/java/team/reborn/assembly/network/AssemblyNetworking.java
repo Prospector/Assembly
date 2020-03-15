@@ -10,7 +10,7 @@ import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.AbstractContainerScreen;
+import net.minecraft.client.gui.screen.ingame.ContainerScreen;
 import net.minecraft.client.network.packet.CustomPayloadS2CPacket;
 import net.minecraft.container.Container;
 import net.minecraft.nbt.CompoundTag;
@@ -20,7 +20,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 import team.reborn.assembly.Assembly;
-import team.reborn.assembly.blockentity.WoodenBarrelBlockEntity;
+import team.reborn.assembly.blockentity.FluidBarrelBlockEntity;
 import team.reborn.assembly.menu.builder.ExtendedMenuListener;
 import team.reborn.assembly.util.ObjectBufUtils;
 
@@ -39,8 +39,8 @@ public class AssemblyNetworking {
 				instance = FluidVolume.fromTag(fluidVolumeTag);
 				if (context.getPlayer() != null && context.getPlayer().getEntityWorld() != null) {
 					BlockEntity blockEntity = context.getPlayer().getEntityWorld().getBlockEntity(pos);
-					if (blockEntity instanceof WoodenBarrelBlockEntity) {
-						((WoodenBarrelBlockEntity) blockEntity).getTank().setInvFluid(0, instance, Simulation.ACTION);
+					if (blockEntity instanceof FluidBarrelBlockEntity) {
+						((FluidBarrelBlockEntity) blockEntity).getTank().setInvFluid(0, instance, Simulation.ACTION);
 					}
 				}
 			}
@@ -48,14 +48,14 @@ public class AssemblyNetworking {
 		ServerSidePacketRegistry.INSTANCE.register(REQUEST_BARREL_SYNC, (context, buf) -> {
 			BlockPos pos = buf.readBlockPos();
 			BlockEntity blockEntity = context.getPlayer().getEntityWorld().getBlockEntity(pos);
-			if (blockEntity instanceof WoodenBarrelBlockEntity) {
-				syncBarrelFluid((WoodenBarrelBlockEntity) blockEntity, (ServerPlayerEntity) context.getPlayer());
+			if (blockEntity instanceof FluidBarrelBlockEntity) {
+				syncBarrelFluid((FluidBarrelBlockEntity) blockEntity, (ServerPlayerEntity) context.getPlayer());
 			}
 		});
 		ClientSidePacketRegistry.INSTANCE.register(CONTAINER_SYNC, (context, buf) -> {
 			Screen gui = MinecraftClient.getInstance().currentScreen;
-			if (gui instanceof AbstractContainerScreen) {
-				Container container = ((AbstractContainerScreen) gui).getContainer();
+			if (gui instanceof ContainerScreen) {
+				Container container = ((ContainerScreen) gui).getContainer();
 				if (container instanceof ExtendedMenuListener) {
 					((ExtendedMenuListener) container).handleObject(buf.readInt(), ObjectBufUtils.readObject(buf));
 				}
@@ -63,7 +63,7 @@ public class AssemblyNetworking {
 		});
 	}
 
-	public static void syncBarrelFluid(WoodenBarrelBlockEntity woodenBarrel, ServerPlayerEntity player) {
+	public static void syncBarrelFluid(FluidBarrelBlockEntity woodenBarrel, ServerPlayerEntity player) {
 		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
 		buf.writeBlockPos(woodenBarrel.getPos());
 		buf.writeCompoundTag(woodenBarrel.getTank().getInvFluid(0).toTag());
@@ -71,7 +71,7 @@ public class AssemblyNetworking {
 	}
 
 	@Environment(EnvType.CLIENT)
-	public static void requestBarrelSync(WoodenBarrelBlockEntity woodenBarrel) {
+	public static void requestBarrelSync(FluidBarrelBlockEntity woodenBarrel) {
 		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
 		buf.writeBlockPos(woodenBarrel.getPos());
 		MinecraftClient.getInstance().getNetworkHandler().getConnection().send(new CustomPayloadC2SPacket(REQUEST_BARREL_SYNC, buf));

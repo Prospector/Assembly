@@ -2,11 +2,11 @@
   "credit": "Made with Blockbench",
   "parent": "block/block",
   "textures": {
-	"side": "assembly:block/wooden_barrel/wooden_barrel_side",
-	"particle": "assembly:block/wooden_barrel/wooden_barrel_side",
-	"inside": "assembly:block/wooden_barrel/wooden_barrel_inside",
-	"top": "assembly:block/wooden_barrel/wooden_barrel_top",
-	"bottom": "assembly:block/wooden_barrel/wooden_barrel_bottom"
+    "side": "assembly:block/fluid_barrel/fluid_barrel_side",
+    "particle": "assembly:block/fluid_barrel/fluid_barrel_side",
+    "inside": "assembly:block/fluid_barrel/fluid_barrel_inside",
+	"top": "assembly:block/fluid_barrel/fluid_barrel_top",
+	"bottom": "assembly:block/fluid_barrel/fluid_barrel_bottom"
   },
   "elements": [
 	{

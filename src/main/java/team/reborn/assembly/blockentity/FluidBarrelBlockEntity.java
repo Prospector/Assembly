@@ -14,7 +14,7 @@ import team.reborn.assembly.blockentity.base.AssemblySyncedNbtBlockEntity;
 import team.reborn.assembly.util.AssemblyConstants;
 import team.reborn.assembly.util.interaction.interactable.TankIOInteractable;
 
-public class WoodenBarrelBlockEntity extends AssemblySyncedNbtBlockEntity implements Tickable, TankIOInteractable {
+public class FluidBarrelBlockEntity extends AssemblySyncedNbtBlockEntity implements Tickable, TankIOInteractable {
 
 	private static final String FLUIDS_KEY = AssemblyConstants.NbtKeys.INPUT_FLUIDS;
 	private static final FluidAmount CAPACITY = FluidAmount.BUCKET;
@@ -22,8 +22,8 @@ public class WoodenBarrelBlockEntity extends AssemblySyncedNbtBlockEntity implem
 
 	private FluidVolume fluidLastSync = FluidVolumeUtil.EMPTY;
 
-	public WoodenBarrelBlockEntity() {
-		super(AssemblyBlockEntities.WOODEN_BARREL);
+	public FluidBarrelBlockEntity() {
+		super(AssemblyBlockEntities.FLUID_BARREL);
 		tank = new SimpleIOFluidContainer(1, CAPACITY);
 	}
 

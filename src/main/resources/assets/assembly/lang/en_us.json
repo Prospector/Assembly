@@ -23,7 +23,7 @@
   "item.assembly.golden_hammer": "Golden Hammer",
   "item.assembly.diamond_hammer": "Diamond Hammer",
 
-  "block.assembly.wooden_barrel": "Wooden Barrel",
+  "block.assembly.fluid_barrel": "Fluid Barrel",
   "block.assembly.tree_tap": "Tree Tap",
   "block.assembly.tube": "Tube",
 
@@ -60,7 +60,6 @@
   "entity.assembly.hevea_boat": "Hevea Boat",
 
   "block.assembly.copper_ore": "Copper Ore",
-
   "block.assembly.copper_block": "Copper Block",
   "block.assembly.zinc_block": "Zinc Block",
   "block.assembly.brass_block": "Brass Block",
@@ -72,8 +71,9 @@
 
   "block.assembly.fluid_hopper": "Fluid Hopper",
   "item.assembly.fluid_hopper_minecart": "Minecart with Fluid Hopper",
-
+  
   "block.assembly.spigot": "Spigot",
+  "block.assembly.conveyor_belt": "Conveyor Belt",
   
   "item.assembly.exoframe_headpiece": "Exoframe Headpiece",
   "item.assembly.exoframe_chestpiece": "Exoframe Chestpiece",

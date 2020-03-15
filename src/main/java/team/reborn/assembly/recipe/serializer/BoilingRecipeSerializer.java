@@ -4,7 +4,6 @@ import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
@@ -38,7 +37,6 @@ public class BoilingRecipeSerializer implements RecipeSerializer<BoilingRecipe> 
 				int denominator = JsonHelper.getInt(ratioObject, "denominator");
 				ratio = FluidAmount.of(whole, numerator, denominator);
 			} else {
-				JsonPrimitive ratioPrimitive = ratioElement.getAsJsonPrimitive();
 				try {
 					ratio = FluidAmount.ofWhole(ratioElement.getAsInt());
 				} catch (Exception e) {
@@ -66,7 +64,7 @@ public class BoilingRecipeSerializer implements RecipeSerializer<BoilingRecipe> 
 
 	@Override
 	public void write(PacketByteBuf buf, BoilingRecipe recipe) {
-		buf.writeIdentifier(Registry.FLUID.getId(recipe.input));
+		buf.writeIdentifier(Registry.FLUID.getId(recipe.inputFluid));
 		recipe.ratio.toMcBuffer(buf);
 		buf.writeIdentifier(Registry.FLUID.getId(recipe.output));
 	}

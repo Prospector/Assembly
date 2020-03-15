@@ -38,6 +38,8 @@ dependencies {
 	modCompile "alexiil.mc.lib:libblockattributes-fluids:${project.lba_version}"
 	optionalDependency "me.shedaniel:RoughlyEnoughItems:${project.rei_version}"
 	optionalDependency "io.github.cottonmc:LibCD:${project.libcd_version}"
+
+	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 }
 
 def optionalDependency(String dep) {

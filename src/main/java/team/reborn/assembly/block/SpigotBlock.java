@@ -47,8 +47,8 @@ public class SpigotBlock extends HorizontalFacingBlock implements BlockEntityPro
 	private static final VoxelShape CLOSED_LEFT_HANDLE = Block.createCuboidShape(2, 10, 6, 9, 11, 8);
 	private static final VoxelShape OPEN_HANDLE = Block.createCuboidShape(7, 10, 6, 9, 11, 13);
 
-	private static final Int2ObjectMap<VoxelShape> EXTENSION_SHAPES = new Int2ObjectOpenHashMap(5);
-	private static final Int2ObjectMap<VoxelShape> EXTENSION_SHAPES_DETECTION = new Int2ObjectOpenHashMap(5);
+	private static final Int2ObjectMap<VoxelShape> EXTENSION_SHAPES = new Int2ObjectOpenHashMap<>(5);
+	private static final Int2ObjectMap<VoxelShape> EXTENSION_SHAPES_DETECTION = new Int2ObjectOpenHashMap<>(5);
 
 	public SpigotBlock(Settings settings) {
 		super(settings);

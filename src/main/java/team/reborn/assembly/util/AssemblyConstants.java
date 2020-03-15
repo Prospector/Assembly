@@ -76,6 +76,12 @@ public class AssemblyConstants {
 		// Spigot
 		public static final EnumProperty<ValveState> VALVE = EnumProperty.of("valve", ValveState.class);
 		public static final IntProperty EXTENSION = IntProperty.of("extension", 0, 4);
+
+		// Ores
+		public static final BooleanProperty PLACED = BooleanProperty.of("placed");
+
+		// Conveyors
+		public static final BooleanProperty MOVING = BooleanProperty.of("moving");
 	}
 
 	public static class FluidFilters {

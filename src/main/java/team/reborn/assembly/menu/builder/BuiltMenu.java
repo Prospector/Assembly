@@ -149,7 +149,7 @@ public class BuiltMenu extends Container implements ExtendedMenuListener {
 	public ItemStack transferSlot(PlayerEntity player, int index) {
 		ItemStack originalStack = ItemStack.EMPTY;
 
-		final Slot slot = this.slotList.get(index);
+		final Slot slot = this.slots.get(index);
 
 		if (slot != null && slot.hasStack()) {
 
@@ -190,7 +190,7 @@ public class BuiltMenu extends Container implements ExtendedMenuListener {
 		boolean changed = false;
 		if (stackToShift.isStackable()) {
 			for (int slotIndex = start; stackToShift.getCount() > 0 && slotIndex < end; slotIndex++) {
-				final Slot slot = this.slotList.get(slotIndex);
+				final Slot slot = this.slots.get(slotIndex);
 				final ItemStack stackInSlot = slot.getStack();
 				if (!stackInSlot.isEmpty() && ItemUtil.isItemEqual(stackInSlot, stackToShift, true, true)
 					&& slot.canInsert(stackToShift)) {
@@ -212,7 +212,7 @@ public class BuiltMenu extends Container implements ExtendedMenuListener {
 		}
 		if (stackToShift.getCount() > 0) {
 			for (int slotIndex = start; stackToShift.getCount() > 0 && slotIndex < end; slotIndex++) {
-				final Slot slot = this.slotList.get(slotIndex);
+				final Slot slot = this.slots.get(slotIndex);
 				ItemStack stackInSlot = slot.getStack();
 				if (stackInSlot.isEmpty() && slot.canInsert(stackToShift)) {
 					final int max = Math.min(stackToShift.getMaxCount(), slot.getMaxStackAmount());

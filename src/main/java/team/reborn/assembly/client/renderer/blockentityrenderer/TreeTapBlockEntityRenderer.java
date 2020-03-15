@@ -23,7 +23,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import team.reborn.assembly.block.TreeTapBlock;
 import team.reborn.assembly.blockentity.TreeTapBlockEntity;
-import team.reborn.assembly.blockentity.WoodenBarrelBlockEntity;
+import team.reborn.assembly.blockentity.FluidBarrelBlockEntity;
 import team.reborn.assembly.util.math.MathUtil;
 
 public class TreeTapBlockEntityRenderer extends BlockEntityRenderer<TreeTapBlockEntity> {
@@ -74,8 +74,8 @@ public class TreeTapBlockEntityRenderer extends BlockEntityRenderer<TreeTapBlock
 
 					double bottomStream = 0;
 					BlockEntity below = world.getBlockEntity(treeTap.getPos().down());
-					if (below instanceof WoodenBarrelBlockEntity) {
-						bottomStream = -16 + (((WoodenBarrelBlockEntity) below).getTank().getInvFluid(0).getAmount_F().asInexactDouble() / (double) ((WoodenBarrelBlockEntity) below).getTank().getCapacity(0).asInexactDouble() * 14) + 1;
+					if (below instanceof FluidBarrelBlockEntity) {
+						bottomStream = -16 + (((FluidBarrelBlockEntity) below).getTank().getInvFluid(0).getAmount_F().asInexactDouble() / (double) ((FluidBarrelBlockEntity) below).getTank().getCapacity(0).asInexactDouble() * 14) + 1;
 					}
 
 					double streamHeight = bottomAngled - bottomStream;

@@ -1,5 +1,7 @@
 package team.reborn.assembly.util.fluid;
 
-public interface IOFluidContainer extends InputFluidContainer, OutputFluidContainer {
+import alexiil.mc.lib.attributes.fluid.FluidTransferable;
+
+public interface IOFluidContainer extends InputFluidContainer, OutputFluidContainer, FluidTransferable {
 
 }

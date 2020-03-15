@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 public class AssemblyBlockEntities {
 	private static final Map<Identifier, BlockEntityType<? extends BlockEntity>> BLOCK_ENTITY_TYPES = new HashMap<>();
 
-	public static final BlockEntityType<WoodenBarrelBlockEntity> WOODEN_BARREL = add("wooden_barrel", WoodenBarrelBlockEntity::new, AssemblyBlocks.WOODEN_BARREL);
+	public static final BlockEntityType<FluidBarrelBlockEntity> FLUID_BARREL = add("wooden_barrel", FluidBarrelBlockEntity::new, AssemblyBlocks.FLUID_BARREL);
 	public static final BlockEntityType<TreeTapBlockEntity> TREE_TAP = add("tree_tap", TreeTapBlockEntity::new, AssemblyBlocks.TREE_TAP);
 	public static final BlockEntityType<SteamPressBlockEntity> STEAM_PRESS = add("steam_press", SteamPressBlockEntity::new, AssemblyBlocks.STEAM_PRESS);
 	public static final BlockEntityType<BoilerBlockEntity> BOILER = add("boiler", BoilerBlockEntity::new, AssemblyBlocks.BOILER);
@@ -38,7 +38,7 @@ public class AssemblyBlockEntities {
 
 	public static void register() {
 		for (Identifier id : BLOCK_ENTITY_TYPES.keySet()) {
-			Registry.register(Registry.BLOCK_ENTITY, id, BLOCK_ENTITY_TYPES.get(id));
+			Registry.register(Registry.BLOCK_ENTITY_TYPE, id, BLOCK_ENTITY_TYPES.get(id));
 		}
 	}
 

@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "common.boiler.MixinAbstractFurnaceBlock",
+    "common.drill.OreBlockMixin",
     "common.exoframe.MixinBlock",
     "common.exoframe.MixinLivingEntity",
     "common.menu.MixinContainer",

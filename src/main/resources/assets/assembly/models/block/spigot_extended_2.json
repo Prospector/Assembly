@@ -1,21 +1,21 @@
 {
-	"credit": "Made with Blockbench",
-	"parent": "block/block",
-	"textures": {
-		"0": "assembly:block/spigot",
-		"particle": "assembly:block/spigot"
-	},
-	"elements": [
-		{
-			"from": [6, 6, -2],
-			"to": [10, 9, 0],
-			"faces": {
-				"north": {"uv": [5, 11, 9, 14], "texture": "#0"},
-				"east": {"uv": [5, 3, 7, 0], "rotation": 180, "texture": "#0"},
-				"west": {"uv": [5, 0, 7, 3], "texture": "#0"},
-				"up": {"uv": [5, 3, 7, 7], "rotation": 90, "texture": "#0"},
-				"down": {"uv": [6, 7, 8, 11], "rotation": 270, "texture": "#0"}
-			}
-		}
-	]
+  "credit": "Made with Blockbench",
+  "parent": "block/block",
+  "textures": {
+    "0": "assembly:block/spigot",
+    "particle": "assembly:block/spigot"
+  },
+  "elements": [
+    {
+      "from": [ 6, 6, -2 ],
+      "to": [ 10, 9, 0 ],
+      "faces": {
+        "north": { "uv": [ 5, 11, 9, 14 ], "texture": "#0" },
+        "east": { "uv": [ 5, 3, 7, 0 ], "rotation": 180, "texture": "#0" },
+        "west": { "uv": [ 5, 0, 7, 3 ], "texture": "#0" },
+        "up": { "uv": [ 5, 3, 7, 7 ], "rotation": 90, "texture": "#0" },
+        "down": { "uv": [ 6, 7, 8, 11 ], "rotation": 270, "texture": "#0" }
+      }
+    }
+  ]
 }

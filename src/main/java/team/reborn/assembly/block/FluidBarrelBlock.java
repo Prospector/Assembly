@@ -23,24 +23,24 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import team.reborn.assembly.util.fluid.IOFluidContainer;
 import team.reborn.assembly.blockentity.AssemblyBlockEntities;
-import team.reborn.assembly.blockentity.WoodenBarrelBlockEntity;
+import team.reborn.assembly.blockentity.FluidBarrelBlockEntity;
 import team.reborn.assembly.fluid.AssemblyFluids;
 import team.reborn.assembly.item.AssemblyItems;
 import team.reborn.assembly.util.interaction.InteractionActionResult;
 import team.reborn.assembly.util.interaction.InteractionUtil;
 
-public class WoodenBarrelBlock extends Block implements BlockEntityProvider, AttributeProvider {
+public class FluidBarrelBlock extends Block implements BlockEntityProvider, AttributeProvider {
 	private static final VoxelShape SHAPE = Block.createCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 16.0D, 14.0D);
 
-	public WoodenBarrelBlock(Settings settings) {
+	public FluidBarrelBlock(Settings settings) {
 		super(settings);
 	}
 
 	@Override
 	public void addAllAttributes(World world, BlockPos pos, BlockState state, AttributeList<?> to) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
-		if (blockEntity instanceof WoodenBarrelBlockEntity) {
-			to.offer(((WoodenBarrelBlockEntity) blockEntity).getTank(), VoxelShapes.fullCube());
+		if (blockEntity instanceof FluidBarrelBlockEntity) {
+			to.offer(((FluidBarrelBlockEntity) blockEntity).getTank(), VoxelShapes.fullCube());
 		}
 	}
 
@@ -56,15 +56,15 @@ public class WoodenBarrelBlock extends Block implements BlockEntityProvider, Att
 
 	@Override
 	public BlockEntity createBlockEntity(BlockView world) {
-		return AssemblyBlockEntities.WOODEN_BARREL.instantiate();
+		return AssemblyBlockEntities.FLUID_BARREL.instantiate();
 	}
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		ActionResult result = InteractionUtil.handleDefaultInteractions(state, world, pos, player, hand, hit, (state1, world1, pos1, player1, hand1, hit1) -> {
 			BlockEntity blockEntity = world.getBlockEntity(pos);
-			if (blockEntity instanceof WoodenBarrelBlockEntity) {
-				WoodenBarrelBlockEntity barrel = (WoodenBarrelBlockEntity) blockEntity;
+			if (blockEntity instanceof FluidBarrelBlockEntity) {
+				FluidBarrelBlockEntity barrel = (FluidBarrelBlockEntity) blockEntity;
 				IOFluidContainer tank = barrel.getTank();
 				FluidVolume volume = tank.getInvFluid(0);
 				Fluid fluid = volume.getRawFluid();

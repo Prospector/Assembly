@@ -27,7 +27,7 @@ import team.reborn.assembly.block.BoilerBlock;
 import team.reborn.assembly.menu.builder.MenuBuilder;
 import team.reborn.assembly.recipe.AssemblyRecipeTypes;
 import team.reborn.assembly.recipe.BoilingRecipe;
-import team.reborn.assembly.recipe.provider.BoilingRecipeProvider;
+import team.reborn.assembly.recipe.provider.FluidInputInventory;
 import team.reborn.assembly.util.AssemblyConstants;
 import team.reborn.assembly.util.fluid.IOFluidContainer;
 import team.reborn.assembly.util.fluid.SimpleIOFluidContainer;
@@ -37,7 +37,7 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements Tickable, BoilingRecipeProvider, TankIOInteractable, SidedInventory {
+public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements Tickable, FluidInputInventory, TankIOInteractable, SidedInventory {
 
 	private static final int FUEL_SLOT = 0;
 	private static final int[] BOTTOM_SLOTS = new int[]{FUEL_SLOT};
@@ -143,7 +143,7 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 	private FluidVolume simulateCraft() {
 		FluidVolume output = outputTank.getInvFluid(0);
 		if (!inputTank.getInvFluid(0).isEmpty() && (output.isEmpty() || (output.getRawFluid() == recipe.output && output.getAmount_F().isLessThan(outputTank.getCapacity(0))))) {
-			FluidVolume inputSim = inputTank.attemptExtraction(fluidKey -> FluidKeys.get(recipe.input).equals(fluidKey), RECIPE_OUTPUT_INCREMENT.roundedMul(recipe.ratio), Simulation.SIMULATE);
+			FluidVolume inputSim = inputTank.attemptExtraction(fluidKey -> FluidKeys.get(recipe.inputFluid).equals(fluidKey), RECIPE_OUTPUT_INCREMENT.roundedMul(recipe.ratio), Simulation.SIMULATE);
 			if (!inputSim.isEmpty()) {
 				FluidVolume outputSim = outputTank.attemptInsertion(FluidKeys.get(recipe.output).withAmount(RECIPE_OUTPUT_INCREMENT), Simulation.SIMULATE);
 				if (outputSim.isEmpty()) {

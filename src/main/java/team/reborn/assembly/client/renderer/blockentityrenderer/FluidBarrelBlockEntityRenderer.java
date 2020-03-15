@@ -18,17 +18,17 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import team.reborn.assembly.blockentity.WoodenBarrelBlockEntity;
+import team.reborn.assembly.blockentity.FluidBarrelBlockEntity;
 import team.reborn.assembly.util.math.MathUtil;
 
-public class WoodenBarrelBlockEntityRenderer extends BlockEntityRenderer<WoodenBarrelBlockEntity> {
+public class FluidBarrelBlockEntityRenderer extends BlockEntityRenderer<FluidBarrelBlockEntity> {
 
-	public WoodenBarrelBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {
+	public FluidBarrelBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {
 		super(dispatcher);
 	}
 
 	@Override
-	public void render(WoodenBarrelBlockEntity barrel, float delta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+	public void render(FluidBarrelBlockEntity barrel, float delta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		FluidVolume volume = barrel.getTank().getInvFluid(0);
 		if (!volume.isEmpty()) {
 			Fluid fluid = volume.getRawFluid();

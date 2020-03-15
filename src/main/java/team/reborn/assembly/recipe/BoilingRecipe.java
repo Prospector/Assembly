@@ -1,6 +1,7 @@
 package team.reborn.assembly.recipe;
 
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
+import alexiil.mc.lib.attributes.fluid.filter.FluidFilter;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import io.github.cottonmc.libcd.api.CustomOutputRecipe;
 import net.minecraft.fluid.Fluid;
@@ -9,20 +10,22 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-import team.reborn.assembly.recipe.provider.BoilingRecipeProvider;
+import team.reborn.assembly.recipe.provider.FluidInputInventory;
 import team.reborn.assembly.recipe.serializer.AssemblyRecipeSerializers;
 
 import java.util.Collection;
 import java.util.Collections;
 
-public class BoilingRecipe extends AssemblyRecipe<BoilingRecipeProvider> implements CustomOutputRecipe {
-	public Fluid input;
+public class BoilingRecipe extends AssemblyRecipe<FluidInputInventory> implements CustomOutputRecipe {
+	public FluidFilter input;
+	public Fluid inputFluid;
 	public FluidAmount ratio;
 	public Fluid output;
 
 	public BoilingRecipe(Identifier id, Fluid input, FluidAmount ratio, Fluid output) {
 		super(id);
-		this.input = input;
+		this.input = fluidKey -> fluidKey.getRawFluid() != null && fluidKey.getRawFluid().equals(input);
+		this.inputFluid = input;
 		this.ratio = ratio;
 		this.output = output;
 	}
@@ -32,9 +35,9 @@ public class BoilingRecipe extends AssemblyRecipe<BoilingRecipeProvider> impleme
 	}
 
 	@Override
-	public boolean recipeMatches(BoilingRecipeProvider inv, World world) {
+	public boolean recipeMatches(FluidInputInventory inv, World world) {
 		FluidVolume fluidInput = inv.getFluidInput();
-		return fluidInput.getRawFluid() == this.input && !fluidInput.getAmount_F().isZero();
+		return this.input.matches(fluidInput.getFluidKey()) && !fluidInput.getAmount_F().isZero();
 	}
 
 	@Override

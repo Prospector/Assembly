@@ -1,6 +1,6 @@
 package team.reborn.assembly.recipe;
 
-import io.github.cottonmc.libcd.api.CustomOutputRecipe;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
@@ -8,10 +8,9 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import team.reborn.assembly.item.AssemblyItems;
-import team.reborn.assembly.recipe.provider.PressingRecipeProvider;
 import team.reborn.assembly.recipe.serializer.AssemblyRecipeSerializers;
 
-public class SteamPressingRecipe extends AssemblyRecipe<PressingRecipeProvider> {
+public class SteamPressingRecipe extends AssemblyRecipe<Inventory> {
 	public Ingredient input;
 	public ItemStack output;
 	public int presses;
@@ -28,12 +27,12 @@ public class SteamPressingRecipe extends AssemblyRecipe<PressingRecipeProvider> 
 	}
 
 	@Override
-	public boolean recipeMatches(PressingRecipeProvider inv, World world) {
+	public boolean recipeMatches(Inventory inv, World world) {
 		return this.input.test(inv.getInvStack(0));
 	}
 
 	@Override
-	public ItemStack craft(PressingRecipeProvider inv) {
+	public ItemStack craft(Inventory inv) {
 		return this.output.copy();
 	}
 

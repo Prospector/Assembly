@@ -10,10 +10,7 @@ import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.util.Identifier;
 import team.reborn.assembly.blockentity.AssemblyBlockEntities;
-import team.reborn.assembly.client.renderer.blockentityrenderer.SpigotBlockEntityRenderer;
-import team.reborn.assembly.client.renderer.blockentityrenderer.SteamPressBlockEntityRenderer;
-import team.reborn.assembly.client.renderer.blockentityrenderer.TreeTapBlockEntityRenderer;
-import team.reborn.assembly.client.renderer.blockentityrenderer.WoodenBarrelBlockEntityRenderer;
+import team.reborn.assembly.client.renderer.blockentityrenderer.*;
 import team.reborn.assembly.entity.AssemblyEntities;
 import team.reborn.assembly.fluid.AssemblyFluid;
 import team.reborn.assembly.fluid.AssemblyFluids;
@@ -33,7 +30,7 @@ public class AssemblyRenderers {
 	}
 
 	private static void registerBlockEntityRenderers() {
-		BlockEntityRendererRegistry.INSTANCE.register(AssemblyBlockEntities.WOODEN_BARREL, WoodenBarrelBlockEntityRenderer::new);
+		BlockEntityRendererRegistry.INSTANCE.register(AssemblyBlockEntities.FLUID_BARREL, FluidBarrelBlockEntityRenderer::new);
 		BlockEntityRendererRegistry.INSTANCE.register(AssemblyBlockEntities.TREE_TAP, TreeTapBlockEntityRenderer::new);
 		BlockEntityRendererRegistry.INSTANCE.register(AssemblyBlockEntities.STEAM_PRESS, SteamPressBlockEntityRenderer::new);
 		BlockEntityRendererRegistry.INSTANCE.register(AssemblyBlockEntities.SPIGOT, SpigotBlockEntityRenderer::new);
@@ -50,9 +47,9 @@ public class AssemblyRenderers {
 			ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEX).register((atlasTexture, registry) -> registry.register(((TexturedFluid) still).getStillTexture()));
 			ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEX).register((atlasTexture, registry) -> registry.register(((TexturedFluid) still).getFlowingTexture()));
 			FluidRenderHandlerRegistry.INSTANCE.register(still, (view, pos, state) -> new Sprite[]{MinecraftClient.getInstance().getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEX).apply(((TexturedFluid) state.getFluid()).getStillTexture()),
-				MinecraftClient.getInstance().getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEX).apply(((TexturedFluid) state.getFluid()).getFlowingTexture())});
+					MinecraftClient.getInstance().getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEX).apply(((TexturedFluid) state.getFluid()).getFlowingTexture())});
 			FluidRenderHandlerRegistry.INSTANCE.register(flowing, (view, pos, state) -> new Sprite[]{MinecraftClient.getInstance().getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEX).apply(((TexturedFluid) state.getFluid()).getStillTexture()),
-				MinecraftClient.getInstance().getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEX).apply(((TexturedFluid) state.getFluid()).getFlowingTexture())});
+					MinecraftClient.getInstance().getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEX).apply(((TexturedFluid) state.getFluid()).getFlowingTexture())});
 		}
 	}
 }

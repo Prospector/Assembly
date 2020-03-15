@@ -32,7 +32,7 @@ public class AssemblyBlocks {
 	private static final Map<AssemblyFluid, AssemblyFluidBlock> FLUID_BLOCKS = new HashMap<>();
 
 	public static final Block HEVEA_PLANKS = add("hevea_planks", new Block(FabricBlockSettings.copy(Blocks.OAK_PLANKS).build()), ItemGroup.BUILDING_BLOCKS);
-	public static final Block HEVEA_SAPLING = add("hevea_sapling", new TerraformSaplingBlock(new TerraformSaplingGenerator(() -> new OakTreeFeature(BranchedTreeFeatureConfig::deserialize2), () -> AssemblyWorldgen.HEVEA_TREE_CONFIG)), ItemGroup.DECORATIONS);
+	public static final Block HEVEA_SAPLING = add("hevea_sapling", new TerraformSaplingBlock(new TerraformSaplingGenerator(() -> new OakTreeFeature(BranchedTreeFeatureConfig::deserialize), () -> AssemblyWorldgen.HEVEA_TREE_CONFIG)), ItemGroup.DECORATIONS);
 	public static final Block POTTED_HEVEA_SAPLING = add("potted_hevea_sapling", new FlowerPotBlock(HEVEA_SAPLING, FabricBlockSettings.copy(Blocks.POTTED_OAK_SAPLING).build()));
 	public static final Block STRIPPED_HEVEA_LOG = add("stripped_hevea_log", new LogBlock(MaterialColor.BROWN, FabricBlockSettings.copy(Blocks.OAK_LOG).build()), ItemGroup.BUILDING_BLOCKS);
 	public static final Block STRIPPED_HEVEA_WOOD = add("stripped_hevea_wood", new LogBlock(MaterialColor.BROWN, FabricBlockSettings.copy(Blocks.OAK_LOG).build()), ItemGroup.BUILDING_BLOCKS);
@@ -52,11 +52,11 @@ public class AssemblyBlocks {
 	public static final Block HEVEA_WALL_SIGN = add("hevea_wall_sign", new TerraformWallSignBlock(HEVEA_SIGN_TEXTURE, FabricBlockSettings.copy(Blocks.OAK_WALL_SIGN).build()));
 	public static final Item HEVEA_SIGN_ITEM = add("hevea_sign", new SignItem(new Item.Settings().maxCount(16).group(ItemGroup.DECORATIONS), HEVEA_SIGN, HEVEA_WALL_SIGN));
 
-	public static final Block WOODEN_BARREL = add("wooden_barrel", new WoodenBarrelBlock(FabricBlockSettings.copy(Blocks.OAK_LOG).build()), ItemGroup.DECORATIONS);
+	public static final Block FLUID_BARREL = add("fluid_barrel", new FluidBarrelBlock(FabricBlockSettings.copy(Blocks.OAK_LOG).build()), ItemGroup.DECORATIONS);
 	public static final Block TREE_TAP = add("tree_tap", new TreeTapBlock(FabricBlockSettings.of(Material.WOOD).breakInstantly().sounds(BlockSoundGroup.WOOD).build()), ItemGroup.DECORATIONS);
 
 	public static final FluidBlock LATEX = add("latex", new AssemblyFluidBlock(AssemblyFluids.LATEX, FabricBlockSettings.of(Material.WATER).noCollision().hardness(100.0F).dropsNothing().build()));
-//	public static final FluidBlock BIOMASS = add("biomass", new AssemblyFluidBlock(AssemblyFluids.BIOMASS, FabricBlockSettings.of(Material.WATER).noCollision().hardness(100.0F).dropsNothing().build()));
+	//	public static final FluidBlock BIOMASS = add("biomass", new AssemblyFluidBlock(AssemblyFluids.BIOMASS, FabricBlockSettings.of(Material.WATER).noCollision().hardness(100.0F).dropsNothing().build()));
 //	public static final FluidBlock OIL = add("oil", new AssemblyFluidBlock(AssemblyFluids.OIL, FabricBlockSettings.of(Material.WATER).noCollision().hardness(100.0F).dropsNothing().build()));
 	public static final FluidBlock STEAM = add("steam", new AssemblyFluidBlock(AssemblyFluids.STEAM, FabricBlockSettings.of(Material.AIR).noCollision().hardness(100.0F).dropsNothing().build()));
 
@@ -70,6 +70,7 @@ public class AssemblyBlocks {
 	public static final Block ZINC_BLOCK = add("zinc_block", new Block(FabricBlockSettings.copy(Blocks.IRON_BLOCK).breakByTool(FabricToolTags.PICKAXES, 1).build()), ItemGroup.BUILDING_BLOCKS);
 	public static final Block BRASS_BLOCK = add("brass_block", new Block(FabricBlockSettings.copy(Blocks.IRON_BLOCK).breakByTool(FabricToolTags.PICKAXES, 1).build()), ItemGroup.BUILDING_BLOCKS);
 
+	public static final Block CONVEYOR_BELT = add("conveyor_belt", new ConveyorBeltBlock(FabricBlockSettings.of(Material.METAL).breakByTool(FabricToolTags.PICKAXES, 0).build()), ItemGroup.REDSTONE);
 	public static final Block FLUID_HOPPER = add("fluid_hopper", new FluidHopperBlock(FabricBlockSettings.copy(Blocks.HOPPER).breakByTool(FabricToolTags.PICKAXES, 0).build()), ItemGroup.REDSTONE);
 	public static final Block SPIGOT = add("spigot", new SpigotBlock(FabricBlockSettings.copy(Blocks.HOPPER).breakByTool(FabricToolTags.PICKAXES, 0).build()), ItemGroup.REDSTONE);
 

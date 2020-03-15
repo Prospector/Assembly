@@ -27,7 +27,6 @@ import team.reborn.assembly.block.SteamPressBlock;
 import team.reborn.assembly.blockentity.base.AssemblySyncedNbtBlockEntity;
 import team.reborn.assembly.recipe.AssemblyRecipeTypes;
 import team.reborn.assembly.recipe.SteamPressingRecipe;
-import team.reborn.assembly.recipe.provider.PressingRecipeProvider;
 import team.reborn.assembly.util.AssemblyConstants;
 import team.reborn.assembly.util.fluid.IOFluidContainer;
 import team.reborn.assembly.util.fluid.SimpleIOFluidContainer;
@@ -36,7 +35,7 @@ import team.reborn.assembly.util.interaction.interactable.TankInputInteractable;
 import javax.annotation.Nullable;
 import java.util.Iterator;
 
-public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implements Tickable, Clearable, SidedInventory, PressingRecipeProvider, TankInputInteractable {
+public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implements Tickable, Clearable, SidedInventory, TankInputInteractable {
 
 	private static final String MASTER_KEY = AssemblyConstants.NbtKeys.MASTER;
 	private Boolean master = null;
@@ -352,11 +351,6 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public int getCurrentPresses() {
-		return currentPresses;
 	}
 
 	@Override
