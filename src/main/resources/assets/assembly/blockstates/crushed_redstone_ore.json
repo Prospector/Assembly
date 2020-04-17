@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "assembly:block/crushed_redstone_ore"
+    }
+  }
+}

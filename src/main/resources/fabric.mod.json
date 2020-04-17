@@ -14,15 +14,19 @@
   },
   "entrypoints": {
     "main": [
-      "team.reborn.assembly.Assembly"
+      "com.terraformersmc.assembly.Assembly"
     ],
     "client": [
-      "team.reborn.assembly.client.AssemblyClient"
+      "com.terraformersmc.assembly.client.AssemblyClient"
+    ],
+    "dossier": [
+      "com.terraformersmc.assembly.data.AssemblyData"
     ]
   },
   "depends": {
     "fabric": "*",
     "reborncore": "*",
+    "terraform": "*",
     "libblockattributes_fluids": ">=0.6.3"
   },
   "authors": [

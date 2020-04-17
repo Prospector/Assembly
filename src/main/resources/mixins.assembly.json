@@ -1,24 +1,19 @@
 {
   "required": true,
-  "package": "team.reborn.assembly.mixin",
+  "package": "com.terraformersmc.assembly.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "common.boiler.MixinAbstractFurnaceBlock",
-
-    "common.drill.OreBlockMixin",
-
+    "common.ore.MixinItem",
     "common.exoframe.MixinBlock",
     "common.exoframe.MixinLivingEntity",
-
     "common.screenhandler.AccessorScreenHandlerListeners",
-
     "common.tag.BlockTagsInvoker",
     "common.tag.FluidTagsInvoker",
     "common.tag.ItemTagsInvoker"
   ],
   "client": [
     "client.cape.MixinPlayerListEntry",
-
     "client.exoframe.MixinArmorFeatureRenderer"
   ],
   "injectors": {

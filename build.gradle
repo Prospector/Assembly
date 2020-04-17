@@ -31,12 +31,18 @@ repositories {
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}"
-	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
-	modCompile "net.fabricmc:fabric-loader:${project.loader_version}"
-	modCompile "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	modCompile "com.terraformersmc:terraform:${project.terraform_version}"
-	modCompile "RebornCore:RebornCore-${project.rc_version}"
-	modCompile "alexiil.mc.lib:libblockattributes-fluids:${project.lba_version}"
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+	modImplementation "com.terraformersmc:terraform:${project.terraform_version}"
+	modImplementation "alexiil.mc.lib:libblockattributes-fluids:${project.lba_version}"
+	modImplementation "com.terraformersmc:dossier:${project.dossier_version}"
+	modImplementation "RebornCore:RebornCore-${project.rc_version}"
+
+	include "com.terraformersmc:terraform:${project.terraform_version}"
+	include "alexiil.mc.lib:libblockattributes-fluids:${project.lba_version}"
+	include "RebornCore:RebornCore-${project.rc_version}"
+
 	optionalDependency "me.shedaniel:RoughlyEnoughItems:${project.rei_version}"
 	optionalDependency "io.github.cottonmc:LibCD:${project.libcd_version}"
 
