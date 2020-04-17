@@ -3,12 +3,8 @@ package team.reborn.assembly.block;
 import alexiil.mc.lib.attributes.AttributeProvider;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.EntityContext;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -30,10 +26,10 @@ public class TreeTapBlock extends HorizontalFacingBlock implements BlockEntityPr
 	public static final BooleanProperty POURING = AssemblyConstants.Properties.POURING;
 
 	private static final Map<Direction, VoxelShape> SHAPE = Maps.newEnumMap(ImmutableMap.of(
-		Direction.NORTH, Block.createCuboidShape(6.5D, 1.0D, 0.0D, 10.5D, 5.5D, 6.5D).simplify(),
-		Direction.SOUTH, Block.createCuboidShape(16 - 6.5D, 1.0D, 16 - 0.0D, 16 - 10.5D, 5.5D, 16 - 6.5D).simplify(),
-		Direction.WEST, Block.createCuboidShape(0.0D, 1.0D, 5.5D, 6.5D, 5.5D, 9.5D).simplify(),
-		Direction.EAST, Block.createCuboidShape(16 - 0.0D, 1.0D, 16 - 5.5D, 16 - 6.5D, 5.5D, 16 - 9.5D).simplify()));
+			Direction.NORTH, Block.createCuboidShape(6.5D, 1.0D, 0.0D, 10.5D, 5.5D, 6.5D).simplify(),
+			Direction.SOUTH, Block.createCuboidShape(16 - 6.5D, 1.0D, 16 - 0.0D, 16 - 10.5D, 5.5D, 16 - 6.5D).simplify(),
+			Direction.WEST, Block.createCuboidShape(0.0D, 1.0D, 5.5D, 6.5D, 5.5D, 9.5D).simplify(),
+			Direction.EAST, Block.createCuboidShape(16 - 0.0D, 1.0D, 16 - 5.5D, 16 - 6.5D, 5.5D, 16 - 9.5D).simplify()));
 
 	public TreeTapBlock(Settings settings) {
 		super(settings);
@@ -41,7 +37,7 @@ public class TreeTapBlock extends HorizontalFacingBlock implements BlockEntityPr
 	}
 
 	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, EntityContext context) {
+	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 		return SHAPE.get(state.get(FACING));
 	}
 
@@ -60,11 +56,6 @@ public class TreeTapBlock extends HorizontalFacingBlock implements BlockEntityPr
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		builder.add(FACING, POURING);
-	}
-
-	@Override
-	public boolean hasBlockEntity() {
-		return true;
 	}
 
 	@Override

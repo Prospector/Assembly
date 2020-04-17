@@ -1,5 +1,6 @@
 package team.reborn.assembly.world;
 
+import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
@@ -9,37 +10,49 @@ import net.minecraft.world.gen.decorator.ChanceDecoratorConfig;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.feature.BranchedTreeFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.FeatureConfig;
 import net.minecraft.world.gen.foliage.BlobFoliagePlacer;
-import net.minecraft.world.gen.stateprovider.SimpleStateProvider;
-import net.minecraft.world.gen.stateprovider.WeightedStateProvider;
+import net.minecraft.world.gen.stateprovider.SimpleBlockStateProvider;
+import net.minecraft.world.gen.stateprovider.WeightedBlockStateProvider;
+import net.minecraft.world.gen.trunk.StraightTrunkPlacer;
 import team.reborn.assembly.block.AssemblyBlocks;
 import team.reborn.assembly.block.HeveaLogBlock;
 import team.reborn.assembly.tags.AssemblyBiomeSets;
+import team.reborn.assembly.world.feature.AssemblyFeatures;
 
 public class AssemblyWorldgen {
 	public static final BranchedTreeFeatureConfig HEVEA_TREE_CONFIG;
 
 	public static void register() {
 		for (Biome biome : Registry.BIOME) {
-			if (AssemblyBiomeSets.HEVEA_TREE_SPAWNING.contains(biome)) {
-				biome.addFeature(GenerationStep.Feature.VEGETAL_DECORATION, Feature.NORMAL_TREE.configure(HEVEA_TREE_CONFIG).createDecoratedFeature(Decorator.CHANCE_HEIGHTMAP.configure(new ChanceDecoratorConfig(15))));
-			}
+			forEachBiome(biome);
+		}
+		RegistryEntryAddedCallback.event(Registry.BIOME).register((i, identifier, biome) -> forEachBiome(biome));
+	}
+
+	private static void forEachBiome(Biome biome) {
+		biome.addStructureFeature(AssemblyFeatures.SALT_DOME.configure(FeatureConfig.DEFAULT));
+		biome.addFeature(GenerationStep.Feature.UNDERGROUND_STRUCTURES, AssemblyFeatures.SALT_DOME.configure(FeatureConfig.DEFAULT));
+
+		if (AssemblyBiomeSets.HEVEA_TREE_SPAWNING.contains(biome)) {
+			biome.addFeature(GenerationStep.Feature.VEGETAL_DECORATION, Feature.NORMAL_TREE.configure(HEVEA_TREE_CONFIG).createDecoratedFeature(Decorator.CHANCE_HEIGHTMAP.configure(new ChanceDecoratorConfig(15))));
 		}
 	}
 
 	static {
 		BlockState heveaLog = AssemblyBlocks.HEVEA_LOG.getDefaultState().with(HeveaLogBlock.ALIVE, true);
-		WeightedStateProvider heveaStateProvider = new WeightedStateProvider().addState(heveaLog, 400);
+		WeightedBlockStateProvider heveaTrunkProvider = new WeightedBlockStateProvider().addState(heveaLog, 400);
 		for (Direction direction : Direction.Type.HORIZONTAL) {
-			heveaStateProvider.addState(heveaLog.with(HeveaLogBlock.getLatexProperty(direction), true), 10);
+			heveaTrunkProvider.addState(heveaLog.with(HeveaLogBlock.getLatexProperty(direction), true), 10);
 			for (Direction d2 : Direction.Type.HORIZONTAL) {
-				heveaStateProvider.addState(heveaLog.with(HeveaLogBlock.getLatexProperty(direction), true).with(HeveaLogBlock.getLatexProperty(d2), true), 1);
+				heveaTrunkProvider.addState(heveaLog.with(HeveaLogBlock.getLatexProperty(direction), true).with(HeveaLogBlock.getLatexProperty(d2), true), 1);
 			}
 		}
 		HEVEA_TREE_CONFIG = new BranchedTreeFeatureConfig.Builder(
-			heveaStateProvider,
-			new SimpleStateProvider(AssemblyBlocks.HEVEA_LEAVES.getDefaultState()),
-			new BlobFoliagePlacer(2, 0)
-		).baseHeight(6).heightRandA(3).foliageHeight(3).noVines().build();
+				heveaTrunkProvider,
+				new SimpleBlockStateProvider(AssemblyBlocks.HEVEA_LEAVES.getDefaultState()),
+				new BlobFoliagePlacer(2, 0, 0, 0, 3),
+				new StraightTrunkPlacer(4, 2, 0)
+		).noVines().build();
 	}
 }

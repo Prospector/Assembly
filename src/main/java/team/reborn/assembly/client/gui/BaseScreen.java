@@ -2,23 +2,23 @@ package team.reborn.assembly.client.gui;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ingame.ContainerScreen;
-import net.minecraft.container.Slot;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import team.reborn.assembly.Assembly;
-import team.reborn.assembly.menu.builder.BuiltMenu;
+import team.reborn.assembly.screenhandler.builder.BuiltScreenHandler;
 
-public class BaseScreen extends ContainerScreen<BuiltMenu> {
+public class BaseScreen extends HandledScreen<BuiltScreenHandler> {
 
 	public static final Identifier GUI_SHEET = new Identifier(Assembly.MOD_ID, "textures/gui/gui_sheet.png");
 	public int xSize = 176;
 	public int ySize = 176;
 
 	private Layer layer = Layer.BACKGROUND;
-	final BuiltMenu menu;
+	final BuiltScreenHandler menu;
 
-	public BaseScreen(BuiltMenu menu, String title) {
+	public BaseScreen(BuiltScreenHandler menu, String title) {
 		super(menu, MinecraftClient.getInstance().player.inventory, new LiteralText(title));
 		this.menu = menu;
 	}
@@ -35,15 +35,15 @@ public class BaseScreen extends ContainerScreen<BuiltMenu> {
 	//Best time to draw slots
 	public void drawSlots() {
 		for (Slot slot : menu.slots) {
-			drawSlot(slot.xPosition, slot.yPosition);
+			drawSlot(slot.x, slot.y);
 		}
 	}
 
 	@Override
 	protected void drawForeground(int i, int i1) {
 		super.drawForeground(i, i1);
-		font.draw(menu.getName().toString(), 10, 6, 4210752);
-		font.draw("Inventory", 10, 80, 4210752);
+		textRenderer.draw(menu.getName().toString(), 10, 6, 4210752);
+		textRenderer.draw("Inventory", 10, 80, 4210752);
 	}
 
 	@Override
@@ -57,10 +57,10 @@ public class BaseScreen extends ContainerScreen<BuiltMenu> {
 	public void drawDefaultBackground(int x, int y, int width, int height) {
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
-		blit(x, y, 0, 0, width / 2, height / 2);
-		blit(x + width / 2, y, 150 - width / 2, 0, width / 2, height / 2);
-		blit(x, y + height / 2, 0, 150 - height / 2, width / 2, height / 2);
-		blit(x + width / 2, y + height / 2, 150 - width / 2, 150 - height / 2, width / 2, height / 2);
+		drawTexture(x, y, 0, 0, width / 2, height / 2);
+		drawTexture(x + width / 2, y, 150 - width / 2, 0, width / 2, height / 2);
+		drawTexture(x, y + height / 2, 0, 150 - height / 2, width / 2, height / 2);
+		drawTexture(x + width / 2, y + height / 2, 150 - width / 2, 150 - height / 2, width / 2, height / 2);
 	}
 
 	public void drawPlayerSlots(int posX, int posY, boolean center) {
@@ -70,12 +70,12 @@ public class BaseScreen extends ContainerScreen<BuiltMenu> {
 
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 9; x++) {
-				blit(posX + x * 18, posY + y * 18, 150, 0, 18, 18);
+				drawTexture(posX + x * 18, posY + y * 18, 150, 0, 18, 18);
 			}
 		}
 
 		for (int x = 0; x < 9; x++) {
-			blit(posX + x * 18, posY + 58, 150, 0, 18, 18);
+			drawTexture(posX + x * 18, posY + 58, 150, 0, 18, 18);
 		}
 	}
 
@@ -86,7 +86,7 @@ public class BaseScreen extends ContainerScreen<BuiltMenu> {
 		}
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
-		blit(posX - 1, posY - 1, 150, 0, 18, 18);
+		drawTexture(posX - 1, posY - 1, 150, 0, 18, 18);
 	}
 
 	public void drawOutputSlot(int x, int y) {
@@ -96,17 +96,17 @@ public class BaseScreen extends ContainerScreen<BuiltMenu> {
 		}
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
-		blit(x - 5, y - 5, 150, 18, 26, 26);
+		drawTexture(x - 5, y - 5, 150, 18, 26, 26);
 	}
 
 	public void drawEnergyBar(int x, int y, int height, int energyStored, int maxEnergyStored) {
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
 
-		blit(x, y, 0, 150, 14, height);
-		blit(x, y + height - 1, 0, 255, 14, 1);
+		drawTexture(x, y, 0, 150, 14, height);
+		drawTexture(x, y + height - 1, 0, 255, 14, 1);
 		int draw = (int) ((double) energyStored / (double) maxEnergyStored * (height - 2));
-		blit(x + 1, y + height - draw - 1, 14, height + 150 - draw, 12, draw);
+		drawTexture(x + 1, y + height - draw - 1, 14, height + 150 - draw, 12, draw);
 
 		//TODO hover tooltip
 	}
@@ -119,7 +119,7 @@ public class BaseScreen extends ContainerScreen<BuiltMenu> {
 
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
-		blit(x, y, direction.x, direction.y, direction.width, direction.height);
+		drawTexture(x, y, direction.x, direction.y, direction.width, direction.height);
 		int j = (int) ((double) progress / (double) maxProgress * 16);
 		if (j < 0) {
 			j = 0;
@@ -127,16 +127,16 @@ public class BaseScreen extends ContainerScreen<BuiltMenu> {
 
 		switch (direction) {
 			case RIGHT:
-				blit(x, y, direction.xActive, direction.yActive, j, 10);
+				drawTexture(x, y, direction.xActive, direction.yActive, j, 10);
 				break;
 			case LEFT:
-				blit(x + 16 - j, y, direction.xActive + 16 - j, direction.yActive, j, 10);
+				drawTexture(x + 16 - j, y, direction.xActive + 16 - j, direction.yActive, j, 10);
 				break;
 			case UP:
-				blit(x, y + 16 - j, direction.xActive, direction.yActive + 16 - j, 10, j);
+				drawTexture(x, y + 16 - j, direction.xActive, direction.yActive + 16 - j, 10, j);
 				break;
 			case DOWN:
-				blit(x, y, direction.xActive, direction.yActive, 10, j);
+				drawTexture(x, y, direction.xActive, direction.yActive, 10, j);
 				break;
 			default:
 				return;

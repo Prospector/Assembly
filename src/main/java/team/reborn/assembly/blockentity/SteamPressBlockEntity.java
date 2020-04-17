@@ -18,9 +18,9 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Clearable;
-import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import team.reborn.assembly.block.SteamPressBlock;
@@ -130,10 +130,10 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 			recipe = this.world.getRecipeManager().getFirstMatch(AssemblyRecipeTypes.STEAM_PRESSING, getMaster(), world).orElse(null);
 			if (recipe == null) {
 				currentPresses = 0;
-				ItemStack input = getInvStack(INPUT_SLOT);
+				ItemStack input = getStack(INPUT_SLOT);
 				if (!input.isEmpty()) {
-					setInvStack(INPUT_SLOT, ItemStack.EMPTY);
-					setInvStack(OUTPUT_SLOT, input);
+					setStack(INPUT_SLOT, ItemStack.EMPTY);
+					setStack(OUTPUT_SLOT, input);
 					extractCooldown = 5;
 				}
 			}
@@ -145,7 +145,7 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 		if (tag.contains(MASTER_KEY)) {
 			this.master = tag.getBoolean(MASTER_KEY);
 		}
-		this.items = DefaultedList.ofSize(this.getInvSize(), ItemStack.EMPTY);
+		this.items = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
 		Inventories.fromTag(tag, this.items);
 		this.progress = tag.getInt(PROGRESS_KEY);
 		this.reset = tag.getInt(RESET_KEY);
@@ -197,9 +197,9 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 	}
 
 	public ItemStack getRenderStack() {
-		ItemStack input = getInvStack(INPUT_SLOT);
-		ItemStack output = getInvStack(OUTPUT_SLOT);
-		return isInvEmpty() ? ItemStack.EMPTY : !input.isEmpty() ? input : output;
+		ItemStack input = getStack(INPUT_SLOT);
+		ItemStack output = getStack(OUTPUT_SLOT);
+		return isEmpty() ? ItemStack.EMPTY : !input.isEmpty() ? input : output;
 	}
 
 	public VoxelShape getArmVoxelShape(DoubleBlockHalf half) {
@@ -258,7 +258,7 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 	}
 
 	@Override
-	public int[] getInvAvailableSlots(Direction side) {
+	public int[] getAvailableSlots(Direction side) {
 		if (side == Direction.UP) {
 			return getCachedState().get(SteamPressBlock.HALF) == DoubleBlockHalf.UPPER ? TOP_SLOTS : new int[0];
 		} else if (side == Direction.DOWN) {
@@ -268,22 +268,22 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 	}
 
 	@Override
-	public boolean canInsertInvStack(int slot, ItemStack stack, @Nullable Direction dir) {
-		return slot == INPUT_SLOT && isInvEmpty() && stack.getCount() == 1;
+	public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
+		return slot == INPUT_SLOT && this.isEmpty() && stack.getCount() == 1;
 	}
 
 	@Override
-	public boolean canExtractInvStack(int slot, ItemStack stack, Direction dir) {
+	public boolean canExtract(int slot, ItemStack stack, Direction dir) {
 		return slot == OUTPUT_SLOT && extractCooldown == 0;
 	}
 
 	@Override
-	public int getInvSize() {
+	public int size() {
 		return getMaster().items.size();
 	}
 
 	@Override
-	public boolean isInvEmpty() {
+	public boolean isEmpty() {
 		Iterator<ItemStack> iterator = getMaster().items.iterator();
 		ItemStack stack;
 		do {
@@ -297,12 +297,12 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 	}
 
 	@Override
-	public ItemStack getInvStack(int slot) {
+	public ItemStack getStack(int slot) {
 		return getMaster().items.get(slot);
 	}
 
 	@Override
-	public ItemStack takeInvStack(int slot, int amount) {
+	public ItemStack removeStack(int slot, int amount) {
 		if (slot == INPUT_SLOT && amount > 0) {
 			updateRecipe();
 		}
@@ -313,7 +313,7 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 	}
 
 	@Override
-	public ItemStack removeInvStack(int slot) {
+	public ItemStack removeStack(int slot) {
 		if (slot == INPUT_SLOT) {
 			updateRecipe();
 		}
@@ -324,12 +324,12 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 	}
 
 	@Override
-	public void setInvStack(int slot, ItemStack newStack) {
+	public void setStack(int slot, ItemStack newStack) {
 		ItemStack currentStack = getMaster().items.get(slot);
 		boolean noUpdate = !newStack.isEmpty() && newStack.isItemEqualIgnoreDamage(currentStack) && ItemStack.areTagsEqual(newStack, currentStack);
 		getMaster().items.set(slot, newStack);
-		if (newStack.getCount() > this.getInvMaxStackAmount()) {
-			newStack.setCount(this.getInvMaxStackAmount());
+		if (newStack.getCount() > this.getMaxCountPerStack()) {
+			newStack.setCount(this.getMaxCountPerStack());
 		}
 
 		if (slot == INPUT_SLOT && !noUpdate) {
@@ -342,7 +342,7 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 	}
 
 	@Override
-	public boolean canPlayerUseInv(PlayerEntity player) {
+	public boolean canPlayerUse(PlayerEntity player) {
 		if (this.world != null) {
 			if (this.world.getBlockEntity(this.pos) != this) {
 				return false;

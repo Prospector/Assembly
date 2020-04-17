@@ -5,7 +5,6 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
@@ -14,8 +13,8 @@ import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Arm;
-import net.minecraft.util.BooleanBiFunction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -56,7 +55,7 @@ public class SpigotBlock extends HorizontalFacingBlock implements BlockEntityPro
 	}
 
 	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, EntityContext ePos) {
+	public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext ePos) {
 		return SHAPE_CACHE.getOrDefault(state, cacheOutlineShape(state));
 	}
 
@@ -113,7 +112,7 @@ public class SpigotBlock extends HorizontalFacingBlock implements BlockEntityPro
 
 	@Override
 	public BlockState getStateForNeighborUpdate(BlockState state, Direction facing, BlockState
-		neighborState, IWorld world, BlockPos pos, BlockPos neighborPos) {
+			neighborState, IWorld world, BlockPos pos, BlockPos neighborPos) {
 		return facing == state.get(FACING) && !state.canPlaceAt(world, pos) ? Blocks.AIR.getDefaultState() : super.getStateForNeighborUpdate(state, facing, neighborState, world, pos, neighborPos);
 	}
 
@@ -123,18 +122,13 @@ public class SpigotBlock extends HorizontalFacingBlock implements BlockEntityPro
 	}
 
 	@Override
-	public boolean hasBlockEntity() {
-		return true;
-	}
-
-	@Override
 	public BlockEntity createBlockEntity(BlockView view) {
 		return AssemblyBlockEntities.SPIGOT.instantiate();
 	}
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand
-		hand, BlockHitResult hit) {
+			hand, BlockHitResult hit) {
 		if (!world.isClient) {
 			if (state.get(VALVE).isOpen()) {
 				boolean away = player.getMainArm() == Arm.LEFT;

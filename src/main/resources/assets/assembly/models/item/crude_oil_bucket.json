@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-	"layer0": "assembly:item/oil_bucket"
+	"layer0": "assembly:item/crude_oil_bucket"
   }
 }

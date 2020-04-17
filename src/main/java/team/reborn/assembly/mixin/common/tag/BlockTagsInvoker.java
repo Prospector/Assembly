@@ -7,10 +7,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(BlockTags.class)
-public interface AccessorBlockTags {
+public interface BlockTagsInvoker {
 	@SuppressWarnings("PublicStaticMixinMember")
 	@Invoker("register")
-	static Tag<Block> register(String id) {
+	static Tag.Identified<Block> register(String id) {
 		return null;
 	}
 }

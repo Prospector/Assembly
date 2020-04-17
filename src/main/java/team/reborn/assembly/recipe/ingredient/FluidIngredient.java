@@ -21,7 +21,6 @@
 //import net.minecraft.tag.Tag;
 //import net.minecraft.util.Identifier;
 //import net.minecraft.util.JsonHelper;
-//import net.minecraft.util.PacketByteBuf;
 //import net.minecraft.util.registry.Registry;
 //
 //import javax.annotation.Nullable;
@@ -63,7 +62,8 @@
 //
 //	}
 //
-//	public boolean test(@Nullable ItemStack itemStack) {
+//	@Override
+//    public boolean test(@Nullable ItemStack itemStack) {
 //		if (itemStack == null) {
 //			return false;
 //		} else if (this.entries.length == 0) {
@@ -250,16 +250,8 @@
 //		@Override
 //		public JsonObject toJson() {
 //			JsonObject jsonObject = new JsonObject();
-//			if (key.getRawFluid() != null) {
-//				jsonObject.addProperty("fluid", Registry.FLUID.getId(this.key.getRawFluid()).toString());
-//			} else if (key instanceof PotionFluidKey) {
-//				jsonObject.addProperty("potion", Registry.POTION.getId(((PotionFluidKey) key).potion).toString());
-//			}
-//			JsonObject amountObject = new JsonObject();
-//			amountObject.addProperty("whole", amount.whole);
-//			amountObject.addProperty("numerator", amount.numerator);
-//			amountObject.addProperty("denominator", amount.denominator);
-//			jsonObject.add("amount", amountObject);
+//			jsonObject.add("key", key.toJson());
+//			jsonObject.add("amount", amount.toNbt());
 //			return jsonObject;
 //		}
 //	}

@@ -7,9 +7,9 @@ import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKeys;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.container.Container;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.Item;
@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.Recipe;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
@@ -24,10 +25,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import team.reborn.assembly.block.AssemblyBlocks;
 import team.reborn.assembly.block.BoilerBlock;
-import team.reborn.assembly.menu.builder.MenuBuilder;
 import team.reborn.assembly.recipe.AssemblyRecipeTypes;
 import team.reborn.assembly.recipe.BoilingRecipe;
 import team.reborn.assembly.recipe.provider.FluidInputInventory;
+import team.reborn.assembly.screenhandler.builder.ScreenHandlerBuilder;
 import team.reborn.assembly.util.AssemblyConstants;
 import team.reborn.assembly.util.fluid.IOFluidContainer;
 import team.reborn.assembly.util.fluid.SimpleIOFluidContainer;
@@ -160,8 +161,8 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 	}
 
 	@Override
-	public Container createContainer(int syncId, PlayerInventory inventory) {
-		return new MenuBuilder(AssemblyConstants.Ids.BOILER).player(inventory.player).inventory().hotbar().addInventory().blockEntity(this).filterSlot(0, 20, 20, AbstractFurnaceBlockEntity::canUseAsFuel).addContainer().create(this, syncId);
+	public ScreenHandler createContainer(int syncId, PlayerInventory inventory) {
+		return new ScreenHandlerBuilder(AssemblyConstants.Ids.BOILER).player(inventory.player).inventory().hotbar().addInventory().blockEntity(this).filterSlot(0, 20, 20, AbstractFurnaceBlockEntity::canUseAsFuel).addContainer().create(this, syncId);
 	}
 
 	private boolean isBurning() {
@@ -169,8 +170,8 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 	}
 
 	@Override
-	public void fromTag(CompoundTag tag) {
-		super.fromTag(tag);
+	public void fromTag(BlockState state, CompoundTag tag) {
+		super.fromTag(state, tag);
 		if (tag.contains(INPUT_FLUIDS_KEY)) {
 			FluidVolume fluid = FluidVolume.fromTag(tag.getCompound(INPUT_FLUIDS_KEY));
 			this.inputTank.setInvFluid(0, fluid, Simulation.ACTION);
@@ -196,6 +197,7 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 		//updateRecipe();
 	}
 
+	@Override
 	public CompoundTag toTag(CompoundTag tag) {
 		tag = super.toTag(tag);
 		FluidVolume inputFluid = this.inputTank.getInvFluid(0);
@@ -244,7 +246,8 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 		return getInputTank().getExtractable().getPureExtractable();
 	}
 
-	public int[] getInvAvailableSlots(Direction side) {
+	@Override
+	public int[] getAvailableSlots(Direction side) {
 		if (side == Direction.DOWN) {
 			return BOTTOM_SLOTS;
 		} else {
@@ -253,15 +256,17 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 	}
 
 	@Override
-	public int getInvSize() {
+	public int size() {
 		return 1;
 	}
 
-	public boolean canInsertInvStack(int slot, ItemStack stack, @Nullable Direction dir) {
-		return this.isValidInvStack(slot, stack);
+	@Override
+	public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
+		return this.isValid(slot, stack);
 	}
 
-	public boolean canExtractInvStack(int slot, ItemStack stack, Direction dir) {
+	@Override
+	public boolean canExtract(int slot, ItemStack stack, Direction dir) {
 		if (dir == Direction.DOWN && slot == 1) {
 			Item item = stack.getItem();
 			return item == Items.WATER_BUCKET || item == Items.BUCKET;

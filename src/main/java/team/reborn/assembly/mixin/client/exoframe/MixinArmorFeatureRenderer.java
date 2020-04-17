@@ -34,18 +34,18 @@ public abstract class MixinArmorFeatureRenderer<T extends LivingEntity, M extend
 	@Final
 	private static Map<String, Identifier> ARMOR_TEXTURE_CACHE;
 
-	@Inject(method = "renderArmor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/feature/ArmorFeatureRenderer;renderArmorParts(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/item/ArmorItem;ZLnet/minecraft/client/render/entity/model/BipedEntityModel;ZFFFLjava/lang/String;)V", ordinal = 2), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
-	private void modifyArmorRender(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, T livingEntity, float f, float g, float h, float i, float j, float k, EquipmentSlot equipmentSlot, int l, CallbackInfo info, ItemStack stack, ArmorItem item, A bipedEntityModel, boolean lowerParts, boolean renderGlint) {
+	@Inject(method = "renderArmor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/feature/ArmorFeatureRenderer;renderArmorParts(Lnet/minecraft/entity/EquipmentSlot;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/item/ArmorItem;ZLnet/minecraft/client/render/entity/model/BipedEntityModel;ZFFFLjava/lang/String;)V", ordinal = 2), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
+	private void modifyArmorRender(MatrixStack matrices, VertexConsumerProvider vertexConsumers, T entity, float limbAngle, float limbDistance, float tickDelta, float customAngle, float headYaw, float headPitch, EquipmentSlot slot, int light, A armorModel, CallbackInfo info, ItemStack stack, ArmorItem item, boolean lowerParts, boolean renderGlint) {
 		if (item instanceof CustomArmorTextureForStack) {
-			this.renderCustomArmorParts(matrixStack, vertexConsumerProvider, l, (CustomArmorTextureForStack) item, stack, renderGlint, bipedEntityModel, lowerParts, 1.0F, 1.0F, 1.0F, null);
+			this.renderCustomArmorParts(matrices, vertexConsumers, light, (CustomArmorTextureForStack) item, stack, renderGlint, armorModel, lowerParts, 1.0F, 1.0F, 1.0F, null);
 			info.cancel();
 		}
 	}
 
 	@Inject(method = "getArmorTexture", at = @At("HEAD"), cancellable = true)
-	private void modifyArmorTexture(ArmorItem armorItem, boolean lowerParts, @Nullable String suffix, CallbackInfoReturnable<Identifier> info) {
-		if (armorItem instanceof CustomArmorTexture) {
-			info.setReturnValue(getCachedId(((CustomArmorTexture) armorItem).getArmorTexture(armorItem, lowerParts, suffix)));
+	private void modifyArmorTexture(EquipmentSlot slot, ArmorItem item, boolean secondLayer, @Nullable String suffix, CallbackInfoReturnable<Identifier> info) {
+		if (item instanceof CustomArmorTexture) {
+			info.setReturnValue(getCachedId(((CustomArmorTexture) item).getArmorTexture(item, secondLayer, suffix)));
 		}
 	}
 

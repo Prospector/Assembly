@@ -4,14 +4,21 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "common.boiler.MixinAbstractFurnaceBlock",
+
     "common.drill.OreBlockMixin",
+
     "common.exoframe.MixinBlock",
     "common.exoframe.MixinLivingEntity",
-    "common.menu.MixinContainer",
-    "common.tag.AccessorBlockTags"
+
+    "common.screenhandler.AccessorScreenHandlerListeners",
+
+    "common.tag.BlockTagsInvoker",
+    "common.tag.FluidTagsInvoker",
+    "common.tag.ItemTagsInvoker"
   ],
   "client": [
     "client.cape.MixinPlayerListEntry",
+
     "client.exoframe.MixinArmorFeatureRenderer"
   ],
   "injectors": {

@@ -5,9 +5,9 @@ import alexiil.mc.lib.attributes.AttributeProvider;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.FurnaceBlockEntity;
-import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
@@ -65,7 +65,7 @@ public class BoilerChamberBlock extends HorizontalFacingBlock implements BlockEn
 	}
 
 	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, EntityContext ePos) {
+	public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext ePos) {
 		return SHAPE;
 	}
 
@@ -87,31 +87,26 @@ public class BoilerChamberBlock extends HorizontalFacingBlock implements BlockEn
 	private static void furnaceToBoiler(World world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
 		if (state.getBlock() == Blocks.FURNACE && blockEntity instanceof FurnaceBlockEntity) {
 			FurnaceBlockEntity furnace = ((FurnaceBlockEntity) blockEntity);
-			ItemStack fuelStack = furnace.getInvStack(1).copy();
+			ItemStack fuelStack = furnace.getStack(1).copy();
 			Text customName = furnace.getCustomName();
 			boolean empty = true;
-			for (int i = 0; i < furnace.getInvSize(); i++) {
-				if (i != 1 && !furnace.getInvStack(i).isEmpty()) {
+			for (int i = 0; i < furnace.size(); i++) {
+				if (i != 1 && !furnace.getStack(i).isEmpty()) {
 					empty = false;
 					break;
 				}
 			}
 			if (empty) {
-				furnace.setInvStack(1, ItemStack.EMPTY);
+				furnace.setStack(1, ItemStack.EMPTY);
 				world.setBlockState(pos, AssemblyBlocks.BOILER.getDefaultState().with(BoilerBlock.FACING, state.get(FurnaceBlock.FACING)));
 				BlockEntity newBlockEntity = world.getBlockEntity(pos);
 				if (newBlockEntity instanceof BoilerBlockEntity) {
-					((BoilerBlockEntity) newBlockEntity).setInvStack(0, fuelStack);
+					((BoilerBlockEntity) newBlockEntity).setStack(0, fuelStack);
 					((BoilerBlockEntity) newBlockEntity).setCustomName(customName);
 				}
 			}
 
 		}
-	}
-
-	@Override
-	public boolean hasBlockEntity() {
-		return true;
 	}
 
 	@Nullable
@@ -136,6 +131,11 @@ public class BoilerChamberBlock extends HorizontalFacingBlock implements BlockEn
 			world.getFluidTickScheduler().schedule(ourPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
 		return ourState;
+	}
+
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
 	}
 
 	static {

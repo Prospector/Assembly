@@ -28,7 +28,7 @@ public class SteamPressingRecipe extends AssemblyRecipe<Inventory> {
 
 	@Override
 	public boolean recipeMatches(Inventory inv, World world) {
-		return this.input.test(inv.getInvStack(0));
+		return this.input.test(inv.getStack(0));
 	}
 
 	@Override

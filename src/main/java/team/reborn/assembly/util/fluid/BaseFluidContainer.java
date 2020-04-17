@@ -16,8 +16,8 @@ import alexiil.mc.lib.attributes.misc.Saveable;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenCustomHashMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.util.DefaultedList;
 import net.minecraft.util.Util;
+import net.minecraft.util.collection.DefaultedList;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -44,7 +44,7 @@ public class BaseFluidContainer implements AssemblyFluidContainer, Saveable {
 	private FluidInvTankChangeListener ownerListener;
 
 	private final Map<FluidInvTankChangeListener, ListenerRemovalToken> listeners
-		= new Object2ObjectLinkedOpenCustomHashMap<>(Util.identityHashStrategy());
+			= new Object2ObjectLinkedOpenCustomHashMap<>(Util.identityHashStrategy());
 
 	// Should this use WeakReference instead of storing them directly?
 	private FluidInvTankChangeListener[] bakedListeners = NO_LISTENERS;

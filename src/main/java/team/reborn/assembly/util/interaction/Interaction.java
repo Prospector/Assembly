@@ -14,7 +14,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import team.reborn.assembly.util.interaction.interactable.MenuInteractable;
+import team.reborn.assembly.util.interaction.interactable.ScreenHandlerInteractable;
 import team.reborn.assembly.util.interaction.interactable.TankInputInteractable;
 import team.reborn.assembly.util.interaction.interactable.TankOutputInteractable;
 
@@ -37,9 +37,9 @@ public interface Interaction {
 	};
 	Interaction OPEN_MENU = (state, world, pos, player, hand, hit) -> {
 		Block block = state.getBlock();
-		if (block instanceof MenuInteractable) {
+		if (block instanceof ScreenHandlerInteractable) {
 			if (!world.isClient) {
-				ContainerProviderRegistry.INSTANCE.openContainer(((MenuInteractable) block).getMenuId(), player, buf -> buf.writeBlockPos(pos));
+				ContainerProviderRegistry.INSTANCE.openContainer(((ScreenHandlerInteractable) block).getScreenHandlerId(), player, buf -> buf.writeBlockPos(pos));
 			}
 			return InteractionActionResult.SUCCESS;
 		}

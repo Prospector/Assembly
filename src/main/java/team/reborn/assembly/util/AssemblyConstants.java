@@ -2,12 +2,10 @@ package team.reborn.assembly.util;
 
 import alexiil.mc.lib.attributes.fluid.filter.FluidFilter;
 import alexiil.mc.lib.attributes.fluid.filter.RawFluidTagFilter;
-
 import com.google.common.collect.ImmutableSet;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.sound.SoundEvent;
@@ -62,6 +60,9 @@ public class AssemblyConstants {
 
 		public static final Identifier STEAM_TANK = id("steam_tank");
 		public static final Identifier EXOFRAME = id("exoframe");
+
+		public static final Identifier SALT_DOME = id("salt_dome");
+
 	}
 
 	public static class Properties {
@@ -91,8 +92,8 @@ public class AssemblyConstants {
 	}
 
 	public enum ArmorMaterials implements ArmorMaterial {
-		BRASS("brass", 13, new int[]{2, 5, 6, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F, () -> Ingredient.ofItems(AssemblyItems.BRASS_INGOT)),
-		EXOFRAME("exoframe", 10, new int[]{2, 4, 5, 2}, 0, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0.0F, () -> Ingredient.ofItems(AssemblyItems.BRASS_PLATE));
+		BRASS("brass", 13, new int[]{2, 5, 6, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F, 0.0F, () -> Ingredient.ofItems(AssemblyItems.BRASS_INGOT)),
+		EXOFRAME("exoframe", 10, new int[]{2, 4, 5, 2}, 0, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.ofItems(AssemblyItems.BRASS_PLATE));
 
 		private static final int[] BASE_DURABILITY = new int[]{13, 15, 16, 11};
 		private final String name;
@@ -102,8 +103,9 @@ public class AssemblyConstants {
 		private final SoundEvent equipSound;
 		private final float toughness;
 		private final Lazy<Ingredient> repairIngredientSupplier;
+		private final float knockbackResistance;
 
-		ArmorMaterials(String name, int durabilityMultiplier, int[] protectionAmounts, int enchantability, SoundEvent equipSound, float toughness, Supplier<Ingredient> ingredientSupplier) {
+		ArmorMaterials(String name, int durabilityMultiplier, int[] protectionAmounts, int enchantability, SoundEvent equipSound, float toughness, float knockbackResistance, Supplier<Ingredient> ingredientSupplier) {
 			this.name = name;
 			this.durabilityMultiplier = durabilityMultiplier;
 			this.protectionAmounts = protectionAmounts;
@@ -111,35 +113,48 @@ public class AssemblyConstants {
 			this.equipSound = equipSound;
 			this.toughness = toughness;
 			this.repairIngredientSupplier = new Lazy<>(ingredientSupplier);
+			this.knockbackResistance = knockbackResistance;
 		}
 
+		@Override
 		public int getDurability(EquipmentSlot slot) {
 			return BASE_DURABILITY[slot.getEntitySlotId()] * this.durabilityMultiplier;
 		}
 
+		@Override
 		public int getProtectionAmount(EquipmentSlot slot) {
 			return this.protectionAmounts[slot.getEntitySlotId()];
 		}
 
+		@Override
 		public int getEnchantability() {
 			return this.enchantability;
 		}
 
+		@Override
 		public SoundEvent getEquipSound() {
 			return this.equipSound;
 		}
 
+		@Override
 		public Ingredient getRepairIngredient() {
 			return this.repairIngredientSupplier.get();
 		}
 
+		@Override
 		@Environment(EnvType.CLIENT)
 		public String getName() {
 			return this.name;
 		}
 
+		@Override
 		public float getToughness() {
 			return this.toughness;
+		}
+
+		@Override
+		public float getKnockbackResistance() {
+			return this.knockbackResistance;
 		}
 	}
 

@@ -1,6 +1,6 @@
 package team.reborn.assembly.util.math;
 
-import net.minecraft.util.BooleanBiFunction;
+import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Direction.Axis;
@@ -19,8 +19,8 @@ public final class ShapeUtil {
 
 	public static VoxelShape cuboid16(int x0, int y0, int z0, int x1, int y1, int z1) {
 		return VoxelShapes.cuboid(
-			x0 / 16.0, y0 / 16.0, z0 / 16.0, //
-			x1 / 16.0, y1 / 16.0, z1 / 16.0//
+				x0 / 16.0, y0 / 16.0, z0 / 16.0, //
+				x1 / 16.0, y1 / 16.0, z1 / 16.0//
 		);
 	}
 

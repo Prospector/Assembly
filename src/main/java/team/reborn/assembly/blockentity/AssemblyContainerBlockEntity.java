@@ -1,28 +1,29 @@
 package team.reborn.assembly.blockentity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
-import net.minecraft.container.Container;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.DefaultedList;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.util.collection.DefaultedList;
 
 public abstract class AssemblyContainerBlockEntity extends LockableContainerBlockEntity implements Inventory {
 
-	protected DefaultedList<ItemStack> contents = DefaultedList.ofSize(getInvSize(), ItemStack.EMPTY);
+	protected DefaultedList<ItemStack> contents = DefaultedList.ofSize(size(), ItemStack.EMPTY);
 
 	public AssemblyContainerBlockEntity(BlockEntityType<?> type) {
 		super(type);
 	}
 
 	@Override
-	public void fromTag(CompoundTag compound) {
-		Inventories.fromTag(compound, contents);
-		super.fromTag(compound);
+	public void fromTag(BlockState state, CompoundTag tag) {
+		Inventories.fromTag(tag, contents);
+		super.fromTag(state, tag);
 	}
 
 	@Override
@@ -32,57 +33,57 @@ public abstract class AssemblyContainerBlockEntity extends LockableContainerBloc
 	}
 
 	@Override
-	public boolean isInvEmpty() {
+	public boolean isEmpty() {
 		return contents.stream().anyMatch(ItemStack::isEmpty);
 	}
 
 	@Override
-	public ItemStack getInvStack(int slot) {
+	public ItemStack getStack(int slot) {
 		return contents.get(slot);
 	}
 
 	@Override
-	public ItemStack takeInvStack(int slot, int amount) {
+	public ItemStack removeStack(int slot, int amount) {
 		return Inventories.splitStack(this.contents, slot, amount);
 	}
 
 	@Override
-	public ItemStack removeInvStack(int slot) {
+	public ItemStack removeStack(int slot) {
 		return Inventories.removeStack(this.contents, slot);
 	}
 
 	@Override
-	public void setInvStack(int slot, ItemStack stack) {
+	public void setStack(int slot, ItemStack stack) {
 		this.contents.set(slot, stack);
 	}
 
 	@Override
-	public int getInvMaxStackAmount() {
+	public int getMaxCountPerStack() {
 		return 64;
 	}
 
 	@Override
-	public boolean canPlayerUseInv(PlayerEntity player) {
+	public boolean canPlayerUse(PlayerEntity player) {
 		return true;
 	}
 
 	@Override
-	public void onInvOpen(PlayerEntity player) {
+	public void onOpen(PlayerEntity player) {
 
 	}
 
 	@Override
-	public void onInvClose(PlayerEntity player) {
+	public void onClose(PlayerEntity player) {
 
 	}
 
 	@Override
-	public boolean isValidInvStack(int i, ItemStack stack) {
+	public boolean isValid(int slot, ItemStack stack) {
 		return true;
 	}
 
 	@Override
-	public abstract Container createContainer(int syncId, PlayerInventory inventory);
+	public abstract ScreenHandler createContainer(int syncId, PlayerInventory inventory);
 
 	@Override
 	public void clear() {

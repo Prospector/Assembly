@@ -26,21 +26,21 @@
  * THE SOFTWARE.
  */
 
-package team.reborn.assembly.menu.builder;
+package team.reborn.assembly.screenhandler.builder;
 
-import net.minecraft.container.Container;
-import net.minecraft.container.ContainerListener;
-import net.minecraft.container.Slot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerListener;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.tuple.MutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
 import team.reborn.assembly.blockentity.AssemblyContainerBlockEntity;
-import team.reborn.assembly.mixintf.GetMenuListeners;
+import team.reborn.assembly.mixin.common.screenhandler.AccessorScreenHandlerListeners;
 import team.reborn.assembly.util.ItemUtil;
 
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public class BuiltMenu extends Container implements ExtendedMenuListener {
+public class BuiltScreenHandler extends ScreenHandler implements ExtendedScreenHandlerListener {
 
 	private final Identifier name;
 
@@ -63,9 +63,9 @@ public class BuiltMenu extends Container implements ExtendedMenuListener {
 
 	private final AssemblyContainerBlockEntity blockEntity;
 
-	public BuiltMenu(final Identifier name, final Predicate<PlayerEntity> canInteract,
-					 final List<Range<Integer>> inventorySlotRange,
-					 final List<Range<Integer>> blockEntitySlotRange, AssemblyContainerBlockEntity blockEntity, int syncId) {
+	public BuiltScreenHandler(final Identifier name, final Predicate<PlayerEntity> canInteract,
+							  final List<Range<Integer>> inventorySlotRange,
+							  final List<Range<Integer>> blockEntitySlotRange, AssemblyContainerBlockEntity blockEntity, int syncId) {
 		super(null, syncId);
 		this.name = name;
 
@@ -110,7 +110,7 @@ public class BuiltMenu extends Container implements ExtendedMenuListener {
 	public void sendContentUpdates() {
 		super.sendContentUpdates();
 
-		for (final ContainerListener listener : ((GetMenuListeners) (this)).assembly_getListeners()) {
+		for (final ScreenHandlerListener listener : ((AccessorScreenHandlerListeners) (this)).getListeners()) {
 			if (!this.objectValues.isEmpty()) {
 				int objects = 0;
 				for (final MutableTriple<Supplier, Consumer, Object> value : this.objectValues) {
@@ -126,7 +126,7 @@ public class BuiltMenu extends Container implements ExtendedMenuListener {
 	}
 
 	@Override
-	public void addListener(ContainerListener listener) {
+	public void addListener(ScreenHandlerListener listener) {
 		super.addListener(listener);
 
 		if (!this.objectValues.isEmpty()) {
@@ -193,7 +193,7 @@ public class BuiltMenu extends Container implements ExtendedMenuListener {
 				final Slot slot = this.slots.get(slotIndex);
 				final ItemStack stackInSlot = slot.getStack();
 				if (!stackInSlot.isEmpty() && ItemUtil.isItemEqual(stackInSlot, stackToShift, true, true)
-					&& slot.canInsert(stackToShift)) {
+						&& slot.canInsert(stackToShift)) {
 					final int resultingStackSize = stackInSlot.getCount() + stackToShift.getCount();
 					final int max = Math.min(stackToShift.getMaxCount(), slot.getMaxStackAmount());
 					if (resultingStackSize <= max) {

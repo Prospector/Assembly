@@ -26,12 +26,12 @@
  * THE SOFTWARE.
  */
 
-package team.reborn.assembly.menu.builder;
+package team.reborn.assembly.screenhandler.builder;
 
-import net.minecraft.container.Slot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.tuple.Pair;
@@ -43,7 +43,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public class MenuBuilder {
+public class ScreenHandlerBuilder {
 
 	private final Identifier name;
 
@@ -56,7 +56,7 @@ public class MenuBuilder {
 
 	final List<Consumer<CraftingInventory>> craftEvents;
 
-	public MenuBuilder(final Identifier name) {
+	public ScreenHandlerBuilder(final Identifier name) {
 
 		this.name = name;
 
@@ -69,17 +69,17 @@ public class MenuBuilder {
 		this.craftEvents = new ArrayList<>();
 	}
 
-	public MenuBuilder interact(final Predicate<PlayerEntity> canInteract) {
+	public ScreenHandlerBuilder interact(final Predicate<PlayerEntity> canInteract) {
 		this.canInteract = canInteract;
 		return this;
 	}
 
-	public MenuInventoryBuilder player(final PlayerEntity player) {
-		return new MenuInventoryBuilder(this, player);
+	public ScreenHandlerInventoryBuilder player(final PlayerEntity player) {
+		return new ScreenHandlerInventoryBuilder(this, player);
 	}
 
-	public MenuContainerBuilder blockEntity(final Inventory container) {
-		return new MenuContainerBuilder(this, container);
+	public ScreenHandlerContainerBuilder blockEntity(final Inventory container) {
+		return new ScreenHandlerContainerBuilder(this, container);
 	}
 
 	void addPlayerInventoryRange(final Range<Integer> range) {
@@ -95,10 +95,10 @@ public class MenuBuilder {
 	 * The container have to know if the BlockEntity is still available (the fluidBlock was not destroyed)
 	 * and if the player is not to far from him to close the GUI if necessary
 	 */
-	public BuiltMenu create(int syncId) {
-		final BuiltMenu built = new BuiltMenu(this.name, this.canInteract,
-			this.inventoryRange,
-			this.blockEntityRange, null, syncId);
+	public BuiltScreenHandler create(int syncId) {
+		final BuiltScreenHandler built = new BuiltScreenHandler(this.name, this.canInteract,
+				this.inventoryRange,
+				this.blockEntityRange, null, syncId);
 		if (!this.objectValues.isEmpty())
 			built.addObjectSync(objectValues);
 		if (!this.craftEvents.isEmpty())
@@ -110,10 +110,10 @@ public class MenuBuilder {
 		return built;
 	}
 
-	public BuiltMenu create(final AssemblyContainerBlockEntity blockEntity, int syncId) {
-		final BuiltMenu built = new BuiltMenu(this.name, this.canInteract,
-			this.inventoryRange,
-			this.blockEntityRange, blockEntity, syncId);
+	public BuiltScreenHandler create(final AssemblyContainerBlockEntity blockEntity, int syncId) {
+		final BuiltScreenHandler built = new BuiltScreenHandler(this.name, this.canInteract,
+				this.inventoryRange,
+				this.blockEntityRange, blockEntity, syncId);
 		if (!this.craftEvents.isEmpty())
 			built.addCraftEvents(this.craftEvents);
 		if (!this.objectValues.isEmpty())

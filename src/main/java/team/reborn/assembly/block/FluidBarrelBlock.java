@@ -7,8 +7,8 @@ import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
@@ -21,11 +21,11 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import team.reborn.assembly.util.fluid.IOFluidContainer;
 import team.reborn.assembly.blockentity.AssemblyBlockEntities;
 import team.reborn.assembly.blockentity.FluidBarrelBlockEntity;
 import team.reborn.assembly.fluid.AssemblyFluids;
 import team.reborn.assembly.item.AssemblyItems;
+import team.reborn.assembly.util.fluid.IOFluidContainer;
 import team.reborn.assembly.util.interaction.InteractionActionResult;
 import team.reborn.assembly.util.interaction.InteractionUtil;
 
@@ -45,13 +45,8 @@ public class FluidBarrelBlock extends Block implements BlockEntityProvider, Attr
 	}
 
 	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, EntityContext context) {
+	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 		return SHAPE;
-	}
-
-	@Override
-	public boolean hasBlockEntity() {
-		return true;
 	}
 
 	@Override

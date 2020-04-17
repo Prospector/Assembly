@@ -5,7 +5,6 @@ import alexiil.mc.lib.attributes.AttributeProvider;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.DoubleBlockHalf;
-import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -61,22 +60,22 @@ public class SteamPressBlock extends HorizontalFacingBlock implements BlockEntit
 				BlockEntity blockEntity = world.getBlockEntity(pos);
 				if (blockEntity instanceof SteamPressBlockEntity) {
 					SteamPressBlockEntity steamPress = ((SteamPressBlockEntity) blockEntity);
-					ItemStack outputStack = steamPress.getInvStack(SteamPressBlockEntity.OUTPUT_SLOT);
+					ItemStack outputStack = steamPress.getStack(SteamPressBlockEntity.OUTPUT_SLOT);
 					if (!outputStack.isEmpty()) {
 						if (!player.isCreative()) {
 							player.inventory.insertStack(outputStack);
 						}
-						steamPress.removeInvStack(SteamPressBlockEntity.OUTPUT_SLOT);
+						steamPress.removeStack(SteamPressBlockEntity.OUTPUT_SLOT);
 						return InteractionActionResult.SUCCESS;
 					} else {
-						if (steamPress.canInsertInvStack(SteamPressBlockEntity.INPUT_SLOT, player.getStackInHand(hand).copy().split(1), hit.getSide())) {
+						if (steamPress.canInsert(SteamPressBlockEntity.INPUT_SLOT, player.getStackInHand(hand).copy().split(1), hit.getSide())) {
 							ItemStack stack;
 							if (!player.isCreative()) {
 								stack = player.getStackInHand(hand).split(1);
 							} else {
 								stack = player.getStackInHand(hand).copy().split(1);
 							}
-							steamPress.setInvStack(SteamPressBlockEntity.INPUT_SLOT, stack);
+							steamPress.setStack(SteamPressBlockEntity.INPUT_SLOT, stack);
 						}
 						return InteractionActionResult.SUCCESS;
 					}
@@ -121,7 +120,7 @@ public class SteamPressBlock extends HorizontalFacingBlock implements BlockEntit
 	}
 
 	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, EntityContext ePos) {
+	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 		DoubleBlockHalf half = state.get(HALF);
 		if (blockEntity instanceof SteamPressBlockEntity) {
@@ -131,7 +130,7 @@ public class SteamPressBlock extends HorizontalFacingBlock implements BlockEntit
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockView view, BlockPos pos, EntityContext ePos) {
+	public VoxelShape getCollisionShape(BlockState state, BlockView view, BlockPos pos, ShapeContext context) {
 		DoubleBlockHalf half = state.get(HALF);
 		return half == DoubleBlockHalf.LOWER ? LOWER_SHAPE : UPPER_SHAPE;
 	}
@@ -155,11 +154,6 @@ public class SteamPressBlock extends HorizontalFacingBlock implements BlockEntit
 	@Override
 	public Item asItem() {
 		return AssemblyItems.STEAM_PRESS;
-	}
-
-	@Override
-	public boolean hasBlockEntity() {
-		return true;
 	}
 
 	@Nullable

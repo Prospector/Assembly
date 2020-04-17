@@ -29,14 +29,16 @@ public class SpigotBlockEntity extends AssemblySyncedNbtBlockEntity implements T
 		this.transferCooldown = -1;
 	}
 
-	public void fromTag(CompoundTag tag, boolean syncing) {
+	@Override
+    public void fromTag(CompoundTag tag, boolean syncing) {
 		this.transferCooldown = tag.getInt(TRANSFER_COOLDOWN_KEY);
 		if (syncing) {
 			this.pouringFluid = Registry.FLUID.get(new Identifier(tag.getString(POURING_FLUID_KEY)));
 		}
 	}
 
-	public CompoundTag toTag(CompoundTag tag, boolean syncing) {
+	@Override
+    public CompoundTag toTag(CompoundTag tag, boolean syncing) {
 		tag.putInt(TRANSFER_COOLDOWN_KEY, transferCooldown);
 		if (syncing) {
 			tag.putString(POURING_FLUID_KEY, Registry.FLUID.getId(pouringFluid).toString());
@@ -44,7 +46,8 @@ public class SpigotBlockEntity extends AssemblySyncedNbtBlockEntity implements T
 		return tag;
 	}
 
-	public void tick() {
+	@Override
+    public void tick() {
 		if (this.world != null && !this.world.isClient) {
 			if (transferCooldown > 0) {
 				--this.transferCooldown;

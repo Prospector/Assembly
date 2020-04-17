@@ -10,18 +10,19 @@ import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.ContainerScreen;
-import net.minecraft.client.network.packet.CustomPayloadS2CPacket;
-import net.minecraft.container.Container;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
+import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.network.packet.CustomPayloadC2SPacket;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 import team.reborn.assembly.Assembly;
 import team.reborn.assembly.blockentity.FluidBarrelBlockEntity;
-import team.reborn.assembly.menu.builder.ExtendedMenuListener;
+import team.reborn.assembly.screenhandler.builder.ExtendedScreenHandlerListener;
 import team.reborn.assembly.util.ObjectBufUtils;
 
 public class AssemblyNetworking {
@@ -54,10 +55,10 @@ public class AssemblyNetworking {
 		});
 		ClientSidePacketRegistry.INSTANCE.register(CONTAINER_SYNC, (context, buf) -> {
 			Screen gui = MinecraftClient.getInstance().currentScreen;
-			if (gui instanceof ContainerScreen) {
-				Container container = ((ContainerScreen) gui).getContainer();
-				if (container instanceof ExtendedMenuListener) {
-					((ExtendedMenuListener) container).handleObject(buf.readInt(), ObjectBufUtils.readObject(buf));
+			if (gui instanceof HandledScreen) {
+				ScreenHandler container = ((HandledScreen<?>) gui).getScreenHandler();
+				if (container instanceof ExtendedScreenHandlerListener) {
+					((ExtendedScreenHandlerListener) container).handleObject(buf.readInt(), ObjectBufUtils.readObject(buf));
 				}
 			}
 		});
@@ -74,10 +75,13 @@ public class AssemblyNetworking {
 	public static void requestBarrelSync(FluidBarrelBlockEntity woodenBarrel) {
 		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
 		buf.writeBlockPos(woodenBarrel.getPos());
-		MinecraftClient.getInstance().getNetworkHandler().getConnection().send(new CustomPayloadC2SPacket(REQUEST_BARREL_SYNC, buf));
+		ClientPlayNetworkHandler networkHandler = MinecraftClient.getInstance().getNetworkHandler();
+		if (networkHandler != null) {
+			networkHandler.getConnection().send(new CustomPayloadC2SPacket(REQUEST_BARREL_SYNC, buf));
+		}
 	}
 
-	public static void syncContainer(ServerPlayerEntity player, int id, Object value) {
+	public static void syncScreenHandler(ServerPlayerEntity player, int id, Object value) {
 		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
 		buf.writeInt(id);
 		ObjectBufUtils.writeObject(value, buf);

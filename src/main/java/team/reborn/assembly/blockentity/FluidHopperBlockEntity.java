@@ -49,8 +49,9 @@ public class FluidHopperBlockEntity extends BlockEntity implements FluidHopper, 
 		this.transferCooldown = -1;
 	}
 
-	public void fromTag(CompoundTag tag) {
-		super.fromTag(tag);
+	@Override
+	public void fromTag(BlockState state, CompoundTag tag) {
+		super.fromTag(state, tag);
 		if (tag.contains(FLUIDS_KEY)) {
 			this.tank.fromTag(tag.getCompound(FLUIDS_KEY));
 		}
@@ -60,6 +61,7 @@ public class FluidHopperBlockEntity extends BlockEntity implements FluidHopper, 
 		this.transferCooldown = tag.getInt(TRANSFER_COOLDOWN_KEY);
 	}
 
+	@Override
 	public CompoundTag toTag(CompoundTag tag) {
 		super.toTag(tag);
 		tag.put(FLUIDS_KEY, this.tank.toTag());
@@ -70,6 +72,7 @@ public class FluidHopperBlockEntity extends BlockEntity implements FluidHopper, 
 		return tag;
 	}
 
+	@Override
 	public void tick() {
 		if (this.world != null && !this.world.isClient) {
 			--this.transferCooldown;
@@ -94,7 +97,7 @@ public class FluidHopperBlockEntity extends BlockEntity implements FluidHopper, 
 								FluidVolume upFluidVolume = FluidKeys.get(fluid).withAmount(FluidAmount.BUCKET);
 								if (tank.attemptInsertion(upFluidVolume, Simulation.SIMULATE).isEmpty()) {
 									tank.attemptInsertion(upFluidVolume, Simulation.ACTION);
-									world.playSound(null, upPos, fluid.matches(FluidTags.LAVA) ? SoundEvents.ITEM_BUCKET_FILL_LAVA : SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+									world.playSound(null, upPos, fluid.isIn(FluidTags.LAVA) ? SoundEvents.ITEM_BUCKET_FILL_LAVA : SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
 									didWork = true;
 								}
 							}
@@ -148,14 +151,17 @@ public class FluidHopperBlockEntity extends BlockEntity implements FluidHopper, 
 		this.customName = customName;
 	}
 
+	@Override
 	public Text getName() {
 		return this.customName != null ? this.customName : this.getContainerName();
 	}
 
+	@Override
 	public Text getDisplayName() {
 		return this.getName();
 	}
 
+	@Override
 	@Nullable
 	public Text getCustomName() {
 		return this.customName;

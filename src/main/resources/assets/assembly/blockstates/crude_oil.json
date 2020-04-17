@@ -1,0 +1,5 @@
+{
+  "variants": {
+	"": { "model": "assembly:fluid/crude_oil" }
+  }
+}

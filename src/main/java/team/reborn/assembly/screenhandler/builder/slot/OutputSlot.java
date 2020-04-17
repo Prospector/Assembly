@@ -26,45 +26,26 @@
  * THE SOFTWARE.
  */
 
-package team.reborn.assembly.menu.builder.slot;
+package team.reborn.assembly.screenhandler.builder.slot;
 
-
-import net.minecraft.container.Slot;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.slot.Slot;
 
-import java.util.function.Predicate;
+public class OutputSlot extends Slot {
 
-public class FilteredSlot extends Slot {
-
-	private Predicate<ItemStack> filter;
-	private int stackLimit = 64;
-
-	public FilteredSlot(final Inventory inventory, final int index, final int xPosition, final int yPosition) {
-		super(inventory, index, xPosition, yPosition);
-	}
-
-	public FilteredSlot(final Inventory inventory, final int index, final int xPosition, final int yPosition, int stackLimit) {
-		super(inventory, index, xPosition, yPosition);
-		this.stackLimit = stackLimit;
-	}
-
-	public FilteredSlot setFilter(final Predicate<ItemStack> filter) {
-		this.filter = filter;
-		return this;
+	public OutputSlot(Inventory container, int index, int x, int y) {
+		super(container, index, x, y);
 	}
 
 	@Override
-	public boolean canInsert(final ItemStack stack) {
-		try {
-			return this.filter.test(stack);
-		} catch (NullPointerException e) {
-			return true;
-		}
+	public boolean canInsert(ItemStack par1ItemStack) {
+		return false;
 	}
 
 	@Override
 	public int getMaxStackAmount() {
-		return stackLimit;
+		return 64;
 	}
+
 }

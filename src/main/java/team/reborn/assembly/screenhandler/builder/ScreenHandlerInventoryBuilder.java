@@ -26,26 +26,26 @@
  * THE SOFTWARE.
  */
 
-package team.reborn.assembly.menu.builder;
+package team.reborn.assembly.screenhandler.builder;
 
-import net.minecraft.container.Slot;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.screen.slot.Slot;
 import org.apache.commons.lang3.Range;
 
-public final class MenuInventoryBuilder {
+public final class ScreenHandlerInventoryBuilder {
 
 	private final PlayerEntity player;
-	private final MenuBuilder parent;
+	private final ScreenHandlerBuilder parent;
 	private Range<Integer> main;
 	private Range<Integer> hotbar;
 	private Range<Integer> armor;
 
-	MenuInventoryBuilder(final MenuBuilder parent, final PlayerEntity player) {
+	ScreenHandlerInventoryBuilder(final ScreenHandlerBuilder parent, final PlayerEntity player) {
 		this.player = player;
 		this.parent = parent;
 	}
 
-	public MenuInventoryBuilder inventory(final int xStart, final int yStart) {
+	public ScreenHandlerInventoryBuilder inventory(final int xStart, final int yStart) {
 		final int startIndex = this.parent.slots.size();
 		for (int i = 0; i < 3; ++i)
 			for (int j = 0; j < 9; ++j)
@@ -54,7 +54,7 @@ public final class MenuInventoryBuilder {
 		return this;
 	}
 
-	public MenuInventoryBuilder hotbar(final int xStart, final int yStart) {
+	public ScreenHandlerInventoryBuilder hotbar(final int xStart, final int yStart) {
 		final int startIndex = this.parent.slots.size();
 		for (int i = 0; i < 9; ++i)
 			this.parent.slots.add(new Slot(this.player.inventory, i, xStart + i * 18, yStart));
@@ -62,11 +62,11 @@ public final class MenuInventoryBuilder {
 		return this;
 	}
 
-	public MenuInventoryBuilder inventory() {
+	public ScreenHandlerInventoryBuilder inventory() {
 		return this.inventory(8, 94);
 	}
 
-	public MenuInventoryBuilder hotbar() {
+	public ScreenHandlerInventoryBuilder hotbar() {
 		return this.hotbar(8, 152);
 	}
 
@@ -74,7 +74,7 @@ public final class MenuInventoryBuilder {
 		return new ContainerPlayerArmorInventoryBuilder(this);
 	}
 
-	public MenuBuilder addInventory() {
+	public ScreenHandlerBuilder addInventory() {
 		if (this.hotbar != null)
 			this.parent.addPlayerInventoryRange(this.hotbar);
 		if (this.main != null)
@@ -86,10 +86,10 @@ public final class MenuInventoryBuilder {
 	}
 
 	public static final class ContainerPlayerArmorInventoryBuilder {
-		private final MenuInventoryBuilder parent;
+		private final ScreenHandlerInventoryBuilder parent;
 		private final int startIndex;
 
-		public ContainerPlayerArmorInventoryBuilder(final MenuInventoryBuilder parent) {
+		public ContainerPlayerArmorInventoryBuilder(final ScreenHandlerInventoryBuilder parent) {
 			this.parent = parent;
 			this.startIndex = parent.parent.slots.size();
 		}
@@ -122,7 +122,7 @@ public final class MenuInventoryBuilder {
 //				.boots(xStart, yStart + 18 + 18 + 18);
 //		}
 
-		public MenuInventoryBuilder addArmor() {
+		public ScreenHandlerInventoryBuilder addArmor() {
 			this.parent.armor = Range.between(this.startIndex, this.parent.parent.slots.size() - 1);
 			return this.parent;
 		}

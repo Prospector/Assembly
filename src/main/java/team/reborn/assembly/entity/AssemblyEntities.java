@@ -27,20 +27,14 @@ public class AssemblyEntities {
 
 	private static EntityType<TerraformBoatEntity> registerBoat(String name, ItemConvertible planks, BoatEntity.Type vanilla, Supplier<EntityType<TerraformBoatEntity>> boatSupplier) {
 		Identifier id = new Identifier(Assembly.MOD_ID, name + "_boat");
-		Identifier skin = new Identifier(Assembly.MOD_ID, "textures/entity/boat/" + name + "_boat.png");
-		Item item = Registry.register(Registry.ITEM, id, new TerraformBoatItem((world, x, y, z) -> {
-			TerraformBoatEntity entity = boatSupplier.get().create(world);
-			if (entity != null) {
-				entity.setPos(x, y, z);
-			}
-			return entity;
-		}, new Item.Settings().maxCount(1).group(ItemGroup.TRANSPORTATION)));
+		Identifier skin = new Identifier(Assembly.MOD_ID, "textures/entity/boat/" + name + ".png");
+		Item item = Registry.register(Registry.ITEM, id, new TerraformBoatItem(boatSupplier, new Item.Settings().maxCount(1).group(ItemGroup.TRANSPORTATION)));
 		TerraformBoat boat = new TerraformBoat(item.asItem(), planks.asItem(), skin, vanilla);
 
 		EntityType<TerraformBoatEntity> type = FabricEntityTypeBuilder.<TerraformBoatEntity>create(
-			EntityCategory.MISC, (entity, world) -> new TerraformBoatEntity(entity, world, boat))
-			.size(EntityDimensions.fixed(1.375F, 0.5625F))
-			.build();
+				EntityCategory.MISC, (entity, world) -> new TerraformBoatEntity(entity, world, boat))
+				.size(EntityDimensions.fixed(1.375F, 0.5625F))
+				.build();
 
 		return Registry.register(Registry.ENTITY_TYPE, id, type);
 	}

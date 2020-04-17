@@ -2,6 +2,6 @@ package team.reborn.assembly.util.interaction.interactable;
 
 import net.minecraft.util.Identifier;
 
-public interface MenuInteractable {
-	Identifier getMenuId();
+public interface ScreenHandlerInteractable {
+	Identifier getScreenHandlerId();
 }

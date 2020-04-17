@@ -40,9 +40,7 @@ import java.util.List;
 public class ExoframePieceItem extends ArmorItem implements AttributeProviderItem, CustomArmorTexture {
 	private static final FluidAmount STEAM_TANK_CAPACITY = FluidAmount.BUCKET.roundedMul(8);
 	private static final String FLUIDS_KEY = AssemblyConstants.NbtKeys.INPUT_FLUIDS;
-	private static final ItemPropertyGetter STEAM_TANK_PROPERTY_GETTER = (stack, world, entity) -> {
-	    return (float) getFluidInfo(stack).fluid.getAmount_F().div(STEAM_TANK_CAPACITY).asInexactDouble();
-    };
+	private static final ItemPropertyGetter STEAM_TANK_PROPERTY_GETTER = (stack, world, entity) -> (float) getFluidInfo(stack).fluid.getAmount_F().div(STEAM_TANK_CAPACITY).asInexactDouble();
 	private static final Identifier TEXTURE_ID = AssemblyConstants.Ids.EXOFRAME;
 
 	public ExoframePieceItem(EquipmentSlot slot, Settings settings) {

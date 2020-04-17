@@ -28,11 +28,9 @@ import net.minecraft.world.WorldView;
 import team.reborn.assembly.Assembly;
 import team.reborn.assembly.block.AssemblyBlocks;
 import team.reborn.assembly.item.AssemblyItems;
-import team.reborn.assembly.tags.AssemblyFluidTags;
 
 import java.util.Random;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public abstract class AssemblyFluid extends BaseFluid implements TexturedFluid {
 
@@ -86,7 +84,7 @@ public abstract class AssemblyFluid extends BaseFluid implements TexturedFluid {
 	}
 
 	@Override
-	public int method_15733(WorldView world) {
+	public int getFlowSpeed(WorldView world) {
 		return 4;
 	}
 
@@ -106,8 +104,8 @@ public abstract class AssemblyFluid extends BaseFluid implements TexturedFluid {
 	}
 
 	@Override
-	protected boolean method_15777(FluidState state, BlockView world, BlockPos pos, Fluid fluid, Direction direction) {
-		return direction == Direction.DOWN && !fluid.matches(AssemblyFluidTags.get(this));
+	protected boolean canBeReplacedWith(FluidState state, BlockView world, BlockPos pos, Fluid fluid, Direction direction) {
+		return direction == Direction.DOWN && fluid != this && fluid != AssemblyFluids.getInverse(this);
 	}
 
 	@Override

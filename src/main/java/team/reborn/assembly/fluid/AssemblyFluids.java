@@ -7,8 +7,6 @@ import alexiil.mc.lib.attributes.fluid.volume.SimpleFluidKey;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-import net.minecraft.block.Block;
-import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -26,8 +24,8 @@ public class AssemblyFluids {
 	public static AssemblyFluid FLOWING_LATEX = getFlowing(LATEX);
 //	public static AssemblyFluid BIOMASS = add(new AssemblyFluid.Settings("biomass").tickRate(8));
 //	public static AssemblyFluid FLOWING_BIOMASS = getFlowing(BIOMASS);
-//	public static AssemblyFluid OIL = add(new AssemblyFluid.Settings("oil").tickRate(20));
-//	public static AssemblyFluid FLOWING_OIL = getFlowing(OIL);
+	public static AssemblyFluid CRUDE_OIL = add(new AssemblyFluid.Settings("crude_oil").tickRate(20));
+	public static AssemblyFluid FLOWING_CRUDE_OIL = getFlowing(CRUDE_OIL);
 	public static AssemblyFluid STEAM = add(new AssemblyFluid.Settings("steam").tickRate(1).fluidKey(FluidKey.FluidKeyBuilder::setGas));
 	public static AssemblyFluid FLOWING_STEAM = getFlowing(STEAM);
 

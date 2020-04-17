@@ -60,14 +60,15 @@ public class FluidHopperBlock extends HopperBlock implements AttributeProvider {
 		if (state.getBlock() != newState.getBlock()) {
 			BlockEntity blockEntity = world.getBlockEntity(pos);
 			if (blockEntity instanceof FluidHopperBlockEntity) {
-				world.updateHorizontalAdjacent(pos, this);
+				world.updateComparators(pos, this);
 			}
 
 			super.onBlockRemoved(state, world, pos, newState, moved);
 		}
 	}
 
-	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+	@Override
+    public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 		if (blockEntity instanceof FluidHopperBlockEntity) {
 			((FluidHopperBlockEntity) blockEntity).onEntityCollided(entity);

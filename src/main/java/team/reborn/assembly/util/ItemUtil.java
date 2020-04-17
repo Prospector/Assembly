@@ -37,8 +37,8 @@ public class ItemUtil {
 
 	public static void contentsToTag(Inventory inv, String tag, CompoundTag data) {
 		ListTag list = new ListTag();
-		for (byte slot = 0; slot < inv.getInvSize(); slot++) {
-			ItemStack stack = inv.getInvStack(slot);
+		for (byte slot = 0; slot < inv.size(); slot++) {
+			ItemStack stack = inv.getStack(slot);
 			if (!stack.isEmpty()) {
 				CompoundTag itemTag = new CompoundTag();
 				itemTag.putInt("Slot", slot);
@@ -54,9 +54,9 @@ public class ItemUtil {
 		for (byte entry = 0; entry < list.size(); entry++) {
 			CompoundTag itemTag = list.getCompound(entry);
 			int slot = itemTag.getByte("Slot");
-			if (slot >= 0 && slot < inv.getInvSize()) {
+			if (slot >= 0 && slot < inv.size()) {
 				ItemStack stack = stackFromTag(itemTag);
-				inv.setInvStack(slot, stack);
+				inv.setStack(slot, stack);
 			}
 		}
 	}

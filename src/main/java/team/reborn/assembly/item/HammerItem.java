@@ -24,7 +24,7 @@ public class HammerItem extends MiningToolItem implements ExtendedRecipeRemainde
 	}
 
 	@Override
-	public float getMiningSpeed(ItemStack stack, BlockState state) {
-		return true ? this.miningSpeed : 1.0F;
+	public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
+		return this.miningSpeed;
 	}
 }

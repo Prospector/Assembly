@@ -1,4 +1,4 @@
-package team.reborn.assembly.menu;
+package team.reborn.assembly.screenhandler;
 
 import net.fabricmc.fabric.api.client.screen.ScreenProviderRegistry;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
@@ -7,10 +7,10 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import team.reborn.assembly.blockentity.BoilerBlockEntity;
 import team.reborn.assembly.client.gui.BaseScreen;
-import team.reborn.assembly.menu.builder.BuiltMenu;
+import team.reborn.assembly.screenhandler.builder.BuiltScreenHandler;
 import team.reborn.assembly.util.AssemblyConstants;
 
-public class AssemblyMenus {
+public class AssemblyScreenHandlers {
 
 	public static final Identifier BOILER = AssemblyConstants.Ids.BOILER;
 
@@ -24,8 +24,8 @@ public class AssemblyMenus {
 			return null;
 		});
 		ScreenProviderRegistry.INSTANCE.registerFactory(BOILER, container -> {
-			if (container instanceof BuiltMenu) {
-				return new BaseScreen((BuiltMenu) container, "boiler");
+			if (container instanceof BuiltScreenHandler) {
+				return new BaseScreen((BuiltScreenHandler) container, "boiler");
 			}
 			return null;
 		});
