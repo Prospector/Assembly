@@ -15,22 +15,22 @@ public abstract class AssemblySyncedNbtBlockEntity extends BlockEntity implement
 	@Override
 	public void fromTag(BlockState state, CompoundTag tag) {
 		super.fromTag(state, tag);
-		fromTag(tag, false);
+        this.fromTag(tag, false);
 	}
 
 	@Override
 	public final CompoundTag toTag(CompoundTag tag) {
-		return toTag(super.toTag(tag), false);
+		return this.toTag(super.toTag(tag), false);
 	}
 
 	@Override
 	public final void fromClientTag(CompoundTag tag) {
-		fromTag(tag, true);
+        this.fromTag(tag, true);
 	}
 
 	@Override
 	public final CompoundTag toClientTag(CompoundTag tag) {
-		return toTag(tag, true);
+		return this.toTag(tag, true);
 	}
 
 	public abstract void fromTag(CompoundTag tag, boolean syncing);

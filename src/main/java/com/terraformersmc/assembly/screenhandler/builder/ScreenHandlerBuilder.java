@@ -100,7 +100,7 @@ public class ScreenHandlerBuilder {
 				this.inventoryRange,
 				this.blockEntityRange, null, syncId);
 		if (!this.objectValues.isEmpty())
-			built.addObjectSync(objectValues);
+			built.addObjectSync(this.objectValues);
 		if (!this.craftEvents.isEmpty())
 			built.addCraftEvents(this.craftEvents);
 
@@ -117,7 +117,7 @@ public class ScreenHandlerBuilder {
 		if (!this.craftEvents.isEmpty())
 			built.addCraftEvents(this.craftEvents);
 		if (!this.objectValues.isEmpty())
-			built.addObjectSync(objectValues);
+			built.addObjectSync(this.objectValues);
 
 		this.slots.forEach(built::addSlot);
 

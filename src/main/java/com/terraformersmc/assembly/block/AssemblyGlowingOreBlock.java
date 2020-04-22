@@ -27,7 +27,7 @@ public class AssemblyGlowingOreBlock extends RedstoneOreBlock {
 	}
 
 	protected int getExperienceWhenMined(Random random) {
-		return experience != null ? MathHelper.nextInt(random, experience.getFirst(), experience.getSecond()) : 0;
+		return this.experience != null ? MathHelper.nextInt(random, this.experience.getFirst(), this.experience.getSecond()) : 0;
 	}
 
 	@Override

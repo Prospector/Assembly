@@ -32,11 +32,11 @@ public class InteractionUtil {
 	public static ActionResult handleDefaultInteractions(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, Interaction... interactions) {
 		Interaction[] newInteractions = Arrays.copyOf(interactions, interactions.length + 2);
 		newInteractions[interactions.length] = Interaction.HANDLE_FLUIDS;
-		newInteractions[interactions.length + 1] = Interaction.OPEN_MENU;
+		newInteractions[interactions.length + 1] = Interaction.OPEN_SCREEN_HANDLER;
 		return handleInteractions(state, world, pos, player, hand, hit, newInteractions);
 	}
 
 	public static ActionResult handleDefaultInteractions(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		return handleInteractions(state, world, pos, player, hand, hit, Interaction.HANDLE_FLUIDS, Interaction.OPEN_MENU);
+		return handleInteractions(state, world, pos, player, hand, hit, Interaction.HANDLE_FLUIDS, Interaction.OPEN_SCREEN_HANDLER);
 	}
 }

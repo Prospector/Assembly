@@ -1,6 +1,6 @@
 package com.terraformersmc.assembly.mixin.common.exoframe;
 
-import com.terraformersmc.assembly.mixintf.FallDamageTransformingBoots;
+import com.terraformersmc.assembly.util.FallDamageTransformingBoots;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
@@ -25,8 +25,8 @@ public abstract class MixinLivingEntity extends Entity {
 
 	@Inject(method = "getJumpVelocity", at = @At("HEAD"), cancellable = true)
 	private void hijackJumpVelocity(CallbackInfoReturnable<Float> info) {
-		if (getEquippedStack(EquipmentSlot.FEET).getItem() instanceof FallDamageTransformingBoots) {
-			info.setReturnValue(((FallDamageTransformingBoots) getEquippedStack(EquipmentSlot.FEET).getItem()).transformJumpVelocity((LivingEntity) (Object) this, getEquippedStack(EquipmentSlot.FEET), 0.42F) * this.getJumpVelocityMultiplier())
+		if (this.getEquippedStack(EquipmentSlot.FEET).getItem() instanceof FallDamageTransformingBoots) {
+			info.setReturnValue(((FallDamageTransformingBoots) this.getEquippedStack(EquipmentSlot.FEET).getItem()).transformJumpVelocity((LivingEntity) (Object) this, this.getEquippedStack(EquipmentSlot.FEET), 0.42F) * this.getJumpVelocityMultiplier())
 			;
 		}
 	}

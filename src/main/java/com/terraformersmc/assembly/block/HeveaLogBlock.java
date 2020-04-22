@@ -26,7 +26,7 @@ public class HeveaLogBlock extends StrippableLogBlock implements SapSource {
 
 	public HeveaLogBlock(Supplier<Block> stripped, MaterialColor materialColor, Settings settings) {
 		super(stripped, materialColor, settings);
-		setDefaultState(this.getDefaultState()
+        this.setDefaultState(this.getDefaultState()
 			.with(ALIVE, false)
 			.with(NORTH_LATEX, false)
 			.with(SOUTH_LATEX, false)

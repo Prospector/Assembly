@@ -15,25 +15,25 @@ public class BoilerChamberBlockEntity extends BlockEntity implements TankOutputI
 	}
 
 	public void updateBoiler(BlockPos pos) {
-		if (world == null || pos == null) {
+		if (this.world == null || pos == null) {
 			return;
 		}
-		BlockEntity blockEntity = world.getBlockEntity(pos);
+		BlockEntity blockEntity = this.world.getBlockEntity(pos);
 		if (blockEntity instanceof BoilerBlockEntity) {
-			boiler = (BoilerBlockEntity) blockEntity;
+			this.boiler = (BoilerBlockEntity) blockEntity;
 		} else {
-			boiler = null;
+			this.boiler = null;
 		}
 	}
 
 	public BoilerBlockEntity getBoiler() {
-		return boiler;
+		return this.boiler;
 	}
 
 	@Override
 	public FluidExtractable getInteractableExtractable() {
-		if (getBoiler() != null) {
-			return getBoiler().getOutputTank().getExtractable().getPureExtractable();
+		if (this.getBoiler() != null) {
+			return this.getBoiler().getOutputTank().getExtractable().getPureExtractable();
 		}
 		return EmptyFluidExtractable.NULL;
 	}

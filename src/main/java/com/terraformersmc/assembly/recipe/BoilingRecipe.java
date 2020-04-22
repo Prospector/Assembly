@@ -1,13 +1,15 @@
 package com.terraformersmc.assembly.recipe;
 
-import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
-import alexiil.mc.lib.attributes.fluid.filter.FluidFilter;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
+import com.terraformersmc.assembly.block.AssemblyBlocks;
+import com.terraformersmc.assembly.recipe.ingredient.FluidIngredient;
 import com.terraformersmc.assembly.recipe.provider.FluidInputInventory;
 import com.terraformersmc.assembly.recipe.serializer.AssemblyRecipeSerializers;
+import com.terraformersmc.assembly.util.recipe.CustomRecipeToastIcon;
 import io.github.cottonmc.libcd.api.CustomOutputRecipe;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
@@ -16,17 +18,13 @@ import net.minecraft.world.World;
 import java.util.Collection;
 import java.util.Collections;
 
-public class BoilingRecipe extends AssemblyRecipe<FluidInputInventory> implements CustomOutputRecipe {
-	public FluidFilter input;
-	public Fluid inputFluid;
-	public FluidAmount ratio;
-	public Fluid output;
+public class BoilingRecipe extends AssemblyRecipe<FluidInputInventory> implements CustomOutputRecipe, CustomRecipeToastIcon {
+	private FluidIngredient input;
+	private FluidVolume output;
 
-	public BoilingRecipe(Identifier id, Fluid input, FluidAmount ratio, Fluid output) {
+	public BoilingRecipe(Identifier id, FluidIngredient input, FluidVolume output) {
 		super(id);
-		this.input = fluidKey -> fluidKey.getRawFluid() != null && fluidKey.getRawFluid().equals(input);
-		this.inputFluid = input;
-		this.ratio = ratio;
+		this.input = input;
 		this.output = output;
 	}
 
@@ -34,10 +32,21 @@ public class BoilingRecipe extends AssemblyRecipe<FluidInputInventory> implement
 		super(id, true);
 	}
 
+	public boolean isValidInput(FluidVolume volume) {
+		return this.input.test(volume);
+	}
+
+	public FluidIngredient getInputIngredient() {
+		return input;
+	}
+
+	public FluidVolume getOutputVolume() {
+		return output;
+	}
+
 	@Override
 	public boolean recipeMatches(FluidInputInventory inv, World world) {
-		FluidVolume fluidInput = inv.getFluidInput();
-		return this.input.matches(fluidInput.getFluidKey()) && !fluidInput.getAmount_F().isZero();
+		return this.isValidInput(inv.getFluidInput());
 	}
 
 	@Override
@@ -55,4 +64,17 @@ public class BoilingRecipe extends AssemblyRecipe<FluidInputInventory> implement
 		return Collections.emptySet();
 	}
 
+	@Override
+	public ItemStack getRecipeKindIcon() {
+		return new ItemStack(AssemblyBlocks.BOILER);
+	}
+
+	@Override
+	public ItemStack getRecipeToastIcon() {
+		Fluid fluid = output.getRawFluid();
+		if (fluid != null) {
+			return new ItemStack(fluid.getBucketItem());
+		}
+		return ItemStack.EMPTY;
+	}
 }

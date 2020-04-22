@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "assembly:blasting/copper_ingot"
+    ]
+  },
+  "criteria": {
+    "has_copper_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "assembly:copper_ore"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "assembly:blasting/copper_ingot"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_copper_ore",
+      "has_the_recipe"
+    ]
+  ]
+}

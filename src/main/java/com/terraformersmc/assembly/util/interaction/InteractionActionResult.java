@@ -23,10 +23,10 @@ public enum InteractionActionResult {
 	}
 
 	public ActionResult getActionResult() {
-		return result;
+		return this.result;
 	}
 
 	public boolean cancels() {
-		return cancel;
+		return this.cancel;
 	}
 }

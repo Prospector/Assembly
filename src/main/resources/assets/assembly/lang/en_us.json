@@ -30,6 +30,7 @@
   "block.assembly.boiler": "Boiler",
   "block.assembly.boiler_chamber": "Boiler Chamber",
   "block.assembly.steam_press": "Steam Press",
+  "block.assembly.fluid_injector": "Fluid Injector",
 
   "block.assembly.latex": "Latex",
   "block.assembly.flowing_latex": "Flowing Latex",

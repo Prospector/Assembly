@@ -51,12 +51,12 @@ public class SpigotBlock extends HorizontalFacingBlock implements BlockEntityPro
 
 	public SpigotBlock(Settings settings) {
 		super(settings);
-		this.setDefaultState(getStateManager().getDefaultState().with(POURING, false).with(VALVE, ValveState.OPEN).with(EXTENSION, 0));
+		this.setDefaultState(this.getStateManager().getDefaultState().with(POURING, false).with(VALVE, ValveState.OPEN).with(EXTENSION, 0));
 	}
 
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext ePos) {
-		return SHAPE_CACHE.getOrDefault(state, cacheOutlineShape(state));
+		return SHAPE_CACHE.getOrDefault(state, this.cacheOutlineShape(state));
 	}
 
 	public VoxelShape cacheOutlineShape(BlockState state) {
@@ -86,7 +86,7 @@ public class SpigotBlock extends HorizontalFacingBlock implements BlockEntityPro
 		Direction side = context.getSide().getOpposite();
 		if (side.getHorizontal() != -1) {
 			World world = context.getWorld();
-			BlockState state = getDefaultState();
+			BlockState state = this.getDefaultState();
 			BlockPos attachedPos = context.getBlockPos().offset(side);
 			BlockState attachedState = world.getBlockState(attachedPos);
 			int extension = 0;

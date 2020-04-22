@@ -20,7 +20,7 @@ public class ConveyorBeltBlock extends HorizontalFacingBlock {
 
 	public ConveyorBeltBlock(Settings settings) {
 		super(settings);
-		setDefaultState(this.getStateManager().getDefaultState().with(MOVING, false));
+		this.setDefaultState(this.getStateManager().getDefaultState().with(MOVING, false));
 	}
 
 	@Override

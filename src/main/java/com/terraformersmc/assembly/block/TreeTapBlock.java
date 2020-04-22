@@ -33,7 +33,7 @@ public class TreeTapBlock extends HorizontalFacingBlock implements BlockEntityPr
 
 	public TreeTapBlock(Settings settings) {
 		super(settings);
-		setDefaultState(getDefaultState().with(FACING, Direction.NORTH).with(POURING, false));
+		this.setDefaultState(this.getDefaultState().with(FACING, Direction.NORTH).with(POURING, false));
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class TreeTapBlock extends HorizontalFacingBlock implements BlockEntityPr
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
 		Direction direction = context.getSide().getOpposite();
-		return Direction.Type.HORIZONTAL.test(direction) ? getDefaultState().with(FACING, direction) : null;
+		return Direction.Type.HORIZONTAL.test(direction) ? this.getDefaultState().with(FACING, direction) : null;
 	}
 
 	@Override

@@ -25,31 +25,31 @@ public class BaseScreen extends HandledScreen<BuiltScreenHandler> {
 
 	@Override
 	protected void drawBackground(float v, int i, int i1) {
-		layer = Layer.BACKGROUND;
+		this.layer = Layer.BACKGROUND;
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		drawDefaultBackground(this.x, this.y, xSize, ySize);
-		drawPlayerSlots(this.x + xSize / 2, this.y + 93, true);
-		drawSlots();
+        this.drawDefaultBackground(this.x, this.y, this.xSize, this.ySize);
+        this.drawPlayerSlots(this.x + this.xSize / 2, this.y + 93, true);
+        this.drawSlots();
 	}
 
 	//Best time to draw slots
 	public void drawSlots() {
-		for (Slot slot : menu.slots) {
-			drawSlot(slot.x, slot.y);
+		for (Slot slot : this.menu.slots) {
+            this.drawSlot(slot.x, slot.y);
 		}
 	}
 
 	@Override
 	protected void drawForeground(int i, int i1) {
 		super.drawForeground(i, i1);
-		textRenderer.draw(menu.getName().toString(), 10, 6, 4210752);
-		textRenderer.draw("Inventory", 10, 80, 4210752);
+		this.textRenderer.draw(this.menu.getName().toString(), 10, 6, 4210752);
+		this.textRenderer.draw("Inventory", 10, 80, 4210752);
 	}
 
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks) {
 		this.renderBackground();
-		layer = Layer.FOREGROUND;
+		this.layer = Layer.FOREGROUND;
 		super.render(mouseX, mouseY, partialTicks);
 		this.drawMouseoverTooltip(mouseX, mouseY);
 	}
@@ -57,10 +57,10 @@ public class BaseScreen extends HandledScreen<BuiltScreenHandler> {
 	public void drawDefaultBackground(int x, int y, int width, int height) {
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
-		drawTexture(x, y, 0, 0, width / 2, height / 2);
-		drawTexture(x + width / 2, y, 150 - width / 2, 0, width / 2, height / 2);
-		drawTexture(x, y + height / 2, 0, 150 - height / 2, width / 2, height / 2);
-		drawTexture(x + width / 2, y + height / 2, 150 - width / 2, 150 - height / 2, width / 2, height / 2);
+        this.drawTexture(x, y, 0, 0, width / 2, height / 2);
+        this.drawTexture(x + width / 2, y, 150 - width / 2, 0, width / 2, height / 2);
+        this.drawTexture(x, y + height / 2, 0, 150 - height / 2, width / 2, height / 2);
+        this.drawTexture(x + width / 2, y + height / 2, 150 - width / 2, 150 - height / 2, width / 2, height / 2);
 	}
 
 	public void drawPlayerSlots(int posX, int posY, boolean center) {
@@ -70,43 +70,43 @@ public class BaseScreen extends HandledScreen<BuiltScreenHandler> {
 
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 9; x++) {
-				drawTexture(posX + x * 18, posY + y * 18, 150, 0, 18, 18);
+                this.drawTexture(posX + x * 18, posY + y * 18, 150, 0, 18, 18);
 			}
 		}
 
 		for (int x = 0; x < 9; x++) {
-			drawTexture(posX + x * 18, posY + 58, 150, 0, 18, 18);
+            this.drawTexture(posX + x * 18, posY + 58, 150, 0, 18, 18);
 		}
 	}
 
 	public void drawSlot(int posX, int posY) {
-		if (layer == Layer.BACKGROUND) {
+		if (this.layer == Layer.BACKGROUND) {
 			posX += this.x;
 			posY += this.y;
 		}
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
-		drawTexture(posX - 1, posY - 1, 150, 0, 18, 18);
+        this.drawTexture(posX - 1, posY - 1, 150, 0, 18, 18);
 	}
 
 	public void drawOutputSlot(int x, int y) {
-		if (layer == Layer.BACKGROUND) {
+		if (this.layer == Layer.BACKGROUND) {
 			x += this.x;
 			y += this.y;
 		}
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
-		drawTexture(x - 5, y - 5, 150, 18, 26, 26);
+        this.drawTexture(x - 5, y - 5, 150, 18, 26, 26);
 	}
 
 	public void drawEnergyBar(int x, int y, int height, int energyStored, int maxEnergyStored) {
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
 
-		drawTexture(x, y, 0, 150, 14, height);
-		drawTexture(x, y + height - 1, 0, 255, 14, 1);
+        this.drawTexture(x, y, 0, 150, 14, height);
+        this.drawTexture(x, y + height - 1, 0, 255, 14, 1);
 		int draw = (int) ((double) energyStored / (double) maxEnergyStored * (height - 2));
-		drawTexture(x + 1, y + height - draw - 1, 14, height + 150 - draw, 12, draw);
+        this.drawTexture(x + 1, y + height - draw - 1, 14, height + 150 - draw, 12, draw);
 
 		//TODO hover tooltip
 	}
@@ -119,7 +119,7 @@ public class BaseScreen extends HandledScreen<BuiltScreenHandler> {
 
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
-		drawTexture(x, y, direction.x, direction.y, direction.width, direction.height);
+        this.drawTexture(x, y, direction.x, direction.y, direction.width, direction.height);
 		int j = (int) ((double) progress / (double) maxProgress * 16);
 		if (j < 0) {
 			j = 0;
@@ -127,16 +127,16 @@ public class BaseScreen extends HandledScreen<BuiltScreenHandler> {
 
 		switch (direction) {
 			case RIGHT:
-				drawTexture(x, y, direction.xActive, direction.yActive, j, 10);
+                this.drawTexture(x, y, direction.xActive, direction.yActive, j, 10);
 				break;
 			case LEFT:
-				drawTexture(x + 16 - j, y, direction.xActive + 16 - j, direction.yActive, j, 10);
+                this.drawTexture(x + 16 - j, y, direction.xActive + 16 - j, direction.yActive, j, 10);
 				break;
 			case UP:
-				drawTexture(x, y + 16 - j, direction.xActive, direction.yActive + 16 - j, 10, j);
+                this.drawTexture(x, y + 16 - j, direction.xActive, direction.yActive + 16 - j, 10, j);
 				break;
 			case DOWN:
-				drawTexture(x, y, direction.xActive, direction.yActive, 10, j);
+                this.drawTexture(x, y, direction.xActive, direction.yActive, 10, j);
 				break;
 			default:
 				return;

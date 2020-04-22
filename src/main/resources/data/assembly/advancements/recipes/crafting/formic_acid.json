@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "assembly:crafting/formic_acid"
+    ]
+  },
+  "criteria": {
+    "has_fang": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "assembly:venomous_fang"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "assembly:crafting/formic_acid"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_fang",
+      "has_the_recipe"
+    ]
+  ]
+}

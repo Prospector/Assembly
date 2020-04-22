@@ -1,6 +1,7 @@
 package com.terraformersmc.assembly.entity;
 
 import com.terraformersmc.assembly.Assembly;
+import com.terraformersmc.assembly.block.AssemblyBlocks;
 import com.terraformersmc.terraform.entity.TerraformBoat;
 import com.terraformersmc.terraform.entity.TerraformBoatEntity;
 import com.terraformersmc.terraform.item.TerraformBoatItem;
@@ -14,11 +15,13 @@ import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import com.terraformersmc.assembly.block.AssemblyBlocks;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class AssemblyEntities {
+	private static final Map<EntityType<TerraformBoatEntity>, Item> BOAT_ITEMS = new HashMap<>();
 	public static EntityType<TerraformBoatEntity> HEVEA_BOAT;
 
 	public static void register() {
@@ -36,6 +39,11 @@ public class AssemblyEntities {
 				.size(EntityDimensions.fixed(1.375F, 0.5625F))
 				.build();
 
+		BOAT_ITEMS.put(type, item);
 		return Registry.register(Registry.ENTITY_TYPE, id, type);
+	}
+
+	public static Item getBoatItem(EntityType<TerraformBoatEntity> entity) {
+		return BOAT_ITEMS.get(entity);
 	}
 }

@@ -12,7 +12,7 @@ public interface CustomArmorTexture {
 	}
 
 	default String getArmorTexture(ArmorItem armorItem, boolean lowerParts, @Nullable String suffix) {
-		Identifier id = getId(armorItem, lowerParts, suffix);
+		Identifier id = this.getId(armorItem, lowerParts, suffix);
 		return id.getNamespace() + ":textures/entity/armor/" + id.getPath() + "_layer_" + (lowerParts ? 2 : 1) + (suffix == null ? "" : "_" + suffix) + ".png";
 	}
 }

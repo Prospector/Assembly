@@ -11,16 +11,16 @@ public interface InputFluidContainer extends AssemblyFluidContainer, FluidInsert
 	// FluidInsertable
 	@Override
 	default FluidVolume attemptInsertion(FluidVolume fluid, Simulation simulation) {
-		return getGroupedInv().attemptInsertion(fluid, simulation);
+		return this.getGroupedInv().attemptInsertion(fluid, simulation);
 	}
 
 	@Override
 	default FluidAmount getMinimumAcceptedAmount() {
-		return getGroupedInv().getMinimumAcceptedAmount();
+		return this.getGroupedInv().getMinimumAcceptedAmount();
 	}
 
 	@Override
 	default FluidFilter getInsertionFilter() {
-		return getGroupedInv().getInsertionFilter();
+		return this.getGroupedInv().getInsertionFilter();
 	}
 }

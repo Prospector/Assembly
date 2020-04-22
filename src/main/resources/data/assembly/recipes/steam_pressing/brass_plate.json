@@ -1,8 +1,8 @@
 {
   "type": "assembly:steam_pressing",
-  "ingredient": {
+  "input": {
     "tag": "c:brass_ingots"
   },
-  "presses": 1,
-  "result": "assembly:brass_plate"
+  "output": "assembly:brass_plate",
+  "presses": 1
 }

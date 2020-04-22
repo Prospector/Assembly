@@ -19,11 +19,11 @@ public enum ValveState implements StringIdentifiable {
 
 	@Override
 	public String asString() {
-		return name;
+		return this.name;
 	}
 
 	public boolean isOpen() {
-		return open;
+		return this.open;
 	}
 
 	public static ValveState randomClosed(Random random) {

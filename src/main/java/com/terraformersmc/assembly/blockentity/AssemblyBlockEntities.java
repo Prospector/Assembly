@@ -1,6 +1,7 @@
 package com.terraformersmc.assembly.blockentity;
 
 import com.terraformersmc.assembly.Assembly;
+import com.terraformersmc.assembly.block.FluidInjectorBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -22,6 +23,7 @@ public class AssemblyBlockEntities {
 	public static final BlockEntityType<BoilerChamberBlockEntity> BOILER_CHAMBER = add("boiler_chamber", BoilerChamberBlockEntity::new, AssemblyBlocks.BOILER_CHAMBER);
 	public static final BlockEntityType<FluidHopperBlockEntity> FLUID_HOPPER = add("fluid_hopper", FluidHopperBlockEntity::new, AssemblyBlocks.FLUID_HOPPER);
 	public static final BlockEntityType<SpigotBlockEntity> SPIGOT = add("spigot", SpigotBlockEntity::new, AssemblyBlocks.SPIGOT);
+	public static final BlockEntityType<FluidInjectorBlockEntity> FLUID_INJECTOR = add("fluid_injector", FluidInjectorBlockEntity::new, AssemblyBlocks.FLUID_INJECTOR);
 
 	private static <T extends BlockEntity> BlockEntityType<T> add(String name, Supplier<? extends T> supplier, Block... blocks) {
 		return add(name, BlockEntityType.Builder.create(supplier, blocks));

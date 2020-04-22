@@ -4,7 +4,14 @@ import alexiil.mc.lib.attributes.Simulation;
 import alexiil.mc.lib.attributes.fluid.FluidInsertable;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
+import com.terraformersmc.assembly.block.SteamPressBlock;
 import com.terraformersmc.assembly.blockentity.base.AssemblySyncedNbtBlockEntity;
+import com.terraformersmc.assembly.recipe.AssemblyRecipeTypes;
+import com.terraformersmc.assembly.recipe.PressingRecipe;
+import com.terraformersmc.assembly.util.AssemblyConstants;
+import com.terraformersmc.assembly.util.fluid.IOFluidContainer;
+import com.terraformersmc.assembly.util.fluid.SimpleIOFluidContainer;
+import com.terraformersmc.assembly.util.interaction.interactable.TankInputInteractable;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.DoubleBlockHalf;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,13 +31,6 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
-import com.terraformersmc.assembly.block.SteamPressBlock;
-import com.terraformersmc.assembly.recipe.AssemblyRecipeTypes;
-import com.terraformersmc.assembly.recipe.SteamPressingRecipe;
-import com.terraformersmc.assembly.util.AssemblyConstants;
-import com.terraformersmc.assembly.util.fluid.IOFluidContainer;
-import com.terraformersmc.assembly.util.fluid.SimpleIOFluidContainer;
-import com.terraformersmc.assembly.util.interaction.interactable.TankInputInteractable;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
@@ -66,7 +66,7 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 	private static final double LOWEST_ARM_OFFSET = -9 / 16F; // 9/16 because the lowest the arm should go is 9 pixels down.
 
 	private static final String RECIPE_KEY = AssemblyConstants.NbtKeys.RECIPE;
-	private SteamPressingRecipe recipe = null;
+	private PressingRecipe recipe = null;
 	private static final String CURRENT_PRESSES_KEY = AssemblyConstants.NbtKeys.PRESS_PROGRESS;
 	private int currentPresses = 0;
 
@@ -78,63 +78,63 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 
 	@Override
 	public void tick() {
-		if (world != null) {
-			if (!world.isClient && isMaster()) {
-				if (extractCooldown > 0) {
-					extractCooldown--;
+		if (this.world != null) {
+			if (!this.world.isClient && this.isMaster()) {
+				if (this.extractCooldown > 0) {
+					this.extractCooldown--;
 				}
 				boolean sync = false;
-				if (reset < MAX_RESET) {
-					if (!tank.attemptExtraction(AssemblyConstants.FluidFilters.STEAM, STEAM_COST_PER_RESET_INCREMENT, Simulation.SIMULATE).isEmpty()) {
-						tank.attemptExtraction(AssemblyConstants.FluidFilters.STEAM, STEAM_COST_PER_RESET_INCREMENT, Simulation.ACTION);
-						reset++;
+				if (this.reset < MAX_RESET) {
+					if (!this.tank.attemptExtraction(AssemblyConstants.FluidFilters.STEAM, STEAM_COST_PER_RESET_INCREMENT, Simulation.SIMULATE).isEmpty()) {
+						this.tank.attemptExtraction(AssemblyConstants.FluidFilters.STEAM, STEAM_COST_PER_RESET_INCREMENT, Simulation.ACTION);
+						this.reset++;
 						sync = true;
 					}
-					if (reset == MAX_RESET) {
-						progress = 0;
+					if (this.reset == MAX_RESET) {
+						this.progress = 0;
 						sync = true;
 					}
 				} else {
-					updateRecipe();
-					if (recipe != null) {
-						if (!tank.attemptExtraction(AssemblyConstants.FluidFilters.STEAM, STEAM_COST_PER_PROGRESS_INCREMENT, Simulation.SIMULATE).isEmpty()) {
-							tank.attemptExtraction(AssemblyConstants.FluidFilters.STEAM, STEAM_COST_PER_PROGRESS_INCREMENT, Simulation.ACTION);
-							progress++;
+					this.updateRecipe();
+					if (this.recipe != null) {
+						if (!this.tank.attemptExtraction(AssemblyConstants.FluidFilters.STEAM, STEAM_COST_PER_PROGRESS_INCREMENT, Simulation.SIMULATE).isEmpty()) {
+							this.tank.attemptExtraction(AssemblyConstants.FluidFilters.STEAM, STEAM_COST_PER_PROGRESS_INCREMENT, Simulation.ACTION);
+							this.progress++;
 							sync = true;
 						}
-						if (progress == MAX_PROGRESS) {
-							world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 0.6F, 0.5F + (world.random.nextFloat() - world.random.nextFloat()) * 0.4F);
-							if (world instanceof ServerWorld) {
-								((ServerWorld) world).spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, getRenderStack()), pos.getX() + 0.5, pos.getY() + 0.7, pos.getZ() + 0.5, 10, 0.1, 0.1, 0.1, 0.05);
+						if (this.progress == MAX_PROGRESS) {
+							this.world.playSound(null, this.pos, SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 0.6F, 0.5F + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.4F);
+							if (this.world instanceof ServerWorld) {
+								((ServerWorld) this.world).spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, this.getRenderStack()), this.pos.getX() + 0.5, this.pos.getY() + 0.7, this.pos.getZ() + 0.5, 10, 0.1, 0.1, 0.1, 0.05);
 							}
-							currentPresses++;
+							this.currentPresses++;
 							sync = true;
-							reset = 0;
-							if (recipe.presses <= currentPresses) {
-								items.set(INPUT_SLOT, ItemStack.EMPTY);
-								items.set(OUTPUT_SLOT, recipe.craft(this));
-								extractCooldown = 5;
+							this.reset = 0;
+							if (this.recipe.presses <= this.currentPresses) {
+								this.items.set(INPUT_SLOT, ItemStack.EMPTY);
+								this.items.set(OUTPUT_SLOT, this.recipe.craft(this));
+								this.extractCooldown = 5;
 							}
 						}
 					}
 				}
 				if (sync) {
-					sync();
+					this.sync();
 				}
 			}
 		}
 	}
 
 	private void updateRecipe() {
-		if (world != null) {
-			recipe = this.world.getRecipeManager().getFirstMatch(AssemblyRecipeTypes.STEAM_PRESSING, getMaster(), world).orElse(null);
-			if (recipe == null) {
-				currentPresses = 0;
-				ItemStack input = getStack(INPUT_SLOT);
+		if (this.world != null) {
+			this.recipe = this.world.getRecipeManager().getFirstMatch(AssemblyRecipeTypes.STEAM_PRESSING, this.getMaster(), this.world).orElse(null);
+			if (this.recipe == null) {
+				this.currentPresses = 0;
+				ItemStack input = this.getStack(INPUT_SLOT);
 				if (!input.isEmpty()) {
-					setStack(INPUT_SLOT, ItemStack.EMPTY);
-					setStack(OUTPUT_SLOT, input);
-					extractCooldown = 5;
+					this.setStack(INPUT_SLOT, ItemStack.EMPTY);
+					this.setStack(OUTPUT_SLOT, input);
+					this.extractCooldown = 5;
 				}
 			}
 		}
@@ -150,7 +150,7 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 		this.progress = tag.getInt(PROGRESS_KEY);
 		this.reset = tag.getInt(RESET_KEY);
 		if (!syncing) {
-			if (isMaster()) {
+			if (this.isMaster()) {
 				if (tag.contains(FLUIDS_KEY)) {
 					FluidVolume fluid = FluidVolume.fromTag(tag.getCompound(FLUIDS_KEY));
 					this.tank.setInvFluid(0, fluid, Simulation.ACTION);
@@ -158,11 +158,11 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 			}
 			String recipeValue = tag.getString(RECIPE_KEY);
 			if (!recipeValue.equals("null")) {
-				SteamPressingRecipe recipe = null;
-				if (world != null) {
-					Recipe<?> gottenRecipe = world.getRecipeManager().get(new Identifier(recipeValue)).orElse(null);
-					if (gottenRecipe instanceof SteamPressingRecipe) {
-						recipe = (SteamPressingRecipe) gottenRecipe;
+				PressingRecipe recipe = null;
+				if (this.world != null) {
+					Recipe<?> gottenRecipe = this.world.getRecipeManager().get(new Identifier(recipeValue)).orElse(null);
+					if (gottenRecipe instanceof PressingRecipe) {
+						recipe = (PressingRecipe) gottenRecipe;
 					}
 				}
 				this.recipe = recipe;
@@ -175,21 +175,21 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag, boolean syncing) {
-		if (master != null) {
-			tag.putBoolean(MASTER_KEY, master);
+		if (this.master != null) {
+			tag.putBoolean(MASTER_KEY, this.master);
 		}
 		Inventories.toTag(tag, this.items);
-		tag.putInt(PROGRESS_KEY, progress);
-		tag.putInt(RESET_KEY, reset);
+		tag.putInt(PROGRESS_KEY, this.progress);
+		tag.putInt(RESET_KEY, this.reset);
 		if (!syncing) {
-			if (isMaster()) {
+			if (this.isMaster()) {
 				FluidVolume inputFluid = this.tank.getInvFluid(0);
 				if (!inputFluid.isEmpty()) {
 					tag.put(FLUIDS_KEY, inputFluid.toTag());
 				}
 			}
-			tag.putString(RECIPE_KEY, recipe == null ? "null" : recipe.getId().toString());
-			tag.putInt(CURRENT_PRESSES_KEY, currentPresses);
+			tag.putString(RECIPE_KEY, this.recipe == null ? "null" : this.recipe.getId().toString());
+			tag.putInt(CURRENT_PRESSES_KEY, this.currentPresses);
 			//Todo: cache recipes
 			//updateRecipe();
 		}
@@ -197,34 +197,34 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 	}
 
 	public ItemStack getRenderStack() {
-		ItemStack input = getStack(INPUT_SLOT);
-		ItemStack output = getStack(OUTPUT_SLOT);
-		return isEmpty() ? ItemStack.EMPTY : !input.isEmpty() ? input : output;
+		ItemStack input = this.getStack(INPUT_SLOT);
+		ItemStack output = this.getStack(OUTPUT_SLOT);
+		return this.isEmpty() ? ItemStack.EMPTY : !input.isEmpty() ? input : output;
 	}
 
 	public VoxelShape getArmVoxelShape(DoubleBlockHalf half) {
-		return SteamPressBlock.ARM_SHAPE.offset(0, half == DoubleBlockHalf.LOWER ? getArmOffset() + 1 : getArmOffset(), 0);
+		return SteamPressBlock.ARM_SHAPE.offset(0, half == DoubleBlockHalf.LOWER ? this.getArmOffset() + 1 : this.getArmOffset(), 0);
 	}
 
 	public IOFluidContainer getTank() {
-		return getMaster().tank;
+		return this.getMaster().tank;
 	}
 
 	private boolean isMaster() {
-		if (master == null) {
-			if (world != null) {
-				master = getCachedState().getBlock() instanceof SteamPressBlock && getCachedState().get(SteamPressBlock.HALF) == DoubleBlockHalf.LOWER;
+		if (this.master == null) {
+			if (this.world != null) {
+				this.master = this.getCachedState().getBlock() instanceof SteamPressBlock && this.getCachedState().get(SteamPressBlock.HALF) == DoubleBlockHalf.LOWER;
 			} else {
 				return false;
 			}
 		}
-		return master;
+		return this.master;
 	}
 
 	private SteamPressBlockEntity getMaster() {
-		if (world != null) {
-			if (getCachedState().getBlock() instanceof SteamPressBlock && getCachedState().get(SteamPressBlock.HALF) == DoubleBlockHalf.UPPER) {
-				BlockEntity lowerHalf = world.getBlockEntity(pos.down());
+		if (this.world != null) {
+			if (this.getCachedState().getBlock() instanceof SteamPressBlock && this.getCachedState().get(SteamPressBlock.HALF) == DoubleBlockHalf.UPPER) {
+				BlockEntity lowerHalf = this.world.getBlockEntity(this.pos.down());
 				if (lowerHalf instanceof SteamPressBlockEntity) {
 					return ((SteamPressBlockEntity) lowerHalf);
 				}
@@ -235,56 +235,59 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 
 	public double getArmOffset() {
 		double lowestPosition = -LOWEST_ARM_OFFSET;
-		if (getReset() != MAX_RESET) {
+		if (this.getReset() != MAX_RESET) {
 			// Reset-based animation (Up)
-			return lowestPosition * Math.sin(Math.PI / 2.0 * ((double) getReset() / (double) MAX_RESET)) - lowestPosition;
+			return lowestPosition * Math.sin(Math.PI / 2.0 * ((double) this.getReset() / (double) MAX_RESET)) - lowestPosition;
 		} else {
 			// Progress-based animation (Down)
-			return -lowestPosition * Math.sin(Math.PI / 2.0 * ((double) getProgress() / (double) MAX_PROGRESS) - Math.PI / 2.0) - lowestPosition;
+			return -lowestPosition * Math.sin(Math.PI / 2.0 * ((double) this.getProgress() / (double) MAX_PROGRESS) - Math.PI / 2.0) - lowestPosition;
 		}
 	}
 
 	private int getProgress() {
-		return getMaster().progress;
+		return this.getMaster().progress;
 	}
 
 	private int getReset() {
-		return getMaster().reset;
+		return this.getMaster().reset;
 	}
 
 	@Override
 	public void clear() {
-		getMaster().items.clear();
+		this.getMaster().items.clear();
 	}
 
 	@Override
 	public int[] getAvailableSlots(Direction side) {
 		if (side == Direction.UP) {
-			return getCachedState().get(SteamPressBlock.HALF) == DoubleBlockHalf.UPPER ? TOP_SLOTS : new int[0];
+			return this.getCachedState().get(SteamPressBlock.HALF) == DoubleBlockHalf.UPPER ? TOP_SLOTS : new int[0];
 		} else if (side == Direction.DOWN) {
-			return getCachedState().get(SteamPressBlock.HALF) == DoubleBlockHalf.UPPER ? new int[0] : BOTTOM_SLOTS;
+			return this.getCachedState().get(SteamPressBlock.HALF) == DoubleBlockHalf.UPPER ? new int[0] : BOTTOM_SLOTS;
 		}
 		return SIDE_SLOTS;
 	}
 
 	@Override
 	public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
-		return slot == INPUT_SLOT && this.isEmpty() && stack.getCount() == 1;
+//		if (this.world != null && RecipeUtil.isValidInput(this.world, AssemblyRecipeTypes.STEAM_PRESSING, stack)) {
+			return slot == INPUT_SLOT && this.isEmpty() && stack.getCount() == 1;
+//		}
+//		return false;
 	}
 
 	@Override
 	public boolean canExtract(int slot, ItemStack stack, Direction dir) {
-		return slot == OUTPUT_SLOT && extractCooldown == 0;
+		return slot == OUTPUT_SLOT && this.extractCooldown == 0;
 	}
 
 	@Override
 	public int size() {
-		return getMaster().items.size();
+		return this.getMaster().items.size();
 	}
 
 	@Override
 	public boolean isEmpty() {
-		Iterator<ItemStack> iterator = getMaster().items.iterator();
+		Iterator<ItemStack> iterator = this.getMaster().items.iterator();
 		ItemStack stack;
 		do {
 			if (!iterator.hasNext()) {
@@ -298,46 +301,46 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 
 	@Override
 	public ItemStack getStack(int slot) {
-		return getMaster().items.get(slot);
+		return this.getMaster().items.get(slot);
 	}
 
 	@Override
 	public ItemStack removeStack(int slot, int amount) {
 		if (slot == INPUT_SLOT && amount > 0) {
-			updateRecipe();
+			this.updateRecipe();
 		}
-		if (world != null && !world.isClient) {
-			sync();
+		if (this.world != null && !this.world.isClient) {
+			this.sync();
 		}
-		return Inventories.splitStack(getMaster().items, slot, amount);
+		return Inventories.splitStack(this.getMaster().items, slot, amount);
 	}
 
 	@Override
 	public ItemStack removeStack(int slot) {
 		if (slot == INPUT_SLOT) {
-			updateRecipe();
+			this.updateRecipe();
 		}
-		if (world != null && !world.isClient) {
-			sync();
+		if (this.world != null && !this.world.isClient) {
+			this.sync();
 		}
-		return Inventories.removeStack(getMaster().items, slot);
+		return Inventories.removeStack(this.getMaster().items, slot);
 	}
 
 	@Override
 	public void setStack(int slot, ItemStack newStack) {
-		ItemStack currentStack = getMaster().items.get(slot);
+		ItemStack currentStack = this.getMaster().items.get(slot);
 		boolean noUpdate = !newStack.isEmpty() && newStack.isItemEqualIgnoreDamage(currentStack) && ItemStack.areTagsEqual(newStack, currentStack);
-		getMaster().items.set(slot, newStack);
+		this.getMaster().items.set(slot, newStack);
 		if (newStack.getCount() > this.getMaxCountPerStack()) {
 			newStack.setCount(this.getMaxCountPerStack());
 		}
 
 		if (slot == INPUT_SLOT && !noUpdate) {
 			this.markDirty();
-			updateRecipe();
+			this.updateRecipe();
 		}
-		if (world != null && !world.isClient) {
-			sync();
+		if (this.world != null && !this.world.isClient) {
+			this.sync();
 		}
 	}
 
@@ -355,6 +358,6 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 
 	@Override
 	public FluidInsertable getInteractableInsertable() {
-		return getTank().getInsertable().getPureInsertable();
+		return this.getTank().getInsertable().getPureInsertable();
 	}
 }

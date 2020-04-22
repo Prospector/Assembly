@@ -41,7 +41,7 @@ public class BoilerBlock extends HorizontalFacingBlock implements BlockEntityPro
 
 	public BoilerBlock(Settings settings) {
 		super(settings.lightLevel((state) -> state.get(Properties.LIT) ? 13 : 0));
-		setDefaultState(this.getStateManager().getDefaultState().with(LIT, false));
+		this.setDefaultState(this.getStateManager().getDefaultState().with(LIT, false));
 	}
 
 	@Override

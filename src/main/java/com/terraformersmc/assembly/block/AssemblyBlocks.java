@@ -1,6 +1,8 @@
 package com.terraformersmc.assembly.block;
 
 import com.terraformersmc.assembly.Assembly;
+import com.terraformersmc.assembly.fluid.AssemblyFluid;
+import com.terraformersmc.assembly.fluid.AssemblyFluids;
 import com.terraformersmc.assembly.item.InteractionBypassBlockItem;
 import com.terraformersmc.assembly.util.interaction.interactable.InteractionBypass;
 import com.terraformersmc.assembly.world.AssemblyWorldgen;
@@ -19,8 +21,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.BranchedTreeFeatureConfig;
 import net.minecraft.world.gen.feature.OakTreeFeature;
-import com.terraformersmc.assembly.fluid.AssemblyFluid;
-import com.terraformersmc.assembly.fluid.AssemblyFluids;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -87,6 +87,7 @@ public class AssemblyBlocks {
 	public static final Block CONVEYOR_BELT = add("conveyor_belt", new ConveyorBeltBlock(FabricBlockSettings.of(Material.METAL).breakByTool(FabricToolTags.PICKAXES, 0).build()), ItemGroup.REDSTONE);
 	public static final Block FLUID_HOPPER = add("fluid_hopper", new FluidHopperBlock(FabricBlockSettings.copy(Blocks.HOPPER).breakByTool(FabricToolTags.PICKAXES, 0).build()), ItemGroup.REDSTONE);
 	public static final Block SPIGOT = add("spigot", new SpigotBlock(FabricBlockSettings.copy(Blocks.HOPPER).breakByTool(FabricToolTags.PICKAXES, 0).build()), ItemGroup.REDSTONE);
+	public static final Block FLUID_INJECTOR = add("fluid_injector", new FluidInjectorBlock(FabricBlockSettings.copy(Blocks.HOPPER).breakByTool(FabricToolTags.PICKAXES, 0).build()), ItemGroup.DECORATIONS);
 
 	private static <B extends Block> B add(String name, B block, ItemGroup tab) {
 		Item.Settings settings = new Item.Settings();

@@ -45,7 +45,7 @@ public class ExoframePieceItem extends ArmorItem implements AttributeProviderIte
 
 	public ExoframePieceItem(EquipmentSlot slot, Settings settings) {
 		super(AssemblyConstants.ArmorMaterials.EXOFRAME, slot, settings);
-		addPropertyGetter(AssemblyConstants.Ids.STEAM_TANK, STEAM_TANK_PROPERTY_GETTER);
+        this.addPropertyGetter(AssemblyConstants.Ids.STEAM_TANK, STEAM_TANK_PROPERTY_GETTER);
 	}
 
 	@Override

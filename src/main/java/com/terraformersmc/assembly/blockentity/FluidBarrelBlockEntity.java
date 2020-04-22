@@ -24,21 +24,21 @@ public class FluidBarrelBlockEntity extends AssemblySyncedNbtBlockEntity impleme
 
 	public FluidBarrelBlockEntity() {
 		super(AssemblyBlockEntities.FLUID_BARREL);
-		tank = new SimpleIOFluidContainer(1, CAPACITY);
+		this.tank = new SimpleIOFluidContainer(1, CAPACITY);
 	}
 
 	@Override
 	public void tick() {
-		if (world != null && !world.isClient) {
-			if (!fluidLastSync.equals(tank.getInvFluid(0))) {
-				sync();
-				fluidLastSync = tank.getInvFluid(0).copy();
+		if (this.world != null && !this.world.isClient) {
+			if (!this.fluidLastSync.equals(this.tank.getInvFluid(0))) {
+                this.sync();
+				this.fluidLastSync = this.tank.getInvFluid(0).copy();
 			}
 		}
 	}
 
 	public IOFluidContainer getTank() {
-		return tank;
+		return this.tank;
 	}
 
 	@Override
@@ -58,11 +58,11 @@ public class FluidBarrelBlockEntity extends AssemblySyncedNbtBlockEntity impleme
 
 	@Override
 	public FluidInsertable getInteractableInsertable() {
-		return getTank();
+		return this.getTank();
 	}
 
 	@Override
 	public FluidExtractable getInteractableExtractable() {
-		return getTank();
+		return this.getTank();
 	}
 }

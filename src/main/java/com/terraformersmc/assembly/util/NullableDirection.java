@@ -31,11 +31,11 @@ public enum NullableDirection implements StringIdentifiable {
 	}
 
 	public Direction getDirection() {
-		return direction;
+		return this.direction;
 	}
 
 	public boolean hasDirection() {
-		return direction != null;
+		return this.direction != null;
 	}
 
 	public static NullableDirection get(Direction direction) {
@@ -44,6 +44,6 @@ public enum NullableDirection implements StringIdentifiable {
 
 	@Override
 	public String asString() {
-		return direction != null ? direction.asString() : "none";
+		return this.direction != null ? this.direction.asString() : "none";
 	}
 }

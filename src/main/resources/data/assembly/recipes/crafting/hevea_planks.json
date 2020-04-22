@@ -1,13 +1,13 @@
 {
-	"type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shapeless",
   "group": "planks",
-	"ingredients": [
-		{
-			"tag": "assembly:hevea_logs"
-		}
-	],
-	"result": {
-		"item": "assembly:hevea_planks",
-		"count": 4
-	}
+  "ingredients": [
+    {
+      "tag": "assembly:hevea_logs"
+    }
+  ],
+  "result": {
+    "item": "assembly:hevea_planks",
+    "count": 4
+  }
 }

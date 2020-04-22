@@ -60,13 +60,13 @@ public class BaseFluidContainer implements AssemblyFluidContainer, Saveable {
 
 
 	public BaseFluidContainer(int invSize, FluidAmount capacity, FluidFilter filter) {
-		tanks = DefaultedList.ofSize(invSize, FluidVolumeUtil.EMPTY);
+		this.tanks = DefaultedList.ofSize(invSize, FluidVolumeUtil.EMPTY);
 		this.capacity = capacity;
 		this.filter = filter;
 	}
 
 	public BaseFluidContainer(int invSize, Supplier<FluidAmount> capacitySupplier, FluidFilter filter) {
-		tanks = DefaultedList.ofSize(invSize, FluidVolumeUtil.EMPTY);
+		this.tanks = DefaultedList.ofSize(invSize, FluidVolumeUtil.EMPTY);
 		this.capacity = capacitySupplier.get();
 		this.capacitySupplier = capacitySupplier;
 		this.filter = filter;
@@ -80,41 +80,41 @@ public class BaseFluidContainer implements AssemblyFluidContainer, Saveable {
 
 	@Override
 	public FluidAmount getCapacity(int tank) {
-		if (capacitySupplier != null) {
-			return capacity = capacitySupplier.get();
+		if (this.capacitySupplier != null) {
+			return this.capacity = this.capacitySupplier.get();
 		}
-		return capacity;
+		return this.capacity;
 	}
 
 	// FixedFluidInv
 	@Override
 	public final int getTankCount() {
-		return tanks.size();
+		return this.tanks.size();
 	}
 
 
 	@Override
 	public FluidVolume getInvFluid(int tank) {
-		return tanks.get(tank);
+		return this.tanks.get(tank);
 	}
 
 	@Override
 	public boolean isFluidValidForTank(int tank, FluidKey fluid) {
-		return fluid.isEmpty() || filter.matches(fluid);
+		return fluid.isEmpty() || this.filter.matches(fluid);
 	}
 
 	@Override
 	public FluidFilter getFilterForTank(int tank) {
-		return filter;
+		return this.filter;
 	}
 
 	@Override
 	public boolean setInvFluid(int tank, FluidVolume to, Simulation simulation) {
-		if (isFluidValidForTank(tank, to.fluidKey) && !to.getAmount_F().isGreaterThan(getMaxAmount_F(tank))) {
+		if (this.isFluidValidForTank(tank, to.fluidKey) && !to.getAmount_F().isGreaterThan(this.getMaxAmount_F(tank))) {
 			if (simulation == Simulation.ACTION) {
-				FluidVolume before = tanks.get(tank);
-				tanks.set(tank, to);
-				fireTankChange(tank, before, to);
+				FluidVolume before = this.tanks.get(tank);
+				this.tanks.set(tank, to);
+                this.fireTankChange(tank, before, to);
 			}
 			return true;
 		}
@@ -129,21 +129,21 @@ public class BaseFluidContainer implements AssemblyFluidContainer, Saveable {
 
 	@Override
 	public ListenerToken addListener(FluidInvTankChangeListener listener, ListenerRemovalToken removalToken) {
-		if (bakedListeners == INVALIDATING_LISTENERS) {
+		if (this.bakedListeners == INVALIDATING_LISTENERS) {
 			// It doesn't really make sense to add listeners while we are invalidating them
 			return null;
 		}
-		ListenerRemovalToken previous = listeners.put(listener, removalToken);
+		ListenerRemovalToken previous = this.listeners.put(listener, removalToken);
 		if (previous == null) {
-			bakeListeners();
+            this.bakeListeners();
 		} else {
 			assert previous == removalToken : "The same listener object must be registered with the same removal token";
 		}
 		return () -> {
-			ListenerRemovalToken token = listeners.remove(listener);
+			ListenerRemovalToken token = this.listeners.remove(listener);
 			if (token != null) {
 				assert token == removalToken;
-				bakeListeners();
+                this.bakeListeners();
 				removalToken.onListenerRemoved();
 			}
 		};
@@ -159,25 +159,25 @@ public class BaseFluidContainer implements AssemblyFluidContainer, Saveable {
 	}
 
 	private void bakeListeners() {
-		bakedListeners = listeners.keySet().toArray(new FluidInvTankChangeListener[0]);
+		this.bakedListeners = this.listeners.keySet().toArray(new FluidInvTankChangeListener[0]);
 	}
 
 	public void invalidateListeners() {
-		bakedListeners = INVALIDATING_LISTENERS;
-		ListenerRemovalToken[] removalTokens = listeners.values().toArray(new ListenerRemovalToken[0]);
-		listeners.clear();
+		this.bakedListeners = INVALIDATING_LISTENERS;
+		ListenerRemovalToken[] removalTokens = this.listeners.values().toArray(new ListenerRemovalToken[0]);
+		this.listeners.clear();
 		for (ListenerRemovalToken token : removalTokens) {
 			token.onListenerRemoved();
 		}
-		bakedListeners = NO_LISTENERS;
+		this.bakedListeners = NO_LISTENERS;
 	}
 
 	protected final void fireTankChange(int tank, FluidVolume previous, FluidVolume current) {
-		if (ownerListener != null) {
-			ownerListener.onChange(this, tank, previous, current);
+		if (this.ownerListener != null) {
+			this.ownerListener.onChange(this, tank, previous, current);
 		}
 		// Iterate over the previous array in case the listeners array is changed while we are iterating
-		final FluidInvTankChangeListener[] baked = bakedListeners;
+		final FluidInvTankChangeListener[] baked = this.bakedListeners;
 		for (FluidInvTankChangeListener listener : baked) {
 			listener.onChange(this, tank, previous, current);
 		}
@@ -186,13 +186,13 @@ public class BaseFluidContainer implements AssemblyFluidContainer, Saveable {
 	// NBT support
 	@Override
 	public final CompoundTag toTag() {
-		return toTag(new CompoundTag());
+		return this.toTag(new CompoundTag());
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
 		ListTag tanksTag = new ListTag();
-		for (FluidVolume volume : tanks) {
+		for (FluidVolume volume : this.tanks) {
 			tanksTag.add(volume.toTag());
 		}
 		tag.put(TANKS_KEY, tanksTag);
@@ -202,11 +202,11 @@ public class BaseFluidContainer implements AssemblyFluidContainer, Saveable {
 	@Override
 	public void fromTag(CompoundTag tag) {
 		ListTag tanksTag = tag.getList(TANKS_KEY, new CompoundTag().getType());
-		for (int i = 0; i < tanksTag.size() && i < tanks.size(); i++) {
-			tanks.set(i, FluidVolume.fromTag(tanksTag.getCompound(i)));
+		for (int i = 0; i < tanksTag.size() && i < this.tanks.size(); i++) {
+			this.tanks.set(i, FluidVolume.fromTag(tanksTag.getCompound(i)));
 		}
-		for (int i = tanksTag.size(); i < tanks.size(); i++) {
-			tanks.set(i, FluidVolumeUtil.EMPTY);
+		for (int i = tanksTag.size(); i < this.tanks.size(); i++) {
+			this.tanks.set(i, FluidVolumeUtil.EMPTY);
 		}
 	}
 

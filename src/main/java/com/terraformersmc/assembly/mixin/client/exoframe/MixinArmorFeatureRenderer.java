@@ -45,13 +45,13 @@ public abstract class MixinArmorFeatureRenderer<T extends LivingEntity, M extend
 	@Inject(method = "getArmorTexture", at = @At("HEAD"), cancellable = true)
 	private void modifyArmorTexture(EquipmentSlot slot, ArmorItem item, boolean secondLayer, @Nullable String suffix, CallbackInfoReturnable<Identifier> info) {
 		if (item instanceof CustomArmorTexture) {
-			info.setReturnValue(getCachedId(((CustomArmorTexture) item).getArmorTexture(item, secondLayer, suffix)));
+			info.setReturnValue(this.getCachedId(((CustomArmorTexture) item).getArmorTexture(item, secondLayer, suffix)));
 		}
 	}
 
 	@Unique
 	private void renderCustomArmorParts(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CustomArmorTextureForStack item, ItemStack stack, boolean renderGlint, A bipedEntityModel, boolean lowerParts, float r, float g, float b, @Nullable String textureSuffix) {
-		VertexConsumer vertexConsumer = ItemRenderer.getArmorVertexConsumer(vertexConsumerProvider, RenderLayer.getEntityCutoutNoCull(getCachedId(item.getArmorTexture(stack, lowerParts, textureSuffix))), false, renderGlint);
+		VertexConsumer vertexConsumer = ItemRenderer.getArmorVertexConsumer(vertexConsumerProvider, RenderLayer.getEntityCutoutNoCull(this.getCachedId(item.getArmorTexture(stack, lowerParts, textureSuffix))), false, renderGlint);
 		bipedEntityModel.render(matrixStack, vertexConsumer, i, OverlayTexture.DEFAULT_UV, r, g, b, 1.0F);
 	}
 

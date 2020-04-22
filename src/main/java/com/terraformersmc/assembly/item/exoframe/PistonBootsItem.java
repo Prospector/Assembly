@@ -12,7 +12,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BlockView;
-import com.terraformersmc.assembly.mixintf.FallDamageTransformingBoots;
+import com.terraformersmc.assembly.util.FallDamageTransformingBoots;
 import com.terraformersmc.assembly.util.AssemblyConstants;
 
 import javax.annotation.Nullable;
@@ -35,7 +35,7 @@ public class PistonBootsItem extends ExoframePieceItem implements ExoframeModule
 
 	@Override
 	public float transformJumpVelocity(LivingEntity entity, ItemStack stack, float defaultMultiplier) {
-		if (extendPiston(entity, stack, false)) {
+		if (this.extendPiston(entity, stack, false)) {
 			return defaultMultiplier * 1.5F;
 		}
 		return defaultMultiplier;
@@ -43,8 +43,8 @@ public class PistonBootsItem extends ExoframePieceItem implements ExoframeModule
 
 	@Override
 	public boolean onEntityLand(BlockView world, Entity entity, ItemStack stack) {
-		contractPiston(entity, stack);
-		extendPiston(entity, stack, true);
+        this.contractPiston(entity, stack);
+        this.extendPiston(entity, stack, true);
 		return true;
 	}
 

@@ -3,7 +3,7 @@ package com.terraformersmc.assembly.screenhandler.builder;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.server.network.ServerPlayerEntity;
-import com.terraformersmc.assembly.network.AssemblyNetworking;
+import com.terraformersmc.assembly.networking.AssemblyNetworking;
 
 public interface ExtendedScreenHandlerListener {
 

@@ -12,6 +12,6 @@ public class AssemblyBucketItem extends BucketItem {
 	}
 
 	public AssemblyFluid getFluid() {
-		return fluid;
+		return this.fluid;
 	}
 }

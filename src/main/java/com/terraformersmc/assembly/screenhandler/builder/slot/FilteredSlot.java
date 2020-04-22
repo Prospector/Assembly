@@ -65,6 +65,6 @@ public class FilteredSlot extends Slot {
 
 	@Override
 	public int getMaxStackAmount() {
-		return stackLimit;
+		return this.stackLimit;
 	}
 }

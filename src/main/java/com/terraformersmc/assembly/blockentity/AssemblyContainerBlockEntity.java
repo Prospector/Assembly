@@ -14,7 +14,7 @@ import net.minecraft.util.collection.DefaultedList;
 
 public abstract class AssemblyContainerBlockEntity extends LockableContainerBlockEntity implements Inventory {
 
-	protected DefaultedList<ItemStack> contents = DefaultedList.ofSize(size(), ItemStack.EMPTY);
+	protected DefaultedList<ItemStack> contents = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
 
 	public AssemblyContainerBlockEntity(BlockEntityType<?> type) {
 		super(type);
@@ -22,24 +22,24 @@ public abstract class AssemblyContainerBlockEntity extends LockableContainerBloc
 
 	@Override
 	public void fromTag(BlockState state, CompoundTag tag) {
-		Inventories.fromTag(tag, contents);
+		Inventories.fromTag(tag, this.contents);
 		super.fromTag(state, tag);
 	}
 
 	@Override
 	public CompoundTag toTag(CompoundTag compound) {
-		Inventories.toTag(compound, contents, true);
+		Inventories.toTag(compound, this.contents, true);
 		return super.toTag(compound);
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return contents.stream().anyMatch(ItemStack::isEmpty);
+		return this.contents.stream().anyMatch(ItemStack::isEmpty);
 	}
 
 	@Override
 	public ItemStack getStack(int slot) {
-		return contents.get(slot);
+		return this.contents.get(slot);
 	}
 
 	@Override
@@ -87,6 +87,6 @@ public abstract class AssemblyContainerBlockEntity extends LockableContainerBloc
 
 	@Override
 	public void clear() {
-		contents.clear();
+		this.contents.clear();
 	}
 }

@@ -39,9 +39,9 @@ public class SpigotBlockEntity extends AssemblySyncedNbtBlockEntity implements T
 
 	@Override
     public CompoundTag toTag(CompoundTag tag, boolean syncing) {
-		tag.putInt(TRANSFER_COOLDOWN_KEY, transferCooldown);
+		tag.putInt(TRANSFER_COOLDOWN_KEY, this.transferCooldown);
 		if (syncing) {
-			tag.putString(POURING_FLUID_KEY, Registry.FLUID.getId(pouringFluid).toString());
+			tag.putString(POURING_FLUID_KEY, Registry.FLUID.getId(this.pouringFluid).toString());
 		}
 		return tag;
 	}
@@ -49,30 +49,30 @@ public class SpigotBlockEntity extends AssemblySyncedNbtBlockEntity implements T
 	@Override
     public void tick() {
 		if (this.world != null && !this.world.isClient) {
-			if (transferCooldown > 0) {
+			if (this.transferCooldown > 0) {
 				--this.transferCooldown;
 			}
 			this.lastTickTime = this.world.getTime();
 			if (!this.needsCooldown()) {
-				if (world.getBlockState(pos).get(SpigotBlock.VALVE).isOpen()) {
+				if (this.world.getBlockState(this.pos).get(SpigotBlock.VALVE).isOpen()) {
 					// Pull Fluid from fluid container it is attached to and push to the block below
-					FluidVolume movedFluid = FluidVolumeUtil.move(FluidAttributes.EXTRACTABLE.get(world, pos.offset(getCachedState().get(SpigotBlock.FACING))), FluidAttributes.INSERTABLE.get(world, pos.down()), FluidAmount.BUCKET.roundedDiv(4));
+					FluidVolume movedFluid = FluidVolumeUtil.move(FluidAttributes.EXTRACTABLE.get(this.world, this.pos.offset(this.getCachedState().get(SpigotBlock.FACING))), FluidAttributes.INSERTABLE.get(this.world, this.pos.down()), FluidAmount.BUCKET.roundedDiv(4));
 					Fluid rawFluid = movedFluid.getRawFluid();
 					this.pouringFluid = rawFluid == null ? Fluids.EMPTY : rawFluid;
-					if (pouringFluid != lastPouringFluid) {
-						world.setBlockState(pos, world.getBlockState(pos).with(SpigotBlock.POURING, pouringFluid != Fluids.EMPTY));
-						sync();
+					if (this.pouringFluid != this.lastPouringFluid) {
+						this.world.setBlockState(this.pos, this.world.getBlockState(this.pos).with(SpigotBlock.POURING, this.pouringFluid != Fluids.EMPTY));
+                        this.sync();
 					}
 					if (!movedFluid.isEmpty()) {
 						this.setCooldown(8);
 					}
 				} else {
-					pouringFluid = Fluids.EMPTY;
-					if (lastPouringFluid != pouringFluid) {
-						world.setBlockState(pos, world.getBlockState(pos).with(SpigotBlock.POURING, false));
+					this.pouringFluid = Fluids.EMPTY;
+					if (this.lastPouringFluid != this.pouringFluid) {
+						this.world.setBlockState(this.pos, this.world.getBlockState(this.pos).with(SpigotBlock.POURING, false));
 					}
 				}
-				lastPouringFluid = pouringFluid;
+				this.lastPouringFluid = this.pouringFluid;
 			}
 
 		}
@@ -91,6 +91,6 @@ public class SpigotBlockEntity extends AssemblySyncedNbtBlockEntity implements T
 	}
 
 	public Fluid getPouringFluid() {
-		return pouringFluid;
+		return this.pouringFluid;
 	}
 }

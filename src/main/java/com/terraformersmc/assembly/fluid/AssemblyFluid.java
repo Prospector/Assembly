@@ -46,7 +46,6 @@ public abstract class AssemblyFluid extends BaseFluid implements TexturedFluid {
 		this.levelDecreasePerBlock = settings.levelDecreasePerBlock;
 		this.blastResistance = settings.blastResistance;
 		this.infinite = settings.infinite;
-		BlockRenderLayerMap.INSTANCE.putFluid(this, RenderLayer.getTranslucent());
 	}
 
 	@Override
@@ -74,7 +73,7 @@ public abstract class AssemblyFluid extends BaseFluid implements TexturedFluid {
 
 	@Override
 	protected boolean isInfinite() {
-		return infinite;
+		return this.infinite;
 	}
 
 	@Override
@@ -100,7 +99,7 @@ public abstract class AssemblyFluid extends BaseFluid implements TexturedFluid {
 
 	@Override
 	public int getLevelDecreasePerBlock(WorldView world) {
-		return levelDecreasePerBlock;
+		return this.levelDecreasePerBlock;
 	}
 
 	@Override
@@ -110,12 +109,12 @@ public abstract class AssemblyFluid extends BaseFluid implements TexturedFluid {
 
 	@Override
 	protected float getBlastResistance() {
-		return blastResistance;
+		return this.blastResistance;
 	}
 
 	@Override
 	public int getTickRate(WorldView var1) {
-		return tickRate;
+		return this.tickRate;
 	}
 
 	public static class Flowing extends AssemblyFluid {
@@ -178,12 +177,12 @@ public abstract class AssemblyFluid extends BaseFluid implements TexturedFluid {
 
 	@Override
 	public Identifier getFlowingTexture() {
-		return new Identifier(Assembly.MOD_ID, "fluid/" + name + "_flowing");
+		return new Identifier(Assembly.MOD_ID, "fluid/" + this.name + "_flowing");
 	}
 
 	@Override
 	public Identifier getStillTexture() {
-		return new Identifier(Assembly.MOD_ID, "fluid/" + name + "_still");
+		return new Identifier(Assembly.MOD_ID, "fluid/" + this.name + "_still");
 	}
 
 	public static class Settings {
@@ -226,11 +225,11 @@ public abstract class AssemblyFluid extends BaseFluid implements TexturedFluid {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public Identifier getId() {
-			return id;
+			return this.id;
 		}
 	}
 }

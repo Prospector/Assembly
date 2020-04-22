@@ -21,6 +21,6 @@ public class InteractionBypassBlockItem extends BlockItem implements Interaction
 
 	@Override
 	public boolean bypassesInteractions(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		return bypass.bypassesInteractions(state, world, pos, player, hand, hit);
+		return this.bypass.bypassesInteractions(state, world, pos, player, hand, hit);
 	}
 }

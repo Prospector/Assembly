@@ -122,7 +122,7 @@ public class BoilerChamberBlock extends HorizontalFacingBlock implements BlockEn
 
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
-		return getDefaultState().with(FACING, context.getPlayerFacing().getOpposite()).with(WATERLOGGED, context.getWorld().getFluidState(context.getBlockPos()).getFluid() == Fluids.WATER);
+		return this.getDefaultState().with(FACING, context.getPlayerFacing().getOpposite()).with(WATERLOGGED, context.getWorld().getFluidState(context.getBlockPos()).getFluid() == Fluids.WATER);
 	}
 
 	@Override

@@ -12,6 +12,6 @@ public class AssemblyFluidBlock extends FluidBlock {
 	}
 
 	public AssemblyFluid getFluid() {
-		return fluid;
+		return this.fluid;
 	}
 }

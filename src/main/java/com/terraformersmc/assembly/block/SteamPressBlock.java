@@ -12,6 +12,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.DoubleBlockHalf;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
@@ -20,6 +21,7 @@ import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
@@ -39,7 +41,7 @@ public class SteamPressBlock extends HorizontalFacingBlock implements BlockEntit
 
 	public SteamPressBlock(Settings settings) {
 		super(settings);
-		setDefaultState(this.getStateManager().getDefaultState().with(HALF, DoubleBlockHalf.LOWER));
+		this.setDefaultState(this.getStateManager().getDefaultState().with(HALF, DoubleBlockHalf.LOWER));
 	}
 
 	@Override
@@ -176,5 +178,18 @@ public class SteamPressBlock extends HorizontalFacingBlock implements BlockEntit
 		VoxelShape plate = Block.createCuboidShape(3, 4, 3, 13, 5, 13);
 		VoxelShape arm = Block.createCuboidShape(6, 5, 6, 10, 16, 10);
 		ARM_SHAPE = VoxelShapes.union(plate, arm).simplify();
+	}
+
+	@Override
+	public void onBlockRemoved(BlockState state, World world, BlockPos pos, BlockState newState, boolean notify) {
+		DoubleBlockHalf half = state.get(HALF);
+		if (state.getBlock() != newState.getBlock() && half == DoubleBlockHalf.LOWER) {
+			BlockEntity blockEntity = world.getBlockEntity(pos);
+			if (blockEntity instanceof Inventory) {
+				ItemScatterer.spawn(world, pos, (Inventory) blockEntity);
+				world.updateComparators(pos, this);
+			}
+		}
+		super.onBlockRemoved(state, world, pos, newState, notify);
 	}
 }

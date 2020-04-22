@@ -1,16 +1,16 @@
 {
-	"type": "minecraft:crafting_shaped",
+  "type": "minecraft:crafting_shaped",
   "group": "wooden_slab",
-	"pattern": [
-		"PPP"
-	],
-	"key": {
-		"P": {
-			"item": "assembly:hevea_planks"
-		}
-	},
-	"result": {
-		"item": "assembly:hevea_slab",
-		"count": 6
-	}
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "assembly:hevea_planks"
+    }
+  },
+  "result": {
+    "item": "assembly:hevea_slab",
+    "count": 6
+  }
 }

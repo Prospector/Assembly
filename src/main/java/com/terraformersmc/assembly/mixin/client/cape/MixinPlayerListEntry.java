@@ -26,9 +26,9 @@ public class MixinPlayerListEntry {
 
 	@Inject(method = "loadTextures", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/texture/PlayerSkinProvider;loadSkin(Lcom/mojang/authlib/GameProfile;Lnet/minecraft/client/texture/PlayerSkinProvider$SkinTextureAvailableCallback;Z)V"))
 	private void onLoadTextures(CallbackInfo info) {
-		if (AssemblyConstants.AUTHORS.contains(profile.getId().toString()) || "ProspectorDev".equals(profile.getName())) {
-			textures.put(MinecraftProfileTexture.Type.CAPE, AssemblyConstants.Ids.AUTHOR_CAPE);
-			textures.put(MinecraftProfileTexture.Type.ELYTRA, AssemblyConstants.Ids.AUTHOR_CAPE);
+		if (AssemblyConstants.AUTHORS.contains(this.profile.getId().toString()) || "ProspectorDev".equals(this.profile.getName())) {
+            this.textures.put(MinecraftProfileTexture.Type.CAPE, AssemblyConstants.Ids.AUTHOR_CAPE);
+            this.textures.put(MinecraftProfileTexture.Type.ELYTRA, AssemblyConstants.Ids.AUTHOR_CAPE);
 		}
 	}
 }

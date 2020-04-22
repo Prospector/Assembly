@@ -1,10 +1,7 @@
 package com.terraformersmc.assembly.client.renderer;
 
 import com.terraformersmc.assembly.blockentity.AssemblyBlockEntities;
-import com.terraformersmc.assembly.client.renderer.blockentityrenderer.FluidBarrelBlockEntityRenderer;
-import com.terraformersmc.assembly.client.renderer.blockentityrenderer.SpigotBlockEntityRenderer;
-import com.terraformersmc.assembly.client.renderer.blockentityrenderer.SteamPressBlockEntityRenderer;
-import com.terraformersmc.assembly.client.renderer.blockentityrenderer.TreeTapBlockEntityRenderer;
+import com.terraformersmc.assembly.client.renderer.blockentityrenderer.*;
 import com.terraformersmc.assembly.entity.AssemblyEntities;
 import com.terraformersmc.assembly.fluid.AssemblyFluid;
 import com.terraformersmc.assembly.fluid.AssemblyFluids;
@@ -37,6 +34,7 @@ public class AssemblyRenderers {
 		BlockEntityRendererRegistry.INSTANCE.register(AssemblyBlockEntities.TREE_TAP, TreeTapBlockEntityRenderer::new);
 		BlockEntityRendererRegistry.INSTANCE.register(AssemblyBlockEntities.STEAM_PRESS, SteamPressBlockEntityRenderer::new);
 		BlockEntityRendererRegistry.INSTANCE.register(AssemblyBlockEntities.SPIGOT, SpigotBlockEntityRenderer::new);
+		BlockEntityRendererRegistry.INSTANCE.register(AssemblyBlockEntities.FLUID_INJECTOR, FluidInjectorBlockEntityRenderer::new);
 	}
 
 	private static void registerFluidRenderers() {

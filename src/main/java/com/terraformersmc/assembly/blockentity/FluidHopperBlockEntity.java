@@ -45,7 +45,7 @@ public class FluidHopperBlockEntity extends BlockEntity implements FluidHopper, 
 
 	public FluidHopperBlockEntity() {
 		super(AssemblyBlockEntities.FLUID_HOPPER);
-		tank = new SimpleIOFluidContainer(5, CAPACITY);
+		this.tank = new SimpleIOFluidContainer(5, CAPACITY);
 		this.transferCooldown = -1;
 	}
 
@@ -79,25 +79,25 @@ public class FluidHopperBlockEntity extends BlockEntity implements FluidHopper, 
 			this.lastTickTime = this.world.getTime();
 			if (!this.needsCooldown()) {
 				boolean didWork = false;
-				BlockPos upPos = pos.up();
+				BlockPos upPos = this.pos.up();
 
 				// Pull Fluid from fluid containers
-				boolean pulled = !FluidVolumeUtil.move(FluidAttributes.EXTRACTABLE.get(world, upPos), tank, TRANSFER_AMOUNT).isEmpty();
-				boolean pushed = !FluidVolumeUtil.move(tank, FluidAttributes.INSERTABLE.get(world, pos.offset(getCachedState().get(FluidHopperBlock.FACING))), TRANSFER_AMOUNT).isEmpty();
+				boolean pulled = !FluidVolumeUtil.move(FluidAttributes.EXTRACTABLE.get(this.world, upPos), this.tank, TRANSFER_AMOUNT).isEmpty();
+				boolean pushed = !FluidVolumeUtil.move(this.tank, FluidAttributes.INSERTABLE.get(this.world, this.pos.offset(this.getCachedState().get(FluidHopperBlock.FACING))), TRANSFER_AMOUNT).isEmpty();
 				if (pulled || pushed) {
 					didWork = true;
 				} else {
 					// Pull fluid from BlockState
-					BlockState upBlockState = world.getBlockState(upPos);
+					BlockState upBlockState = this.world.getBlockState(upPos);
 					if (upBlockState.getBlock() instanceof FluidDrainable) {
 						Fluid stateFluid = upBlockState.getFluidState().getFluid();
-						if (stateFluid != Fluids.EMPTY && tank.attemptInsertion(FluidKeys.get(stateFluid).withAmount(FluidAmount.BUCKET), Simulation.SIMULATE).isEmpty()) {
-							Fluid fluid = ((FluidDrainable) upBlockState.getBlock()).tryDrainFluid(world, upPos, upBlockState);
+						if (stateFluid != Fluids.EMPTY && this.tank.attemptInsertion(FluidKeys.get(stateFluid).withAmount(FluidAmount.BUCKET), Simulation.SIMULATE).isEmpty()) {
+							Fluid fluid = ((FluidDrainable) upBlockState.getBlock()).tryDrainFluid(this.world, upPos, upBlockState);
 							if (fluid != Fluids.EMPTY) {
 								FluidVolume upFluidVolume = FluidKeys.get(fluid).withAmount(FluidAmount.BUCKET);
-								if (tank.attemptInsertion(upFluidVolume, Simulation.SIMULATE).isEmpty()) {
-									tank.attemptInsertion(upFluidVolume, Simulation.ACTION);
-									world.playSound(null, upPos, fluid.isIn(FluidTags.LAVA) ? SoundEvents.ITEM_BUCKET_FILL_LAVA : SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+								if (this.tank.attemptInsertion(upFluidVolume, Simulation.SIMULATE).isEmpty()) {
+									this.tank.attemptInsertion(upFluidVolume, Simulation.ACTION);
+									this.world.playSound(null, upPos, fluid.isIn(FluidTags.LAVA) ? SoundEvents.ITEM_BUCKET_FILL_LAVA : SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
 									didWork = true;
 								}
 							}
@@ -144,7 +144,7 @@ public class FluidHopperBlockEntity extends BlockEntity implements FluidHopper, 
 
 	@Override
 	public IOFluidContainer getFluidTank() {
-		return tank;
+		return this.tank;
 	}
 
 	public void setCustomName(Text customName) {
@@ -172,16 +172,16 @@ public class FluidHopperBlockEntity extends BlockEntity implements FluidHopper, 
 	}
 
 	public IOFluidContainer getTank() {
-		return tank;
+		return this.tank;
 	}
 
 	@Override
 	public FluidInsertable getInteractableInsertable() {
-		return tank;
+		return this.tank;
 	}
 
 	@Override
 	public FluidExtractable getInteractableExtractable() {
-		return tank;
+		return this.tank;
 	}
 }

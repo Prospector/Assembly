@@ -12,7 +12,7 @@ public interface CustomArmorTextureForStack {
 	}
 
 	default String getArmorTexture(ItemStack stack, boolean lowerParts, @Nullable String suffix) {
-		Identifier id = getId(stack, lowerParts, suffix);
+		Identifier id = this.getId(stack, lowerParts, suffix);
 		return id.getNamespace() + ":textures/entity/armor/" + id.getPath() + "_layer_" + (lowerParts ? 2 : 1) + (suffix == null ? "" : "_" + suffix) + ".png";
 	}
 }

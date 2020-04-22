@@ -4,17 +4,34 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "common.boiler.MixinAbstractFurnaceBlock",
-    "common.ore.MixinItem",
+
+    "common.data.MixinCookingRecipeJsonFactory",
+    "common.data.MixinCookingRecipeJsonProvider",
+    "common.data.MixinShapedRecipeJsonProvider",
+    "common.data.MixinShapedRecipeJsonFactory",
+    "common.data.MixinShapelessRecipeJsonFactory",
+    "common.data.MixinShapelessRecipeJsonProvider",
+
     "common.exoframe.MixinBlock",
     "common.exoframe.MixinLivingEntity",
+
+    "common.ore.MixinItem",
+
+    "common.recipe.AccessorRecipeManager",
+    "common.recipe.MixinServerRecipeBook",
+
     "common.screenhandler.AccessorScreenHandlerListeners",
+
     "common.tag.BlockTagsInvoker",
     "common.tag.FluidTagsInvoker",
     "common.tag.ItemTagsInvoker"
   ],
   "client": [
     "client.cape.MixinPlayerListEntry",
-    "client.exoframe.MixinArmorFeatureRenderer"
+
+    "client.exoframe.MixinArmorFeatureRenderer",
+
+    "client.recipe.MixinRecipeToast"
   ],
   "injectors": {
     "defaultRequire": 1

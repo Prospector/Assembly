@@ -116,7 +116,7 @@ public class BuiltScreenHandler extends ScreenHandler implements ExtendedScreenH
 				for (final MutableTriple<Supplier, Consumer, Object> value : this.objectValues) {
 					final Object supplied = value.getLeft().get();
 					if (supplied != value.getRight()) {
-						sendObject(listener, this, objects, supplied);
+                        this.sendObject(listener, this, objects, supplied);
 						value.setRight(supplied);
 					}
 					objects++;
@@ -133,7 +133,7 @@ public class BuiltScreenHandler extends ScreenHandler implements ExtendedScreenH
 			int objects = 0;
 			for (final MutableTriple<Supplier, Consumer, Object> value : this.objectValues) {
 				final Object supplied = value.getLeft().get();
-				sendObject(listener, this, objects, supplied);
+                this.sendObject(listener, this, objects, supplied);
 				value.setRight(supplied);
 				objects++;
 			}
@@ -243,10 +243,10 @@ public class BuiltScreenHandler extends ScreenHandler implements ExtendedScreenH
 	}
 
 	public Identifier getName() {
-		return name;
+		return this.name;
 	}
 
 	public AssemblyContainerBlockEntity getBlockEntity() {
-		return blockEntity;
+		return this.blockEntity;
 	}
 }

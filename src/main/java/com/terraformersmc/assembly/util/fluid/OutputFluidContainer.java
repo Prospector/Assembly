@@ -11,11 +11,11 @@ public interface OutputFluidContainer extends AssemblyFluidContainer, FluidExtra
 	// FluidExtractable
 	@Override
 	default FluidVolume attemptExtraction(FluidFilter filter, FluidAmount maxAmount, Simulation simulation) {
-		return getGroupedInv().attemptExtraction(filter, maxAmount, simulation);
+		return this.getGroupedInv().attemptExtraction(filter, maxAmount, simulation);
 	}
 
 	@Override
 	default FluidVolume attemptAnyExtraction(FluidAmount maxAmount, Simulation simulation) {
-		return getGroupedInv().attemptAnyExtraction(maxAmount, simulation);
+		return this.getGroupedInv().attemptAnyExtraction(maxAmount, simulation);
 	}
 }

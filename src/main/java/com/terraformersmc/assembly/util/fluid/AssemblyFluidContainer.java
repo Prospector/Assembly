@@ -8,7 +8,7 @@ import alexiil.mc.lib.attributes.misc.Saveable;
 public interface AssemblyFluidContainer extends FixedFluidInv, Saveable {
 	@Override
 	default FluidAmount getMaxAmount_F(int tank) {
-		return getCapacity(tank);
+		return this.getCapacity(tank);
 	}
 
 	void setCapacity(FluidAmount capacity);

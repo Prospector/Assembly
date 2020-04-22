@@ -26,25 +26,25 @@ public class TreeTapBlockEntity extends BlockEntity implements Tickable {
 
 	@Override
 	public void tick() {
-		pouringFluid = AssemblyFluids.LATEX.getStill();
-		if (world != null && !world.isClient) {
-			if (world.getTime() % (20 + world.getRandom().nextInt(12)) == 0) {
-				BlockPos downPos = pos.offset(Direction.DOWN);
-				boolean pouring = world.getBlockState(downPos).getBlock() instanceof AttributeProvider;
+        this.pouringFluid = AssemblyFluids.LATEX.getStill();
+		if (this.world != null && !this.world.isClient) {
+			if (this.world.getTime() % (20 + this.world.getRandom().nextInt(12)) == 0) {
+				BlockPos downPos = this.pos.offset(Direction.DOWN);
+				boolean pouring = this.world.getBlockState(downPos).getBlock() instanceof AttributeProvider;
 				if (pouring) {
-					FluidInsertable insertable = FluidAttributes.INSERTABLE.get(world, downPos);
-					FluidVolume excess = insertable.attemptInsertion(FluidKeys.get(pouringFluid).withAmount(FluidAmount.BUCKET.roundedDiv(1000)), Simulation.ACTION);
+					FluidInsertable insertable = FluidAttributes.INSERTABLE.get(this.world, downPos);
+					FluidVolume excess = insertable.attemptInsertion(FluidKeys.get(this.pouringFluid).withAmount(FluidAmount.BUCKET.roundedDiv(1000)), Simulation.ACTION);
 					pouring = excess.isEmpty();
 				}
-				BlockState state = world.getBlockState(pos);
+				BlockState state = this.world.getBlockState(this.pos);
 				if (state.getBlock() instanceof TreeTapBlock && state.get(TreeTapBlock.POURING) != pouring) {
-					world.setBlockState(pos, state.with(TreeTapBlock.POURING, pouring));
+                    this.world.setBlockState(this.pos, state.with(TreeTapBlock.POURING, pouring));
 				}
 			}
 		}
 	}
 
 	public Fluid getPouringFluid() {
-		return pouringFluid;
+		return this.pouringFluid;
 	}
 }

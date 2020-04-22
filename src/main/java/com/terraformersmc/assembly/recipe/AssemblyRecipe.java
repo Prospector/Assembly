@@ -21,13 +21,13 @@ public abstract class AssemblyRecipe<BE extends Inventory> implements Recipe<BE>
 
 	@Override
 	public final boolean matches(BE inv, World world) {
-		return !isDummy() && recipeMatches(inv, world);
+		return !this.isDummy() && this.recipeMatches(inv, world);
 	}
 
 	protected abstract boolean recipeMatches(BE inv, World world);
 
 	private boolean isDummy() {
-		return dummy;
+		return this.dummy;
 	}
 
 	@Override
@@ -47,6 +47,15 @@ public abstract class AssemblyRecipe<BE extends Inventory> implements Recipe<BE>
 
 	@Override
 	public Identifier getId() {
-		return id;
+		return this.id;
+	}
+
+	@Override
+	public boolean isIgnoredInRecipeBook() {
+		return true;
+	}
+
+	public boolean isIgnoredByPacketSender() {
+		return false;
 	}
 }
