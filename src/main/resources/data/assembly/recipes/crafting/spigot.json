@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " I ",
+    "BBB",
+    "  B"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "B": {
+      "tag": "c:brass_ingots"
+    }
+  },
+  "result": {
+    "item": "assembly:spigot"
+  }
+}

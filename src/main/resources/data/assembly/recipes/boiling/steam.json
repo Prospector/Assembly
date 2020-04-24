@@ -1,11 +1,8 @@
 {
   "type": "assembly:boiling",
   "input": {
-    "tag": "minecraft:water",
-    "amount": "1"
+    "fluid": "minecraft:water"
   },
-  "output": {
-    "fluid": "assembly:steam",
-    "amount": "1"
-  }
+  "ratio": "1",
+  "output": "assembly:steam"
 }

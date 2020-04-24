@@ -87,10 +87,6 @@ public class AssemblyConstants {
 		public static final BooleanProperty MOVING = BooleanProperty.of("moving");
 	}
 
-	public static class FluidFilters {
-		public static final FluidFilter STEAM = new RawFluidTagFilter(AssemblyFluidTags.STEAM);
-	}
-
 	public enum ArmorMaterials implements ArmorMaterial {
 		BRASS("brass", 13, new int[]{2, 5, 6, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F, 0.0F, () -> Ingredient.ofItems(AssemblyItems.BRASS_INGOT)),
 		EXOFRAME("exoframe", 10, new int[]{2, 4, 5, 2}, 0, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0.0F, 0.0F, () -> Ingredient.ofItems(AssemblyItems.BRASS_PLATE));

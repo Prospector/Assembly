@@ -4,6 +4,7 @@ import alexiil.mc.lib.attributes.Simulation;
 import alexiil.mc.lib.attributes.fluid.FluidExtractable;
 import alexiil.mc.lib.attributes.fluid.FluidInsertable;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
+import alexiil.mc.lib.attributes.fluid.volume.FluidKeys;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import com.terraformersmc.assembly.block.AssemblyBlocks;
 import com.terraformersmc.assembly.block.BoilerBlock;
@@ -29,7 +30,6 @@ import net.minecraft.recipe.Recipe;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -59,15 +59,15 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 	private final IOFluidContainer outputTank;
 	private FluidAmount outputCapacity = FluidAmount.ZERO;
 
-	private static final FluidAmount RECIPE_OUTPUT_INCREMENT = FluidAmount.BUCKET.roundedDiv(1000);
+	private FluidAmount recipeIncrement = FluidAmount.BUCKET.roundedDiv(1000);
 	private static final String RECIPE_KEY = AssemblyConstants.NbtKeys.RECIPE;
 	private BoilingRecipe recipe = null;
 
 	public BoilerBlockEntity() {
 		super(AssemblyBlockEntities.BOILER);
-		this.inputTank = new SimpleIOFluidContainer(1, INPUT_CAPACITY);
-		this.outputTank = new SimpleIOFluidContainer(1, () -> this.outputCapacity);
-		this.inputTank.addListener((inv, tank, previous, current) -> {
+		inputTank = new SimpleIOFluidContainer(1, INPUT_CAPACITY);
+		outputTank = new SimpleIOFluidContainer(1, () -> outputCapacity);
+		inputTank.addListener((inv, tank, previous, current) -> {
 			if (previous.getFluidKey() != current.getFluidKey() || previous.isEmpty() && !current.isEmpty()) {
 				//Todo: cache recipes
 				//updateRecipe();
@@ -81,32 +81,33 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 		boolean wasBurning = this.isBurning();
 		boolean dirty = false;
 
-		this.chambers.clear();
+		chambers.clear();
 		for (int i = 1; i < 255; i++) {
-			BlockPos chamberPos = this.pos.offset(Direction.UP, i);
-			BlockEntity chamber = this.world.getBlockEntity(chamberPos);
+			BlockPos chamberPos = pos.offset(Direction.UP, i);
+			BlockEntity chamber = world.getBlockEntity(chamberPos);
 			if (chamber instanceof BoilerChamberBlockEntity) {
-				this.chambers.put(chamberPos, chamber);
-				((BoilerChamberBlockEntity) chamber).updateBoiler(this.pos);
+				chambers.put(chamberPos, chamber);
+				((BoilerChamberBlockEntity) chamber).updateBoiler(pos);
 			} else {
-				this.outputCapacity = OUTPUT_CAPACITY_PER_CHAMBER.checkedMul(this.chambers.size());
+				outputCapacity = OUTPUT_CAPACITY_PER_CHAMBER.checkedMul(chambers.size());
+				double numerator = (Math.sqrt((double) (chambers.size() - 1) / 2.0D) + 1.0D); // original equation: y = [sqrt(x/2) + 1]/1000
+				int denominator = 1000;
+				recipeIncrement = FluidAmount.of((int) (numerator * 100), denominator * 100); // the 100s are to keep some more digits
 				break;
 			}
 		}
 
 		if (this.world != null && !this.world.isClient) {
-			this.updateRecipe();
+			updateRecipe();
 			if (this.recipe != null) {
 				ItemStack fuelStack = this.contents.get(0);
-				if (this.isBurning() || !fuelStack.isEmpty()) {
-					Pair<FluidVolume, FluidVolume> boilResult = this.boil();
-					FluidVolume input = boilResult.getLeft();
-					FluidVolume output = boilResult.getRight();
-					if (output != null) {
+				if (isBurning() || !fuelStack.isEmpty()) {
+					FluidVolume inputSim = simulateCraft();
+					if (inputSim != null) {
 						if (this.isBurning()) {
 							--this.burnTime;
-							this.inputTank.attemptExtraction(fluidKey -> input.getFluidKey().equals(fluidKey), input.getAmount_F(), Simulation.ACTION);
-							this.outputTank.attemptInsertion(output, Simulation.ACTION);
+							inputTank.attemptExtraction(inputSim.fluidKey::equals, inputSim.getAmount_F(), Simulation.ACTION);
+							outputTank.attemptInsertion(FluidKeys.get(recipe.output).withAmount(recipeIncrement), Simulation.ACTION);
 						} else {
 							this.burnTime = FuelRegistry.INSTANCE.get(fuelStack.getItem());
 							this.fuelTime = this.burnTime;
@@ -137,23 +138,20 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 	}
 
 	private void updateRecipe() {
-		if (this.world != null) {
-			this.recipe = this.world.getRecipeManager().getFirstMatch(AssemblyRecipeTypes.BOILING, this, this.world).orElse(null);
+		if (world != null) {
+			recipe = this.world.getRecipeManager().getFirstMatch(AssemblyRecipeTypes.BOILING, this, world).orElse(null);
 		}
 	}
 
-	/**
-	 * @return Boiling input and output or null if boiling isn't possible
-	 */
 	@Nullable
-	private Pair<FluidVolume, FluidVolume> boil() {
-		FluidVolume output = this.outputTank.getInvFluid(0);
-		if (!this.inputTank.getInvFluid(0).isEmpty() && (output.isEmpty() || (output.getFluidKey() == this.recipe.getOutputVolume().getFluidKey() && output.getAmount_F().isLessThan(this.outputTank.getCapacity(0))))) {
-			FluidVolume fromInput = this.inputTank.attemptExtraction(this.recipe.getInputIngredient().getFilter(), this.recipe.getInputIngredient().getAmount(), Simulation.SIMULATE);
-			if (!fromInput.isEmpty() && recipe.getInputIngredient().test(fromInput)) {
-				FluidVolume excessOutput = this.outputTank.attemptInsertion(recipe.getOutputVolume(), Simulation.SIMULATE);
-				if (excessOutput.isEmpty()) {
-					return new Pair<>(fromInput, recipe.getOutputVolume());
+	private FluidVolume simulateCraft() {
+		FluidVolume output = outputTank.getInvFluid(0);
+		if (!inputTank.getInvFluid(0).isEmpty() && (output.isEmpty() || (output.getRawFluid() == recipe.output && output.getAmount_F().isLessThan(outputTank.getCapacity(0))))) {
+			FluidVolume inputSim = inputTank.attemptExtraction(fluidKey -> FluidKeys.get(recipe.inputFluid).equals(fluidKey), recipeIncrement.roundedMul(recipe.ratio), Simulation.SIMULATE);
+			if (!inputSim.isEmpty()) {
+				FluidVolume outputSim = outputTank.attemptInsertion(FluidKeys.get(recipe.output).withAmount(recipeIncrement), Simulation.SIMULATE);
+				if (outputSim.isEmpty()) {
+					return inputSim;
 				}
 			}
 		}
@@ -190,8 +188,8 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 		String recipeValue = tag.getString(RECIPE_KEY);
 		if (!recipeValue.equals("null")) {
 			BoilingRecipe recipe = null;
-			if (this.world != null) {
-				Recipe<?> gottenRecipe = this.world.getRecipeManager().get(new Identifier(recipeValue)).orElse(null);
+			if (world != null) {
+				Recipe<?> gottenRecipe = world.getRecipeManager().get(new Identifier(recipeValue)).orElse(null);
 				if (gottenRecipe instanceof BoilingRecipe) {
 					recipe = (BoilingRecipe) gottenRecipe;
 				}
@@ -216,39 +214,43 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 		tag.putShort(BURN_TIME_KEY, (short) this.burnTime);
 		//Todo: cache recipes
 		//updateRecipe();
-		tag.putString(RECIPE_KEY, this.recipe == null ? "null" : this.recipe.getId().toString());
+		tag.putString(RECIPE_KEY, recipe == null ? "null" : recipe.getId().toString());
 		return tag;
 	}
 
 	public int getBurnTime() {
-		return this.burnTime;
+		return burnTime;
 	}
 
 	public int getFuelTime() {
-		return this.fuelTime;
+		return fuelTime;
 	}
 
 	public IOFluidContainer getInputTank() {
-		return this.inputTank;
+		return inputTank;
 	}
 
 	public IOFluidContainer getOutputTank() {
-		return this.outputTank;
+		return outputTank;
+	}
+
+	public FluidAmount getRecipeIncrement() {
+		return recipeIncrement;
 	}
 
 	@Override
 	public FluidVolume getFluidInput() {
-		return this.inputTank.getInvFluid(0);
+		return inputTank.getInvFluid(0);
 	}
 
 	@Override
 	public FluidInsertable getInteractableInsertable() {
-		return this.getInputTank().getInsertable().getPureInsertable();
+		return getInputTank().getInsertable().getPureInsertable();
 	}
 
 	@Override
 	public FluidExtractable getInteractableExtractable() {
-		return this.getInputTank().getExtractable().getPureExtractable();
+		return getInputTank().getExtractable().getPureExtractable();
 	}
 
 	@Override

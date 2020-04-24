@@ -3,11 +3,14 @@ package com.terraformersmc.assembly.blockentity;
 import alexiil.mc.lib.attributes.Simulation;
 import alexiil.mc.lib.attributes.fluid.FluidInsertable;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
+import alexiil.mc.lib.attributes.fluid.filter.FluidFilter;
+import alexiil.mc.lib.attributes.fluid.filter.RawFluidTagFilter;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import com.terraformersmc.assembly.block.SteamPressBlock;
 import com.terraformersmc.assembly.blockentity.base.AssemblySyncedNbtBlockEntity;
 import com.terraformersmc.assembly.recipe.AssemblyRecipeTypes;
 import com.terraformersmc.assembly.recipe.PressingRecipe;
+import com.terraformersmc.assembly.tag.AssemblyFluidTags;
 import com.terraformersmc.assembly.util.AssemblyConstants;
 import com.terraformersmc.assembly.util.fluid.IOFluidContainer;
 import com.terraformersmc.assembly.util.fluid.SimpleIOFluidContainer;
@@ -69,10 +72,11 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 	private PressingRecipe recipe = null;
 	private static final String CURRENT_PRESSES_KEY = AssemblyConstants.NbtKeys.PRESS_PROGRESS;
 	private int currentPresses = 0;
+	public static final FluidFilter STEAM_FITLTER = new RawFluidTagFilter(AssemblyFluidTags.STEAM);
 
 	public SteamPressBlockEntity() {
 		super(AssemblyBlockEntities.STEAM_PRESS);
-		this.tank = new SimpleIOFluidContainer(1, TANK_CAPACITY, AssemblyConstants.FluidFilters.STEAM);
+		this.tank = new SimpleIOFluidContainer(1, TANK_CAPACITY, STEAM_FITLTER);
 		this.items = DefaultedList.ofSize(2, ItemStack.EMPTY);
 	}
 
@@ -85,8 +89,8 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 				}
 				boolean sync = false;
 				if (this.reset < MAX_RESET) {
-					if (!this.tank.attemptExtraction(AssemblyConstants.FluidFilters.STEAM, STEAM_COST_PER_RESET_INCREMENT, Simulation.SIMULATE).isEmpty()) {
-						this.tank.attemptExtraction(AssemblyConstants.FluidFilters.STEAM, STEAM_COST_PER_RESET_INCREMENT, Simulation.ACTION);
+					if (!this.tank.attemptExtraction(STEAM_FITLTER, STEAM_COST_PER_RESET_INCREMENT, Simulation.SIMULATE).isEmpty()) {
+						this.tank.attemptExtraction(STEAM_FITLTER, STEAM_COST_PER_RESET_INCREMENT, Simulation.ACTION);
 						this.reset++;
 						sync = true;
 					}
@@ -97,8 +101,8 @@ public class SteamPressBlockEntity extends AssemblySyncedNbtBlockEntity implemen
 				} else {
 					this.updateRecipe();
 					if (this.recipe != null) {
-						if (!this.tank.attemptExtraction(AssemblyConstants.FluidFilters.STEAM, STEAM_COST_PER_PROGRESS_INCREMENT, Simulation.SIMULATE).isEmpty()) {
-							this.tank.attemptExtraction(AssemblyConstants.FluidFilters.STEAM, STEAM_COST_PER_PROGRESS_INCREMENT, Simulation.ACTION);
+						if (!this.tank.attemptExtraction(STEAM_FITLTER, STEAM_COST_PER_PROGRESS_INCREMENT, Simulation.SIMULATE).isEmpty()) {
+							this.tank.attemptExtraction(STEAM_FITLTER, STEAM_COST_PER_PROGRESS_INCREMENT, Simulation.ACTION);
 							this.progress++;
 							sync = true;
 						}

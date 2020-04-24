@@ -38,6 +38,7 @@ public class DipstickItem extends Item implements InteractionBypass {
 				context.getPlayer().sendSystemMessage(new LiteralText(format + "Output Fluid: " + Registry.FLUID.getId(((BoilerBlockEntity) blockEntity).getOutputTank().getInvFluid(0).getRawFluid())));
 				context.getPlayer().sendSystemMessage(new LiteralText(format + "Output Amount: " + ((BoilerBlockEntity) blockEntity).getOutputTank().getInvFluid(0).getAmount_F().toDisplayString()));
 				context.getPlayer().sendSystemMessage(new LiteralText(format + "Output Capacity: " + ((BoilerBlockEntity) blockEntity).getOutputTank().getMaxAmount_F(0).toDisplayString()));
+				context.getPlayer().sendSystemMessage(new LiteralText(format + "Recipe Increment: " + ((BoilerBlockEntity) blockEntity).getRecipeIncrement().toDisplayString()));
 				return ActionResult.SUCCESS;
 			}
 			if (blockEntity instanceof BoilerChamberBlockEntity) {

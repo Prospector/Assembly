@@ -43,8 +43,14 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 	private void cacheMatchingVolumes() {
 		if (this.matchingVolumes == null) {
 			this.matchingVolumes = Arrays.stream(this.entries).flatMap((entry) -> entry.getVolumes().stream()).distinct().toArray(FluidVolume[]::new);
+			Arrays.stream(this.matchingVolumes).map(FluidVolume::getAmount_F).forEach(amount -> {
+				if (this.amount == null) {
+					this.amount = amount;
+				} else if (!this.amount.equals(amount)) {
+					throw new RuntimeException("Matching volume for Fluid Ingredient has a Fluid Amount mismatch. Cached amount:" + amount + "; Amount in volume: " + amount);
+				}
+			});
 		}
-
 	}
 
 	public FluidFilter getFilter() {
@@ -63,6 +69,7 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 	}
 
 	public FluidAmount getAmount() {
+		this.cacheMatchingVolumes();
 		return amount;
 	}
 

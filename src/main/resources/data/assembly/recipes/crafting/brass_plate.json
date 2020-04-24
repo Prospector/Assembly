@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "c:brass_ingots"
+    },
+    {
+      "tag": "assembly:hammer"
+    }
+  ],
+  "result": {
+    "item": "assembly:brass_plate"
+  }
+}

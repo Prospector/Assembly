@@ -6,13 +6,14 @@ import alexiil.mc.lib.attributes.fluid.FluidAttributes;
 import alexiil.mc.lib.attributes.fluid.FluidVolumeUtil;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.filter.FluidFilter;
+import alexiil.mc.lib.attributes.fluid.filter.RawFluidTagFilter;
 import alexiil.mc.lib.attributes.fluid.item.ItemBasedSingleFluidInv;
-import alexiil.mc.lib.attributes.fluid.item.ItemBasedSingleFluidInv.HeldFluidInfo;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKeys;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import alexiil.mc.lib.attributes.misc.LimitedConsumer;
 import alexiil.mc.lib.attributes.misc.Reference;
 import com.terraformersmc.assembly.item.CustomArmorTexture;
+import com.terraformersmc.assembly.tag.AssemblyFluidTags;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
@@ -31,7 +32,6 @@ import net.minecraft.world.World;
 
 import com.terraformersmc.assembly.fluid.AssemblyFluids;
 import com.terraformersmc.assembly.util.AssemblyConstants;
-import com.terraformersmc.assembly.util.AssemblyConstants.FluidFilters;
 
 import javax.annotation.Nullable;
 
@@ -42,6 +42,7 @@ public class ExoframePieceItem extends ArmorItem implements AttributeProviderIte
 	private static final String FLUIDS_KEY = AssemblyConstants.NbtKeys.INPUT_FLUIDS;
 	private static final ItemPropertyGetter STEAM_TANK_PROPERTY_GETTER = (stack, world, entity) -> (float) getFluidInfo(stack).fluid.getAmount_F().div(STEAM_TANK_CAPACITY).asInexactDouble();
 	private static final Identifier TEXTURE_ID = AssemblyConstants.Ids.EXOFRAME;
+	public static final FluidFilter STEAM_FITLTER = new RawFluidTagFilter(AssemblyFluidTags.STEAM);
 
 	public ExoframePieceItem(EquipmentSlot slot, Settings settings) {
 		super(AssemblyConstants.ArmorMaterials.EXOFRAME, slot, settings);
@@ -63,7 +64,7 @@ public class ExoframePieceItem extends ArmorItem implements AttributeProviderIte
 	@Override
 	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
 		super.appendTooltip(stack, world, tooltip, context);
-		HeldFluidInfo fluid = getFluidInfo(stack);
+		ItemBasedSingleFluidInv.HeldFluidInfo fluid = getFluidInfo(stack);
 		Text text = new LiteralText("");
 		text.append(FluidKeys.get(AssemblyFluids.STEAM).name);
 		text.append(new LiteralText(": "));
@@ -79,13 +80,13 @@ public class ExoframePieceItem extends ArmorItem implements AttributeProviderIte
 		return TEXTURE_ID;
 	}
 
-	private static HeldFluidInfo getFluidInfo(ItemStack stack) {
+	private static ItemBasedSingleFluidInv.HeldFluidInfo getFluidInfo(ItemStack stack) {
         CompoundTag tag = stack.getTag();
         if (tag == null || !tag.contains(FLUIDS_KEY, /* TODO: Where are these constants stored? */ 10)) {
-            return new HeldFluidInfo(FluidVolumeUtil.EMPTY, STEAM_TANK_CAPACITY);
+            return new ItemBasedSingleFluidInv.HeldFluidInfo(FluidVolumeUtil.EMPTY, STEAM_TANK_CAPACITY);
         }
         FluidVolume volume = FluidVolume.fromTag(tag.getCompound(FLUIDS_KEY));
-        return new HeldFluidInfo(volume, STEAM_TANK_CAPACITY);
+        return new ItemBasedSingleFluidInv.HeldFluidInfo(volume, STEAM_TANK_CAPACITY);
     }
 
 	public class ExoframeFluidTank extends ItemBasedSingleFluidInv {
@@ -101,11 +102,11 @@ public class ExoframePieceItem extends ArmorItem implements AttributeProviderIte
 
         @Override
         public FluidFilter getInsertionFilter() {
-            return FluidFilters.STEAM;
+            return STEAM_FITLTER;
         }
 
         @Override
-        protected HeldFluidInfo getInfo(ItemStack stack) {
+        protected ItemBasedSingleFluidInv.HeldFluidInfo getInfo(ItemStack stack) {
             return getFluidInfo(stack);
         }
 

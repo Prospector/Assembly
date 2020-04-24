@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "assembly:wooden_hammer",
+    "assembly:stone_hammer",
+    "assembly:iron_hammer",
+    "assembly:golden_hammer",
+    "assembly:diamond_hammer"
+  ]
+}

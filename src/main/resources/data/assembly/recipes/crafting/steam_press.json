@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " X ",
+    "BIB",
+    "PPP"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:iron_block"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "B": {
+      "tag": "c:brass_ingots"
+    },
+    "P": {
+      "tag": "c:brass_plates"
+    }
+  },
+  "result": {
+    "item": "assembly:steam_press"
+  }
+}

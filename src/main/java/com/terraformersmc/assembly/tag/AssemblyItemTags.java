@@ -8,8 +8,16 @@ import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 
 public class AssemblyItemTags {
+	public static final Tag.Identified<Item> COPPER_INGOTS = ofCommon("copper_ingots");
+	public static final Tag.Identified<Item> ZINC_INGOTS = ofCommon("zinc_ingots");
 	public static final Tag.Identified<Item> BRASS_INGOTS = ofCommon("brass_ingots");
+	public static final Tag.Identified<Item> BRASS_PLATES = ofCommon("brass_plates");
+	public static final Tag.Identified<Item> COPPER_ORES = ofCommon("copper_ores");
+	public static final Tag.Identified<Item> COPPER_BLOCKS = ofCommon("copper_blocks");
+	public static final Tag.Identified<Item> ZINC_BLOCKS = ofCommon("zinc_blocks");
+	public static final Tag.Identified<Item> BRASS_BLOCKS = ofCommon("brass_blocks");
 	public static final Tag.Identified<Item> HEVEA_LOGS = ofAssembly("hevea_logs");
+	public static final Tag.Identified<Item> HAMMER = ofAssembly("hammer");
 
 	public static Tag.Identified<Item> of(Identifier id) {
 		return ItemTagsInvoker.register(id.toString());

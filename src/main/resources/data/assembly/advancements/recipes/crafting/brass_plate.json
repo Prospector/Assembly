@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "assembly:crafting/brass_plate"
+    ]
+  },
+  "criteria": {
+    "has_brass": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:brass_ingots"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "assembly:crafting/brass_plate"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_brass",
+      "has_the_recipe"
+    ]
+  ]
+}

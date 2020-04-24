@@ -1,8 +1,9 @@
 package com.terraformersmc.assembly.recipe;
 
+import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
+import alexiil.mc.lib.attributes.fluid.filter.FluidFilter;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import com.terraformersmc.assembly.block.AssemblyBlocks;
-import com.terraformersmc.assembly.recipe.ingredient.FluidIngredient;
 import com.terraformersmc.assembly.recipe.provider.FluidInputInventory;
 import com.terraformersmc.assembly.recipe.serializer.AssemblyRecipeSerializers;
 import com.terraformersmc.assembly.util.recipe.CustomRecipeToastIcon;
@@ -19,12 +20,15 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class BoilingRecipe extends AssemblyRecipe<FluidInputInventory> implements CustomOutputRecipe, CustomRecipeToastIcon {
-	private FluidIngredient input;
-	private FluidVolume output;
+	public Fluid inputFluid;
+	public FluidAmount ratio;
+	public Fluid output;
+	public final FluidFilter input = fluidKey -> fluidKey.getRawFluid() != null && fluidKey.getRawFluid().equals(inputFluid);
 
-	public BoilingRecipe(Identifier id, FluidIngredient input, FluidVolume output) {
+	public BoilingRecipe(Identifier id, Fluid input, FluidAmount ratio, Fluid output) {
 		super(id);
-		this.input = input;
+		this.inputFluid = input;
+		this.ratio = ratio;
 		this.output = output;
 	}
 
@@ -32,21 +36,10 @@ public class BoilingRecipe extends AssemblyRecipe<FluidInputInventory> implement
 		super(id, true);
 	}
 
-	public boolean isValidInput(FluidVolume volume) {
-		return this.input.test(volume);
-	}
-
-	public FluidIngredient getInputIngredient() {
-		return input;
-	}
-
-	public FluidVolume getOutputVolume() {
-		return output;
-	}
-
 	@Override
 	public boolean recipeMatches(FluidInputInventory inv, World world) {
-		return this.isValidInput(inv.getFluidInput());
+		FluidVolume fluidInput = inv.getFluidInput();
+		return this.input.matches(fluidInput.getFluidKey()) && !fluidInput.getAmount_F().isZero();
 	}
 
 	@Override
@@ -71,9 +64,8 @@ public class BoilingRecipe extends AssemblyRecipe<FluidInputInventory> implement
 
 	@Override
 	public ItemStack getRecipeToastIcon() {
-		Fluid fluid = output.getRawFluid();
-		if (fluid != null) {
-			return new ItemStack(fluid.getBucketItem());
+		if (output != null) {
+			return new ItemStack(output.getBucketItem());
 		}
 		return ItemStack.EMPTY;
 	}

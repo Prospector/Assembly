@@ -19,6 +19,7 @@
 
     "common.recipe.AccessorRecipeManager",
     "common.recipe.MixinServerRecipeBook",
+    "common.recipe.MixinSmithingScreenHandler",
 
     "common.screenhandler.AccessorScreenHandlerListeners",
 
