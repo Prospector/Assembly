@@ -12,6 +12,7 @@ import net.minecraft.advancement.criterion.CriterionConditions;
 import net.minecraft.advancement.criterion.RecipeUnlockedCriterion;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -59,7 +60,7 @@ public class BoilingRecipeJsonFactory {
 	public void offerTo(Consumer<RecipeJsonProvider> exporter, Identifier recipeId) {
 		this.validate(recipeId);
 		recipeId = new Identifier(Assembly.MOD_ID, RECIPE_TYPE + "/" + recipeId.getPath());
-		this.builder.parent(new Identifier("recipes/root")).criterion("has_the_recipe", new RecipeUnlockedCriterion.Conditions(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).criteriaMerger(CriteriaMerger.OR);
+		this.builder.parent(new Identifier("recipes/root")).criterion("has_the_recipe", new RecipeUnlockedCriterion.Conditions(EntityPredicate.Extended.EMPTY, recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).criteriaMerger(CriteriaMerger.OR);
 		exporter.accept(new Provider(recipeId, this.group == null ? "" : this.group, this.input, this.ratio, this.output, this.builder, new Identifier(Assembly.MOD_ID, "recipes/" + recipeId.getPath()), this.serializer));
 	}
 
@@ -96,7 +97,7 @@ public class BoilingRecipeJsonFactory {
 				json.addProperty("group", this.group);
 			}
 			JsonObject input = new JsonObject();
-			input.addProperty(	"fluid", Registry.FLUID.getId(this.input).toString());
+			input.addProperty("fluid", Registry.FLUID.getId(this.input).toString());
 			json.add("input", input);
 			json.addProperty("ratio", ratio.toParseableString());
 			json.addProperty("output", Registry.FLUID.getId(output).toString());

@@ -3,6 +3,7 @@ package com.terraformersmc.assembly.data;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import com.terraformersmc.assembly.Assembly;
 import com.terraformersmc.assembly.block.AssemblyBlocks;
+import com.terraformersmc.assembly.block.SteamPressBlock;
 import com.terraformersmc.assembly.data.factory.BoilingRecipeJsonFactory;
 import com.terraformersmc.assembly.data.factory.FluidInjectingRecipeJsonFactory;
 import com.terraformersmc.assembly.data.factory.PressingRecipeJsonFactory;
@@ -22,6 +23,8 @@ import com.terraformersmc.dossier.util.BlockLootTableCreator;
 import net.minecraft.advancement.criterion.EnterBlockCriterion;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.enums.DoubleBlockHalf;
+import net.minecraft.data.server.BlockLootTableGenerator;
 import net.minecraft.data.server.recipe.CookingRecipeJsonFactory;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonFactory;
@@ -36,6 +39,7 @@ import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.ApplyBonusLootFunction;
 import net.minecraft.loot.function.SetCountLootFunction;
 import net.minecraft.predicate.StatePredicate;
+import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.tag.FluidTags;
@@ -137,7 +141,7 @@ public class AssemblyData implements DossierProvider {
 		}
 
 		private static EnterBlockCriterion.Conditions requireEnteringFluid(Block block) {
-			return new EnterBlockCriterion.Conditions(block, StatePredicate.ANY);
+			return new EnterBlockCriterion.Conditions(EntityPredicate.Extended.EMPTY, block, StatePredicate.ANY);
 		}
 
 		private void addPlanks(Consumer<RecipeJsonProvider> consumer, ItemConvertible itemConvertible, Tag<Item> tag) {
@@ -217,7 +221,7 @@ public class AssemblyData implements DossierProvider {
 
 			this.drops(AssemblyBlocks.BOILER, Blocks.FURNACE);
 			this.drops(AssemblyBlocks.BOILER_CHAMBER);
-			this.drops(AssemblyBlocks.STEAM_PRESS);
+			this.drops(AssemblyBlocks.STEAM_PRESS, block -> BlockLootTableGenerator.createForMultiblock(AssemblyBlocks.STEAM_PRESS, SteamPressBlock.HALF, DoubleBlockHalf.LOWER));
 
 			this.drops(AssemblyBlocks.COPPER_ORE);
 

@@ -16,6 +16,9 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
@@ -68,6 +71,9 @@ public class SteamPressBlock extends HorizontalFacingBlock implements BlockEntit
 							player.inventory.insertStack(outputStack);
 						}
 						steamPress.removeStack(SteamPressBlockEntity.OUTPUT_SLOT);
+						if (player instanceof ServerPlayerEntity) {
+							player.world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+						}
 						return InteractionActionResult.SUCCESS;
 					} else {
 						if (steamPress.canInsert(SteamPressBlockEntity.INPUT_SLOT, player.getStackInHand(hand).copy().split(1), hit.getSide())) {
@@ -78,6 +84,9 @@ public class SteamPressBlock extends HorizontalFacingBlock implements BlockEntit
 								stack = player.getStackInHand(hand).copy().split(1);
 							}
 							steamPress.setStack(SteamPressBlockEntity.INPUT_SLOT, stack);
+						}
+						if (player instanceof ServerPlayerEntity) {
+							player.world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ITEM_FRAME_ADD_ITEM, SoundCategory.PLAYERS, 0.3F, ((player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.7F + 1.5F) * 2.0F);
 						}
 						return InteractionActionResult.SUCCESS;
 					}
@@ -106,7 +115,7 @@ public class SteamPressBlock extends HorizontalFacingBlock implements BlockEntit
 		BlockState otherState = world.getBlockState(otherHalf);
 		if (otherState.getBlock() == this && otherState.get(HALF) != half) {
 			world.setBlockState(otherHalf, Blocks.AIR.getDefaultState(), 35);
-			world.playLevelEvent(player, 2001, otherHalf, Block.getRawIdFromState(otherState));
+			world.syncWorldEvent(player, 2001, otherHalf, Block.getRawIdFromState(otherState));
 			if (!world.isClient && !player.isCreative()) {
 				dropStacks(state, world, pos, null, player, player.getMainHandStack());
 				dropStacks(otherState, world, otherHalf, null, player, player.getMainHandStack());

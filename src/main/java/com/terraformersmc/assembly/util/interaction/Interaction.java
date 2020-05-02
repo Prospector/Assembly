@@ -1,11 +1,12 @@
 package com.terraformersmc.assembly.util.interaction;
 
+import alexiil.mc.lib.attributes.fluid.FluidAttributes;
 import alexiil.mc.lib.attributes.fluid.FluidExtractable;
 import alexiil.mc.lib.attributes.fluid.FluidInsertable;
 import alexiil.mc.lib.attributes.fluid.FluidInvUtil;
 import alexiil.mc.lib.attributes.fluid.impl.EmptyFluidExtractable;
 import alexiil.mc.lib.attributes.fluid.impl.RejectingFluidInsertable;
-import alexiil.mc.lib.attributes.misc.Reference;
+import alexiil.mc.lib.attributes.misc.PlayerInvUtil;
 import com.terraformersmc.assembly.util.interaction.interactable.ScreenHandlerInteractable;
 import com.terraformersmc.assembly.util.interaction.interactable.TankInputInteractable;
 import com.terraformersmc.assembly.util.interaction.interactable.TankOutputInteractable;
@@ -14,9 +15,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 public interface Interaction {
@@ -30,11 +33,12 @@ public interface Interaction {
 		if (blockEntity instanceof TankOutputInteractable) {
 			extractable = ((TankOutputInteractable) blockEntity).getInteractableExtractable();
 		}
-		if (FluidInvUtil.interactWithTank(insertable, extractable, player, Reference.unmodifiable(player.getStackInHand(hand))).intoTank) {
+		ItemStack stack = player.getStackInHand(hand);
+		if (FluidAttributes.EXTRACTABLE.get(stack) != EmptyFluidExtractable.NULL) {
+			FluidInvUtil.interactWithTank(insertable, extractable, player, PlayerInvUtil.referenceHand(player, hand));
 			return InteractionActionResult.SUCCESS;
-		} else {
-			return InteractionActionResult.PASS;
 		}
+		return InteractionActionResult.PASS;
 	};
 	Interaction OPEN_SCREEN_HANDLER = (state, world, pos, player, hand, hit) -> {
 		Block block = state.getBlock();

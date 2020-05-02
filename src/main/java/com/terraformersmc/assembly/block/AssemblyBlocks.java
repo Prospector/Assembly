@@ -19,8 +19,6 @@ import net.minecraft.item.SignItem;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.gen.feature.BranchedTreeFeatureConfig;
-import net.minecraft.world.gen.feature.OakTreeFeature;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -32,7 +30,7 @@ public class AssemblyBlocks {
 	private static final Map<AssemblyFluid, AssemblyFluidBlock> FLUID_BLOCKS = new HashMap<>();
 
 	public static final Block HEVEA_PLANKS = add("hevea_planks", new Block(FabricBlockSettings.copy(Blocks.OAK_PLANKS).build()), ItemGroup.BUILDING_BLOCKS);
-	public static final Block HEVEA_SAPLING = add("hevea_sapling", new TerraformSaplingBlock(new TerraformSaplingGenerator(() -> new OakTreeFeature(BranchedTreeFeatureConfig::deserialize), () -> AssemblyWorldgen.HEVEA_TREE_CONFIG)), ItemGroup.DECORATIONS);
+	public static final Block HEVEA_SAPLING = add("hevea_sapling", new TerraformSaplingBlock(new TerraformSaplingGenerator(() -> AssemblyWorldgen.HEVEA_TREE_CONFIG)), ItemGroup.DECORATIONS);
 	public static final Block POTTED_HEVEA_SAPLING = add("potted_hevea_sapling", new FlowerPotBlock(HEVEA_SAPLING, FabricBlockSettings.copy(Blocks.POTTED_OAK_SAPLING).build()));
 	public static final Block STRIPPED_HEVEA_LOG = add("stripped_hevea_log", new PillarBlock(FabricBlockSettings.copy(Blocks.OAK_LOG).materialColor(MaterialColor.BROWN).build()), ItemGroup.BUILDING_BLOCKS);
 	public static final Block STRIPPED_HEVEA_WOOD = add("stripped_hevea_wood", new PillarBlock(FabricBlockSettings.copy(Blocks.OAK_LOG).materialColor(MaterialColor.BROWN).build()), ItemGroup.BUILDING_BLOCKS);

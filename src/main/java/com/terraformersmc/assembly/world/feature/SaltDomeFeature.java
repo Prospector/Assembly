@@ -1,6 +1,8 @@
 package com.terraformersmc.assembly.world.feature;
 
 import com.mojang.datafixers.Dynamic;
+import com.terraformersmc.assembly.structure.SaltDomeGenerator;
+import com.terraformersmc.assembly.util.AssemblyConstants;
 import net.minecraft.block.Material;
 import net.minecraft.structure.StructureManager;
 import net.minecraft.structure.StructureStart;
@@ -15,8 +17,6 @@ import net.minecraft.world.gen.chunk.ChunkGeneratorConfig;
 import net.minecraft.world.gen.feature.AbstractTempleFeature;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.StructureFeature;
-import com.terraformersmc.assembly.structure.SaltDomeGenerator;
-import com.terraformersmc.assembly.util.AssemblyConstants;
 
 import java.util.function.Function;
 
@@ -61,7 +61,7 @@ public class SaltDomeFeature extends AbstractTempleFeature<DefaultFeatureConfig>
 		}
 
 		@Override
-		public void initialize(ChunkGenerator<?> chunkGenerator, StructureManager structureManager, int x, int z, Biome biome) {
+		public void init(ChunkGenerator<?> chunkGenerator, StructureManager structureManager, int x, int z, Biome biome) {
 			ChunkPos chunkPos = new ChunkPos(x, z);
 			int xPos = chunkPos.getStartX() + this.random.nextInt(16);
 			int zPos = chunkPos.getStartZ() + this.random.nextInt(16);

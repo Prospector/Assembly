@@ -1,7 +1,7 @@
 package com.terraformersmc.assembly.block;
 
 import alexiil.mc.lib.attributes.AttributeProvider;
-import com.terraformersmc.assembly.block.enums.ValveState;
+import com.terraformersmc.assembly.block.propertyenum.ValveState;
 import com.terraformersmc.assembly.blockentity.AssemblyBlockEntities;
 import com.terraformersmc.assembly.util.AssemblyConstants;
 import com.terraformersmc.assembly.util.math.ShapeUtil;

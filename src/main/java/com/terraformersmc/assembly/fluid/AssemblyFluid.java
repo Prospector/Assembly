@@ -6,13 +6,11 @@ import com.terraformersmc.assembly.block.AssemblyBlocks;
 import com.terraformersmc.assembly.item.AssemblyItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.fluid.BaseFluid;
+import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
@@ -32,7 +30,7 @@ import net.minecraft.world.WorldView;
 import java.util.Random;
 import java.util.function.Consumer;
 
-public abstract class AssemblyFluid extends BaseFluid implements TexturedFluid {
+public abstract class AssemblyFluid extends FlowableFluid implements TexturedFluid {
 
 	public final String name;
 	public final int tickRate;

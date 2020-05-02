@@ -1,4 +1,4 @@
-package com.terraformersmc.assembly.block.enums;
+package com.terraformersmc.assembly.block.propertyenum;
 
 import net.minecraft.util.StringIdentifiable;
 

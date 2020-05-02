@@ -15,6 +15,8 @@
     "common.exoframe.MixinBlock",
     "common.exoframe.MixinLivingEntity",
 
+    "common.multiblock.MixinServerPlayerInteractionManager",
+
     "common.ore.MixinItem",
 
     "common.recipe.AccessorRecipeManager",
@@ -31,6 +33,8 @@
     "client.cape.MixinPlayerListEntry",
 
     "client.exoframe.MixinArmorFeatureRenderer",
+
+    "client.multiblock.MixinClientPlayerInteractionManager",
 
     "client.recipe.MixinRecipeToast"
   ],

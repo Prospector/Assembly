@@ -200,7 +200,7 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 		@Override
 		public JsonObject toJson() {
 			JsonObject jsonObject = new JsonObject();
-			jsonObject.addProperty("tag", FluidTags.getContainer().method_26798(this.tag).toString());
+			jsonObject.addProperty("tag", FluidTags.getContainer().getId(this.tag).toString());
 			jsonObject.addProperty("amount", this.amount.toParseableString());
 			return jsonObject;
 		}

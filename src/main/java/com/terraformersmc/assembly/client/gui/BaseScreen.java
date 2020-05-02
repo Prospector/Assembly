@@ -5,6 +5,7 @@ import com.terraformersmc.assembly.Assembly;
 import com.terraformersmc.assembly.screenhandler.builder.BuiltScreenHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
@@ -24,94 +25,94 @@ public class BaseScreen extends HandledScreen<BuiltScreenHandler> {
 	}
 
 	@Override
-	protected void drawBackground(float v, int i, int i1) {
+	protected void drawBackground(MatrixStack matrixStack, float v, int i, int i1) {
 		this.layer = Layer.BACKGROUND;
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.drawDefaultBackground(this.x, this.y, this.xSize, this.ySize);
-        this.drawPlayerSlots(this.x + this.xSize / 2, this.y + 93, true);
-        this.drawSlots();
+		this.drawDefaultBackground(matrixStack, this.x, this.y, this.xSize, this.ySize);
+		this.drawPlayerSlots(matrixStack, this.x + this.xSize / 2, this.y + 93, true);
+		this.drawSlots(matrixStack);
 	}
 
 	//Best time to draw slots
-	public void drawSlots() {
+	public void drawSlots(MatrixStack matrixStack) {
 		for (Slot slot : this.menu.slots) {
-            this.drawSlot(slot.x, slot.y);
+			this.drawSlot(matrixStack, slot.x, slot.y);
 		}
 	}
 
 	@Override
-	protected void drawForeground(int i, int i1) {
-		super.drawForeground(i, i1);
-		this.textRenderer.draw(this.menu.getName().toString(), 10, 6, 4210752);
-		this.textRenderer.draw("Inventory", 10, 80, 4210752);
+	protected void drawForeground(MatrixStack matrixStack, int i, int i1) {
+		super.drawForeground(matrixStack, i, i1);
+		this.textRenderer.draw(matrixStack, this.menu.getName().toString(), 10, 6, 4210752);
+		this.textRenderer.draw(matrixStack, "Inventory", 10, 80, 4210752);
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground();
+	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+		this.renderBackground(matrixStack);
 		this.layer = Layer.FOREGROUND;
-		super.render(mouseX, mouseY, partialTicks);
-		this.drawMouseoverTooltip(mouseX, mouseY);
+		super.render(matrixStack, mouseX, mouseY, partialTicks);
+		this.drawMouseoverTooltip(matrixStack, mouseX, mouseY);
 	}
 
-	public void drawDefaultBackground(int x, int y, int width, int height) {
+	public void drawDefaultBackground(MatrixStack matrixStack, int x, int y, int width, int height) {
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
-        this.drawTexture(x, y, 0, 0, width / 2, height / 2);
-        this.drawTexture(x + width / 2, y, 150 - width / 2, 0, width / 2, height / 2);
-        this.drawTexture(x, y + height / 2, 0, 150 - height / 2, width / 2, height / 2);
-        this.drawTexture(x + width / 2, y + height / 2, 150 - width / 2, 150 - height / 2, width / 2, height / 2);
+		this.drawTexture(matrixStack, x, y, 0, 0, width / 2, height / 2);
+		this.drawTexture(matrixStack, x + width / 2, y, 150 - width / 2, 0, width / 2, height / 2);
+		this.drawTexture(matrixStack, x, y + height / 2, 0, 150 - height / 2, width / 2, height / 2);
+		this.drawTexture(matrixStack, x + width / 2, y + height / 2, 150 - width / 2, 150 - height / 2, width / 2, height / 2);
 	}
 
-	public void drawPlayerSlots(int posX, int posY, boolean center) {
+	public void drawPlayerSlots(MatrixStack matrixStack, int posX, int posY, boolean center) {
 		if (center) {
 			posX -= 81;
 		}
 
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 9; x++) {
-                this.drawTexture(posX + x * 18, posY + y * 18, 150, 0, 18, 18);
+				this.drawTexture(matrixStack, posX + x * 18, posY + y * 18, 150, 0, 18, 18);
 			}
 		}
 
 		for (int x = 0; x < 9; x++) {
-            this.drawTexture(posX + x * 18, posY + 58, 150, 0, 18, 18);
+			this.drawTexture(matrixStack, posX + x * 18, posY + 58, 150, 0, 18, 18);
 		}
 	}
 
-	public void drawSlot(int posX, int posY) {
+	public void drawSlot(MatrixStack matrixStack, int posX, int posY) {
 		if (this.layer == Layer.BACKGROUND) {
 			posX += this.x;
 			posY += this.y;
 		}
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
-        this.drawTexture(posX - 1, posY - 1, 150, 0, 18, 18);
+		this.drawTexture(matrixStack, posX - 1, posY - 1, 150, 0, 18, 18);
 	}
 
-	public void drawOutputSlot(int x, int y) {
+	public void drawOutputSlot(MatrixStack matrixStack, int x, int y) {
 		if (this.layer == Layer.BACKGROUND) {
 			x += this.x;
 			y += this.y;
 		}
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
-        this.drawTexture(x - 5, y - 5, 150, 18, 26, 26);
+		this.drawTexture(matrixStack, x - 5, y - 5, 150, 18, 26, 26);
 	}
 
-	public void drawEnergyBar(int x, int y, int height, int energyStored, int maxEnergyStored) {
+	public void drawEnergyBar(MatrixStack matrixStack, int x, int y, int height, int energyStored, int maxEnergyStored) {
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
 
-        this.drawTexture(x, y, 0, 150, 14, height);
-        this.drawTexture(x, y + height - 1, 0, 255, 14, 1);
+		this.drawTexture(matrixStack, x, y, 0, 150, 14, height);
+		this.drawTexture(matrixStack, x, y + height - 1, 0, 255, 14, 1);
 		int draw = (int) ((double) energyStored / (double) maxEnergyStored * (height - 2));
-        this.drawTexture(x + 1, y + height - draw - 1, 14, height + 150 - draw, 12, draw);
+		this.drawTexture(matrixStack, x + 1, y + height - draw - 1, 14, height + 150 - draw, 12, draw);
 
 		//TODO hover tooltip
 	}
 
-	public void drawProgressBar(int progress, int maxProgress, int x, int y, ProgressDirection direction) {
+	public void drawProgressBar(MatrixStack matrixStack, int progress, int maxProgress, int x, int y, ProgressDirection direction) {
 		//		if (layer == GuiBase.Layer.BACKGROUND) {
 		//			x += left;
 		//			y += top;
@@ -119,7 +120,7 @@ public class BaseScreen extends HandledScreen<BuiltScreenHandler> {
 
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
-        this.drawTexture(x, y, direction.x, direction.y, direction.width, direction.height);
+		this.drawTexture(matrixStack, x, y, direction.x, direction.y, direction.width, direction.height);
 		int j = (int) ((double) progress / (double) maxProgress * 16);
 		if (j < 0) {
 			j = 0;
@@ -127,16 +128,16 @@ public class BaseScreen extends HandledScreen<BuiltScreenHandler> {
 
 		switch (direction) {
 			case RIGHT:
-                this.drawTexture(x, y, direction.xActive, direction.yActive, j, 10);
+				this.drawTexture(matrixStack, x, y, direction.xActive, direction.yActive, j, 10);
 				break;
 			case LEFT:
-                this.drawTexture(x + 16 - j, y, direction.xActive + 16 - j, direction.yActive, j, 10);
+				this.drawTexture(matrixStack, x + 16 - j, y, direction.xActive + 16 - j, direction.yActive, j, 10);
 				break;
 			case UP:
-                this.drawTexture(x, y + 16 - j, direction.xActive, direction.yActive + 16 - j, 10, j);
+				this.drawTexture(matrixStack, x, y + 16 - j, direction.xActive, direction.yActive + 16 - j, 10, j);
 				break;
 			case DOWN:
-                this.drawTexture(x, y, direction.xActive, direction.yActive, 10, j);
+				this.drawTexture(matrixStack, x, y, direction.xActive, direction.yActive, 10, j);
 				break;
 			default:
 				return;

@@ -1,10 +1,7 @@
 package com.terraformersmc.assembly.util;
 
-import alexiil.mc.lib.attributes.fluid.filter.FluidFilter;
-import alexiil.mc.lib.attributes.fluid.filter.RawFluidTagFilter;
 import com.google.common.collect.ImmutableSet;
 import com.terraformersmc.assembly.item.AssemblyItems;
-import com.terraformersmc.assembly.tag.AssemblyFluidTags;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.EquipmentSlot;
@@ -17,7 +14,7 @@ import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Lazy;
-import com.terraformersmc.assembly.block.enums.ValveState;
+import com.terraformersmc.assembly.block.propertyenum.ValveState;
 
 import java.util.Set;
 import java.util.function.Supplier;
