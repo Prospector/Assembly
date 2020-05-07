@@ -8,6 +8,12 @@ import alexiil.mc.lib.attributes.fluid.FluidVolumeUtil;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKeys;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
+import com.terraformersmc.assembly.block.AssemblyBlocks;
+import com.terraformersmc.assembly.block.FluidHopperBlock;
+import com.terraformersmc.assembly.util.AssemblyConstants;
+import com.terraformersmc.assembly.util.fluid.IOFluidContainer;
+import com.terraformersmc.assembly.util.fluid.SimpleIOFluidContainer;
+import com.terraformersmc.assembly.util.interaction.interactable.TankIOInteractable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidDrainable;
 import net.minecraft.block.entity.BlockEntity;
@@ -22,31 +28,28 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Nameable;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
-import com.terraformersmc.assembly.block.AssemblyBlocks;
-import com.terraformersmc.assembly.block.FluidHopperBlock;
-import com.terraformersmc.assembly.util.AssemblyConstants;
-import com.terraformersmc.assembly.util.fluid.IOFluidContainer;
-import com.terraformersmc.assembly.util.fluid.SimpleIOFluidContainer;
-import com.terraformersmc.assembly.util.interaction.interactable.TankIOInteractable;
 
 import javax.annotation.Nullable;
 
 public class FluidHopperBlockEntity extends BlockEntity implements FluidHopper, Tickable, Nameable, TankIOInteractable {
 	private static final String CUSTOM_NAME_KEY = AssemblyConstants.NbtKeys.CUSTOM_NAME;
 	private static final String TRANSFER_COOLDOWN_KEY = AssemblyConstants.NbtKeys.TRANSFER_COOLDOWN;
+	private static final String WORLD_PULL_COOLDOWN_KEY = AssemblyConstants.NbtKeys.WORLD_PULL_COOLDOWN;
 	private static final String FLUIDS_KEY = AssemblyConstants.NbtKeys.INPUT_FLUIDS;
 	private static final FluidAmount CAPACITY = FluidAmount.BUCKET;
-	private static final FluidAmount TRANSFER_AMOUNT = FluidAmount.BUCKET.roundedDiv(4);
+	private static final int BUCKET_TRANSFER_DIVISOR = 4;
+	private static final FluidAmount TRANSFER_AMOUNT = FluidAmount.BUCKET.roundedDiv(BUCKET_TRANSFER_DIVISOR);
 	private final IOFluidContainer tank;
 
 	private int transferCooldown;
+	private int pullFromWorldCooldown;
 	private Text customName;
-	private long lastTickTime;
 
 	public FluidHopperBlockEntity() {
 		super(AssemblyBlockEntities.FLUID_HOPPER);
 		this.tank = new SimpleIOFluidContainer(5, CAPACITY);
 		this.transferCooldown = -1;
+		this.pullFromWorldCooldown = -1;
 	}
 
 	@Override
@@ -59,6 +62,7 @@ public class FluidHopperBlockEntity extends BlockEntity implements FluidHopper, 
 			this.customName = Text.Serializer.fromJson(tag.getString(CUSTOM_NAME_KEY));
 		}
 		this.transferCooldown = tag.getInt(TRANSFER_COOLDOWN_KEY);
+		this.pullFromWorldCooldown = tag.getInt(WORLD_PULL_COOLDOWN_KEY);
 	}
 
 	@Override
@@ -66,6 +70,7 @@ public class FluidHopperBlockEntity extends BlockEntity implements FluidHopper, 
 		super.toTag(tag);
 		tag.put(FLUIDS_KEY, this.tank.toTag());
 		tag.putInt(TRANSFER_COOLDOWN_KEY, this.transferCooldown);
+		tag.putInt(WORLD_PULL_COOLDOWN_KEY, this.pullFromWorldCooldown);
 		if (this.customName != null) {
 			tag.putString(CUSTOM_NAME_KEY, Text.Serializer.toJson(this.customName));
 		}
@@ -75,37 +80,43 @@ public class FluidHopperBlockEntity extends BlockEntity implements FluidHopper, 
 	@Override
 	public void tick() {
 		if (this.world != null && !this.world.isClient) {
-			--this.transferCooldown;
-			this.lastTickTime = this.world.getTime();
-			if (!this.needsCooldown()) {
-				boolean didWork = false;
-				BlockPos upPos = this.pos.up();
+			boolean pulledFromContainer = false;
 
-				// Pull Fluid from fluid containers
+			if (!canTransfer()) {
+				--this.transferCooldown;
+			}
+			if (!canPullFromWorld()) {
+				--this.pullFromWorldCooldown;
+			}
+
+			// Try to transfer to/from containers
+			if (this.canTransfer()) {
+				BlockPos upPos = this.pos.up();
 				boolean pulled = !FluidVolumeUtil.move(FluidAttributes.EXTRACTABLE.get(this.world, upPos), this.tank, TRANSFER_AMOUNT).isEmpty();
 				boolean pushed = !FluidVolumeUtil.move(this.tank, FluidAttributes.INSERTABLE.get(this.world, this.pos.offset(this.getCachedState().get(FluidHopperBlock.FACING))), TRANSFER_AMOUNT).isEmpty();
 				if (pulled || pushed) {
-					didWork = true;
-				} else {
-					// Pull fluid from BlockState
-					BlockState upBlockState = this.world.getBlockState(upPos);
-					if (upBlockState.getBlock() instanceof FluidDrainable) {
-						Fluid stateFluid = upBlockState.getFluidState().getFluid();
-						if (stateFluid != Fluids.EMPTY && this.tank.attemptInsertion(FluidKeys.get(stateFluid).withAmount(FluidAmount.BUCKET), Simulation.SIMULATE).isEmpty()) {
-							Fluid fluid = ((FluidDrainable) upBlockState.getBlock()).tryDrainFluid(this.world, upPos, upBlockState);
-							if (fluid != Fluids.EMPTY) {
-								FluidVolume upFluidVolume = FluidKeys.get(fluid).withAmount(FluidAmount.BUCKET);
-								if (this.tank.attemptInsertion(upFluidVolume, Simulation.SIMULATE).isEmpty()) {
-									this.tank.attemptInsertion(upFluidVolume, Simulation.ACTION);
-									this.world.playSound(null, upPos, fluid.isIn(FluidTags.LAVA) ? SoundEvents.ITEM_BUCKET_FILL_LAVA : SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
-									didWork = true;
-								}
+					this.resetTransferCooldown();
+				}
+				pulledFromContainer = pulled;
+			}
+
+			// If it didn't pull from a container, try to pull from the world
+			if (!pulledFromContainer && canPullFromWorld()) {
+				BlockPos upPos = this.pos.up();
+				BlockState upBlockState = this.world.getBlockState(upPos);
+				if (upBlockState.getBlock() instanceof FluidDrainable) {
+					Fluid stateFluid = upBlockState.getFluidState().getFluid();
+					if (stateFluid != Fluids.EMPTY && this.tank.attemptInsertion(FluidKeys.get(stateFluid).withAmount(FluidAmount.BUCKET), Simulation.SIMULATE).isEmpty()) {
+						Fluid fluid = ((FluidDrainable) upBlockState.getBlock()).tryDrainFluid(this.world, upPos, upBlockState);
+						if (fluid != Fluids.EMPTY) {
+							FluidVolume upFluidVolume = FluidKeys.get(fluid).withAmount(FluidAmount.BUCKET);
+							if (this.tank.attemptInsertion(upFluidVolume, Simulation.SIMULATE).isEmpty()) {
+								this.tank.attemptInsertion(upFluidVolume, Simulation.ACTION);
+								this.world.playSound(null, upPos, fluid.isIn(FluidTags.LAVA) ? SoundEvents.ITEM_BUCKET_FILL_LAVA : SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+								this.resetWorldCooldown();
 							}
 						}
 					}
-				}
-				if (didWork) {
-					this.setCooldown(8);
 				}
 			}
 		}
@@ -126,16 +137,24 @@ public class FluidHopperBlockEntity extends BlockEntity implements FluidHopper, 
 		return (double) this.pos.getZ() + 0.5D;
 	}
 
-	private void setCooldown(int cooldown) {
-		this.transferCooldown = cooldown;
+	private void resetTransferCooldown() {
+		this.transferCooldown = 8;
 	}
 
-	private boolean needsCooldown() {
-		return this.transferCooldown > 0;
+	private void resetWorldCooldown() {
+		this.pullFromWorldCooldown = 8 * BUCKET_TRANSFER_DIVISOR;
+	}
+
+	private boolean canTransfer() {
+		return this.transferCooldown <= 0;
+	}
+
+	private boolean canPullFromWorld() {
+		return this.pullFromWorldCooldown <= 0;
 	}
 
 	private boolean isDisabled() {
-		return this.transferCooldown > 8;
+		return this.transferCooldown > 8 && !world.getBlockState(pos).get(FluidHopperBlock.ENABLED);
 	}
 
 	public void onEntityCollided(Entity entity) {

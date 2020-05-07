@@ -26,10 +26,13 @@
  * THE SOFTWARE.
  */
 
-package com.terraformersmc.assembly.screenhandler.builder;
+package com.terraformersmc.assembly.screen.builder;
 
-import com.terraformersmc.assembly.screenhandler.builder.slot.FilteredSlot;
-import com.terraformersmc.assembly.screenhandler.builder.slot.OutputSlot;
+import alexiil.mc.lib.attributes.fluid.filter.ConstantFluidFilter;
+import alexiil.mc.lib.attributes.fluid.filter.FluidFilter;
+import com.terraformersmc.assembly.screen.builder.slot.FilteredSlot;
+import com.terraformersmc.assembly.screen.builder.slot.OutputSlot;
+import com.terraformersmc.assembly.util.fluid.IOFluidContainer;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -47,8 +50,8 @@ public class ScreenHandlerContainerBuilder {
 	private final ScreenHandlerBuilder parent;
 	private final int rangeStart;
 
-	ScreenHandlerContainerBuilder(final ScreenHandlerBuilder parent, final Inventory tile) {
-		this.container = tile;
+	ScreenHandlerContainerBuilder(final ScreenHandlerBuilder parent, final Inventory container) {
+		this.container = container;
 		this.parent = parent;
 		this.rangeStart = parent.slots.size();
 	}
@@ -58,13 +61,30 @@ public class ScreenHandlerContainerBuilder {
 		return this;
 	}
 
+	public ScreenHandlerContainerBuilder tank(final int x, final int y, final TankStyle style, final IOFluidContainer container, FluidFilter insertFilter, FluidFilter extractFilter) {
+		return tank(x, y, style, container, 0, insertFilter, extractFilter);
+	}
+
+	public ScreenHandlerContainerBuilder tank(final int x, final int y, final TankStyle style, final IOFluidContainer container) {
+		return tank(x, y, style, container, 0, ConstantFluidFilter.ANYTHING, ConstantFluidFilter.ANYTHING);
+	}
+
+	public ScreenHandlerContainerBuilder outputTank(final int x, final int y, final TankStyle style, final IOFluidContainer container) {
+		return tank(x, y, style, container, 0, ConstantFluidFilter.ANYTHING, ConstantFluidFilter.NOTHING);
+	}
+
+	public ScreenHandlerContainerBuilder tank(final int x, final int y, final TankStyle style, final IOFluidContainer container, int slot, FluidFilter insertFilter, FluidFilter extractFilter) {
+		Tank tank = new Tank(this.parent.tanks.size(), x, y, style, container, slot, insertFilter, extractFilter);
+		this.parent.tanks.add(tank);
+		return this.sync(tank.volumeGetter, tank.volumeSetter).sync(tank.capacityGetter, tank.capacitySetter);
+	}
+
 	public ScreenHandlerContainerBuilder outputSlot(final int index, final int x, final int y) {
 		this.parent.slots.add(new OutputSlot(this.container, index, x, y));
 		return this;
 	}
 
-	public ScreenHandlerContainerBuilder filterSlot(final int index, final int x, final int y,
-													final Predicate<ItemStack> filter) {
+	public ScreenHandlerContainerBuilder slot(final int index, final int x, final int y, final Predicate<ItemStack> filter) {
 		this.parent.slots.add(new FilteredSlot(this.container, index, x, y).setFilter(filter));
 		return this;
 	}
@@ -86,11 +106,7 @@ public class ScreenHandlerContainerBuilder {
 	}
 
 	public ScreenHandlerBuilder addContainer() {
-		this.parent.blockEntityRange.add(Range.between(this.rangeStart, this.parent.slots.size() - 1));
+		this.parent.blockEntitySlotRange.add(Range.between(this.rangeStart, this.parent.slots.size() - 1));
 		return this.parent;
-	}
-
-	public ScreenHandlerContainerBuilder syncCrafterValue() {
-		return this;
 	}
 }

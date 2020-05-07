@@ -33,6 +33,7 @@ public class AssemblyConstants {
 
 		//Fluid Hopper & Spigot
 		public static final String TRANSFER_COOLDOWN = "TransferCooldown";
+		public static final String WORLD_PULL_COOLDOWN = "WorldPullCooldown";
 		public static final String CUSTOM_NAME = "CustomName";
 
 		//Spigot
@@ -40,6 +41,7 @@ public class AssemblyConstants {
 
 		//Steam Press
 		public static final String BURN_TIME = "BurnTime";
+		public static final String FUEL_TIME = "BurnTime";
 		public static final String PRESS_PROGRESS = "Progress";
 		public static final String PRESS_RESET = "Reset";
 		public static final String CURRENT_PRESSES = "CurrentPresses";

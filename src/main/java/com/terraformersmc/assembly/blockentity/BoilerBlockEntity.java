@@ -8,10 +8,12 @@ import alexiil.mc.lib.attributes.fluid.volume.FluidKeys;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import com.terraformersmc.assembly.block.AssemblyBlocks;
 import com.terraformersmc.assembly.block.BoilerBlock;
+import com.terraformersmc.assembly.blockentity.base.AssemblyContainerBlockEntity;
 import com.terraformersmc.assembly.recipe.AssemblyRecipeTypes;
 import com.terraformersmc.assembly.recipe.BoilingRecipe;
 import com.terraformersmc.assembly.recipe.provider.FluidInputInventory;
-import com.terraformersmc.assembly.screenhandler.builder.ScreenHandlerBuilder;
+import com.terraformersmc.assembly.screen.builder.ScreenHandlerBuilder;
+import com.terraformersmc.assembly.screen.builder.TankStyle;
 import com.terraformersmc.assembly.util.AssemblyConstants;
 import com.terraformersmc.assembly.util.fluid.IOFluidContainer;
 import com.terraformersmc.assembly.util.fluid.SimpleIOFluidContainer;
@@ -45,6 +47,7 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 	private static final int[] SIDE_SLOTS = new int[]{FUEL_SLOT};
 
 	private static final String BURN_TIME_KEY = AssemblyConstants.NbtKeys.BURN_TIME;
+	private static final String FUEL_TIME_KEY = AssemblyConstants.NbtKeys.FUEL_TIME;
 	private int burnTime;
 	private int fuelTime;
 
@@ -52,11 +55,11 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 
 	private static final String INPUT_FLUIDS_KEY = AssemblyConstants.NbtKeys.INPUT_FLUIDS;
 	private static final FluidAmount INPUT_CAPACITY = FluidAmount.BUCKET.checkedMul(4);
-	private final IOFluidContainer inputTank;
+	private IOFluidContainer inputTank;
 
 	private static final String OUTPUT_FLUIDS_KEY = AssemblyConstants.NbtKeys.OUTPUT_FLUIDS;
 	private static final FluidAmount OUTPUT_CAPACITY_PER_CHAMBER = FluidAmount.BUCKET.checkedMul(4);
-	private final IOFluidContainer outputTank;
+	private IOFluidContainer outputTank;
 	private FluidAmount outputCapacity = FluidAmount.ZERO;
 
 	private FluidAmount recipeIncrement = FluidAmount.BUCKET.roundedDiv(1000);
@@ -99,13 +102,15 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 
 		if (this.world != null && !this.world.isClient) {
 			updateRecipe();
+			if (isBurning()) {
+				--this.burnTime;
+			}
 			if (this.recipe != null) {
 				ItemStack fuelStack = this.contents.get(0);
 				if (isBurning() || !fuelStack.isEmpty()) {
 					FluidVolume inputSim = simulateCraft();
 					if (inputSim != null) {
-						if (this.isBurning()) {
-							--this.burnTime;
+						if (isBurning()) {
 							inputTank.attemptExtraction(inputSim.fluidKey::equals, inputSim.getAmount_F(), Simulation.ACTION);
 							outputTank.attemptInsertion(FluidKeys.get(recipe.output).withAmount(recipeIncrement), Simulation.ACTION);
 						} else {
@@ -124,12 +129,12 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 							}
 						}
 					}
-					if (wasBurning != this.isBurning()) {
-						dirty = true;
-						this.world.setBlockState(this.pos, this.world.getBlockState(this.pos).with(BoilerBlock.LIT, this.isBurning()), 3);
-					}
 				}
 			}
+		}
+		if (wasBurning != this.isBurning()) {
+			dirty = true;
+			this.world.setBlockState(this.pos, this.world.getBlockState(this.pos).with(BoilerBlock.LIT, this.isBurning()), 3);
 		}
 
 		if (dirty) {
@@ -165,7 +170,23 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 
 	@Override
 	public ScreenHandler createContainer(int syncId, PlayerInventory inventory) {
-		return new ScreenHandlerBuilder(AssemblyConstants.Ids.BOILER).player(inventory.player).inventory().hotbar().addInventory().blockEntity(this).filterSlot(0, 20, 20, AbstractFurnaceBlockEntity::canUseAsFuel).addContainer().create(this, syncId);
+		return new ScreenHandlerBuilder(AssemblyConstants.Ids.BOILER, 176, 166)
+				.interact(this::canPlayerUse)
+
+				.player(inventory.player)
+				.inventory()
+				.hotbar()
+				.addInventory()
+
+				.container(this)
+				.sync(this::getBurnTime, burnTime -> this.burnTime = burnTime)
+				.sync(this::getFuelTime, fuelTime -> this.fuelTime = fuelTime)
+				.slot(0, 80, 40, AbstractFurnaceBlockEntity::canUseAsFuel)
+				.tank(41, 23, TankStyle.TWO, inputTank)
+				.tank(113, 23, TankStyle.TWO, outputTank)
+				.addContainer()
+
+				.create(this, syncId);
 	}
 
 	private boolean isBurning() {
@@ -185,6 +206,7 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 			this.outputTank.setInvFluid(0, fluid, Simulation.ACTION);
 		}
 		this.burnTime = tag.getShort(BURN_TIME_KEY);
+		this.fuelTime = tag.getShort(FUEL_TIME_KEY);
 		String recipeValue = tag.getString(RECIPE_KEY);
 		if (!recipeValue.equals("null")) {
 			BoilingRecipe recipe = null;
@@ -202,7 +224,7 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag) {
-		tag = super.toTag(tag);
+		super.toTag(tag);
 		FluidVolume inputFluid = this.inputTank.getInvFluid(0);
 		if (!inputFluid.isEmpty()) {
 			tag.put(INPUT_FLUIDS_KEY, inputFluid.toTag());
@@ -212,6 +234,7 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 			tag.put(OUTPUT_FLUIDS_KEY, outputFluid.toTag());
 		}
 		tag.putShort(BURN_TIME_KEY, (short) this.burnTime);
+		tag.putShort(FUEL_TIME_KEY, (short) this.fuelTime);
 		//Todo: cache recipes
 		//updateRecipe();
 		tag.putString(RECIPE_KEY, recipe == null ? "null" : recipe.getId().toString());

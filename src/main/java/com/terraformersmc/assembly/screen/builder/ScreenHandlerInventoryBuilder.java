@@ -26,7 +26,7 @@
  * THE SOFTWARE.
  */
 
-package com.terraformersmc.assembly.screenhandler.builder;
+package com.terraformersmc.assembly.screen.builder;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.slot.Slot;
@@ -51,6 +51,7 @@ public final class ScreenHandlerInventoryBuilder {
 			for (int j = 0; j < 9; ++j)
 				this.parent.slots.add(new Slot(this.player.inventory, j + i * 9 + 9, xStart + j * 18, yStart + i * 18));
 		this.main = Range.between(startIndex, this.parent.slots.size() - 1);
+		this.parent.inventoryTitlePositioner = (width, height, text, textRenderer) -> new ScreenPos(xStart + 1, yStart - 14);
 		return this;
 	}
 
@@ -63,11 +64,15 @@ public final class ScreenHandlerInventoryBuilder {
 	}
 
 	public ScreenHandlerInventoryBuilder inventory() {
-		return this.inventory(8, 94);
+		return this.inventory(getHorizontalCenter() - (9 * 18 / 2) + 1, this.parent.height - 82);
+	}
+
+	private int getHorizontalCenter() {
+		return this.parent.width / 2;
 	}
 
 	public ScreenHandlerInventoryBuilder hotbar() {
-		return this.hotbar(8, 152);
+		return this.hotbar(getHorizontalCenter() - (9 * 18 / 2) + 1, this.parent.height - 24);
 	}
 
 	public ContainerPlayerArmorInventoryBuilder armor() {
@@ -76,11 +81,11 @@ public final class ScreenHandlerInventoryBuilder {
 
 	public ScreenHandlerBuilder addInventory() {
 		if (this.hotbar != null)
-			this.parent.addPlayerInventoryRange(this.hotbar);
+			this.parent.addPlayerInventorySlotRange(this.hotbar);
 		if (this.main != null)
-			this.parent.addPlayerInventoryRange(this.main);
+			this.parent.addPlayerInventorySlotRange(this.main);
 		if (this.armor != null)
-			this.parent.addBlockEntityRange(this.armor);
+			this.parent.addContainerSlotRange(this.armor);
 
 		return this.parent;
 	}

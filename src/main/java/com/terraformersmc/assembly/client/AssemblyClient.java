@@ -1,10 +1,10 @@
 package com.terraformersmc.assembly.client;
 
-import com.terraformersmc.assembly.client.gui.BaseScreen;
 import com.terraformersmc.assembly.client.renderer.AssemblyRenderers;
+import com.terraformersmc.assembly.client.screen.BoilerScreen;
 import com.terraformersmc.assembly.networking.AssemblyNetworking;
-import com.terraformersmc.assembly.screenhandler.AssemblyScreenHandlers;
-import com.terraformersmc.assembly.screenhandler.builder.BuiltScreenHandler;
+import com.terraformersmc.assembly.screen.AssemblyScreenHandlers;
+import com.terraformersmc.assembly.screen.builder.ScreenSyncer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.screen.ScreenProviderRegistry;
 
@@ -20,11 +20,10 @@ public class AssemblyClient implements ClientModInitializer {
 	}
 
 
-
 	public static void registerClientsideHandlers() {
-		ScreenProviderRegistry.INSTANCE.registerFactory(AssemblyScreenHandlers.BOILER, container -> {
-			if (container instanceof BuiltScreenHandler) {
-				return new BaseScreen((BuiltScreenHandler) container, "boiler");
+		ScreenProviderRegistry.INSTANCE.registerFactory(AssemblyScreenHandlers.BOILER, screenHandler -> {
+			if (screenHandler instanceof ScreenSyncer) {
+				return new BoilerScreen((ScreenSyncer) screenHandler);
 			}
 			return null;
 		});

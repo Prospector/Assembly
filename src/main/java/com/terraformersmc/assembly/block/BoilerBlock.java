@@ -4,7 +4,7 @@ import alexiil.mc.lib.attributes.AttributeList;
 import alexiil.mc.lib.attributes.AttributeProvider;
 import com.terraformersmc.assembly.blockentity.AssemblyBlockEntities;
 import com.terraformersmc.assembly.blockentity.BoilerBlockEntity;
-import com.terraformersmc.assembly.screenhandler.AssemblyScreenHandlers;
+import com.terraformersmc.assembly.screen.AssemblyScreenHandlers;
 import com.terraformersmc.assembly.util.interaction.InteractionUtil;
 import com.terraformersmc.assembly.util.interaction.interactable.ScreenHandlerInteractable;
 import net.minecraft.block.*;

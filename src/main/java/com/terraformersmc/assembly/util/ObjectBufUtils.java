@@ -1,5 +1,7 @@
 package com.terraformersmc.assembly.util;
 
+import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
+import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 
@@ -19,7 +21,11 @@ public enum ObjectBufUtils {
 	}, PacketByteBuf::readInt),
 	BLOCK_POS(BlockPos.class, (pos, buffer) -> {
 		buffer.writeBlockPos(pos);
-	}, PacketByteBuf::readBlockPos);
+	}, PacketByteBuf::readBlockPos),
+	FLUID_VOLUME(FluidVolume.class, (volume, buffer) -> {
+		buffer.writeCompoundTag(volume.toTag());
+	}, buffer -> FluidVolume.fromTag(buffer.readCompoundTag())),
+	FLUID_AMOUNT(FluidAmount.class, FluidAmount::toMcBuffer, FluidAmount::fromMcBuffer);
 
 	Class clazz;
 	ObjectWriter writer;
@@ -32,10 +38,15 @@ public enum ObjectBufUtils {
 	}
 
 	public static void writeObject(Object object, PacketByteBuf buffer) {
-		ObjectBufUtils utils = Arrays.stream(values()).filter(objectBufUtils -> objectBufUtils.clazz == object.getClass()).findFirst().orElse(null);
-		Objects.requireNonNull(utils, "No support found for " + object.getClass());
-		buffer.writeInt(utils.ordinal());
-		utils.writer.write(object, buffer);
+		if (object instanceof FluidVolume) {
+			buffer.writeInt(FLUID_VOLUME.ordinal());
+			FLUID_VOLUME.writer.write(object, buffer);
+		} else {
+			ObjectBufUtils utils = Arrays.stream(values()).filter(objectBufUtils -> objectBufUtils.clazz == object.getClass()).findFirst().orElse(null);
+			Objects.requireNonNull(utils, "No support found for " + object.getClass());
+			buffer.writeInt(utils.ordinal());
+			utils.writer.write(object, buffer);
+		}
 	}
 
 	public static Object readObject(PacketByteBuf buffer) {

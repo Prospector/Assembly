@@ -1,4 +1,4 @@
-package com.terraformersmc.assembly.structure;
+package com.terraformersmc.assembly.world.feature.structure;
 
 import com.terraformersmc.assembly.util.AssemblyConstants;
 import net.minecraft.structure.StructurePieceType;

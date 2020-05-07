@@ -1,4 +1,4 @@
-package com.terraformersmc.assembly.blockentity;
+package com.terraformersmc.assembly.blockentity.base;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -64,7 +64,11 @@ public abstract class AssemblyContainerBlockEntity extends LockableContainerBloc
 
 	@Override
 	public boolean canPlayerUse(PlayerEntity player) {
-		return true;
+		if (this.world.getBlockEntity(this.pos) != this) {
+			return false;
+		} else {
+			return player.squaredDistanceTo((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
+		}
 	}
 
 	@Override

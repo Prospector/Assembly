@@ -26,8 +26,9 @@
  * THE SOFTWARE.
  */
 
-package com.terraformersmc.assembly.screenhandler.builder;
+package com.terraformersmc.assembly.screen.builder;
 
+import com.terraformersmc.assembly.blockentity.base.AssemblyContainerBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventory;
@@ -35,9 +36,9 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.tuple.Pair;
-import com.terraformersmc.assembly.blockentity.AssemblyContainerBlockEntity;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -50,23 +51,36 @@ public class ScreenHandlerBuilder {
 	private Predicate<PlayerEntity> canInteract = player -> true;
 
 	final List<Slot> slots;
-	final List<Range<Integer>> inventoryRange, blockEntityRange;
+	final LinkedList<Tank> tanks;
+	final List<Range<Integer>> inventorySlotRange, blockEntitySlotRange;
 
 	final List<Pair<Supplier, Consumer>> objectValues;
 
 	final List<Consumer<CraftingInventory>> craftEvents;
 
-	public ScreenHandlerBuilder(final Identifier name) {
+	final int width, height;
 
+	TextPositioner inventoryTitlePositioner = null, titlePositioner;
+
+	public ScreenHandlerBuilder(final Identifier name, int width, int height, TextPositioner titlePositioner) {
 		this.name = name;
+		this.width = width;
+		this.height = height;
 
 		this.slots = new ArrayList<>();
-		this.inventoryRange = new ArrayList<>();
-		this.blockEntityRange = new ArrayList<>();
+		this.tanks = new LinkedList<>();
+		this.inventorySlotRange = new ArrayList<>();
+		this.blockEntitySlotRange = new ArrayList<>();
 
 		this.objectValues = new ArrayList<>();
 
 		this.craftEvents = new ArrayList<>();
+
+		this.titlePositioner = titlePositioner;
+	}
+
+	public ScreenHandlerBuilder(final Identifier name, int width, int height) {
+		this(name, width, height, (w, h, text, textRenderer) -> new ScreenPos((w - textRenderer.getStringWidth(text)) / 2, 6));
 	}
 
 	public ScreenHandlerBuilder interact(final Predicate<PlayerEntity> canInteract) {
@@ -78,50 +92,60 @@ public class ScreenHandlerBuilder {
 		return new ScreenHandlerInventoryBuilder(this, player);
 	}
 
-	public ScreenHandlerContainerBuilder blockEntity(final Inventory container) {
+	public ScreenHandlerContainerBuilder container(final Inventory container) {
 		return new ScreenHandlerContainerBuilder(this, container);
 	}
 
-	void addPlayerInventoryRange(final Range<Integer> range) {
-		this.inventoryRange.add(range);
+	void addPlayerInventorySlotRange(final Range<Integer> range) {
+		this.inventorySlotRange.add(range);
 	}
 
-	void addBlockEntityRange(final Range<Integer> range) {
-		this.blockEntityRange.add(range);
+	void addContainerSlotRange(final Range<Integer> range) {
+		this.blockEntitySlotRange.add(range);
 	}
 
 	@Deprecated
 	/**
-	 * The container have to know if the BlockEntity is still available (the fluidBlock was not destroyed)
+	 * The container have to know if the BlockEntity is still available (the block was not destroyed)
 	 * and if the player is not to far from him to close the GUI if necessary
 	 */
-	public BuiltScreenHandler create(int syncId) {
-		final BuiltScreenHandler built = new BuiltScreenHandler(this.name, this.canInteract,
-				this.inventoryRange,
-				this.blockEntityRange, null, syncId);
+	public ScreenSyncer create(int syncId) {
+		final ScreenSyncer built = new ScreenSyncer(this.name, this.canInteract, this.inventorySlotRange, this.blockEntitySlotRange, null, width, height, syncId);
+
 		if (!this.objectValues.isEmpty())
 			built.addObjectSync(this.objectValues);
 		if (!this.craftEvents.isEmpty())
 			built.addCraftEvents(this.craftEvents);
 
+		built.titlePositioner = this.titlePositioner;
+		built.inventoryTitlePositioner = this.inventoryTitlePositioner;
+
 		this.slots.forEach(built::addSlot);
+		this.tanks.forEach(built::addTank);
 
 		this.slots.clear();
+		this.tanks.clear();
 		return built;
 	}
 
-	public BuiltScreenHandler create(final AssemblyContainerBlockEntity blockEntity, int syncId) {
-		final BuiltScreenHandler built = new BuiltScreenHandler(this.name, this.canInteract,
-				this.inventoryRange,
-				this.blockEntityRange, blockEntity, syncId);
-		if (!this.craftEvents.isEmpty())
+	public ScreenSyncer create(final AssemblyContainerBlockEntity blockEntity, int syncId) {
+		final ScreenSyncer built = new ScreenSyncer(this.name, this.canInteract, this.inventorySlotRange, this.blockEntitySlotRange, blockEntity, width, height, syncId);
+
+		if (!this.craftEvents.isEmpty()) {
 			built.addCraftEvents(this.craftEvents);
-		if (!this.objectValues.isEmpty())
+		}
+		if (!this.objectValues.isEmpty()) {
 			built.addObjectSync(this.objectValues);
+		}
+
+		built.titlePositioner = this.titlePositioner;
+		built.inventoryTitlePositioner = this.inventoryTitlePositioner;
 
 		this.slots.forEach(built::addSlot);
+		this.tanks.forEach(built::addTank);
 
 		this.slots.clear();
+		this.tanks.clear();
 		return built;
 	}
 }

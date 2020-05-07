@@ -9,10 +9,12 @@ import com.terraformersmc.assembly.loot.AssemblyLoot;
 import com.terraformersmc.assembly.networking.AssemblyNetworking;
 import com.terraformersmc.assembly.recipe.AssemblyRecipeTypes;
 import com.terraformersmc.assembly.recipe.serializer.AssemblyRecipeSerializers;
-import com.terraformersmc.assembly.screenhandler.AssemblyScreenHandlers;
+import com.terraformersmc.assembly.screen.AssemblyScreenHandlers;
 import com.terraformersmc.assembly.util.AssemblyConstants;
 import com.terraformersmc.assembly.world.AssemblyWorldgen;
 import com.terraformersmc.assembly.world.feature.AssemblyFeatures;
+import com.terraformersmc.assembly.world.feature.structure.AssemblyStructureFeatures;
+import com.terraformersmc.assembly.world.feature.structure.AssemblyStructurePieceTypes;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemStack;
@@ -36,6 +38,8 @@ public class Assembly implements ModInitializer {
 		AssemblyRecipeSerializers.register();
 		AssemblyEntities.register();
 		AssemblyFeatures.register();
+		AssemblyStructureFeatures.register();
+		AssemblyStructurePieceTypes.register();
 		AssemblyWorldgen.register();
 		AssemblyLoot.register();
 		FabricItemGroupBuilder.create(new Identifier(MOD_ID, "items")).icon(() -> new ItemStack(AssemblyItems.BRASS_GEAR)).appendItems(stacks -> Registry.ITEM.forEach(item -> {

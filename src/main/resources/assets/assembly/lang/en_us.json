@@ -1,6 +1,8 @@
 {
   "itemGroup.assembly.items": "Assembly Items",
 
+  "assembly.tank.amount": "%s Buckets",
+
   "item.assembly.salt": "Salt",
   "item.assembly.sulfur": "Sulfur",
   "item.assembly.coagulated_latex": "Coagulated Latex",
@@ -22,6 +24,7 @@
   "item.assembly.iron_hammer": "Iron Hammer",
   "item.assembly.golden_hammer": "Golden Hammer",
   "item.assembly.diamond_hammer": "Diamond Hammer",
+  "item.assembly.netherite_hammer": "Netherite Hammer",
 
   "block.assembly.fluid_barrel": "Fluid Barrel",
   "block.assembly.tree_tap": "Tree Tap",
@@ -98,5 +101,7 @@
   "item.assembly.exoframe_chestpiece": "Exoframe Chestpiece",
   "item.assembly.exoframe_legpiece": "Exoframe Legpiece",
   "item.assembly.exoframe_footpiece": "Exoframe Footpiece",
-  "item.assembly.piston_boots": "Piston Boots"
+  "item.assembly.piston_boots": "Piston Boots",
+
+  "filled_map.assembly:salt_dome": "Petrogeologist Map"
 }

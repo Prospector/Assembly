@@ -1,7 +1,7 @@
 package com.terraformersmc.assembly.world.feature;
 
 import com.mojang.datafixers.Dynamic;
-import com.terraformersmc.assembly.structure.SaltDomeGenerator;
+import com.terraformersmc.assembly.world.feature.structure.SaltDomeGenerator;
 import com.terraformersmc.assembly.util.AssemblyConstants;
 import net.minecraft.block.Material;
 import net.minecraft.structure.StructureManager;

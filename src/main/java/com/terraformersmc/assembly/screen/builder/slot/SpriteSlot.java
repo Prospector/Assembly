@@ -26,45 +26,37 @@
  * THE SOFTWARE.
  */
 
-package com.terraformersmc.assembly.screenhandler.builder.slot;
+package com.terraformersmc.assembly.screen.builder.slot;
 
-
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.slot.Slot;
+import net.minecraft.util.Identifier;
 
-import java.util.function.Predicate;
+import javax.annotation.Nullable;
 
-public class FilteredSlot extends Slot {
+public class SpriteSlot extends FilteredSlot {
 
-	private Predicate<ItemStack> filter;
-	private int stackLimit = 64;
+	private final String spriteName;
+	int stacksize;
 
-	public FilteredSlot(final Inventory inventory, final int index, final int x, final int y) {
-		super(inventory, index, x, y);
+	public SpriteSlot(final Inventory inventory, final int index, final int xPosition, final int yPosition, final String sprite, final int stacksize) {
+		super(inventory, index, xPosition, yPosition);
+		this.spriteName = sprite;
+		this.stacksize = stacksize;
 	}
 
-	public FilteredSlot(final Inventory inventory, final int index, final int x, final int y, int stackLimit) {
-		super(inventory, index, x, y);
-		this.stackLimit = stackLimit;
-	}
-
-	public FilteredSlot setFilter(final Predicate<ItemStack> filter) {
-		this.filter = filter;
-		return this;
-	}
-
-	@Override
-	public boolean canInsert(final ItemStack stack) {
-		try {
-			return this.filter.test(stack);
-		} catch (NullPointerException e) {
-			return true;
-		}
+	public SpriteSlot(final Inventory inventory, final int index, final int xPosition, final int yPosition, final String sprite) {
+		this(inventory, index, xPosition, yPosition, sprite, 64);
 	}
 
 	@Override
 	public int getMaxStackAmount() {
-		return this.stackLimit;
+		return this.stacksize;
+	}
+
+	@Nullable
+	@Override
+	public Pair<Identifier, Identifier> getBackgroundSprite() {
+		return super.getBackgroundSprite();
 	}
 }

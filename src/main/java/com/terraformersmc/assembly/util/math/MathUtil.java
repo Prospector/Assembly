@@ -23,6 +23,10 @@ public class MathUtil {
 		return pointX >= rectMinX && pointX <= rectMaxX && pointY >= rectMinY && pointY <= rectMaxY;
 	}
 
+	public static boolean isInRect(double pointX, double pointY, int rectMinX, int rectMinY, int rectMaxX, int rectMaxY) {
+		return pointX >= rectMinX && pointX <= rectMaxX && pointY >= rectMinY && pointY <= rectMaxY;
+	}
+
 	public static boolean isInCuboid(int pointX, int pointY, int pointZ, int rectMinX, int rectMinY, int rectMinZ, int rectMaxX, int rectMaxY, int rectMaxZ) {
 		return pointX >= rectMinX && pointX <= rectMaxX && pointY >= rectMinY && pointY <= rectMaxY && pointZ >= rectMinZ && pointZ <= rectMaxZ;
 	}

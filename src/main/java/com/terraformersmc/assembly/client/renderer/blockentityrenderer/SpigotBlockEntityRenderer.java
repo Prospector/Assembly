@@ -34,7 +34,7 @@ public class SpigotBlockEntityRenderer extends BlockEntityRenderer<SpigotBlockEn
 	}
 
 	@Override
-	public void render(SpigotBlockEntity spigot, float delta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+	public void render(SpigotBlockEntity spigot, float delta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumers, int light, int overlay) {
 		World world = spigot.getWorld();
 		if (world != null && world.getBlockState(spigot.getPos()).get(SpigotBlock.POURING)) {
 			Direction facing = world.getBlockState(spigot.getPos()).get(SpigotBlock.FACING);
@@ -56,13 +56,13 @@ public class SpigotBlockEntityRenderer extends BlockEntityRenderer<SpigotBlockEn
 
 					VertexConsumer buffer = vertexConsumers.getBuffer(RenderLayer.getTranslucent());
 
-					matrices.push();
-					matrices.translate(0.5, 0.5, 0.5);
-					matrices.multiply(Vector3f.NEGATIVE_Y.getDegreesQuaternion(90F + facing.asRotation()));
-					matrices.translate(-0.5, -0.5, -0.5);
+					matrixStack.push();
+					matrixStack.translate(0.5, 0.5, 0.5);
+					matrixStack.multiply(Vector3f.NEGATIVE_Y.getDegreesQuaternion(90F + facing.asRotation()));
+					matrixStack.translate(-0.5, -0.5, -0.5);
 
-					Matrix4f modelMatrix = matrices.peek().getModel();
-					Matrix3f normalMatrix = matrices.peek().getNormal();
+					Matrix4f modelMatrix = matrixStack.peek().getModel();
+					Matrix3f normalMatrix = matrixStack.peek().getNormal();
 
 					double bottomStream = 0;
 					BlockEntity below = world.getBlockEntity(spigot.getPos().down());
@@ -107,7 +107,7 @@ public class SpigotBlockEntityRenderer extends BlockEntityRenderer<SpigotBlockEn
 					buffer.vertex(modelMatrix, MathUtil.fracf(endOfFlow + 2), MathUtil.fracf(bottomStream), MathUtil.fracf(9)).color(r, g, b, 1F).texture(uMaxM7, vMax).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
 					buffer.vertex(modelMatrix, MathUtil.fracf(endOfFlow + 2), MathUtil.fracf(top), MathUtil.fracf(9)).color(r, g, b, 1F).texture(uMaxM7, vMin).light(light).normal(normalMatrix, 0.0F, 1.0F, 0.0F).next();
 
-					matrices.pop();
+					matrixStack.pop();
 				}
 			}
 		}

@@ -26,7 +26,7 @@
  * THE SOFTWARE.
  */
 
-package com.terraformersmc.assembly.screenhandler.builder.slot;
+package com.terraformersmc.assembly.screen.builder.slot;
 
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;

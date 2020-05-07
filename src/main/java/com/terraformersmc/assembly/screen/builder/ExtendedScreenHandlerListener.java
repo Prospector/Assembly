@@ -1,4 +1,4 @@
-package com.terraformersmc.assembly.screenhandler.builder;
+package com.terraformersmc.assembly.screen.builder;
 
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
@@ -17,7 +17,7 @@ public interface ExtendedScreenHandlerListener {
 
 	}
 
-	default void handleObject(int i, Object value) {
+	default void handleObject(int index, Object value) {
 
 	}
 }

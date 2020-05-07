@@ -3,7 +3,6 @@ package com.terraformersmc.assembly.util.math;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -32,7 +31,7 @@ public final class ShapeUtil {
 		return rotate90(shape, from, to, null);
 	}
 
-	public static VoxelShape rotate90(VoxelShape shape, Direction from, Direction to, @Nullable Axis rotationAxis) {
+	public static VoxelShape rotate90(VoxelShape shape, Direction from, Direction to, @Nullable Direction.Axis rotationAxis) {
 		if (from == to) {
 			return shape;
 		}

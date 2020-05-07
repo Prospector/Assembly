@@ -1,7 +1,6 @@
 package com.terraformersmc.assembly.util.math;
 
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.util.math.Vec3d;
 
 import javax.annotation.Nullable;
@@ -17,7 +16,7 @@ public final class PositionUtil {
 		return rotateVec(vec, from, to, null, 0.5, 0.5, 0.5);
 	}
 
-	public static Vec3d rotateVec(Vec3d vec, Direction from, Direction to, @Nullable Axis axis) {
+	public static Vec3d rotateVec(Vec3d vec, Direction from, Direction to, @Nullable Direction.Axis axis) {
 		return rotateVec(vec, from, to, axis, 0.5, 0.5, 0.5);
 	}
 
@@ -25,7 +24,7 @@ public final class PositionUtil {
 		return rotateVec(vec, from, to, null, ox, oy, oz);
 	}
 
-	public static Vec3d rotateVec(Vec3d vec, Direction from, Direction to, @Nullable Axis axis, double ox, double oy,
+	public static Vec3d rotateVec(Vec3d vec, Direction from, Direction to, @Nullable Direction.Axis axis, double ox, double oy,
 								  double oz) {
 		if (from == to) {
 			return vec;
@@ -41,7 +40,7 @@ public final class PositionUtil {
 				int mult = from.getOffsetX();
 				switch (to.getAxis()) {
 					case X: {
-						if (axis != Axis.Y) {
+						if (axis != Direction.Axis.Y) {
 							x = -x;
 							y = -y;
 						} else {
@@ -78,7 +77,7 @@ public final class PositionUtil {
 						y = y0;
 						break;
 					case Y: {
-						if (axis != Axis.Z) {
+						if (axis != Direction.Axis.Z) {
 							y = -y;
 							z = -z;
 						} else {
@@ -115,7 +114,7 @@ public final class PositionUtil {
 						z = z1;
 						break;
 					case Z: {
-						if (axis != Axis.Y) {
+						if (axis != Direction.Axis.Y) {
 							y = -y;
 							z = -z;
 						} else {

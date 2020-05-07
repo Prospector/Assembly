@@ -35,9 +35,9 @@ public abstract class MixinArmorFeatureRenderer<T extends LivingEntity, M extend
 	private static Map<String, Identifier> ARMOR_TEXTURE_CACHE;
 
 	@Inject(method = "renderArmor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/feature/ArmorFeatureRenderer;renderArmorParts(Lnet/minecraft/entity/EquipmentSlot;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/item/ArmorItem;ZLnet/minecraft/client/render/entity/model/BipedEntityModel;ZFFFLjava/lang/String;)V", ordinal = 2), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
-	private void modifyArmorRender(MatrixStack matrices, VertexConsumerProvider vertexConsumers, T entity, float limbAngle, float limbDistance, float tickDelta, float customAngle, float headYaw, float headPitch, EquipmentSlot slot, int light, A armorModel, CallbackInfo info, ItemStack stack, ArmorItem item, boolean lowerParts, boolean renderGlint) {
+	private void modifyArmorRender(MatrixStack matrixStack, VertexConsumerProvider vertexConsumers, T entity, float limbAngle, float limbDistance, float tickDelta, float customAngle, float headYaw, float headPitch, EquipmentSlot slot, int light, A armorModel, CallbackInfo info, ItemStack stack, ArmorItem item, boolean lowerParts, boolean renderGlint) {
 		if (item instanceof CustomArmorTextureForStack) {
-			this.renderCustomArmorParts(matrices, vertexConsumers, light, (CustomArmorTextureForStack) item, stack, renderGlint, armorModel, lowerParts, 1.0F, 1.0F, 1.0F, null);
+			this.renderCustomArmorParts(matrixStack, vertexConsumers, light, (CustomArmorTextureForStack) item, stack, renderGlint, armorModel, lowerParts, 1.0F, 1.0F, 1.0F, null);
 			info.cancel();
 		}
 	}

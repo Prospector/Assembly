@@ -1,4 +1,4 @@
-package com.terraformersmc.assembly.screenhandler;
+package com.terraformersmc.assembly.screen;
 
 import com.terraformersmc.assembly.blockentity.BoilerBlockEntity;
 import com.terraformersmc.assembly.util.AssemblyConstants;

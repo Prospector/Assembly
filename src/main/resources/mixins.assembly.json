@@ -5,6 +5,8 @@
   "mixins": [
     "common.boiler.MixinAbstractFurnaceBlock",
 
+    "common.bugfix.MixinDataPackFix",
+
     "common.data.MixinCookingRecipeJsonFactory",
     "common.data.MixinCookingRecipeJsonProvider",
     "common.data.MixinShapedRecipeJsonProvider",
@@ -27,7 +29,9 @@
 
     "common.tag.BlockTagsInvoker",
     "common.tag.FluidTagsInvoker",
-    "common.tag.ItemTagsInvoker"
+    "common.tag.ItemTagsInvoker",
+
+    "common.trade.MixinTradeOffers"
   ],
   "client": [
     "client.cape.MixinPlayerListEntry",

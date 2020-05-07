@@ -1,7 +1,6 @@
 package com.terraformersmc.assembly.fluid;
 
 import alexiil.mc.lib.attributes.fluid.volume.FluidKey;
-import alexiil.mc.lib.attributes.fluid.volume.FluidKey.FluidKeyBuilder;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKeys;
 import alexiil.mc.lib.attributes.fluid.volume.SimpleFluidKey;
 import com.google.common.collect.BiMap;
@@ -36,7 +35,7 @@ public class AssemblyFluids {
 		putFluid(new Identifier(Assembly.MOD_ID, "flowing_" + settings.getName()), flowing);
 		STILL_FLOWING_MAP.put(still, flowing);
 		if (settings.fluidKeyBuilder != null) {
-		    FluidKeyBuilder builder = new FluidKeyBuilder(still);
+		    FluidKey.FluidKeyBuilder builder = new FluidKey.FluidKeyBuilder(still);
 	        builder.setName(new TranslatableText("block.assembly." + settings.getName()));
 		    settings.fluidKeyBuilder.accept(builder);
 		    FluidKeys.put(still, new SimpleFluidKey(builder));

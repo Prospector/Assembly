@@ -1,33 +1,11 @@
-/*
- * Copyright (c) 2018 modmuss50 and Gigabit101
- *
- *
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- *
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- *
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
+package com.terraformersmc.assembly.screen.builder;
 
-package com.terraformersmc.assembly.screenhandler.builder;
-
+import alexiil.mc.lib.attributes.fluid.FixedFluidInv;
+import alexiil.mc.lib.attributes.fluid.FluidInvUtil;
+import com.terraformersmc.assembly.blockentity.base.AssemblyContainerBlockEntity;
+import com.terraformersmc.assembly.mixin.common.screenhandler.AccessorScreenHandlerListeners;
+import com.terraformersmc.assembly.networking.AssemblyNetworking;
+import com.terraformersmc.assembly.util.ItemUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventory;
@@ -35,39 +13,42 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.tuple.MutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
-import com.terraformersmc.assembly.blockentity.AssemblyContainerBlockEntity;
-import com.terraformersmc.assembly.mixin.common.screenhandler.AccessorScreenHandlerListeners;
-import com.terraformersmc.assembly.util.ItemUtil;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public class BuiltScreenHandler extends ScreenHandler implements ExtendedScreenHandlerListener {
+public class ScreenSyncer<BE extends AssemblyContainerBlockEntity> extends ScreenHandler implements ExtendedScreenHandlerListener {
 
-	private final Identifier name;
+	private final Identifier id;
 
 	private final Predicate<PlayerEntity> canInteract;
 	private final List<Range<Integer>> inventorySlotRange;
 	private final List<Range<Integer>> blockEntitySlotRange;
 
+	public final LinkedList<Tank> tanks;
 	private final ArrayList<MutableTriple<Supplier, Consumer, Object>> objectValues;
 	private List<Consumer<CraftingInventory>> craftEvents;
-	private Integer[] integerParts;
 
-	private final AssemblyContainerBlockEntity blockEntity;
+	private final BE blockEntity;
 
-	public BuiltScreenHandler(final Identifier name, final Predicate<PlayerEntity> canInteract,
-							  final List<Range<Integer>> inventorySlotRange,
-							  final List<Range<Integer>> blockEntitySlotRange, AssemblyContainerBlockEntity blockEntity, int syncId) {
+	private int width, height;
+
+	TextPositioner inventoryTitlePositioner = null, titlePositioner = null;
+
+	public ScreenSyncer(final Identifier id, final Predicate<PlayerEntity> canInteract,
+						final List<Range<Integer>> inventorySlotRange,
+						final List<Range<Integer>> blockEntitySlotRange, BE blockEntity, int width, int height, int syncId) {
 		super(null, syncId);
-		this.name = name;
+		this.id = id;
 
 		this.canInteract = canInteract;
 
@@ -75,8 +56,20 @@ public class BuiltScreenHandler extends ScreenHandler implements ExtendedScreenH
 		this.blockEntitySlotRange = blockEntitySlotRange;
 
 		this.objectValues = new ArrayList<>();
+		this.tanks = new LinkedList<>();
 
 		this.blockEntity = blockEntity;
+
+		this.width = width;
+		this.height = height;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
 	}
 
 	@Override
@@ -84,10 +77,15 @@ public class BuiltScreenHandler extends ScreenHandler implements ExtendedScreenH
 		return super.addSlot(slot);
 	}
 
-	public void addObjectSync(final List<Pair<Supplier, Consumer>> syncables) {
+	public Tank addTank(Tank tank) {
+		this.tanks.add(tank);
+		return tank;
+	}
 
-		for (final Pair<Supplier, Consumer> syncable : syncables)
+	public void addObjectSync(final List<Pair<Supplier, Consumer>> syncables) {
+		for (final Pair<Supplier, Consumer> syncable : syncables) {
 			this.objectValues.add(MutableTriple.of(syncable.getLeft(), syncable.getRight(), null));
+		}
 		this.objectValues.trimToSize();
 	}
 
@@ -109,18 +107,22 @@ public class BuiltScreenHandler extends ScreenHandler implements ExtendedScreenH
 	@Override
 	public void sendContentUpdates() {
 		super.sendContentUpdates();
-
 		for (final ScreenHandlerListener listener : ((AccessorScreenHandlerListeners) (this)).getListeners()) {
-			if (!this.objectValues.isEmpty()) {
-				int objects = 0;
-				for (final MutableTriple<Supplier, Consumer, Object> value : this.objectValues) {
-					final Object supplied = value.getLeft().get();
-					if (supplied != value.getRight()) {
-                        this.sendObject(listener, this, objects, supplied);
-						value.setRight(supplied);
-					}
-					objects++;
+			sync(listener, false);
+		}
+	}
+
+	public void sync(ScreenHandlerListener listener, boolean force) {
+		if (!this.objectValues.isEmpty()) {
+			int objects = 0;
+			for (final MutableTriple<Supplier, Consumer, Object> value : this.objectValues) {
+				final Object currentValue = value.getLeft().get();
+				Object lastValue = value.getRight();
+				if (force || !currentValue.equals(lastValue)) {
+					this.sendObject(listener, this, objects, currentValue);
+					value.setRight(currentValue);
 				}
+				objects++;
 			}
 		}
 	}
@@ -128,16 +130,16 @@ public class BuiltScreenHandler extends ScreenHandler implements ExtendedScreenH
 	@Override
 	public void addListener(ScreenHandlerListener listener) {
 		super.addListener(listener);
+		sync(listener, false);
+	}
 
-		if (!this.objectValues.isEmpty()) {
-			int objects = 0;
-			for (final MutableTriple<Supplier, Consumer, Object> value : this.objectValues) {
-				final Object supplied = value.getLeft().get();
-                this.sendObject(listener, this, objects, supplied);
-				value.setRight(supplied);
-				objects++;
-			}
-		}
+	public void clickTank(Tank tank) {
+		AssemblyNetworking.clickTank(tanks.indexOf(tank));
+	}
+
+	public void onTankClick(ServerPlayerEntity player, int tankIndex) {
+		Tank tank = tanks.get(tankIndex);
+		FluidInvUtil.interactCursorWithTank((FixedFluidInv) tank.fluidContainer, player);
 	}
 
 	@Override
@@ -242,11 +244,19 @@ public class BuiltScreenHandler extends ScreenHandler implements ExtendedScreenH
 		return false;
 	}
 
-	public Identifier getName() {
-		return this.name;
+	public Identifier getId() {
+		return this.id;
 	}
 
-	public AssemblyContainerBlockEntity getBlockEntity() {
+	public BE getBlockEntity() {
 		return this.blockEntity;
+	}
+
+	public TextPositioner getInventoryTitlePositioner() {
+		return inventoryTitlePositioner;
+	}
+
+	public TextPositioner getTitlePositioner() {
+		return titlePositioner;
 	}
 }
