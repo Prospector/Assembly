@@ -27,6 +27,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Nameable;
 import net.minecraft.util.math.BlockPos;
 
 public class AssemblyNetworking {
@@ -112,7 +113,7 @@ public class AssemblyNetworking {
 	}
 
 	@Environment(EnvType.CLIENT)
-	public static <BE extends AssemblyContainerBlockEntity> void requestScreenSync(ScreenSyncer<BE> syncer) {
+	public static <BE extends BlockEntity & Nameable> void requestScreenSync(ScreenSyncer<BE> syncer) {
 		PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
 		ClientPlayNetworkHandler networkHandler = MinecraftClient.getInstance().getNetworkHandler();
 		if (networkHandler != null) {

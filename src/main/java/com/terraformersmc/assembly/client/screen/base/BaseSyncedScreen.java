@@ -8,6 +8,7 @@ import com.terraformersmc.assembly.blockentity.base.AssemblyContainerBlockEntity
 import com.terraformersmc.assembly.networking.AssemblyNetworking;
 import com.terraformersmc.assembly.screen.builder.*;
 import com.terraformersmc.assembly.util.math.MathUtil;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.item.TooltipContext;
@@ -17,10 +18,11 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Nameable;
 
 import java.util.List;
 
-public class BaseContainerScreen<BE extends AssemblyContainerBlockEntity> extends HandledScreen<ScreenSyncer<BE>> {
+public class BaseSyncedScreen<BE extends BlockEntity & Nameable> extends HandledScreen<ScreenSyncer<BE>> {
 
 	public static final Identifier GUI_SHEET = new Identifier(Assembly.MOD_ID, "textures/gui/gui_sheet.png");
 
@@ -28,7 +30,7 @@ public class BaseContainerScreen<BE extends AssemblyContainerBlockEntity> extend
 	protected final ScreenSyncer<BE> syncer;
 	protected final BE blockEntity;
 
-	public BaseContainerScreen(ScreenSyncer<BE> syncer) {
+	public BaseSyncedScreen(ScreenSyncer<BE> syncer) {
 		super(syncer, MinecraftClient.getInstance().player.inventory, syncer.getBlockEntity().getDisplayName());
 		this.syncer = syncer;
 		this.blockEntity = syncer.getBlockEntity();

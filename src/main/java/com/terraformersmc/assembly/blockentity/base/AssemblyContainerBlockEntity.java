@@ -1,5 +1,6 @@
 package com.terraformersmc.assembly.blockentity.base;
 
+import com.terraformersmc.assembly.screen.builder.ScreenSyncerProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
@@ -12,7 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.collection.DefaultedList;
 
-public abstract class AssemblyContainerBlockEntity extends LockableContainerBlockEntity implements Inventory {
+public abstract class AssemblyContainerBlockEntity extends LockableContainerBlockEntity implements Inventory, ScreenSyncerProvider<AssemblyContainerBlockEntity> {
 
 	protected DefaultedList<ItemStack> contents = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
 
@@ -67,7 +68,7 @@ public abstract class AssemblyContainerBlockEntity extends LockableContainerBloc
 		if (this.world.getBlockEntity(this.pos) != this) {
 			return false;
 		} else {
-			return player.squaredDistanceTo((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
+			return player.squaredDistanceTo((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
 		}
 	}
 
@@ -87,7 +88,9 @@ public abstract class AssemblyContainerBlockEntity extends LockableContainerBloc
 	}
 
 	@Override
-	public abstract ScreenHandler createContainer(int syncId, PlayerInventory inventory);
+	public final ScreenHandler createContainer(int syncId, PlayerInventory inventory) {
+		return createSyncer(syncId, inventory);
+	}
 
 	@Override
 	public void clear() {

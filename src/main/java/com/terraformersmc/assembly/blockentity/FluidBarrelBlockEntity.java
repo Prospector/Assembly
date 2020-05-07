@@ -6,13 +6,13 @@ import alexiil.mc.lib.attributes.fluid.FluidInsertable;
 import alexiil.mc.lib.attributes.fluid.FluidVolumeUtil;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Tickable;
-import com.terraformersmc.assembly.util.fluid.IOFluidContainer;
-import com.terraformersmc.assembly.util.fluid.SimpleIOFluidContainer;
 import com.terraformersmc.assembly.blockentity.base.AssemblySyncedNbtBlockEntity;
 import com.terraformersmc.assembly.util.AssemblyConstants;
+import com.terraformersmc.assembly.util.fluid.IOFluidContainer;
+import com.terraformersmc.assembly.util.fluid.SimpleIOFluidContainer;
 import com.terraformersmc.assembly.util.interaction.interactable.TankIOInteractable;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Tickable;
 
 public class FluidBarrelBlockEntity extends AssemblySyncedNbtBlockEntity implements Tickable, TankIOInteractable {
 
@@ -31,7 +31,7 @@ public class FluidBarrelBlockEntity extends AssemblySyncedNbtBlockEntity impleme
 	public void tick() {
 		if (this.world != null && !this.world.isClient) {
 			if (!this.fluidLastSync.equals(this.tank.getInvFluid(0))) {
-                this.sync();
+				this.sync();
 				this.fluidLastSync = this.tank.getInvFluid(0).copy();
 			}
 		}

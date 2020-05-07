@@ -5,8 +5,10 @@ import alexiil.mc.lib.attributes.AttributeProvider;
 import com.terraformersmc.assembly.blockentity.AssemblyBlockEntities;
 import com.terraformersmc.assembly.blockentity.BoilerBlockEntity;
 import com.terraformersmc.assembly.blockentity.BoilerChamberBlockEntity;
+import com.terraformersmc.assembly.screen.AssemblyScreenHandlers;
 import com.terraformersmc.assembly.util.interaction.InteractionUtil;
 import com.terraformersmc.assembly.util.interaction.interactable.InteractionBypass;
+import com.terraformersmc.assembly.util.interaction.interactable.ScreenHandlerInteractable;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.FurnaceBlockEntity;
@@ -22,6 +24,7 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -33,7 +36,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BoilerChamberBlock extends HorizontalFacingBlock implements BlockEntityProvider, Waterloggable, AttributeProvider, InteractionBypass {
+public class BoilerChamberBlock extends HorizontalFacingBlock implements BlockEntityProvider, Waterloggable, AttributeProvider, InteractionBypass, ScreenHandlerInteractable {
 	public static final VoxelShape SHAPE;
 
 	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
@@ -143,5 +146,10 @@ public class BoilerChamberBlock extends HorizontalFacingBlock implements BlockEn
 		VoxelShape middle = Block.createCuboidShape(3, 3, 3, 13, 13, 13);
 		VoxelShape top = Block.createCuboidShape(2, 13, 2, 14, 16, 14);
 		SHAPE = VoxelShapes.union(bottom, middle, top);
+	}
+
+	@Override
+	public Identifier getScreenHandlerId() {
+		return AssemblyScreenHandlers.BOILER_CHAMBER;
 	}
 }

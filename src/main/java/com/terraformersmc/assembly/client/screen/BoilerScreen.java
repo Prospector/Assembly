@@ -1,11 +1,11 @@
 package com.terraformersmc.assembly.client.screen;
 
 import com.terraformersmc.assembly.blockentity.BoilerBlockEntity;
-import com.terraformersmc.assembly.client.screen.base.BaseContainerScreen;
+import com.terraformersmc.assembly.client.screen.base.BaseSyncedScreen;
 import com.terraformersmc.assembly.screen.builder.ScreenSyncer;
 import net.minecraft.client.util.math.MatrixStack;
 
-public class BoilerScreen extends BaseContainerScreen<BoilerBlockEntity> {
+public class BoilerScreen extends BaseSyncedScreen<BoilerBlockEntity> {
 	public BoilerScreen(ScreenSyncer<BoilerBlockEntity> syncer) {
 		super(syncer);
 	}

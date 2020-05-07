@@ -10,6 +10,10 @@ import alexiil.mc.lib.attributes.fluid.volume.FluidKeys;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import com.terraformersmc.assembly.block.AssemblyBlocks;
 import com.terraformersmc.assembly.block.FluidHopperBlock;
+import com.terraformersmc.assembly.screen.builder.ScreenHandlerBuilder;
+import com.terraformersmc.assembly.screen.builder.ScreenSyncer;
+import com.terraformersmc.assembly.screen.builder.ScreenSyncerProvider;
+import com.terraformersmc.assembly.screen.builder.TankStyle;
 import com.terraformersmc.assembly.util.AssemblyConstants;
 import com.terraformersmc.assembly.util.fluid.IOFluidContainer;
 import com.terraformersmc.assembly.util.fluid.SimpleIOFluidContainer;
@@ -18,9 +22,11 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidDrainable;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.tag.FluidTags;
@@ -31,7 +37,7 @@ import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
 
-public class FluidHopperBlockEntity extends BlockEntity implements FluidHopper, Tickable, Nameable, TankIOInteractable {
+public class FluidHopperBlockEntity extends BlockEntity implements FluidHopper, Tickable, Nameable, TankIOInteractable, ScreenSyncerProvider<FluidHopperBlockEntity> {
 	private static final String CUSTOM_NAME_KEY = AssemblyConstants.NbtKeys.CUSTOM_NAME;
 	private static final String TRANSFER_COOLDOWN_KEY = AssemblyConstants.NbtKeys.TRANSFER_COOLDOWN;
 	private static final String WORLD_PULL_COOLDOWN_KEY = AssemblyConstants.NbtKeys.WORLD_PULL_COOLDOWN;
@@ -121,6 +127,24 @@ public class FluidHopperBlockEntity extends BlockEntity implements FluidHopper, 
 			}
 		}
 	}
+
+	@Override
+	public ScreenSyncer<FluidHopperBlockEntity> createSyncer(int syncId, PlayerInventory inventory) {
+		return new ScreenHandlerBuilder(AssemblyConstants.Ids.FLUID_HOPPER, 176, 156, this)
+				.player(inventory.player)
+				.inventory()
+				.hotbar()
+				.addInventory()
+
+				.container(this)
+				.tank(29, 17, TankStyle.ONE, tank, 0)
+				.tank(53, 17, TankStyle.ONE, tank, 1)
+				.tank(77, 17, TankStyle.ONE, tank, 2)
+				.tank(101, 17, TankStyle.ONE, tank, 3)
+				.tank(125, 17, TankStyle.ONE, tank, 4)
+				.addContainer()
+
+				.create(this, syncId);	}
 
 	@Override
 	public double getHopperX() {

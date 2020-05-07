@@ -2,10 +2,10 @@ package com.terraformersmc.assembly.screen.builder;
 
 import alexiil.mc.lib.attributes.fluid.FixedFluidInv;
 import alexiil.mc.lib.attributes.fluid.FluidInvUtil;
-import com.terraformersmc.assembly.blockentity.base.AssemblyContainerBlockEntity;
 import com.terraformersmc.assembly.mixin.common.screenhandler.AccessorScreenHandlerListeners;
 import com.terraformersmc.assembly.networking.AssemblyNetworking;
 import com.terraformersmc.assembly.util.ItemUtil;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventory;
@@ -15,6 +15,7 @@ import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Nameable;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.tuple.MutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
@@ -26,7 +27,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public class ScreenSyncer<BE extends AssemblyContainerBlockEntity> extends ScreenHandler implements ExtendedScreenHandlerListener {
+public class ScreenSyncer<BE extends BlockEntity & Nameable> extends ScreenHandler implements ExtendedScreenHandlerListener {
 
 	private final Identifier id;
 

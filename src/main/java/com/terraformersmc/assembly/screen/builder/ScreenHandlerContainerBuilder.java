@@ -33,10 +33,12 @@ import alexiil.mc.lib.attributes.fluid.filter.FluidFilter;
 import com.terraformersmc.assembly.screen.builder.slot.FilteredSlot;
 import com.terraformersmc.assembly.screen.builder.slot.OutputSlot;
 import com.terraformersmc.assembly.util.fluid.IOFluidContainer;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.util.Nameable;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -44,48 +46,64 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public class ScreenHandlerContainerBuilder {
+public class ScreenHandlerContainerBuilder<BE extends BlockEntity & Nameable> {
 
-	private final Inventory container;
+	private final BE container;
 	private final ScreenHandlerBuilder parent;
 	private final int rangeStart;
 
-	ScreenHandlerContainerBuilder(final ScreenHandlerBuilder parent, final Inventory container) {
+	ScreenHandlerContainerBuilder(final ScreenHandlerBuilder parent, final BE container) {
 		this.container = container;
 		this.parent = parent;
 		this.rangeStart = parent.slots.size();
 	}
 
-	public ScreenHandlerContainerBuilder slot(final int index, final int x, final int y) {
-		this.parent.slots.add(new Slot(this.container, index, x, y));
+	public ScreenHandlerContainerBuilder<BE> slot(final int index, final int x, final int y) {
+		if (container instanceof Inventory) {
+			this.parent.slots.add(new Slot((Inventory) this.container, index, x, y));
+		} else {
+			throw new IllegalStateException("Cannot add a slot to something that is not an item container: " + parent.name);
+		}
 		return this;
 	}
 
-	public ScreenHandlerContainerBuilder tank(final int x, final int y, final TankStyle style, final IOFluidContainer container, FluidFilter insertFilter, FluidFilter extractFilter) {
+	public ScreenHandlerContainerBuilder<BE> tank(final int x, final int y, final TankStyle style, final IOFluidContainer container, FluidFilter insertFilter, FluidFilter extractFilter) {
 		return tank(x, y, style, container, 0, insertFilter, extractFilter);
 	}
 
-	public ScreenHandlerContainerBuilder tank(final int x, final int y, final TankStyle style, final IOFluidContainer container) {
+	public ScreenHandlerContainerBuilder<BE> tank(final int x, final int y, final TankStyle style, final IOFluidContainer container) {
 		return tank(x, y, style, container, 0, ConstantFluidFilter.ANYTHING, ConstantFluidFilter.ANYTHING);
 	}
 
-	public ScreenHandlerContainerBuilder outputTank(final int x, final int y, final TankStyle style, final IOFluidContainer container) {
+	public ScreenHandlerContainerBuilder<BE> tank(final int x, final int y, final TankStyle style, final IOFluidContainer container, int slot) {
+		return tank(x, y, style, container, slot, ConstantFluidFilter.ANYTHING, ConstantFluidFilter.ANYTHING);
+	}
+
+	public ScreenHandlerContainerBuilder<BE> outputTank(final int x, final int y, final TankStyle style, final IOFluidContainer container) {
 		return tank(x, y, style, container, 0, ConstantFluidFilter.ANYTHING, ConstantFluidFilter.NOTHING);
 	}
 
-	public ScreenHandlerContainerBuilder tank(final int x, final int y, final TankStyle style, final IOFluidContainer container, int slot, FluidFilter insertFilter, FluidFilter extractFilter) {
+	public ScreenHandlerContainerBuilder<BE> tank(final int x, final int y, final TankStyle style, final IOFluidContainer container, int slot, FluidFilter insertFilter, FluidFilter extractFilter) {
 		Tank tank = new Tank(this.parent.tanks.size(), x, y, style, container, slot, insertFilter, extractFilter);
 		this.parent.tanks.add(tank);
 		return this.sync(tank.volumeGetter, tank.volumeSetter).sync(tank.capacityGetter, tank.capacitySetter);
 	}
 
-	public ScreenHandlerContainerBuilder outputSlot(final int index, final int x, final int y) {
-		this.parent.slots.add(new OutputSlot(this.container, index, x, y));
+	public ScreenHandlerContainerBuilder<BE> outputSlot(final int index, final int x, final int y) {
+		if (container instanceof Inventory) {
+			this.parent.slots.add(new OutputSlot((Inventory) this.container, index, x, y));
+		} else {
+			throw new IllegalStateException("Cannot add a slot to something that is not an item container: " + parent.name);
+		}
 		return this;
 	}
 
-	public ScreenHandlerContainerBuilder slot(final int index, final int x, final int y, final Predicate<ItemStack> filter) {
-		this.parent.slots.add(new FilteredSlot(this.container, index, x, y).setFilter(filter));
+	public ScreenHandlerContainerBuilder<BE> slot(final int index, final int x, final int y, final Predicate<ItemStack> filter) {
+		if (container instanceof Inventory) {
+			this.parent.slots.add(new FilteredSlot((Inventory) this.container, index, x, y).setFilter(filter));
+		} else {
+			throw new IllegalStateException("Cannot add a slot to something that is not an item container: " + parent.name);
+		}
 		return this;
 	}
 
@@ -95,12 +113,12 @@ public class ScreenHandlerContainerBuilder {
 	 * @param setter   The setter to call when the variable has been updated.
 	 * @return ContainerTileInventoryBuilder InventoryBaseBlockEntity which will do the sync
 	 */
-	public <T> ScreenHandlerContainerBuilder sync(final Supplier<T> supplier, final Consumer<T> setter) {
+	public <T> ScreenHandlerContainerBuilder<BE> sync(final Supplier<T> supplier, final Consumer<T> setter) {
 		this.parent.objectValues.add(Pair.of(supplier, setter));
 		return this;
 	}
 
-	public ScreenHandlerContainerBuilder onCraft(final Consumer<CraftingInventory> onCraft) {
+	public ScreenHandlerContainerBuilder<BE> onCraft(final Consumer<CraftingInventory> onCraft) {
 		this.parent.craftEvents.add(onCraft);
 		return this;
 	}

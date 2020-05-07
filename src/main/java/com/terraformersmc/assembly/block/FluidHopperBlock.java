@@ -4,7 +4,10 @@ import alexiil.mc.lib.attributes.AttributeList;
 import alexiil.mc.lib.attributes.AttributeProvider;
 import com.terraformersmc.assembly.blockentity.AssemblyBlockEntities;
 import com.terraformersmc.assembly.blockentity.FluidHopperBlockEntity;
+import com.terraformersmc.assembly.screen.AssemblyScreenHandlers;
+import com.terraformersmc.assembly.util.AssemblyConstants;
 import com.terraformersmc.assembly.util.interaction.InteractionUtil;
+import com.terraformersmc.assembly.util.interaction.interactable.ScreenHandlerInteractable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HopperBlock;
 import net.minecraft.block.entity.BlockEntity;
@@ -14,13 +17,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class FluidHopperBlock extends HopperBlock implements AttributeProvider {
+public class FluidHopperBlock extends HopperBlock implements AttributeProvider, ScreenHandlerInteractable {
 	public FluidHopperBlock(Settings settings) {
 		super(settings);
 	}
@@ -68,10 +72,15 @@ public class FluidHopperBlock extends HopperBlock implements AttributeProvider {
 	}
 
 	@Override
-    public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 		if (blockEntity instanceof FluidHopperBlockEntity) {
 			((FluidHopperBlockEntity) blockEntity).onEntityCollided(entity);
 		}
+	}
+
+	@Override
+	public Identifier getScreenHandlerId() {
+		return AssemblyScreenHandlers.FLUID_HOPPER;
 	}
 }

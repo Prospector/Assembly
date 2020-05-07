@@ -28,12 +28,13 @@
 
 package com.terraformersmc.assembly.screen.builder;
 
-import com.terraformersmc.assembly.blockentity.base.AssemblyContainerBlockEntity;
+import com.terraformersmc.assembly.screen.AssemblyScreenHandlers;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Nameable;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -46,9 +47,9 @@ import java.util.function.Supplier;
 
 public class ScreenHandlerBuilder {
 
-	private final Identifier name;
+	final Identifier name;
 
-	private Predicate<PlayerEntity> canInteract = player -> true;
+	private Predicate<PlayerEntity> canInteract;
 
 	final List<Slot> slots;
 	final LinkedList<Tank> tanks;
@@ -62,10 +63,12 @@ public class ScreenHandlerBuilder {
 
 	TextPositioner inventoryTitlePositioner = null, titlePositioner;
 
-	public ScreenHandlerBuilder(final Identifier name, int width, int height, TextPositioner titlePositioner) {
+	public ScreenHandlerBuilder(final Identifier name, int width, int height, TextPositioner titlePositioner, BlockEntity blockEntity) {
 		this.name = name;
 		this.width = width;
 		this.height = height;
+
+		this.canInteract = player -> AssemblyScreenHandlers.canPlayerUse(blockEntity, player);
 
 		this.slots = new ArrayList<>();
 		this.tanks = new LinkedList<>();
@@ -79,8 +82,8 @@ public class ScreenHandlerBuilder {
 		this.titlePositioner = titlePositioner;
 	}
 
-	public ScreenHandlerBuilder(final Identifier name, int width, int height) {
-		this(name, width, height, (w, h, text, textRenderer) -> new ScreenPos((w - textRenderer.getStringWidth(text)) / 2, 6));
+	public ScreenHandlerBuilder(final Identifier name, int width, int height, BlockEntity blockEntity) {
+		this(name, width, height, (w, h, text, textRenderer) -> new ScreenPos((w - textRenderer.getStringWidth(text)) / 2, 6), blockEntity);
 	}
 
 	public ScreenHandlerBuilder interact(final Predicate<PlayerEntity> canInteract) {
@@ -92,8 +95,8 @@ public class ScreenHandlerBuilder {
 		return new ScreenHandlerInventoryBuilder(this, player);
 	}
 
-	public ScreenHandlerContainerBuilder container(final Inventory container) {
-		return new ScreenHandlerContainerBuilder(this, container);
+	public <BE extends BlockEntity & Nameable> ScreenHandlerContainerBuilder<BE> container(final BE container) {
+		return new ScreenHandlerContainerBuilder<>(this, container);
 	}
 
 	void addPlayerInventorySlotRange(final Range<Integer> range) {
@@ -109,8 +112,8 @@ public class ScreenHandlerBuilder {
 	 * The container have to know if the BlockEntity is still available (the block was not destroyed)
 	 * and if the player is not to far from him to close the GUI if necessary
 	 */
-	public ScreenSyncer create(int syncId) {
-		final ScreenSyncer built = new ScreenSyncer(this.name, this.canInteract, this.inventorySlotRange, this.blockEntitySlotRange, null, width, height, syncId);
+	public <BE extends BlockEntity & Nameable> ScreenSyncer<BE> create(int syncId) {
+		final ScreenSyncer<BE> built = new ScreenSyncer<>(this.name, this.canInteract, this.inventorySlotRange, this.blockEntitySlotRange, null, width, height, syncId);
 
 		if (!this.objectValues.isEmpty())
 			built.addObjectSync(this.objectValues);
@@ -128,8 +131,8 @@ public class ScreenHandlerBuilder {
 		return built;
 	}
 
-	public ScreenSyncer create(final AssemblyContainerBlockEntity blockEntity, int syncId) {
-		final ScreenSyncer built = new ScreenSyncer(this.name, this.canInteract, this.inventorySlotRange, this.blockEntitySlotRange, blockEntity, width, height, syncId);
+	public <BE extends BlockEntity & Nameable> ScreenSyncer<BE> create(final BE blockEntity, int syncId) {
+		final ScreenSyncer<BE> built = new ScreenSyncer<>(this.name, this.canInteract, this.inventorySlotRange, this.blockEntitySlotRange, blockEntity, width, height, syncId);
 
 		if (!this.craftEvents.isEmpty()) {
 			built.addCraftEvents(this.craftEvents);

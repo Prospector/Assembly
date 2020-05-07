@@ -53,6 +53,8 @@ public class AssemblyConstants {
 
 	public static class Ids {
 		public static final Identifier BOILER = id("boiler");
+		public static final Identifier BOILER_CHAMBER = id("boiler_chamber");
+		public static final Identifier FLUID_HOPPER = id("fluid_hopper");
 
 		public static final Identifier AUTHOR_CAPE = id("textures/entity/player/author_cape.png");
 		public static final Identifier CONTRIBUTOR_CAPE = id("textures/entity/player/contributor_cape.png");

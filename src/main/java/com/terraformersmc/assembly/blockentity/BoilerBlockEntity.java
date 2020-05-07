@@ -13,6 +13,7 @@ import com.terraformersmc.assembly.recipe.AssemblyRecipeTypes;
 import com.terraformersmc.assembly.recipe.BoilingRecipe;
 import com.terraformersmc.assembly.recipe.provider.FluidInputInventory;
 import com.terraformersmc.assembly.screen.builder.ScreenHandlerBuilder;
+import com.terraformersmc.assembly.screen.builder.ScreenSyncer;
 import com.terraformersmc.assembly.screen.builder.TankStyle;
 import com.terraformersmc.assembly.util.AssemblyConstants;
 import com.terraformersmc.assembly.util.fluid.IOFluidContainer;
@@ -29,7 +30,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.Recipe;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
@@ -169,10 +169,8 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 	}
 
 	@Override
-	public ScreenHandler createContainer(int syncId, PlayerInventory inventory) {
-		return new ScreenHandlerBuilder(AssemblyConstants.Ids.BOILER, 176, 166)
-				.interact(this::canPlayerUse)
-
+	public ScreenSyncer<AssemblyContainerBlockEntity> createSyncer(int syncId, PlayerInventory inventory) {
+		return new ScreenHandlerBuilder(AssemblyConstants.Ids.BOILER, 176, 166, this)
 				.player(inventory.player)
 				.inventory()
 				.hotbar()
@@ -303,5 +301,9 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 		}
 
 		return true;
+	}
+
+	public int getChamberCount() {
+		return chambers.size();
 	}
 }
