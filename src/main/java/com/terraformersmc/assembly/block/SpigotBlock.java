@@ -3,7 +3,9 @@ package com.terraformersmc.assembly.block;
 import alexiil.mc.lib.attributes.AttributeProvider;
 import com.terraformersmc.assembly.block.propertyenum.ValveState;
 import com.terraformersmc.assembly.blockentity.AssemblyBlockEntities;
+import com.terraformersmc.assembly.sound.AssemblySoundEvents;
 import com.terraformersmc.assembly.util.AssemblyConstants;
+import com.terraformersmc.assembly.util.interaction.interactable.InteractionBypass;
 import com.terraformersmc.assembly.util.math.ShapeUtil;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -11,10 +13,12 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.IntProperty;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
@@ -33,10 +37,11 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SpigotBlock extends HorizontalFacingBlock implements BlockEntityProvider {
+public class SpigotBlock extends HorizontalFacingBlock implements BlockEntityProvider, InteractionBypass {
 	public static final EnumProperty<ValveState> VALVE = AssemblyConstants.Properties.VALVE;
 	public static final BooleanProperty POURING = AssemblyConstants.Properties.POURING;
 	public static final IntProperty EXTENSION = AssemblyConstants.Properties.EXTENSION;
+	public static final BooleanProperty POWERED = Properties.POWERED;
 
 	private static final Map<BlockState, VoxelShape> SHAPE_CACHE = new HashMap<>();
 	private static final VoxelShape FAUCET = Block.createCuboidShape(6, 5, 5, 10, 9, 9);
@@ -51,7 +56,7 @@ public class SpigotBlock extends HorizontalFacingBlock implements BlockEntityPro
 
 	public SpigotBlock(Settings settings) {
 		super(settings);
-		this.setDefaultState(this.getStateManager().getDefaultState().with(POURING, false).with(VALVE, ValveState.OPEN).with(EXTENSION, 0));
+		this.setDefaultState(this.getStateManager().getDefaultState().with(POURING, false).with(VALVE, ValveState.OPEN).with(EXTENSION, 0).with(POWERED, false));
 	}
 
 	@Override
@@ -144,8 +149,10 @@ public class SpigotBlock extends HorizontalFacingBlock implements BlockEntityPro
 				} else {
 					world.setBlockState(pos, state.with(VALVE, ValveState.randomClosed(player.getRandom())));
 				}
+				world.playSound(null, pos, AssemblySoundEvents.SPIGOT_CLOSE, SoundCategory.BLOCKS, 0.2F, 1F);
 			} else {
 				world.setBlockState(pos, state.with(VALVE, ValveState.OPEN));
+				world.playSound(null, pos, AssemblySoundEvents.SPIGOT_OPEN, SoundCategory.BLOCKS, 0.2F, 1F);
 			}
 		}
 		return ActionResult.SUCCESS;
@@ -153,7 +160,31 @@ public class SpigotBlock extends HorizontalFacingBlock implements BlockEntityPro
 
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(FACING, VALVE, POURING, EXTENSION);
+		builder.add(FACING, VALVE, POURING, EXTENSION, POWERED);
+	}
+
+	@Override
+	public boolean bypassesInteractions(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+		return state.getBlock() instanceof BoilerChamberBlock;
+	}
+
+	@Override
+	public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
+		boolean currentlyPowered = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.up());
+		boolean wasPowered = state.get(POWERED);
+		if (currentlyPowered && !wasPowered) {
+			world.getBlockTickScheduler().schedule(pos, this, 4);
+			if (state.get(VALVE).isOpen()) {
+				world.setBlockState(pos, state.with(POWERED, true).with(VALVE, ValveState.randomClosed(world.getRandom())));
+				world.playSound(null, pos, AssemblySoundEvents.SPIGOT_CLOSE, SoundCategory.BLOCKS, 0.2F, 1F);
+			} else {
+				world.setBlockState(pos, state.with(POWERED, true).with(VALVE, ValveState.OPEN));
+				world.playSound(null, pos, AssemblySoundEvents.SPIGOT_OPEN, SoundCategory.BLOCKS, 0.2F, 1F);
+			}
+		} else if (!currentlyPowered && wasPowered) {
+			world.setBlockState(pos, state.with(POWERED, false), 4);
+		}
+
 	}
 
 	static {
@@ -167,5 +198,15 @@ public class SpigotBlock extends HorizontalFacingBlock implements BlockEntityPro
 		EXTENSION_SHAPES_DETECTION.put(3, Block.createCuboidShape(6, 6, 0, 10, 9, 3));
 		EXTENSION_SHAPES_DETECTION.put(4, Block.createCuboidShape(6, 6, 0, 10, 9, 4));
 		EXTENSION_SHAPES_DETECTION.put(5, Block.createCuboidShape(6, 6, 0, 10, 9, 5));
+	}
+
+	@Override
+	public boolean hasComparatorOutput(BlockState state) {
+		return true;
+	}
+
+	@Override
+	public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
+		return state.get(POURING) ? 15 : 0;
 	}
 }

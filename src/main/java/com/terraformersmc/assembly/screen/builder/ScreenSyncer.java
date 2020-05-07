@@ -1,6 +1,5 @@
 package com.terraformersmc.assembly.screen.builder;
 
-import alexiil.mc.lib.attributes.fluid.FixedFluidInv;
 import alexiil.mc.lib.attributes.fluid.FluidInvUtil;
 import com.terraformersmc.assembly.mixin.common.screenhandler.AccessorScreenHandlerListeners;
 import com.terraformersmc.assembly.networking.AssemblyNetworking;
@@ -140,7 +139,7 @@ public class ScreenSyncer<BE extends BlockEntity & Nameable> extends ScreenHandl
 
 	public void onTankClick(ServerPlayerEntity player, int tankIndex) {
 		Tank tank = tanks.get(tankIndex);
-		FluidInvUtil.interactCursorWithTank((FixedFluidInv) tank.fluidContainer, player);
+		FluidInvUtil.interactCursorWithTank(tank.fluidContainer.getPureInsertable().filtered(tank.getInsertFilter()), tank.fluidContainer.getPureExtractable().filtered(tank.getExtractFilter()), player);
 	}
 
 	@Override

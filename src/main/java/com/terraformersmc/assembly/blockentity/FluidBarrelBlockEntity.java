@@ -25,6 +25,8 @@ public class FluidBarrelBlockEntity extends AssemblySyncedNbtBlockEntity impleme
 	public FluidBarrelBlockEntity() {
 		super(AssemblyBlockEntities.FLUID_BARREL);
 		this.tank = new SimpleIOFluidContainer(1, CAPACITY);
+		this.tank.addListener((inv, tank1, previous, current) -> markDirty(), () -> {
+		});
 	}
 
 	@Override

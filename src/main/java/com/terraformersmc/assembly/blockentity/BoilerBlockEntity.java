@@ -68,12 +68,18 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 
 	public BoilerBlockEntity() {
 		super(AssemblyBlockEntities.BOILER);
-		inputTank = new SimpleIOFluidContainer(1, INPUT_CAPACITY);
-		outputTank = new SimpleIOFluidContainer(1, () -> outputCapacity);
-		inputTank.addListener((inv, tank, previous, current) -> {
+		this.inputTank = new SimpleIOFluidContainer(1, INPUT_CAPACITY);
+		this.outputTank = new SimpleIOFluidContainer(1, () -> this.outputCapacity);
+		this.inputTank.addListener((inv, tank, previous, current) -> {
 			if (previous.getFluidKey() != current.getFluidKey() || previous.isEmpty() && !current.isEmpty()) {
 				//Todo: cache recipes
 				//updateRecipe();
+			}
+		}, () -> {
+		});
+		this.outputTank.addListener((inv, tank1, previous, current) -> {
+			for (BlockEntity chamber : chambers.values()) {
+				chamber.markDirty();
 			}
 		}, () -> {
 		});
@@ -93,6 +99,9 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 				((BoilerChamberBlockEntity) chamber).updateBoiler(pos);
 			} else {
 				outputCapacity = OUTPUT_CAPACITY_PER_CHAMBER.checkedMul(chambers.size());
+				if (outputTank.getInvFluid(0).getAmount_F().isGreaterThan(outputCapacity)) {
+					outputTank.setInvFluid(0, outputTank.getInvFluid(0).withAmount(outputCapacity), Simulation.ACTION);
+				}
 				double numerator = (Math.sqrt((double) (chambers.size() - 1) / 2.0D) + 1.0D); // original equation: y = [sqrt(x/2) + 1]/1000
 				int denominator = 1000;
 				recipeIncrement = FluidAmount.of((int) (numerator * 100), denominator * 100); // the 100s are to keep some more digits
@@ -155,7 +164,7 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 			FluidVolume inputSim = inputTank.attemptExtraction(fluidKey -> FluidKeys.get(recipe.inputFluid).equals(fluidKey), recipeIncrement.roundedMul(recipe.ratio), Simulation.SIMULATE);
 			if (!inputSim.isEmpty()) {
 				FluidVolume outputSim = outputTank.attemptInsertion(FluidKeys.get(recipe.output).withAmount(recipeIncrement), Simulation.SIMULATE);
-				if (outputSim.isEmpty()) {
+				if (!outputSim.getAmount_F().equals(recipeIncrement)) {
 					return inputSim;
 				}
 			}
@@ -181,7 +190,7 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 				.sync(this::getFuelTime, fuelTime -> this.fuelTime = fuelTime)
 				.slot(0, 80, 40, AbstractFurnaceBlockEntity::canUseAsFuel)
 				.tank(41, 23, TankStyle.TWO, inputTank)
-				.tank(113, 23, TankStyle.TWO, outputTank)
+				.outputTank(113, 23, TankStyle.TWO, outputTank)
 				.addContainer()
 
 				.create(this, syncId);

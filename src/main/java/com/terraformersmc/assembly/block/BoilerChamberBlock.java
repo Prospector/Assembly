@@ -6,6 +6,7 @@ import com.terraformersmc.assembly.blockentity.AssemblyBlockEntities;
 import com.terraformersmc.assembly.blockentity.BoilerBlockEntity;
 import com.terraformersmc.assembly.blockentity.BoilerChamberBlockEntity;
 import com.terraformersmc.assembly.screen.AssemblyScreenHandlers;
+import com.terraformersmc.assembly.util.ComparatorUtil;
 import com.terraformersmc.assembly.util.interaction.InteractionUtil;
 import com.terraformersmc.assembly.util.interaction.interactable.InteractionBypass;
 import com.terraformersmc.assembly.util.interaction.interactable.ScreenHandlerInteractable;
@@ -43,6 +44,7 @@ public class BoilerChamberBlock extends HorizontalFacingBlock implements BlockEn
 
 	public BoilerChamberBlock(Settings settings) {
 		super(settings);
+		this.setDefaultState(getStateManager().getDefaultState().with(WATERLOGGED, false));
 	}
 
 	@Override
@@ -151,5 +153,22 @@ public class BoilerChamberBlock extends HorizontalFacingBlock implements BlockEn
 	@Override
 	public Identifier getScreenHandlerId() {
 		return AssemblyScreenHandlers.BOILER_CHAMBER;
+	}
+
+	@Override
+	public boolean hasComparatorOutput(BlockState state) {
+		return true;
+	}
+
+	@Override
+	public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
+		BlockEntity blockEntity = world.getBlockEntity(pos);
+		if (blockEntity instanceof BoilerChamberBlockEntity) {
+			BoilerBlockEntity boiler = ((BoilerChamberBlockEntity) blockEntity).getBoiler();
+			if (boiler != null) {
+				return ComparatorUtil.calculateFluidContainerOutput(boiler.getOutputTank());
+			}
+		}
+		return 0;
 	}
 }

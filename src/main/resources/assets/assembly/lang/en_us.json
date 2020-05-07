@@ -103,5 +103,8 @@
   "item.assembly.exoframe_footpiece": "Exoframe Footpiece",
   "item.assembly.piston_boots": "Piston Boots",
 
-  "filled_map.assembly:salt_dome": "Petrogeologist Map"
+  "filled_map.assembly:salt_dome": "Petrogeologist Map",
+
+  "subtitles.assembly.block.spigot.open": "Spigot valve opened",
+  "subtitles.assembly.block.spigot.close": "Spigot valve closed"
 }

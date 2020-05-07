@@ -5,7 +5,7 @@ import alexiil.mc.lib.attributes.AttributeProvider;
 import com.terraformersmc.assembly.blockentity.AssemblyBlockEntities;
 import com.terraformersmc.assembly.blockentity.FluidHopperBlockEntity;
 import com.terraformersmc.assembly.screen.AssemblyScreenHandlers;
-import com.terraformersmc.assembly.util.AssemblyConstants;
+import com.terraformersmc.assembly.util.ComparatorUtil;
 import com.terraformersmc.assembly.util.interaction.InteractionUtil;
 import com.terraformersmc.assembly.util.interaction.interactable.ScreenHandlerInteractable;
 import net.minecraft.block.BlockState;
@@ -34,7 +34,7 @@ public class FluidHopperBlock extends HopperBlock implements AttributeProvider, 
 		BlockEntity blockEntity = world.getBlockEntity(pos);
 		if (blockEntity instanceof FluidHopperBlockEntity) {
 			FluidHopperBlockEntity fluidHopper = (FluidHopperBlockEntity) blockEntity;
-			to.offer(fluidHopper.getTank(), VoxelShapes.fullCube());
+			to.offer(fluidHopper.getFluidTank(), VoxelShapes.fullCube());
 		}
 	}
 
@@ -82,5 +82,19 @@ public class FluidHopperBlock extends HopperBlock implements AttributeProvider, 
 	@Override
 	public Identifier getScreenHandlerId() {
 		return AssemblyScreenHandlers.FLUID_HOPPER;
+	}
+
+	@Override
+	public boolean hasComparatorOutput(BlockState state) {
+		return true;
+	}
+
+	@Override
+	public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
+		BlockEntity blockEntity = world.getBlockEntity(pos);
+		if (blockEntity instanceof FluidHopperBlockEntity) {
+			return ComparatorUtil.calculateFluidContainerOutput(((FluidHopperBlockEntity) blockEntity).getFluidTank());
+		}
+		return 0;
 	}
 }

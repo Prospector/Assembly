@@ -61,7 +61,7 @@ public class BoilerChamberBlockEntity extends BlockEntity implements TankOutputI
 				.addInventory()
 
 				.container(this)
-				.tank(77, 17, boiler.getChamberCount() == 1 ? TankStyle.ONE : TankStyle.TWO, boiler.getOutputTank(), 0)
+				.outputTank(77, 17, boiler.getChamberCount() == 1 ? TankStyle.ONE : TankStyle.TWO, boiler.getOutputTank())
 				.addContainer()
 
 				.create(this, syncId);

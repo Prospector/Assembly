@@ -10,6 +10,7 @@ import com.terraformersmc.assembly.networking.AssemblyNetworking;
 import com.terraformersmc.assembly.recipe.AssemblyRecipeTypes;
 import com.terraformersmc.assembly.recipe.serializer.AssemblyRecipeSerializers;
 import com.terraformersmc.assembly.screen.AssemblyScreenHandlers;
+import com.terraformersmc.assembly.sound.AssemblySoundEvents;
 import com.terraformersmc.assembly.util.AssemblyConstants;
 import com.terraformersmc.assembly.world.AssemblyWorldgen;
 import com.terraformersmc.assembly.world.feature.AssemblyFeatures;
@@ -42,6 +43,7 @@ public class Assembly implements ModInitializer {
 		AssemblyStructurePieceTypes.register();
 		AssemblyWorldgen.register();
 		AssemblyLoot.register();
+		AssemblySoundEvents.register();
 		FabricItemGroupBuilder.create(new Identifier(MOD_ID, "items")).icon(() -> new ItemStack(AssemblyItems.BRASS_GEAR)).appendItems(stacks -> Registry.ITEM.forEach(item -> {
 			if (Registry.ITEM.getId(item).getNamespace().equals(MOD_ID))
 				item.appendStacks(item.getGroup(), (DefaultedList<ItemStack>) stacks);

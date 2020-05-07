@@ -1,0 +1,14 @@
+{
+  "block.spigot.open": {
+    "subtitle": "subtitles.assembly.block.spigot.open",
+    "sounds": [
+      "assembly:block/spigot_open"
+    ]
+  },
+  "block.spigot.close": {
+    "subtitle": "subtitles.assembly.block.spigot.close",
+    "sounds": [
+      "assembly:block/spigot_close"
+    ]
+  }
+}

@@ -6,8 +6,10 @@ import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import com.terraformersmc.assembly.blockentity.AssemblyBlockEntities;
 import com.terraformersmc.assembly.blockentity.FluidBarrelBlockEntity;
+import com.terraformersmc.assembly.blockentity.FluidHopperBlockEntity;
 import com.terraformersmc.assembly.fluid.AssemblyFluids;
 import com.terraformersmc.assembly.item.AssemblyItems;
+import com.terraformersmc.assembly.util.ComparatorUtil;
 import com.terraformersmc.assembly.util.fluid.IOFluidContainer;
 import com.terraformersmc.assembly.util.interaction.InteractionActionResult;
 import com.terraformersmc.assembly.util.interaction.InteractionUtil;
@@ -76,5 +78,19 @@ public class FluidBarrelBlock extends Block implements BlockEntityProvider, Attr
 			return InteractionActionResult.PASS;
 		});
 		return result;
+	}
+
+	@Override
+	public boolean hasComparatorOutput(BlockState state) {
+		return true;
+	}
+
+	@Override
+	public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
+		BlockEntity blockEntity = world.getBlockEntity(pos);
+		if (blockEntity instanceof FluidBarrelBlockEntity) {
+			return ComparatorUtil.calculateFluidContainerOutput(((FluidBarrelBlockEntity) blockEntity).getTank());
+		}
+		return 0;
 	}
 }

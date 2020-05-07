@@ -80,7 +80,11 @@ public class ScreenHandlerContainerBuilder<BE extends BlockEntity & Nameable> {
 	}
 
 	public ScreenHandlerContainerBuilder<BE> outputTank(final int x, final int y, final TankStyle style, final IOFluidContainer container) {
-		return tank(x, y, style, container, 0, ConstantFluidFilter.ANYTHING, ConstantFluidFilter.NOTHING);
+		return outputTank(x, y, style, container, 0);
+	}
+
+	public ScreenHandlerContainerBuilder<BE> outputTank(final int x, final int y, final TankStyle style, final IOFluidContainer container, int slot) {
+		return tank(x, y, style, container, slot, ConstantFluidFilter.NOTHING, ConstantFluidFilter.ANYTHING);
 	}
 
 	public ScreenHandlerContainerBuilder<BE> tank(final int x, final int y, final TankStyle style, final IOFluidContainer container, int slot, FluidFilter insertFilter, FluidFilter extractFilter) {

@@ -84,11 +84,13 @@ public class SteamPressBlock extends HorizontalFacingBlock implements BlockEntit
 								stack = player.getStackInHand(hand).copy().split(1);
 							}
 							steamPress.setStack(SteamPressBlockEntity.INPUT_SLOT, stack);
+							if (!stack.isEmpty()) {
+								if (player instanceof ServerPlayerEntity) {
+									player.world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ITEM_FRAME_ADD_ITEM, SoundCategory.PLAYERS, 0.3F, ((player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.7F + 1.5F) * 2.0F);
+								}
+								return InteractionActionResult.SUCCESS;
+							}
 						}
-						if (player instanceof ServerPlayerEntity) {
-							player.world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ITEM_FRAME_ADD_ITEM, SoundCategory.PLAYERS, 0.3F, ((player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.7F + 1.5F) * 2.0F);
-						}
-						return InteractionActionResult.SUCCESS;
 					}
 				}
 			}
