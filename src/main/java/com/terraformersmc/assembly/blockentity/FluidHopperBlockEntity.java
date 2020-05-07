@@ -21,6 +21,7 @@ import com.terraformersmc.assembly.util.fluid.IOFluidContainer;
 import com.terraformersmc.assembly.util.fluid.SimpleIOFluidContainer;
 import com.terraformersmc.assembly.util.interaction.interactable.TankIOInteractable;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.CauldronBlock;
 import net.minecraft.block.FluidDrainable;
 import net.minecraft.block.HopperBlock;
 import net.minecraft.block.entity.BlockEntity;
@@ -102,10 +103,11 @@ public class FluidHopperBlockEntity extends BlockEntity implements FluidHopper, 
 
 			if (this.getCachedState().get(HopperBlock.ENABLED)) {
 				// Try to transfer to/from containers
+				BlockPos frontPos = this.pos.offset(this.getCachedState().get(FluidHopperBlock.FACING));
 				if (this.canTransfer()) {
 					BlockPos upPos = this.pos.up();
 					boolean pulled = !FluidVolumeUtil.move(FluidAttributes.EXTRACTABLE.get(this.world, upPos), this.tank, TRANSFER_AMOUNT).isEmpty();
-					boolean pushed = !FluidVolumeUtil.move(this.tank, FluidAttributes.INSERTABLE.get(this.world, this.pos.offset(this.getCachedState().get(FluidHopperBlock.FACING))), TRANSFER_AMOUNT).isEmpty();
+					boolean pushed = !FluidVolumeUtil.move(this.tank, FluidAttributes.INSERTABLE.get(this.world, frontPos), TRANSFER_AMOUNT).isEmpty();
 					if (pulled || pushed) {
 						this.resetTransferCooldown();
 						this.markDirty();
@@ -114,21 +116,56 @@ public class FluidHopperBlockEntity extends BlockEntity implements FluidHopper, 
 				}
 
 				// If it didn't pull from a container, try to pull from the world
-				if (!pulledFromContainer && canPullFromWorld()) {
+				if (!pulledFromContainer) {
 					BlockPos upPos = this.pos.up();
-					BlockState upBlockState = this.world.getBlockState(upPos);
-					if (upBlockState.getBlock() instanceof FluidDrainable) {
-						Fluid stateFluid = upBlockState.getFluidState().getFluid();
-						if (stateFluid != Fluids.EMPTY && this.tank.attemptInsertion(FluidKeys.get(stateFluid).withAmount(FluidAmount.BUCKET), Simulation.SIMULATE).isEmpty()) {
-							Fluid fluid = ((FluidDrainable) upBlockState.getBlock()).tryDrainFluid(this.world, upPos, upBlockState);
-							if (fluid != Fluids.EMPTY) {
-								FluidKey key = FluidKeys.get(fluid);
-								FluidVolume upFluidVolume = key instanceof BiomeSourcedFluidKey ? ((BiomeSourcedFluidKey) key).withAmount(world.getBiome(pos), FluidAmount.BUCKET) : key.withAmount(FluidAmount.BUCKET);
-								if (this.tank.attemptInsertion(upFluidVolume, Simulation.SIMULATE).isEmpty()) {
-									this.tank.attemptInsertion(upFluidVolume, Simulation.ACTION);
-									this.world.playSound(null, upPos, fluid.isIn(FluidTags.LAVA) ? SoundEvents.ITEM_BUCKET_FILL_LAVA : SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
-									this.resetWorldCooldown();
+					BlockState upState = this.world.getBlockState(upPos);
+					boolean upCauldron = upState.getBlock() instanceof CauldronBlock;
+					BlockState frontState = this.world.getBlockState(frontPos);
+					boolean frontCauldron = frontState.getBlock() instanceof CauldronBlock;
+					if (upCauldron || frontCauldron && canTransfer()) { // Try to pull from & push to cauldron
+						Fluid fluid = Fluids.WATER; // Hardcoded to water for now
+						FluidKey key = FluidKeys.get(fluid);
+						if (upCauldron) {
+							int upCauldronLevel = upState.get(CauldronBlock.LEVEL);
+							if (upCauldronLevel > 0) { // Pull from upper cauldron
+								if (fluid != Fluids.EMPTY) {
+									FluidVolume volume = key instanceof BiomeSourcedFluidKey ? ((BiomeSourcedFluidKey) key).withAmount(world.getBiome(pos), FluidAmount.BOTTLE) : key.withAmount(FluidAmount.BOTTLE);
+									if (this.tank.attemptInsertion(volume, Simulation.SIMULATE).isEmpty()) {
+										this.world.setBlockState(upPos, upState.with(CauldronBlock.LEVEL, upCauldronLevel - 1));
+										this.tank.attemptInsertion(volume, Simulation.ACTION);
+										this.world.playSound(null, upPos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+										this.resetTransferCooldown();
+										this.markDirty();
+									}
+								}
+							}
+						}
+						if (frontCauldron) {
+							int frontCauldronLevel = frontState.get(CauldronBlock.LEVEL);
+							if (frontCauldronLevel < 3 && key.equals(tank.getInvFluid(0).getFluidKey())) { // Push to front cauldron
+								if (this.tank.attemptExtraction(fluidKey -> fluidKey == key, FluidAmount.BOTTLE, Simulation.SIMULATE).getAmount_F().equals(FluidAmount.BOTTLE)) {
+									this.world.setBlockState(frontPos, frontState.with(CauldronBlock.LEVEL, frontCauldronLevel + 1));
+									this.tank.attemptExtraction(fluidKey -> fluidKey == key, FluidAmount.BOTTLE, Simulation.ACTION);
+									this.world.playSound(null, frontPos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+									this.resetTransferCooldown();
 									this.markDirty();
+								}
+							}
+						}
+					} else if (canPullFromWorld()) { // Try to pull from the world
+						if (upState.getBlock() instanceof FluidDrainable) {
+							Fluid stateFluid = upState.getFluidState().getFluid();
+							if (stateFluid != Fluids.EMPTY && this.tank.attemptInsertion(FluidKeys.get(stateFluid).withAmount(FluidAmount.BUCKET), Simulation.SIMULATE).isEmpty()) {
+								Fluid fluid = ((FluidDrainable) upState.getBlock()).tryDrainFluid(this.world, upPos, upState);
+								if (fluid != Fluids.EMPTY) {
+									FluidKey key = FluidKeys.get(fluid);
+									FluidVolume upFluidVolume = key instanceof BiomeSourcedFluidKey ? ((BiomeSourcedFluidKey) key).withAmount(world.getBiome(pos), FluidAmount.BUCKET) : key.withAmount(FluidAmount.BUCKET);
+									if (this.tank.attemptInsertion(upFluidVolume, Simulation.SIMULATE).isEmpty()) {
+										this.tank.attemptInsertion(upFluidVolume, Simulation.ACTION);
+										this.world.playSound(null, upPos, fluid.isIn(FluidTags.LAVA) ? SoundEvents.ITEM_BUCKET_FILL_LAVA : SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+										this.resetWorldCooldown();
+										this.markDirty();
+									}
 								}
 							}
 						}
