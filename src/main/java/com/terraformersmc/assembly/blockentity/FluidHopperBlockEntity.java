@@ -6,6 +6,8 @@ import alexiil.mc.lib.attributes.fluid.FluidExtractable;
 import alexiil.mc.lib.attributes.fluid.FluidInsertable;
 import alexiil.mc.lib.attributes.fluid.FluidVolumeUtil;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
+import alexiil.mc.lib.attributes.fluid.volume.BiomeSourcedFluidKey;
+import alexiil.mc.lib.attributes.fluid.volume.FluidKey;
 import alexiil.mc.lib.attributes.fluid.volume.FluidKeys;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import com.terraformersmc.assembly.block.AssemblyBlocks;
@@ -26,7 +28,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.tag.FluidTags;
@@ -115,7 +116,8 @@ public class FluidHopperBlockEntity extends BlockEntity implements FluidHopper, 
 					if (stateFluid != Fluids.EMPTY && this.tank.attemptInsertion(FluidKeys.get(stateFluid).withAmount(FluidAmount.BUCKET), Simulation.SIMULATE).isEmpty()) {
 						Fluid fluid = ((FluidDrainable) upBlockState.getBlock()).tryDrainFluid(this.world, upPos, upBlockState);
 						if (fluid != Fluids.EMPTY) {
-							FluidVolume upFluidVolume = FluidKeys.get(fluid).withAmount(FluidAmount.BUCKET);
+							FluidKey key = FluidKeys.get(fluid);
+							FluidVolume upFluidVolume = key instanceof BiomeSourcedFluidKey ? ((BiomeSourcedFluidKey) key).withAmount(world.getBiome(pos), FluidAmount.BUCKET) : key.withAmount(FluidAmount.BUCKET);
 							if (this.tank.attemptInsertion(upFluidVolume, Simulation.SIMULATE).isEmpty()) {
 								this.tank.attemptInsertion(upFluidVolume, Simulation.ACTION);
 								this.world.playSound(null, upPos, fluid.isIn(FluidTags.LAVA) ? SoundEvents.ITEM_BUCKET_FILL_LAVA : SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -144,7 +146,8 @@ public class FluidHopperBlockEntity extends BlockEntity implements FluidHopper, 
 				.tank(125, 17, TankStyle.ONE, tank, 4)
 				.addContainer()
 
-				.create(this, syncId);	}
+				.create(this, syncId);
+	}
 
 	@Override
 	public double getHopperX() {
