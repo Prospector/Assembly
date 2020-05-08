@@ -15,6 +15,11 @@ public class HammerItem extends MiningToolItem implements ExtendedRecipeRemainde
 	}
 
 	@Override
+	public boolean isEffectiveOn(BlockState state) {
+		return true;
+	}
+
+	@Override
 	public ItemStack getRemainderStack(ItemStack stack) {
 		stack.damage(1, RANDOM, null);
 		if (stack.getDamage() >= stack.getMaxDamage()) {

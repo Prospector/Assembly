@@ -19,8 +19,6 @@
 
     "common.multiblock.MixinServerPlayerInteractionManager",
 
-    "common.ore.MixinItem",
-
     "common.recipe.AccessorRecipeManager",
     "common.recipe.MixinServerRecipeBook",
     "common.recipe.MixinSmithingScreenHandler",

@@ -17,7 +17,7 @@ public class AssemblyItemTags {
 	public static final Tag.Identified<Item> ZINC_BLOCKS = ofCommon("zinc_blocks");
 	public static final Tag.Identified<Item> BRASS_BLOCKS = ofCommon("brass_blocks");
 	public static final Tag.Identified<Item> HEVEA_LOGS = ofAssembly("hevea_logs");
-	public static final Tag.Identified<Item> HAMMER = ofAssembly("hammer");
+	public static final Tag.Identified<Item> HAMMERS = ofAssembly("hammers");
 
 	public static Tag.Identified<Item> of(Identifier id) {
 		return ItemTagsInvoker.register(id.toString());

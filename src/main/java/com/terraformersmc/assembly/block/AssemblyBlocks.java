@@ -62,18 +62,7 @@ public class AssemblyBlocks {
 	public static final Block BOILER_CHAMBER = add("boiler_chamber", new BoilerChamberBlock(FabricBlockSettings.of(Material.METAL).hardness(1.0F)), ItemGroup.DECORATIONS);
 	public static final Block STEAM_PRESS = add("steam_press", new SteamPressBlock(FabricBlockSettings.of(Material.METAL).dynamicBounds().hardness(1.0F)));
 
-	public static final Block COPPER_ORE = add("copper_ore", new AssemblyOreBlock(FabricBlockSettings.of(Material.STONE).strength(2.5F, 2.5F).breakByTool(FabricToolTags.PICKAXES, 1)), ItemGroup.BUILDING_BLOCKS);
-
-	public static final Block CRUSHED_COAL_ORE = add("crushed_coal_ore", new AssemblyOreBlock(FabricBlockSettings.copyOf(Blocks.COAL_ORE).breakByTool(FabricToolTags.PICKAXES, 0)), ItemGroup.BUILDING_BLOCKS);
-	public static final Block CRUSHED_COPPER_ORE = add("crushed_copper_ore", new AssemblyOreBlock(FabricBlockSettings.copyOf(COPPER_ORE).breakByTool(FabricToolTags.PICKAXES, 1)), ItemGroup.BUILDING_BLOCKS);
-	public static final Block CRUSHED_IRON_ORE = add("crushed_iron_ore", new AssemblyOreBlock(FabricBlockSettings.copyOf(Blocks.IRON_ORE).breakByTool(FabricToolTags.PICKAXES, 1)), ItemGroup.BUILDING_BLOCKS);
-	public static final Block CRUSHED_GOLD_ORE = add("crushed_gold_ore", new AssemblyOreBlock(FabricBlockSettings.copyOf(Blocks.GOLD_ORE).breakByTool(FabricToolTags.PICKAXES, 2)), ItemGroup.BUILDING_BLOCKS);
-	public static final Block CRUSHED_REDSTONE_ORE = add("crushed_redstone_ore", new AssemblyGlowingOreBlock(FabricBlockSettings.copyOf(Blocks.REDSTONE_ORE).breakByTool(FabricToolTags.PICKAXES, 2)), ItemGroup.BUILDING_BLOCKS);
-	public static final Block CRUSHED_LAPIS_ORE = add("crushed_lapis_ore", new AssemblyOreBlock(FabricBlockSettings.copyOf(Blocks.LAPIS_ORE).breakByTool(FabricToolTags.PICKAXES, 2)), ItemGroup.BUILDING_BLOCKS);
-	public static final Block CRUSHED_DIAMOND_ORE = add("crushed_diamond_ore", new AssemblyOreBlock(FabricBlockSettings.copyOf(Blocks.DIAMOND_ORE).breakByTool(FabricToolTags.PICKAXES, 2)), ItemGroup.BUILDING_BLOCKS);
-	public static final Block CRUSHED_EMERALD_ORE = add("crushed_emerald_ore", new AssemblyOreBlock(FabricBlockSettings.copyOf(Blocks.EMERALD_ORE).breakByTool(FabricToolTags.PICKAXES, 2)), ItemGroup.BUILDING_BLOCKS);
-	public static final Block CRUSHED_NETHER_GOLD_ORE = add("crushed_nether_gold_ore", new AssemblyOreBlock(FabricBlockSettings.copyOf(Blocks.NETHER_GOLD_ORE).breakByTool(FabricToolTags.PICKAXES, 2)), ItemGroup.BUILDING_BLOCKS);
-	public static final Block CRUSHED_NETHER_QUARTZ_ORE = add("crushed_nether_quartz_ore", new AssemblyOreBlock(FabricBlockSettings.copyOf(Blocks.NETHER_QUARTZ_ORE).breakByTool(FabricToolTags.PICKAXES, 0)), ItemGroup.BUILDING_BLOCKS);
+	public static final Block COPPER_ORE = add("copper_ore", new AssemblyOreBlock(FabricBlockSettings.of(Material.STONE).strength(2.5F, 2.5F)), ItemGroup.BUILDING_BLOCKS);
 
 	public static final Block COPPER_BLOCK = add("copper_block", new Block(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).breakByTool(FabricToolTags.PICKAXES, 1)), ItemGroup.BUILDING_BLOCKS);
 	public static final Block ZINC_BLOCK = add("zinc_block", new Block(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).breakByTool(FabricToolTags.PICKAXES, 1)), ItemGroup.BUILDING_BLOCKS);

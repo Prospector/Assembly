@@ -34,12 +34,18 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.Items;
+import net.minecraft.loot.ConstantLootTableRange;
+import net.minecraft.loot.LootPool;
+import net.minecraft.loot.LootTable;
 import net.minecraft.loot.UniformLootTableRange;
+import net.minecraft.loot.condition.MatchToolLootCondition;
+import net.minecraft.loot.entry.AlternativeEntry;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.ApplyBonusLootFunction;
 import net.minecraft.loot.function.SetCountLootFunction;
 import net.minecraft.predicate.StatePredicate;
 import net.minecraft.predicate.entity.EntityPredicate;
+import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.tag.FluidTags;
@@ -89,7 +95,7 @@ public class AssemblyData implements DossierProvider {
 			this.add(AssemblyItemTags.ZINC_INGOTS, AssemblyItems.ZINC_INGOT);
 			this.add(AssemblyItemTags.BRASS_INGOTS, AssemblyItems.BRASS_INGOT);
 			this.add(AssemblyItemTags.BRASS_PLATES, AssemblyItems.BRASS_PLATE);
-			this.add(AssemblyItemTags.HAMMER, AssemblyItems.WOODEN_HAMMER, AssemblyItems.STONE_HAMMER, AssemblyItems.IRON_HAMMER, AssemblyItems.GOLDEN_HAMMER, AssemblyItems.DIAMOND_HAMMER);
+			this.add(AssemblyItemTags.HAMMERS, AssemblyItems.WOODEN_HAMMER, AssemblyItems.STONE_HAMMER, AssemblyItems.IRON_HAMMER, AssemblyItems.GOLDEN_HAMMER, AssemblyItems.DIAMOND_HAMMER);
 		}
 	}
 
@@ -103,7 +109,7 @@ public class AssemblyData implements DossierProvider {
 			FluidInjectingRecipeJsonFactory.create(Ingredient.ofItems(Items.SPONGE), FluidIngredient.of(FluidTags.WATER, FluidAmount.BUCKET), Blocks.WET_SPONGE).criterion("has_sponge", conditionsFrom(Items.SPONGE)).offerTo(exporter);
 
 			ShapelessRecipeJsonFactory.create(AssemblyItems.FORMIC_ACID).input(Items.GLASS_BOTTLE).input(AssemblyItems.VENOMOUS_FANG).criterion("has_fang", conditionsFrom(AssemblyItems.VENOMOUS_FANG)).offerTo(exporter);
-			ShapelessRecipeJsonFactory.create(AssemblyItems.BRASS_PLATE).input(AssemblyItemTags.BRASS_INGOTS).input(AssemblyItemTags.HAMMER).criterion("has_brass", conditionsFrom(AssemblyItemTags.BRASS_INGOTS)).offerTo(exporter);
+			ShapelessRecipeJsonFactory.create(AssemblyItems.BRASS_PLATE).input(AssemblyItemTags.BRASS_INGOTS).input(AssemblyItemTags.HAMMERS).criterion("has_brass", conditionsFrom(AssemblyItemTags.BRASS_INGOTS)).offerTo(exporter);
 
 			ShapedRecipeJsonFactory.create(AssemblyBlocks.BOILER_CHAMBER).pattern("XXX").pattern("IBI").pattern("XXX").input('X', Blocks.IRON_BLOCK).input('I', Items.IRON_INGOT).input('B', Items.BUCKET).criterion("has_bucket", conditionsFrom(Items.BUCKET)).offerTo(exporter);
 			ShapedRecipeJsonFactory.create(AssemblyBlocks.STEAM_PRESS).pattern(" X ").pattern("BIB").pattern("PPP").input('X', Blocks.IRON_BLOCK).input('I', Items.IRON_INGOT).input('B', AssemblyItemTags.BRASS_INGOTS).input('P', AssemblyItemTags.BRASS_PLATES).criterion("has_brass", conditionsFrom(AssemblyItemTags.BRASS_INGOTS)).offerTo(exporter);
@@ -223,17 +229,18 @@ public class AssemblyData implements DossierProvider {
 			this.drops(AssemblyBlocks.BOILER_CHAMBER);
 			this.drops(AssemblyBlocks.STEAM_PRESS, block -> BlockLootTableGenerator.createForMultiblock(AssemblyBlocks.STEAM_PRESS, SteamPressBlock.HALF, DoubleBlockHalf.LOWER));
 
-			this.drops(AssemblyBlocks.COPPER_ORE);
-
-			this.drops(AssemblyBlocks.CRUSHED_COAL_ORE, BlockLootTableCreator.dropsWithSilkTouch(AssemblyBlocks.CRUSHED_COAL_ORE));
-			this.drops(AssemblyBlocks.CRUSHED_COPPER_ORE, BlockLootTableCreator.dropsWithSilkTouch(AssemblyBlocks.CRUSHED_COPPER_ORE));
-			this.drops(AssemblyBlocks.CRUSHED_IRON_ORE, BlockLootTableCreator.dropsWithSilkTouch(AssemblyBlocks.CRUSHED_IRON_ORE));
-			this.drops(AssemblyBlocks.CRUSHED_GOLD_ORE, BlockLootTableCreator.dropsWithSilkTouch(AssemblyBlocks.CRUSHED_GOLD_ORE));
-			this.drops(AssemblyBlocks.CRUSHED_REDSTONE_ORE, BlockLootTableCreator.dropsWithSilkTouch(AssemblyBlocks.CRUSHED_REDSTONE_ORE));
-			this.drops(AssemblyBlocks.CRUSHED_LAPIS_ORE, BlockLootTableCreator.dropsWithSilkTouch(AssemblyBlocks.CRUSHED_LAPIS_ORE));
-			this.drops(AssemblyBlocks.CRUSHED_DIAMOND_ORE, BlockLootTableCreator.dropsWithSilkTouch(AssemblyBlocks.CRUSHED_DIAMOND_ORE));
-			this.drops(AssemblyBlocks.CRUSHED_EMERALD_ORE, BlockLootTableCreator.dropsWithSilkTouch(AssemblyBlocks.CRUSHED_EMERALD_ORE));
-			this.drops(AssemblyBlocks.CRUSHED_NETHER_GOLD_ORE, BlockLootTableCreator.dropsWithSilkTouch(AssemblyBlocks.CRUSHED_NETHER_GOLD_ORE));
+			this.drops(AssemblyBlocks.COPPER_ORE, block -> LootTable.builder()
+					.withPool(LootPool.builder()
+							.withRolls(ConstantLootTableRange.create(1))
+							.withEntry(AlternativeEntry.builder(
+									BlockLootTableCreator.addExplosionDecayCondition(AssemblyItems.COPPER_CONCENTRATE, ItemEntry.builder(AssemblyItems.COPPER_CONCENTRATE).withFunction(SetCountLootFunction.builder(UniformLootTableRange.between(1.0F, 2.0F))).withFunction(ApplyBonusLootFunction.uniformBonusCount(Enchantments.FORTUNE)))
+											.withCondition(MatchToolLootCondition.builder(ItemPredicate.Builder.create().tag(AssemblyItemTags.HAMMERS))))
+									.withChild(BlockLootTableCreator.addSurvivesExplosionCondition(block, ItemEntry.builder(block)))))
+					.withPool(LootPool.builder()
+							.withRolls(ConstantLootTableRange.create(1))
+							.withEntry(
+									BlockLootTableCreator.addExplosionDecayCondition(AssemblyItems.ZINC_CONCENTRATE, ItemEntry.builder(AssemblyItems.ZINC_CONCENTRATE).withFunction(SetCountLootFunction.builder(UniformLootTableRange.between(0.0F, 1.0F))).withFunction(ApplyBonusLootFunction.uniformBonusCount(Enchantments.FORTUNE)))
+											.withCondition(MatchToolLootCondition.builder(ItemPredicate.Builder.create().tag(AssemblyItemTags.HAMMERS))))));
 
 			this.drops(AssemblyBlocks.COPPER_BLOCK);
 			this.drops(AssemblyBlocks.ZINC_BLOCK);

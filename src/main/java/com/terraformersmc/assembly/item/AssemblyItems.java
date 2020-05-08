@@ -20,6 +20,11 @@ public class AssemblyItems {
 	private static final Map<Identifier, Item> ITEMS = new LinkedHashMap<>();
 	private static final Map<AssemblyFluid, AssemblyBucketItem> BUCKETS = new HashMap<>();
 
+	public static final Item IRON_CONCENTRATE = add("iron_concentrate", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
+	public static final Item GOLD_CONCENTRATE = add("gold_concentrate", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
+	public static final Item COPPER_CONCENTRATE = add("copper_concentrate", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
+	public static final Item ZINC_CONCENTRATE = add("zinc_concentrate", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
+	public static final Item BRASS_BLEND = add("brass_blend", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 	public static final Item COPPER_INGOT = add("copper_ingot", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 	public static final Item ZINC_INGOT = add("zinc_ingot", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 	public static final Item BRASS_INGOT = add("brass_ingot", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));

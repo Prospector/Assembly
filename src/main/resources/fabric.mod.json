@@ -40,6 +40,7 @@
     "AlexIIL"
   ],
   "mixins": [
-    "mixins.assembly.json"
-  ]
+    "assembly.mixins.json"
+  ],
+  "accessWidener": "assembly.accesswidener"
 }

@@ -1,7 +1,0 @@
-{
-  "replace": false,
-  "values": [
-	"assembly:latex",
-	"assembly:flowing_latex"
-  ]
-}
