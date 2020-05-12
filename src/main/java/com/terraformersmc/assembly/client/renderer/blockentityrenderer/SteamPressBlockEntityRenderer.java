@@ -34,11 +34,11 @@ public class SteamPressBlockEntityRenderer extends BlockEntityRenderer<SteamPres
 		if (world != null) {
 			BlockState state = world.getBlockState(pos);
 			if (state.getBlock() instanceof SteamPressBlock && state.get(SteamPressBlock.HALF) == DoubleBlockHalf.UPPER) {
+				MinecraftClient client = MinecraftClient.getInstance();
+				Direction facing = state.get(SteamPressBlock.FACING);
+
 				ItemStack stack = steamPress.getRenderStack();
 				if (!stack.isEmpty()) {
-					MinecraftClient client = MinecraftClient.getInstance();
-					Direction facing = state.get(SteamPressBlock.FACING);
-
 					// Item Rendering
 					matrixStack.push();
 					matrixStack.translate(0.5, -5 / 16F, 0.5);
@@ -47,12 +47,14 @@ public class SteamPressBlockEntityRenderer extends BlockEntityRenderer<SteamPres
 					matrixStack.scale(0.6F, 0.6F, 0.6F);
 					client.getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, overlay, matrixStack, vertexConsumers);
 					matrixStack.pop();
-
-					// Arm Rendering
-					BakedModel armModel = client.getBakedModelManager().getModel(AssemblyModels.STEAM_PRESS_UPPER_ARM);
-					matrixStack.translate(0, steamPress.getArmOffset(), 0);
-					client.getBlockRenderManager().getModelRenderer().render(world, armModel, state, pos, matrixStack, vertexConsumers.getBuffer(RenderLayer.getSolid()), false, new Random(), state.getRenderingSeed(pos), overlay);
 				}
+
+				// Arm Rendering
+				matrixStack.push();
+				BakedModel armModel = client.getBakedModelManager().getModel(AssemblyModels.STEAM_PRESS_UPPER_ARM);
+				matrixStack.translate(0, steamPress.getArmOffset(), 0);
+				client.getBlockRenderManager().getModelRenderer().render(world, armModel, state, pos, matrixStack, vertexConsumers.getBuffer(RenderLayer.getSolid()), false, new Random(), state.getRenderingSeed(pos), overlay);
+				matrixStack.pop();
 			}
 		}
 	}

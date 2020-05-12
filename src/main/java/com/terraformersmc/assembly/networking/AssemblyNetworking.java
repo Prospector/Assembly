@@ -4,8 +4,7 @@ import alexiil.mc.lib.attributes.Simulation;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import com.terraformersmc.assembly.Assembly;
 import com.terraformersmc.assembly.blockentity.FluidBarrelBlockEntity;
-import com.terraformersmc.assembly.blockentity.base.AssemblyContainerBlockEntity;
-import com.terraformersmc.assembly.mixin.common.screenhandler.AccessorScreenHandlerListeners;
+import com.terraformersmc.assembly.mixin.common.screenhandler.ScreenHandlerListenersAccessor;
 import com.terraformersmc.assembly.screen.builder.ExtendedScreenHandlerListener;
 import com.terraformersmc.assembly.screen.builder.ScreenSyncer;
 import com.terraformersmc.assembly.util.ObjectBufUtils;
@@ -49,7 +48,7 @@ public class AssemblyNetworking {
 		ServerSidePacketRegistry.INSTANCE.register(REQUEST_SCREEN_SYNC, (context, buf) -> {
 			ScreenHandler screenHandler = context.getPlayer().currentScreenHandler;
 			if (screenHandler instanceof ScreenSyncer) {
-				for (final ScreenHandlerListener listener : ((AccessorScreenHandlerListeners) screenHandler).getListeners()) {
+				for (final ScreenHandlerListener listener : ((ScreenHandlerListenersAccessor) screenHandler).getListeners()) {
 					((ScreenSyncer<?>) screenHandler).sync(listener, true);
 				}
 			}

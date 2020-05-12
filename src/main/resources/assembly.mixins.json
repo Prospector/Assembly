@@ -19,11 +19,11 @@
 
     "common.multiblock.MixinServerPlayerInteractionManager",
 
-    "common.recipe.AccessorRecipeManager",
+    "common.recipe.RecipeManagerInvoker",
     "common.recipe.MixinServerRecipeBook",
     "common.recipe.MixinSmithingScreenHandler",
 
-    "common.screenhandler.AccessorScreenHandlerListeners",
+    "common.screenhandler.ScreenHandlerListenersAccessor",
 
     "common.tag.BlockTagsInvoker",
     "common.tag.FluidTagsInvoker",

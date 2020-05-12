@@ -1,0 +1,8 @@
+{
+  "type": "assembly:steam_pressing",
+  "input": {
+    "item": "minecraft:tropical_fish"
+  },
+  "output": "assembly:flattened_tropical_fish",
+  "presses": 1
+}

@@ -41,7 +41,9 @@ public class FluidInjectingRecipe extends AssemblyRecipe<FluidInjectorBlockEntit
 
 	@Override
 	public boolean recipeMatches(FluidInjectorBlockEntity inv, World world) {
-		return this.isValidInput(inv.getStack(0)) && this.isValidInput(inv.getTank().getInvFluid(0));
+		boolean validItem = this.isValidInput(inv.getStack(0));
+		boolean validFluid = this.isValidInput(inv.getTank().getInvFluid(0));
+		return validItem && validFluid;
 	}
 
 	@Override

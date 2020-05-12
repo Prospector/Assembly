@@ -85,7 +85,7 @@ public final class FluidIngredient implements Predicate<FluidVolume> {
 				FluidVolume[] matches = this.matchingVolumes;
 
 				for (FluidVolume match : matches) {
-					if (match.equals(volume)) {
+					if (match.getFluidKey().equals(volume.getFluidKey()) && volume.getAmount_F().isGreaterThanOrEqual(getAmount())) {
 						return true;
 					}
 				}

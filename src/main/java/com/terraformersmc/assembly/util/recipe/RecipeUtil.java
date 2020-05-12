@@ -1,7 +1,7 @@
 package com.terraformersmc.assembly.util.recipe;
 
 import com.google.common.collect.Lists;
-import com.terraformersmc.assembly.mixin.common.recipe.AccessorRecipeManager;
+import com.terraformersmc.assembly.mixin.common.recipe.RecipeManagerInvoker;
 import com.terraformersmc.assembly.recipe.AssemblyRecipe;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.inventory.Inventory;
@@ -21,8 +21,8 @@ import java.util.List;
 public class RecipeUtil {
 	public static <I extends Inventory, R extends Recipe<I> & InputValidator, T extends RecipeType<R>> boolean isValidInput(World world, T recipeType, ItemStack input) {
 		if (world != null) {
-			AccessorRecipeManager recipeManager = (AccessorRecipeManager) world.getRecipeManager();
-			return recipeManager.getRecipes().get(recipeType).values().stream().anyMatch(recipe -> recipe != null && ((InputValidator) recipe).isValidInput(input));
+			RecipeManagerInvoker recipeManager = (RecipeManagerInvoker) world.getRecipeManager();
+			return recipeManager.callGetAllOfType(recipeType).values().stream().anyMatch(recipe -> recipe != null && ((InputValidator) recipe).isValidInput(input));
 		}
 		return false;
 	}

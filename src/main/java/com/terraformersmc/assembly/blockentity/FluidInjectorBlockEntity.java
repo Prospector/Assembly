@@ -1,8 +1,10 @@
 package com.terraformersmc.assembly.blockentity;
 
 import alexiil.mc.lib.attributes.Simulation;
+import alexiil.mc.lib.attributes.fluid.FluidAttributes;
 import alexiil.mc.lib.attributes.fluid.FluidInsertable;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
+import alexiil.mc.lib.attributes.fluid.impl.RejectingFluidInsertable;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import com.terraformersmc.assembly.blockentity.base.AssemblySyncedNbtBlockEntity;
 import com.terraformersmc.assembly.recipe.AssemblyRecipeTypes;
@@ -11,7 +13,6 @@ import com.terraformersmc.assembly.util.AssemblyConstants;
 import com.terraformersmc.assembly.util.fluid.IOFluidContainer;
 import com.terraformersmc.assembly.util.fluid.SimpleIOFluidContainer;
 import com.terraformersmc.assembly.util.interaction.interactable.TankInputInteractable;
-import com.terraformersmc.assembly.util.recipe.RecipeUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SidedInventory;
@@ -25,7 +26,6 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
 
 import javax.annotation.Nullable;
-import java.io.PrintStream;
 
 public class FluidInjectorBlockEntity extends AssemblySyncedNbtBlockEntity implements Tickable, Clearable, SidedInventory, TankInputInteractable {
 
@@ -53,7 +53,9 @@ public class FluidInjectorBlockEntity extends AssemblySyncedNbtBlockEntity imple
 		if (this.world != null) {
 			if (!this.world.isClient) {
 				if (this.recipe != null) {
-					System.out.println(this.recipe.getId());
+					System.out.println(recipe.getId());
+				} else if (FluidAttributes.INSERTABLE.get(getStack(SLOT)) != RejectingFluidInsertable.NULL) {
+
 				}
 			}
 		}
@@ -130,7 +132,7 @@ public class FluidInjectorBlockEntity extends AssemblySyncedNbtBlockEntity imple
 	@Override
 	public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
 //		if (RecipeUtil.isValidInput(this.world, AssemblyRecipeTypes.FLUID_INJECTING, stack)) {
-			return slot == SLOT && this.isEmpty() && stack.getCount() == 1;
+		return slot == SLOT && this.isEmpty() && stack.getCount() == 1;
 //		}
 //		return false;
 	}
@@ -162,24 +164,26 @@ public class FluidInjectorBlockEntity extends AssemblySyncedNbtBlockEntity imple
 
 	@Override
 	public ItemStack removeStack(int slot, int amount) {
-		if (slot == SLOT && amount > 0) {
-			this.updateRecipe();
-		}
+		ItemStack stack = Inventories.splitStack(this.items, slot, amount);
 		if (this.world != null && !this.world.isClient) {
 			this.sync();
 		}
-		return Inventories.splitStack(this.items, slot, amount);
+		if (slot == SLOT && amount > 0) {
+			this.updateRecipe();
+		}
+		return stack;
 	}
 
 	@Override
 	public ItemStack removeStack(int slot) {
-		if (slot == SLOT) {
-			this.updateRecipe();
-		}
+		ItemStack stack = Inventories.removeStack(this.items, slot);
 		if (this.world != null && !this.world.isClient) {
 			this.sync();
 		}
-		return Inventories.removeStack(this.items, slot);
+		if (slot == SLOT) {
+			this.updateRecipe();
+		}
+		return stack;
 	}
 
 	@Override
@@ -191,12 +195,12 @@ public class FluidInjectorBlockEntity extends AssemblySyncedNbtBlockEntity imple
 			newStack.setCount(this.getMaxCountPerStack());
 		}
 
+		if (this.world != null && !this.world.isClient) {
+			this.sync();
+		}
 		if (slot == SLOT && !noUpdate) {
 			this.markDirty();
 			this.updateRecipe();
-		}
-		if (this.world != null && !this.world.isClient) {
-			this.sync();
 		}
 	}
 

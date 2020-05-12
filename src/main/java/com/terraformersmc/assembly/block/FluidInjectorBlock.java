@@ -5,16 +5,17 @@ import alexiil.mc.lib.attributes.AttributeProvider;
 import alexiil.mc.lib.attributes.fluid.FluidAttributes;
 import alexiil.mc.lib.attributes.fluid.impl.RejectingFluidInsertable;
 import com.terraformersmc.assembly.blockentity.FluidInjectorBlockEntity;
+import com.terraformersmc.assembly.recipe.AssemblyRecipeTypes;
 import com.terraformersmc.assembly.util.interaction.InteractionActionResult;
 import com.terraformersmc.assembly.util.interaction.Interactions;
 import com.terraformersmc.assembly.util.math.ShapeUtil;
+import com.terraformersmc.assembly.util.recipe.RecipeUtil;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
@@ -30,8 +31,8 @@ public class FluidInjectorBlock extends HorizontalFacingBlock implements BlockEn
 	private static final VoxelShape SHAPE_PLATE = Block.createCuboidShape(2, 10, 2, 14, 11, 14);
 	private static final VoxelShape SHAPE_LEFT_NOZZLE = Block.createCuboidShape(14, 10, 5, 16, 16, 11);
 	private static final VoxelShape SHAPE_RIGHT_NOZZLE = Block.createCuboidShape(0, 10, 5, 2, 16, 11);
-	private static final VoxelShape SHAPE_NORTH_SOUTH = VoxelShapes.union(SHAPE_BASE, SHAPE_PLATE, SHAPE_LEFT_NOZZLE, SHAPE_RIGHT_NOZZLE);
-	private static final VoxelShape SHAPE_EAST_WEST = ShapeUtil.rotate90(SHAPE_NORTH_SOUTH, Direction.NORTH, Direction.EAST);
+	private static final VoxelShape SHAPE_Z_AXIS = VoxelShapes.union(SHAPE_BASE, SHAPE_PLATE, SHAPE_LEFT_NOZZLE, SHAPE_RIGHT_NOZZLE);
+	private static final VoxelShape SHAPE_X_AXIS = ShapeUtil.rotate90(SHAPE_Z_AXIS, Direction.NORTH, Direction.EAST);
 
 	public FluidInjectorBlock(Settings settings) {
 		super(settings);
@@ -50,29 +51,36 @@ public class FluidInjectorBlock extends HorizontalFacingBlock implements BlockEn
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
 		return Interactions.handleDefaultInteractions(state, world, pos, player, hand, hit, (state1, world1, pos1, player1, hand1, hit1) -> {
-			if (world instanceof ServerWorld) {
-				BlockEntity blockEntity = world.getBlockEntity(pos);
-				if (blockEntity instanceof FluidInjectorBlockEntity) {
-					FluidInjectorBlockEntity fluidInjector = ((FluidInjectorBlockEntity) blockEntity);
-					ItemStack outputStack = fluidInjector.getStack(FluidInjectorBlockEntity.SLOT);
-					if (!outputStack.isEmpty()) {
+			BlockEntity blockEntity = world.getBlockEntity(pos);
+			if (blockEntity instanceof FluidInjectorBlockEntity) {
+				FluidInjectorBlockEntity fluidInjector = ((FluidInjectorBlockEntity) blockEntity);
+				ItemStack outputStack = fluidInjector.getStack(FluidInjectorBlockEntity.SLOT);
+				if (!outputStack.isEmpty()) {
+					if (!world.isClient()) {
 						if (!player.isCreative()) {
 							player.inventory.insertStack(outputStack);
 						}
 						fluidInjector.removeStack(FluidInjectorBlockEntity.SLOT);
-						return InteractionActionResult.SUCCESS;
+					}
+					return InteractionActionResult.SUCCESS;
+				} else {
+					ItemStack stackInHand = player.getStackInHand(hand);
+					ItemStack stack;
+					if (!player.isCreative()) {
+						stack = stackInHand.split(1);
 					} else {
-						ItemStack stackInHand = player.getStackInHand(hand);
-						if (FluidAttributes.INSERTABLE.get(stackInHand) != RejectingFluidInsertable.NULL) {
-							if (fluidInjector.canInsert(FluidInjectorBlockEntity.SLOT, stackInHand.copy().split(1), hit.getSide())) {
-								ItemStack stack;
-								if (!player.isCreative()) {
-									stack = stackInHand.split(1);
-								} else {
-									stack = stackInHand.copy().split(1);
-								}
+						stack = stackInHand.copy().split(1);
+					}
+					if (FluidAttributes.INSERTABLE.get(stackInHand) != RejectingFluidInsertable.NULL) {
+						if (fluidInjector.canInsert(FluidInjectorBlockEntity.SLOT, stackInHand.copy().split(1), hit.getSide())) {
+							if (!world.isClient()) {
 								fluidInjector.setStack(FluidInjectorBlockEntity.SLOT, stack);
 							}
+							return InteractionActionResult.SUCCESS;
+						}
+					} else if (RecipeUtil.isValidInput(world, AssemblyRecipeTypes.FLUID_INJECTING, stack)) {
+						if (!world.isClient()) {
+							fluidInjector.setStack(FluidInjectorBlockEntity.SLOT, stack);
 						}
 						return InteractionActionResult.SUCCESS;
 					}
@@ -84,11 +92,7 @@ public class FluidInjectorBlock extends HorizontalFacingBlock implements BlockEn
 
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		Direction direction = state.get(FACING);
-		if (direction == Direction.EAST || direction == Direction.WEST) {
-			return SHAPE_EAST_WEST;
-		}
-		return SHAPE_NORTH_SOUTH;
+		return state.get(FACING).getAxis() == Direction.Axis.X ? SHAPE_X_AXIS : SHAPE_Z_AXIS;
 	}
 
 	@Override
@@ -103,8 +107,7 @@ public class FluidInjectorBlock extends HorizontalFacingBlock implements BlockEn
 
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
-		Direction direction = context.getPlayerFacing().getOpposite();
-		return this.getDefaultState().with(FACING, direction);
+		return this.getDefaultState().with(FACING, context.getPlayerFacing().getOpposite());
 	}
 
 	@Override

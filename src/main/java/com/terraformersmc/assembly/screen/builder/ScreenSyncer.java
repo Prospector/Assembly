@@ -1,7 +1,7 @@
 package com.terraformersmc.assembly.screen.builder;
 
 import alexiil.mc.lib.attributes.fluid.FluidInvUtil;
-import com.terraformersmc.assembly.mixin.common.screenhandler.AccessorScreenHandlerListeners;
+import com.terraformersmc.assembly.mixin.common.screenhandler.ScreenHandlerListenersAccessor;
 import com.terraformersmc.assembly.networking.AssemblyNetworking;
 import com.terraformersmc.assembly.util.ItemUtil;
 import net.minecraft.block.entity.BlockEntity;
@@ -107,7 +107,7 @@ public class ScreenSyncer<BE extends BlockEntity & Nameable> extends ScreenHandl
 	@Override
 	public void sendContentUpdates() {
 		super.sendContentUpdates();
-		for (final ScreenHandlerListener listener : ((AccessorScreenHandlerListeners) (this)).getListeners()) {
+		for (final ScreenHandlerListener listener : ((ScreenHandlerListenersAccessor) (this)).getListeners()) {
 			sync(listener, false);
 		}
 	}

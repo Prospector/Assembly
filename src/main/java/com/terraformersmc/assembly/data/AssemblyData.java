@@ -120,6 +120,10 @@ public class AssemblyData implements DossierProvider {
 			BoilingRecipeJsonFactory.create(Fluids.WATER, FluidAmount.of(1, 1), AssemblyFluids.STEAM).criterion("has_water", conditionsFrom(Items.WATER_BUCKET)).offerTo(exporter);
 
 			PressingRecipeJsonFactory.createSteamPressing(Ingredient.fromTag(AssemblyItemTags.BRASS_INGOTS), AssemblyItems.BRASS_PLATE).criterion("has_brass_ingot", conditionsFrom(AssemblyItemTags.BRASS_INGOTS)).offerTo(exporter);
+			PressingRecipeJsonFactory.createSteamPressing(Ingredient.ofItems(Items.COD), AssemblyItems.FLATTENED_COD).criterion("has_cod", conditionsFrom(Items.COD)).offerTo(exporter);
+			PressingRecipeJsonFactory.createSteamPressing(Ingredient.ofItems(Items.SALMON), AssemblyItems.FLATTENED_SALMON).criterion("has_salmon", conditionsFrom(Items.SALMON)).offerTo(exporter);
+			PressingRecipeJsonFactory.createSteamPressing(Ingredient.ofItems(Items.TROPICAL_FISH), AssemblyItems.FLATTENED_TROPICAL_FISH).criterion("has_tropical_fish", conditionsFrom(Items.TROPICAL_FISH)).offerTo(exporter);
+			PressingRecipeJsonFactory.createSteamPressing(Ingredient.ofItems(Items.PUFFERFISH), AssemblyItems.FLATTENED_PUFFERFISH).criterion("has_pufferfish", conditionsFrom(Items.PUFFERFISH)).offerTo(exporter);
 
 			FluidInjectingRecipeJsonFactory.create(Ingredient.ofItems(Items.SPONGE), FluidIngredient.of(FluidTags.WATER, FluidAmount.BUCKET), Blocks.WET_SPONGE).criterion("has_sponge", conditionsFrom(Items.SPONGE)).offerTo(exporter);
 

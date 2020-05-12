@@ -39,6 +39,10 @@ public class AssemblyItems {
 	public static final Item VULCANIZED_RUBBER = add("vulcanized_rubber", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 	public static final Item VENOMOUS_FANG = add("venomous_fang", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 	public static final Item FORMIC_ACID = add("formic_acid", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
+	public static final Item FLATTENED_COD = add("flattened_cod", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
+	public static final Item FLATTENED_SALMON = add("flattened_salmon", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
+	public static final Item FLATTENED_TROPICAL_FISH = add("flattened_tropical_fish", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
+	public static final Item FLATTENED_PUFFERFISH = add("flattened_pufferfish", new Item(new Item.Settings().group(ItemGroup.MATERIALS)));
 
 	public static final Item LATEX_BUCKET = add("latex_bucket", new AssemblyBucketItem(AssemblyFluids.LATEX, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1).group(ItemGroup.MISC)));
 	//	public static final Item BIOMASS_BUCKET = add("biomass_bucket", new AssemblyBucketItem(AssemblyFluids.BIOMASS, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1).group(ItemGroup.MISC)));

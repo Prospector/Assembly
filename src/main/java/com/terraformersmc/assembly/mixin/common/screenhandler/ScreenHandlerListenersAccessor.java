@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import java.util.List;
 
 @Mixin(ScreenHandler.class)
-public interface AccessorScreenHandlerListeners {
+public interface ScreenHandlerListenersAccessor {
 
 	@Accessor
 	List<ScreenHandlerListener> getListeners();
