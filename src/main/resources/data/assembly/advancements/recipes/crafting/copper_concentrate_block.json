@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "assembly:crafting/copper_concentrate_block"
+    ]
+  },
+  "criteria": {
+    "has_copper_concentrate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "assembly:copper_concentrates"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "assembly:crafting/copper_concentrate_block"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_copper_concentrate",
+      "has_the_recipe"
+    ]
+  ]
+}

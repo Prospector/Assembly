@@ -5,8 +5,9 @@ import alexiil.mc.lib.attributes.AttributeProvider;
 import com.terraformersmc.assembly.blockentity.AssemblyBlockEntities;
 import com.terraformersmc.assembly.blockentity.SteamPressBlockEntity;
 import com.terraformersmc.assembly.item.AssemblyItems;
+import com.terraformersmc.assembly.util.interaction.Interaction;
 import com.terraformersmc.assembly.util.interaction.InteractionActionResult;
-import com.terraformersmc.assembly.util.interaction.InteractionUtil;
+import com.terraformersmc.assembly.util.interaction.Interactions;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.DoubleBlockHalf;
@@ -60,7 +61,7 @@ public class SteamPressBlock extends HorizontalFacingBlock implements BlockEntit
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		return InteractionUtil.handleDefaultInteractions(state, world, pos, player, hand, hit, (state1, world1, pos1, player1, hand1, hit1) -> {
+		return Interactions.handleDefaultInteractions(state, world, pos, player, hand, hit, Interaction.HANDLE_FLUIDS, (state1, world1, pos1, player1, hand1, hit1) -> {
 			if (world != null) {
 				BlockEntity blockEntity = world.getBlockEntity(pos);
 				if (blockEntity instanceof SteamPressBlockEntity) {

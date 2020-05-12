@@ -11,7 +11,7 @@
       "conditions": {
         "items": [
           {
-            "item": "assembly:copper_ore"
+            "tag": "c:copper_ores"
           }
         ]
       }

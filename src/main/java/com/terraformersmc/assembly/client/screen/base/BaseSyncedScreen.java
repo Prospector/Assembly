@@ -4,7 +4,6 @@ import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.terraformersmc.assembly.Assembly;
-import com.terraformersmc.assembly.blockentity.base.AssemblyContainerBlockEntity;
 import com.terraformersmc.assembly.networking.AssemblyNetworking;
 import com.terraformersmc.assembly.screen.builder.*;
 import com.terraformersmc.assembly.util.math.MathUtil;
@@ -101,7 +100,7 @@ public class BaseSyncedScreen<BE extends BlockEntity & Nameable> extends Handled
 				this.fillGradient(matrixStack, x + style.fluidXOffset, y + style.fluidYOffset, x + style.fluidXOffset + style.fluidWidth, y + style.fluidYOffset + style.fluidHeight, 0x80FFFFFF, 0x80FFFFFF);
 				FluidVolume volume = tank.getVolume();
 				if (!volume.isEmpty()) {
-					List<Text> tooltip = volume.getTooltipText(this.client.options.advancedItemTooltips ? TooltipContext.Default.ADVANCED : TooltipContext.Default.NORMAL);
+					List<Text> tooltip = volume.getTooltipText(/* TODO: Uncomment when LBA is updated */ /* this.client.options.advancedItemTooltips ? TooltipContext.Default.ADVANCED :*/ TooltipContext.Default.NORMAL);
 					tooltip.add(new TranslatableText("assembly.tank.amount", volume.getAmount_F().toDisplayString()).formatted(Formatting.GRAY));
 					this.renderTooltip(matrixStack, tooltip, mouseX, mouseY);
 				}
@@ -224,6 +223,15 @@ public class BaseSyncedScreen<BE extends BlockEntity & Nameable> extends Handled
 			int burnProgress = (int) ((double) burnTime / (double) fuelTime * 13);
 			this.drawTexture(matrixStack, x, y + 12 - burnProgress, 182, 12 - burnProgress, 14, burnProgress + 2);
 		}
+	}
+
+	public void drawInfoPanelBackground(MatrixStack matrixStack, int x, int y, Layer layer) {
+		if (layer == Layer.BACKGROUND) {
+			x += this.x;
+			y += this.y;
+		}
+		MinecraftClient.getInstance().getTextureManager().bindTexture(GUI_SHEET);
+		this.drawTexture(matrixStack, x, y, 0, 150, 113, 65);
 	}
 
 	public void drawTank(MatrixStack matrixStack, Tank tank, Layer layer) {

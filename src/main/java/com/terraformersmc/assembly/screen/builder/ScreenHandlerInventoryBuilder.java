@@ -51,7 +51,7 @@ public final class ScreenHandlerInventoryBuilder {
 			for (int j = 0; j < 9; ++j)
 				this.parent.slots.add(new Slot(this.player.inventory, j + i * 9 + 9, xStart + j * 18, yStart + i * 18));
 		this.main = Range.between(startIndex, this.parent.slots.size() - 1);
-		this.parent.inventoryTitlePositioner = (width, height, text, textRenderer) -> new ScreenPos(xStart + 1, yStart - 14);
+		this.parent.inventoryTitlePositioner = (width, height, text, textRenderer) -> new ScreenPos(xStart , yStart - 12);
 		return this;
 	}
 

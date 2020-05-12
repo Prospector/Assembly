@@ -1,22 +1,14 @@
 package com.terraformersmc.assembly.item;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.MiningToolItem;
+import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.ToolMaterial;
 import reborncore.common.recipes.ExtendedRecipeRemainder;
 
-import java.util.HashSet;
+public class HammerItem extends PickaxeItem implements ExtendedRecipeRemainder {
 
-public class HammerItem extends MiningToolItem implements ExtendedRecipeRemainder {
-
-	public HammerItem(ToolMaterial material, float attackDamage, float attackSpeed, Settings settings) {
-		super(attackDamage, attackSpeed, material, new HashSet<>(), settings);
-	}
-
-	@Override
-	public boolean isEffectiveOn(BlockState state) {
-		return true;
+	public HammerItem(ToolMaterial material, int attackDamage, float attackSpeed, Settings settings) {
+		super(material, attackDamage, attackSpeed, settings);
 	}
 
 	@Override
@@ -26,10 +18,5 @@ public class HammerItem extends MiningToolItem implements ExtendedRecipeRemainde
 			return ItemStack.EMPTY;
 		}
 		return stack;
-	}
-
-	@Override
-	public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
-		return this.miningSpeed;
 	}
 }

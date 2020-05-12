@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "tag": "assembly:brass_blends"
+    }
+  },
+  "result": {
+    "item": "assembly:brass_blend_block"
+  }
+}

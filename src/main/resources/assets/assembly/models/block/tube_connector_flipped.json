@@ -1,9 +1,8 @@
 {
-	"credit": "Made with Blockbench",
 	"parent": "block/block",
 	"textures": {
-		"tube": "assembly:block/tube",
-		"particle": "assembly:block/tube"
+		"particle": "assembly:block/tube",
+		"tube": "assembly:block/tube"
 	},
 	"elements": [
 		{

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "assembly:blasting/iron_ingot_from_concentrate"
+    ]
+  },
+  "criteria": {
+    "has_iron_concentrate_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "assembly:iron_concentrate_blocks"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "assembly:blasting/iron_ingot_from_concentrate"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_iron_concentrate_block",
+      "has_the_recipe"
+    ]
+  ]
+}

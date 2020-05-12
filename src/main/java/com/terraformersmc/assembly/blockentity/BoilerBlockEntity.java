@@ -31,6 +31,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
@@ -174,7 +175,7 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 
 	@Override
 	protected Text getContainerName() {
-		return AssemblyBlocks.BOILER.getName();
+		return new TranslatableText("container.assembly.boiling");
 	}
 
 	@Override
@@ -188,7 +189,7 @@ public class BoilerBlockEntity extends AssemblyContainerBlockEntity implements T
 				.container(this)
 				.sync(this::getBurnTime, burnTime -> this.burnTime = burnTime)
 				.sync(this::getFuelTime, fuelTime -> this.fuelTime = fuelTime)
-				.slot(0, 80, 40, AbstractFurnaceBlockEntity::canUseAsFuel)
+				.slot(FUEL_SLOT, 80, 40, AbstractFurnaceBlockEntity::canUseAsFuel)
 				.tank(41, 23, TankStyle.TWO, inputTank)
 				.outputTank(113, 23, TankStyle.TWO, outputTank)
 				.addContainer()

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "assembly:crafting/exoframe_headpiece"
+    ]
+  },
+  "criteria": {
+    "has_brass_plate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "assembly:brass_plates"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "assembly:crafting/exoframe_headpiece"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_brass_plate",
+      "has_the_recipe"
+    ]
+  ]
+}

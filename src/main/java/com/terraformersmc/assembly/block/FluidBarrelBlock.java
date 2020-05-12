@@ -6,13 +6,12 @@ import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
 import com.terraformersmc.assembly.blockentity.AssemblyBlockEntities;
 import com.terraformersmc.assembly.blockentity.FluidBarrelBlockEntity;
-import com.terraformersmc.assembly.blockentity.FluidHopperBlockEntity;
 import com.terraformersmc.assembly.fluid.AssemblyFluids;
 import com.terraformersmc.assembly.item.AssemblyItems;
 import com.terraformersmc.assembly.util.ComparatorUtil;
 import com.terraformersmc.assembly.util.fluid.IOFluidContainer;
 import com.terraformersmc.assembly.util.interaction.InteractionActionResult;
-import com.terraformersmc.assembly.util.interaction.InteractionUtil;
+import com.terraformersmc.assembly.util.interaction.Interactions;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -58,7 +57,7 @@ public class FluidBarrelBlock extends Block implements BlockEntityProvider, Attr
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		ActionResult result = InteractionUtil.handleDefaultInteractions(state, world, pos, player, hand, hit, (state1, world1, pos1, player1, hand1, hit1) -> {
+		ActionResult result = Interactions.handleDefaultInteractions(state, world, pos, player, hand, hit, (state1, world1, pos1, player1, hand1, hit1) -> {
 			BlockEntity blockEntity = world.getBlockEntity(pos);
 			if (blockEntity instanceof FluidBarrelBlockEntity) {
 				FluidBarrelBlockEntity barrel = (FluidBarrelBlockEntity) blockEntity;

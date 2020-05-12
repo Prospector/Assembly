@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "tag": "assembly:brass_blend_blocks"
+  },
+  "result": "assembly:brass_ingot",
+  "experience": 0.7,
+  "cookingtime": 200
+}

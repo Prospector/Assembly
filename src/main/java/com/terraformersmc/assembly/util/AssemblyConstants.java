@@ -25,6 +25,7 @@ public class AssemblyConstants {
 	public static final Set<String> AUTHORS = ImmutableSet.of("9927b75a-89d9-4ff7-8bac-58aaed08911a");
 
 	public static class NbtKeys {
+		public static final String ITEM_STACK = "ItemStack";
 		public static final String FLUIDS = "Fluids";
 		public static final String INPUT_FLUIDS = "InputFluids";
 		public static final String OUTPUT_FLUIDS = "OutputFluids";
@@ -55,6 +56,7 @@ public class AssemblyConstants {
 		public static final Identifier BOILER = id("boiler");
 		public static final Identifier BOILER_CHAMBER = id("boiler_chamber");
 		public static final Identifier FLUID_HOPPER = id("fluid_hopper");
+		public static final Identifier TINKERING_TABLE = id("tinkering_table");
 
 		public static final Identifier AUTHOR_CAPE = id("textures/entity/player/author_cape.png");
 		public static final Identifier CONTRIBUTOR_CAPE = id("textures/entity/player/contributor_cape.png");

@@ -2,9 +2,12 @@ package com.terraformersmc.assembly.client;
 
 import com.google.common.collect.Lists;
 import com.terraformersmc.assembly.blockentity.BoilerBlockEntity;
+import com.terraformersmc.assembly.blockentity.BoilerChamberBlockEntity;
 import com.terraformersmc.assembly.blockentity.FluidHopperBlockEntity;
+import com.terraformersmc.assembly.blockentity.TinkeringTableBlockEntity;
 import com.terraformersmc.assembly.client.renderer.AssemblyRenderers;
 import com.terraformersmc.assembly.client.screen.BoilerScreen;
+import com.terraformersmc.assembly.client.screen.TinkeringTableScreen;
 import com.terraformersmc.assembly.client.screen.base.BaseSyncedScreen;
 import com.terraformersmc.assembly.networking.AssemblyNetworking;
 import com.terraformersmc.assembly.screen.AssemblyScreenHandlers;
@@ -38,13 +41,19 @@ public class AssemblyClient implements ClientModInitializer {
 		});
 		ScreenProviderRegistry.INSTANCE.registerFactory(AssemblyScreenHandlers.BOILER_CHAMBER, screenHandler -> {
 			if (screenHandler instanceof ScreenSyncer) {
-				return new BaseSyncedScreen<>((ScreenSyncer<FluidHopperBlockEntity>) screenHandler);
+				return new BaseSyncedScreen<>((ScreenSyncer<BoilerChamberBlockEntity>) screenHandler);
 			}
 			return null;
 		});
 		ScreenProviderRegistry.INSTANCE.registerFactory(AssemblyScreenHandlers.FLUID_HOPPER, screenHandler -> {
 			if (screenHandler instanceof ScreenSyncer) {
 				return new BaseSyncedScreen<>((ScreenSyncer<FluidHopperBlockEntity>) screenHandler);
+			}
+			return null;
+		});
+		ScreenProviderRegistry.INSTANCE.registerFactory(AssemblyScreenHandlers.TINKERING_TABLE, screenHandler -> {
+			if (screenHandler instanceof ScreenSyncer) {
+				return new TinkeringTableScreen((ScreenSyncer<TinkeringTableBlockEntity>) screenHandler);
 			}
 			return null;
 		});

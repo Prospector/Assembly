@@ -10,6 +10,8 @@ import com.terraformersmc.terraform.block.*;
 import com.terraformersmc.terraform.util.RecipeUtil;
 import com.terraformersmc.terraform.util.TerraformSaplingGenerator;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
+import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.*;
 import net.minecraft.item.BlockItem;
@@ -68,6 +70,12 @@ public class AssemblyBlocks {
 	public static final Block ZINC_BLOCK = add("zinc_block", new Block(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).breakByTool(FabricToolTags.PICKAXES, 1)), ItemGroup.BUILDING_BLOCKS);
 	public static final Block BRASS_BLOCK = add("brass_block", new Block(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).breakByTool(FabricToolTags.PICKAXES, 1)), ItemGroup.BUILDING_BLOCKS);
 
+	public static final Block IRON_CONCENTRATE_BLOCK = add("iron_concentrate_block", new AssemblyFallingBlock(FabricBlockSettings.copyOf(Blocks.GRAVEL).breakByTool(FabricToolTags.SHOVELS)), ItemGroup.BUILDING_BLOCKS);
+	public static final Block GOLD_CONCENTRATE_BLOCK = add("gold_concentrate_block", new AssemblyFallingBlock(FabricBlockSettings.copyOf(Blocks.GRAVEL).breakByTool(FabricToolTags.SHOVELS)), ItemGroup.BUILDING_BLOCKS);
+	public static final Block COPPER_CONCENTRATE_BLOCK = add("copper_concentrate_block", new AssemblyFallingBlock(FabricBlockSettings.copyOf(Blocks.GRAVEL).breakByTool(FabricToolTags.SHOVELS)), ItemGroup.BUILDING_BLOCKS);
+	public static final Block ZINC_CONCENTRATE_BLOCK = add("zinc_concentrate_block", new AssemblyFallingBlock(FabricBlockSettings.copyOf(Blocks.GRAVEL).breakByTool(FabricToolTags.SHOVELS)), ItemGroup.BUILDING_BLOCKS);
+	public static final Block BRASS_BLEND_BLOCK = add("brass_blend_block", new AssemblyFallingBlock(FabricBlockSettings.copyOf(Blocks.GRAVEL).breakByTool(FabricToolTags.SHOVELS)), ItemGroup.BUILDING_BLOCKS);
+
 	public static final Block CAPROCK = add("caprock", new Block(FabricBlockSettings.of(Material.STONE).hardness(4F).breakByTool(FabricToolTags.PICKAXES, 1)), ItemGroup.BUILDING_BLOCKS);
 	public static final Block HALITE = add("halite", new Block(FabricBlockSettings.of(Material.STONE).hardness(1.5F).breakByTool(FabricToolTags.PICKAXES, 0)), ItemGroup.BUILDING_BLOCKS);
 
@@ -75,6 +83,30 @@ public class AssemblyBlocks {
 	public static final Block FLUID_HOPPER = add("fluid_hopper", new FluidHopperBlock(FabricBlockSettings.copyOf(Blocks.HOPPER).breakByTool(FabricToolTags.PICKAXES, 0)), ItemGroup.REDSTONE);
 	public static final Block SPIGOT = add("spigot", new SpigotBlock(FabricBlockSettings.copyOf(Blocks.HOPPER).breakByTool(FabricToolTags.PICKAXES, 0)), ItemGroup.REDSTONE);
 	public static final Block FLUID_INJECTOR = add("fluid_injector", new FluidInjectorBlock(FabricBlockSettings.copyOf(Blocks.HOPPER).breakByTool(FabricToolTags.PICKAXES, 0)), ItemGroup.DECORATIONS);
+	public static final Block TINKERING_TABLE = add("tinkering_table", new TinkeringTableBlock(FabricBlockSettings.of(Material.METAL).strength(5.0F, 6.0F).breakByTool(FabricToolTags.PICKAXES, 0)), ItemGroup.DECORATIONS);
+
+	public static void register() {
+		for (Identifier id : ITEMS.keySet()) {
+			Registry.register(Registry.ITEM, id, ITEMS.get(id));
+		}
+		for (Identifier id : BLOCKS.keySet()) {
+			Registry.register(Registry.BLOCK, id, BLOCKS.get(id));
+		}
+
+		FuelRegistry.INSTANCE.add(HEVEA_FENCE, 300);
+		FuelRegistry.INSTANCE.add(HEVEA_FENCE_GATE, 300);
+
+		FlammableBlockRegistry.getDefaultInstance().add(HEVEA_PLANKS, 5, 20);
+		FlammableBlockRegistry.getDefaultInstance().add(HEVEA_SLAB, 5, 20);
+		FlammableBlockRegistry.getDefaultInstance().add(HEVEA_FENCE_GATE, 5, 20);
+		FlammableBlockRegistry.getDefaultInstance().add(HEVEA_FENCE, 5, 20);
+		FlammableBlockRegistry.getDefaultInstance().add(HEVEA_STAIRS, 5, 20);
+		FlammableBlockRegistry.getDefaultInstance().add(HEVEA_LOG, 5, 5);
+		FlammableBlockRegistry.getDefaultInstance().add(STRIPPED_HEVEA_LOG, 5, 5);
+		FlammableBlockRegistry.getDefaultInstance().add(STRIPPED_HEVEA_WOOD, 5, 5);
+		FlammableBlockRegistry.getDefaultInstance().add(HEVEA_WOOD, 5, 5);
+		FlammableBlockRegistry.getDefaultInstance().add(HEVEA_LEAVES, 30, 60);
+	}
 
 	private static <B extends Block> B add(String name, B block, ItemGroup tab) {
 		Item.Settings settings = new Item.Settings();
@@ -114,15 +146,6 @@ public class AssemblyBlocks {
 
 	public static AssemblyFluidBlock getFluidBlock(AssemblyFluid fluid) {
 		return FLUID_BLOCKS.get(fluid);
-	}
-
-	public static void register() {
-		for (Identifier id : ITEMS.keySet()) {
-			Registry.register(Registry.ITEM, id, ITEMS.get(id));
-		}
-		for (Identifier id : BLOCKS.keySet()) {
-			Registry.register(Registry.BLOCK, id, BLOCKS.get(id));
-		}
 	}
 
 	public static Map<Identifier, Block> getBlocks() {

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "assembly:crafting/zinc_concentrate_block"
+    ]
+  },
+  "criteria": {
+    "has_zinc_concentrate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "assembly:zinc_concentrates"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "assembly:crafting/zinc_concentrate_block"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_zinc_concentrate",
+      "has_the_recipe"
+    ]
+  ]
+}

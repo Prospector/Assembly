@@ -6,7 +6,7 @@ import com.terraformersmc.assembly.blockentity.AssemblyBlockEntities;
 import com.terraformersmc.assembly.blockentity.FluidHopperBlockEntity;
 import com.terraformersmc.assembly.screen.AssemblyScreenHandlers;
 import com.terraformersmc.assembly.util.ComparatorUtil;
-import com.terraformersmc.assembly.util.interaction.InteractionUtil;
+import com.terraformersmc.assembly.util.interaction.Interactions;
 import com.terraformersmc.assembly.util.interaction.interactable.ScreenHandlerInteractable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HopperBlock;
@@ -56,7 +56,7 @@ public class FluidHopperBlock extends HopperBlock implements AttributeProvider, 
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		return InteractionUtil.handleDefaultInteractions(state, world, pos, player, hand, hit);
+		return Interactions.handleDefaultInteractions(state, world, pos, player, hand, hit);
 	}
 
 	@Override

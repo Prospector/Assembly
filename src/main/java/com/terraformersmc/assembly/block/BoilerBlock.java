@@ -5,7 +5,7 @@ import alexiil.mc.lib.attributes.AttributeProvider;
 import com.terraformersmc.assembly.blockentity.AssemblyBlockEntities;
 import com.terraformersmc.assembly.blockentity.BoilerBlockEntity;
 import com.terraformersmc.assembly.screen.AssemblyScreenHandlers;
-import com.terraformersmc.assembly.util.interaction.InteractionUtil;
+import com.terraformersmc.assembly.util.interaction.Interactions;
 import com.terraformersmc.assembly.util.interaction.interactable.ScreenHandlerInteractable;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
@@ -54,7 +54,7 @@ public class BoilerBlock extends HorizontalFacingBlock implements BlockEntityPro
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		return InteractionUtil.handleDefaultInteractions(state, world, pos, player, hand, hit);
+		return Interactions.handleDefaultInteractions(state, world, pos, player, hand, hit);
 	}
 
 	@Override

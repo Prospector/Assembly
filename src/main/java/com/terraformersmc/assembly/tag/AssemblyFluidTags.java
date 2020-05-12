@@ -17,7 +17,7 @@ public class AssemblyFluidTags {
 
 	public static final Tag.Identified<Fluid> LATEX = ofAssembly(AssemblyFluids.LATEX, "latex");
 	public static final Tag.Identified<Fluid> STEAM = ofCommon(AssemblyFluids.STEAM, "steam");
-	public static final Tag.Identified<Fluid> OIL = ofCommon(AssemblyFluids.CRUDE_OIL, "oil");
+	public static final Tag.Identified<Fluid> CRUDE_OIL = ofAssembly(AssemblyFluids.CRUDE_OIL, "crude_oil");
 
 	public static Tag.Identified<Fluid> of(AssemblyFluid fluid, Identifier id) {
 		Tag.Identified<Fluid> tag = FluidTagsInvoker.register(id.toString());

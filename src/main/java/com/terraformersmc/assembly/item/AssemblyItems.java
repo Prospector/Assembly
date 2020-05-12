@@ -1,15 +1,17 @@
 package com.terraformersmc.assembly.item;
 
 import com.terraformersmc.assembly.Assembly;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.*;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import com.terraformersmc.assembly.block.AssemblyBlocks;
 import com.terraformersmc.assembly.fluid.AssemblyFluid;
 import com.terraformersmc.assembly.fluid.AssemblyFluids;
 import com.terraformersmc.assembly.item.exoframe.ExoframePieceItem;
 import com.terraformersmc.assembly.item.exoframe.PistonBootsItem;
+import net.fabricmc.fabric.api.registry.FuelRegistry;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.item.*;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -47,12 +49,12 @@ public class AssemblyItems {
 
 	public static final Item DIPSTICK = add("dipstick", new DipstickItem(new Item.Settings().group(ItemGroup.TOOLS).maxCount(1)));
 
-	public static final Item WOODEN_HAMMER = add("wooden_hammer", new HammerItem(ToolMaterials.WOOD, 3.0F, -3.2F, new Item.Settings().group(ItemGroup.TOOLS)));
-	public static final Item STONE_HAMMER = add("stone_hammer", new HammerItem(ToolMaterials.STONE, 3.0F, -3.2F, new Item.Settings().group(ItemGroup.TOOLS)));
-	public static final Item IRON_HAMMER = add("iron_hammer", new HammerItem(ToolMaterials.IRON, 3.0F, -3.1F, new Item.Settings().group(ItemGroup.TOOLS)));
-	public static final Item GOLDEN_HAMMER = add("golden_hammer", new HammerItem(ToolMaterials.GOLD, 3.0F, -3.0F, new Item.Settings().group(ItemGroup.TOOLS)));
-	public static final Item DIAMOND_HAMMER = add("diamond_hammer", new HammerItem(ToolMaterials.DIAMOND, 3.0F, -3.0F, new Item.Settings().group(ItemGroup.TOOLS)));
-	public static final Item NETHERITE_HAMMER = add("netherite_hammer", new HammerItem(ToolMaterials.NETHERITE, 3.0F, -3.0F, new Item.Settings().group(ItemGroup.TOOLS)));
+	public static final Item WOODEN_HAMMER = add("wooden_hammer", new HammerItem(ToolMaterials.WOOD, 3, -3.2F, new Item.Settings().group(ItemGroup.TOOLS)));
+	public static final Item STONE_HAMMER = add("stone_hammer", new HammerItem(ToolMaterials.STONE, 3, -3.2F, new Item.Settings().group(ItemGroup.TOOLS)));
+	public static final Item IRON_HAMMER = add("iron_hammer", new HammerItem(ToolMaterials.IRON, 3, -3.1F, new Item.Settings().group(ItemGroup.TOOLS)));
+	public static final Item GOLDEN_HAMMER = add("golden_hammer", new HammerItem(ToolMaterials.GOLD, 3, -3.0F, new Item.Settings().group(ItemGroup.TOOLS)));
+	public static final Item DIAMOND_HAMMER = add("diamond_hammer", new HammerItem(ToolMaterials.DIAMOND, 3, -3.0F, new Item.Settings().group(ItemGroup.TOOLS)));
+	public static final Item NETHERITE_HAMMER = add("netherite_hammer", new HammerItem(ToolMaterials.NETHERITE, 3, -3.0F, new Item.Settings().group(ItemGroup.TOOLS)));
 
 	public static final Item EXOFRAME_HEADPIECE = add("exoframe_headpiece", new ExoframePieceItem(EquipmentSlot.HEAD, new Item.Settings().group(ItemGroup.COMBAT)));
 	public static final Item EXOFRAME_CHESTPIECE = add("exoframe_chestpiece", new ExoframePieceItem(EquipmentSlot.CHEST, new Item.Settings().group(ItemGroup.COMBAT)));
@@ -78,6 +80,8 @@ public class AssemblyItems {
 		for (Identifier id : ITEMS.keySet()) {
 			Registry.register(Registry.ITEM, id, ITEMS.get(id));
 		}
+
+		FuelRegistry.INSTANCE.add(WOODEN_HAMMER, 200);
 	}
 
 	public static Map<Identifier, Item> getItems() {

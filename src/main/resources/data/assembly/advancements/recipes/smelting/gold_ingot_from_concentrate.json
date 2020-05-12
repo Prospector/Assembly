@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "assembly:smelting/gold_ingot_from_concentrate"
+    ]
+  },
+  "criteria": {
+    "has_gold_concentrate_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "assembly:gold_concentrate_blocks"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "assembly:smelting/gold_ingot_from_concentrate"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_gold_concentrate_block",
+      "has_the_recipe"
+    ]
+  ]
+}

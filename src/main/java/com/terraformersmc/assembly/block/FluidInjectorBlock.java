@@ -6,7 +6,7 @@ import alexiil.mc.lib.attributes.fluid.FluidAttributes;
 import alexiil.mc.lib.attributes.fluid.impl.RejectingFluidInsertable;
 import com.terraformersmc.assembly.blockentity.FluidInjectorBlockEntity;
 import com.terraformersmc.assembly.util.interaction.InteractionActionResult;
-import com.terraformersmc.assembly.util.interaction.InteractionUtil;
+import com.terraformersmc.assembly.util.interaction.Interactions;
 import com.terraformersmc.assembly.util.math.ShapeUtil;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -49,7 +49,7 @@ public class FluidInjectorBlock extends HorizontalFacingBlock implements BlockEn
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		return InteractionUtil.handleDefaultInteractions(state, world, pos, player, hand, hit, (state1, world1, pos1, player1, hand1, hit1) -> {
+		return Interactions.handleDefaultInteractions(state, world, pos, player, hand, hit, (state1, world1, pos1, player1, hand1, hit1) -> {
 			if (world instanceof ServerWorld) {
 				BlockEntity blockEntity = world.getBlockEntity(pos);
 				if (blockEntity instanceof FluidInjectorBlockEntity) {

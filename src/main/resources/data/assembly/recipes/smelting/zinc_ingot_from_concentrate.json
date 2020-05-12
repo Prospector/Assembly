@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "tag": "assembly:zinc_concentrate_blocks"
+  },
+  "result": "assembly:zinc_ingot",
+  "experience": 0.7,
+  "cookingtime": 200
+}

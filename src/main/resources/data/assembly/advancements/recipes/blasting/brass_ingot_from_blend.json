@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "assembly:blasting/brass_ingot_from_blend"
+    ]
+  },
+  "criteria": {
+    "has_brass_blend_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "assembly:brass_blend_blocks"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "assembly:blasting/brass_ingot_from_blend"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_brass_blend_block",
+      "has_the_recipe"
+    ]
+  ]
+}

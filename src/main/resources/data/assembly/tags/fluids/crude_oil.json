@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "assembly:crude_oil",
+    "assembly:flowing_crude_oil"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "tag": "assembly:copper_concentrates"
+    }
+  },
+  "result": {
+    "item": "assembly:copper_concentrate_block"
+  }
+}

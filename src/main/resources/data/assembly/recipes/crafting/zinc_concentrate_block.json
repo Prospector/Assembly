@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "tag": "assembly:zinc_concentrates"
+    }
+  },
+  "result": {
+    "item": "assembly:zinc_concentrate_block"
+  }
+}

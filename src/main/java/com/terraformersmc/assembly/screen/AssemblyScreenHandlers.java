@@ -14,9 +14,10 @@ public class AssemblyScreenHandlers {
 	public static final Identifier BOILER = AssemblyConstants.Ids.BOILER;
 	public static final Identifier FLUID_HOPPER = AssemblyConstants.Ids.FLUID_HOPPER;
 	public static final Identifier BOILER_CHAMBER = AssemblyConstants.Ids.BOILER_CHAMBER;
+	public static final Identifier TINKERING_TABLE = AssemblyConstants.Ids.TINKERING_TABLE;
 
 	public static void registerServersideHandlers() {
-		for (Identifier id : Lists.newArrayList(BOILER, FLUID_HOPPER, BOILER_CHAMBER)) {
+		for (Identifier id : Lists.newArrayList(BOILER, FLUID_HOPPER, BOILER_CHAMBER, TINKERING_TABLE)) {
 			ContainerProviderRegistry.INSTANCE.registerFactory(id, (syncId, identifier, player, buf) -> {
 				BlockPos pos = buf.readBlockPos();
 				BlockEntity blockEntity = player.world.getBlockEntity(pos);

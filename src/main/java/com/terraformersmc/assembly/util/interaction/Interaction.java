@@ -19,7 +19,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 public interface Interaction {
@@ -27,15 +26,23 @@ public interface Interaction {
 		FluidInsertable insertable = RejectingFluidInsertable.NULL;
 		FluidExtractable extractable = EmptyFluidExtractable.NULL;
 		BlockEntity blockEntity = world.getBlockEntity(pos);
+		boolean interactable = false;
 		if (blockEntity instanceof TankInputInteractable) {
 			insertable = ((TankInputInteractable) blockEntity).getInteractableInsertable();
+			interactable = true;
 		}
 		if (blockEntity instanceof TankOutputInteractable) {
 			extractable = ((TankOutputInteractable) blockEntity).getInteractableExtractable();
+			interactable = true;
+		}
+		if (!interactable) {
+			return InteractionActionResult.PASS;
 		}
 		ItemStack stack = player.getStackInHand(hand);
 		if (FluidAttributes.EXTRACTABLE.get(stack) != EmptyFluidExtractable.NULL) {
-			FluidInvUtil.interactWithTank(insertable, extractable, player, PlayerInvUtil.referenceHand(player, hand));
+			if (!world.isClient()) {
+				FluidInvUtil.interactWithTank(insertable, extractable, player, PlayerInvUtil.referenceHand(player, hand));
+			}
 			return InteractionActionResult.SUCCESS;
 		}
 		return InteractionActionResult.PASS;

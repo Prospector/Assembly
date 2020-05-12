@@ -1,23 +1,22 @@
 {
-  "credit": "Made with Blockbench",
-  "parent": "block/block",
-  "textures": {
-	"particle": "assembly:block/tube",
-	"texture": "assembly:block/tube"
-  },
-  "elements": [
-	{
-	  "name": "Pipe",
-	  "from": [ 4, 4, 4 ],
-	  "to": [ 12, 12, 12 ],
-	  "faces": {
-		"north": { "uv": [ 0, 0, 8, 8 ], "texture": "#texture" },
-		"east": { "uv": [ 0, 0, 8, 8 ], "texture": "#texture" },
-		"south": { "uv": [ 0, 0, 8, 8 ], "texture": "#texture" },
-		"west": { "uv": [ 0, 0, 8, 8 ], "texture": "#texture" },
-		"up": { "uv": [ 0, 0, 8, 8 ], "texture": "#texture" },
-		"down": { "uv": [ 0, 0, 8, 8 ], "texture": "#texture" }
-	  }
-	}
-  ]
+	"parent": "block/block",
+	"textures": {
+		"particle": "assembly:block/tube",
+		"texture": "assembly:block/tube"
+	},
+	"elements": [
+		{
+			"name": "Pipe",
+			"from": [4, 4, 4],
+			"to": [12, 12, 12],
+			"faces": {
+				"north": {"uv": [0, 0, 8, 8], "texture": "#texture"},
+				"east": {"uv": [0, 0, 8, 8], "texture": "#texture"},
+				"south": {"uv": [0, 0, 8, 8], "texture": "#texture"},
+				"west": {"uv": [0, 0, 8, 8], "texture": "#texture"},
+				"up": {"uv": [0, 0, 8, 8], "texture": "#texture"},
+				"down": {"uv": [0, 0, 8, 8], "texture": "#texture"}
+			}
+		}
+	]
 }

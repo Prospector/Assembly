@@ -1,8 +1,6 @@
 {
   "replace": false,
   "values": [
-    "assembly:copper_block",
-    "assembly:zinc_block",
     "assembly:brass_block"
   ]
 }

@@ -24,6 +24,7 @@ public class AssemblyBlockEntities {
 	public static final BlockEntityType<FluidHopperBlockEntity> FLUID_HOPPER = add("fluid_hopper", FluidHopperBlockEntity::new, AssemblyBlocks.FLUID_HOPPER);
 	public static final BlockEntityType<SpigotBlockEntity> SPIGOT = add("spigot", SpigotBlockEntity::new, AssemblyBlocks.SPIGOT);
 	public static final BlockEntityType<FluidInjectorBlockEntity> FLUID_INJECTOR = add("fluid_injector", FluidInjectorBlockEntity::new, AssemblyBlocks.FLUID_INJECTOR);
+	public static final BlockEntityType<TinkeringTableBlockEntity> TINKERING_TABLE = add("tinkering_table", TinkeringTableBlockEntity::new, AssemblyBlocks.TINKERING_TABLE);
 
 	private static <T extends BlockEntity> BlockEntityType<T> add(String name, Supplier<? extends T> supplier, Block... blocks) {
 		return add(name, BlockEntityType.Builder.create(supplier, blocks));

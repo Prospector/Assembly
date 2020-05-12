@@ -58,15 +58,6 @@ public class ScreenHandlerContainerBuilder<BE extends BlockEntity & Nameable> {
 		this.rangeStart = parent.slots.size();
 	}
 
-	public ScreenHandlerContainerBuilder<BE> slot(final int index, final int x, final int y) {
-		if (container instanceof Inventory) {
-			this.parent.slots.add(new Slot((Inventory) this.container, index, x, y));
-		} else {
-			throw new IllegalStateException("Cannot add a slot to something that is not an item container: " + parent.name);
-		}
-		return this;
-	}
-
 	public ScreenHandlerContainerBuilder<BE> tank(final int x, final int y, final TankStyle style, final IOFluidContainer container, FluidFilter insertFilter, FluidFilter extractFilter) {
 		return tank(x, y, style, container, 0, insertFilter, extractFilter);
 	}
@@ -93,6 +84,27 @@ public class ScreenHandlerContainerBuilder<BE extends BlockEntity & Nameable> {
 		return this.sync(tank.volumeGetter, tank.volumeSetter).sync(tank.capacityGetter, tank.capacitySetter);
 	}
 
+	public ScreenHandlerContainerBuilder<BE> slot(final int index, final int x, final int y) {
+		return slot(index, x, y, -1);
+	}
+
+	public ScreenHandlerContainerBuilder<BE> slot(final int index, final int x, final int y, int stackLimit) {
+		if (container instanceof Inventory) {
+			this.parent.slots.add(new Slot((Inventory) this.container, index, x, y) {
+				@Override
+				public int getMaxStackAmount() {
+					if (stackLimit == -1) {
+						return super.getMaxStackAmount();
+					}
+					return stackLimit;
+				}
+			});
+		} else {
+			throw new IllegalStateException("Cannot add a slot to something that is not an item container: " + parent.name);
+		}
+		return this;
+	}
+
 	public ScreenHandlerContainerBuilder<BE> outputSlot(final int index, final int x, final int y) {
 		if (container instanceof Inventory) {
 			this.parent.slots.add(new OutputSlot((Inventory) this.container, index, x, y));
@@ -102,9 +114,14 @@ public class ScreenHandlerContainerBuilder<BE extends BlockEntity & Nameable> {
 		return this;
 	}
 
+
 	public ScreenHandlerContainerBuilder<BE> slot(final int index, final int x, final int y, final Predicate<ItemStack> filter) {
+		return slot(index, x, y, -1, filter);
+	}
+
+	public ScreenHandlerContainerBuilder<BE> slot(final int index, final int x, final int y, int stackLimit, final Predicate<ItemStack> filter) {
 		if (container instanceof Inventory) {
-			this.parent.slots.add(new FilteredSlot((Inventory) this.container, index, x, y).setFilter(filter));
+			this.parent.slots.add(new FilteredSlot((Inventory) this.container, index, x, y, stackLimit).setFilter(filter));
 		} else {
 			throw new IllegalStateException("Cannot add a slot to something that is not an item container: " + parent.name);
 		}

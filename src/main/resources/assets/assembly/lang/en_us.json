@@ -16,6 +16,13 @@
   "item.assembly.copper_concentrate": "Copper Concentrate",
   "item.assembly.zinc_concentrate": "Zinc Concentrate",
   "item.assembly.brass_blend": "Brass Blend",
+
+  "block.assembly.iron_concentrate_block": "Iron Concentrate Block",
+  "block.assembly.gold_concentrate_block": "Gold Concentrate Block",
+  "block.assembly.copper_concentrate_block": "Copper Concentrate Block",
+  "block.assembly.zinc_concentrate_block": "Zinc Concentrate Block",
+  "block.assembly.brass_blend_block": "Brass Blend Block",
+
   "item.assembly.copper_ingot": "Copper Ingot",
   "item.assembly.zinc_ingot": "Zinc Ingot",
   "item.assembly.brass_ingot": "Brass Ingot",
@@ -91,7 +98,8 @@
   
   "block.assembly.spigot": "Spigot",
   "block.assembly.conveyor_belt": "Conveyor Belt",
-  
+  "block.assembly.tinkering_table": "Tinkering Table",
+
   "item.assembly.exoframe_headpiece": "Exoframe Headpiece",
   "item.assembly.exoframe_chestpiece": "Exoframe Chestpiece",
   "item.assembly.exoframe_legpiece": "Exoframe Legpiece",
@@ -101,5 +109,8 @@
   "filled_map.assembly:salt_dome": "Petrogeologist Map",
 
   "subtitles.assembly.block.spigot.open": "Spigot valve opened",
-  "subtitles.assembly.block.spigot.close": "Spigot valve closed"
+  "subtitles.assembly.block.spigot.close": "Spigot valve closed",
+
+  "container.assembly.tinkering": "Tinkering",
+  "container.assembly.boiling": "Boiling"
 }

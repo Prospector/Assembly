@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "tag": "assembly:gold_concentrates"
+    }
+  },
+  "result": {
+    "item": "assembly:gold_concentrate_block"
+  }
+}

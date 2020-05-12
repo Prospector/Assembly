@@ -7,7 +7,7 @@ import com.terraformersmc.assembly.blockentity.BoilerBlockEntity;
 import com.terraformersmc.assembly.blockentity.BoilerChamberBlockEntity;
 import com.terraformersmc.assembly.screen.AssemblyScreenHandlers;
 import com.terraformersmc.assembly.util.ComparatorUtil;
-import com.terraformersmc.assembly.util.interaction.InteractionUtil;
+import com.terraformersmc.assembly.util.interaction.Interactions;
 import com.terraformersmc.assembly.util.interaction.interactable.InteractionBypass;
 import com.terraformersmc.assembly.util.interaction.interactable.ScreenHandlerInteractable;
 import net.minecraft.block.*;
@@ -49,7 +49,7 @@ public class BoilerChamberBlock extends HorizontalFacingBlock implements BlockEn
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		return InteractionUtil.handleDefaultInteractions(state, world, pos, player, hand, hit);
+		return Interactions.handleDefaultInteractions(state, world, pos, player, hand, hit);
 	}
 
 	@Override
