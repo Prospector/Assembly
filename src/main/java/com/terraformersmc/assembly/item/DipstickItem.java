@@ -47,10 +47,10 @@ public class DipstickItem extends Item implements InteractionBypass {
 				context.getPlayer().sendSystemMessage(new LiteralText(format + "Capacity: " + ((BoilerChamberBlockEntity) blockEntity).getBoiler().getOutputTank().getMaxAmount_F(0).toDisplayString()));
 				return ActionResult.SUCCESS;
 			}
-			if (blockEntity instanceof SteamPressBlockEntity) {
-				context.getPlayer().sendSystemMessage(new LiteralText(format + "Fluid: " + Registry.FLUID.getId(((SteamPressBlockEntity) blockEntity).getTank().getInvFluid(0).getRawFluid())));
-				context.getPlayer().sendSystemMessage(new LiteralText(format + "Amount: " + ((SteamPressBlockEntity) blockEntity).getTank().getInvFluid(0).getAmount_F().toDisplayString()));
-				context.getPlayer().sendSystemMessage(new LiteralText(format + "Capacity: " + ((SteamPressBlockEntity) blockEntity).getTank().getMaxAmount_F(0).toDisplayString()));
+			if (blockEntity instanceof PressBlockEntity) {
+				context.getPlayer().sendSystemMessage(new LiteralText(format + "Fluid: " + Registry.FLUID.getId(((PressBlockEntity) blockEntity).getTank().getInvFluid(0).getRawFluid())));
+				context.getPlayer().sendSystemMessage(new LiteralText(format + "Amount: " + ((PressBlockEntity) blockEntity).getTank().getInvFluid(0).getAmount_F().toDisplayString()));
+				context.getPlayer().sendSystemMessage(new LiteralText(format + "Capacity: " + ((PressBlockEntity) blockEntity).getTank().getMaxAmount_F(0).toDisplayString()));
 				return ActionResult.SUCCESS;
 			}
 			if (blockEntity instanceof FluidBarrelBlockEntity) {

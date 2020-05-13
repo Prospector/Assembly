@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "assembly:flattened_cod",
+    "assembly:flattened_salmon",
+    "assembly:flattened_tropical_fish",
+    "assembly:flattened_pufferfish"
+  ]
+}

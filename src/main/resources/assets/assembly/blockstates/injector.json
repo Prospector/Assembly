@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "assembly:block/injector" },
+    "facing=east": { "model": "assembly:block/injector", "y": 90 },
+    "facing=south": { "model": "assembly:block/injector", "y": 180 },
+    "facing=west": { "model": "assembly:block/injector", "y": 270 }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "type": "assembly:pressing",
+  "input": {
+    "tag": "c:brass_ingots"
+  },
+  "output": "assembly:brass_plate",
+  "presses": 1
+}

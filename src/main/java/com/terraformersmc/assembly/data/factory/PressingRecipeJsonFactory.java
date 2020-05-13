@@ -43,11 +43,11 @@ public class PressingRecipeJsonFactory {
 	}
 
 	public static PressingRecipeJsonFactory createSteamPressing(Ingredient input, ItemConvertible output, int presses) {
-		return create(input, output, presses, AssemblyRecipeSerializers.STEAM_PRESSING, "steam_pressing");
+		return create(input, output, presses, AssemblyRecipeSerializers.PRESSING, "pressing");
 	}
 
 	public static PressingRecipeJsonFactory createSteamPressing(Ingredient input, ItemConvertible output) {
-		return createSteamPressing(input, output, AssemblyRecipeSerializers.STEAM_PRESSING.getDefaultPresses());
+		return createSteamPressing(input, output, AssemblyRecipeSerializers.PRESSING.getDefaultPresses());
 	}
 
 	public PressingRecipeJsonFactory criterion(String criterionName, CriterionConditions conditions) {

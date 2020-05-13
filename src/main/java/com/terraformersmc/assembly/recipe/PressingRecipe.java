@@ -49,16 +49,16 @@ public class PressingRecipe extends AssemblyRecipe<Inventory> implements InputVa
 
 	@Override
 	public ItemStack getRecipeKindIcon() {
-		return new ItemStack(AssemblyItems.STEAM_PRESS);
+		return new ItemStack(AssemblyItems.PRESS);
 	}
 
 	@Override
 	public RecipeType<?> getType() {
-		return AssemblyRecipeTypes.STEAM_PRESSING;
+		return AssemblyRecipeTypes.PRESSING;
 	}
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return AssemblyRecipeSerializers.STEAM_PRESSING;
+		return AssemblyRecipeSerializers.PRESSING;
 	}
 }

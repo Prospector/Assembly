@@ -1,0 +1,140 @@
+{
+	"parent": "block/block",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "assembly:block/brass_machine",
+		"2": "assembly:block/squeezer"
+	},
+	"elements": [
+		{
+			"name": "Bottom Base",
+			"from": [0, 0, 0],
+			"to": [16, 10, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 8, 5], "texture": "#0", "cullface": "north"},
+				"east": {"uv": [0, 0, 8, 5], "texture": "#0", "cullface": "east"},
+				"south": {"uv": [0, 0, 8, 5], "texture": "#0", "cullface": "south"},
+				"west": {"uv": [0, 0, 8, 5], "texture": "#0", "cullface": "west"},
+				"up": {"uv": [8, 6, 16, 14], "texture": "#0"},
+				"down": {"uv": [0, 5, 8, 13], "texture": "#0", "cullface": "down"}
+			}
+		},
+		{
+			"name": "Platform",
+			"from": [2, 10, 2],
+			"to": [14, 11, 14],
+			"faces": {
+				"north": {"uv": [8, 5.5, 14, 6], "texture": "#0"},
+				"east": {"uv": [8, 0, 8.5, 6], "rotation": 270, "texture": "#0"},
+				"south": {"uv": [8, 0, 14, 0.5], "rotation": 180, "texture": "#0"},
+				"west": {"uv": [13.5, 0, 14, 6], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [8, 0, 14, 6], "texture": "#0"}
+			}
+		},
+		{
+			"name": "SW Pillar",
+			"from": [0, 10, 14],
+			"to": [2, 15, 16],
+			"faces": {
+				"north": {"uv": [15, 3, 16, 6], "texture": "#0"},
+				"east": {"uv": [15, 3, 16, 6], "texture": "#0"},
+				"south": {"uv": [14, 3.5, 15, 6], "texture": "#0", "cullface": "south"},
+				"west": {"uv": [14, 0, 15, 3], "rotation": 180, "texture": "#0", "cullface": "west"}
+			}
+		},
+		{
+			"name": "NW Pillar",
+			"from": [0, 10, 0],
+			"to": [2, 15, 2],
+			"faces": {
+				"north": {"uv": [14, 0, 15, 2.5], "rotation": 180, "texture": "#0", "cullface": "north"},
+				"east": {"uv": [15, 3, 16, 6], "texture": "#0"},
+				"south": {"uv": [15, 3, 16, 6], "texture": "#0"},
+				"west": {"uv": [14, 3, 15, 6], "texture": "#0", "cullface": "west"}
+			}
+		},
+		{
+			"name": "NE Pillar",
+			"from": [14, 10, 0],
+			"to": [16, 15, 2],
+			"faces": {
+				"north": {"uv": [14, 3, 15, 6], "texture": "#0", "cullface": "north"},
+				"east": {"uv": [14, 0, 15, 2.5], "rotation": 180, "texture": "#0", "cullface": "east"},
+				"south": {"uv": [15, 3, 16, 6], "texture": "#0"},
+				"west": {"uv": [15, 3, 16, 6], "texture": "#0"}
+			}
+		},
+		{
+			"name": "SE Pillar",
+			"from": [14, 10, 14],
+			"to": [16, 15, 16],
+			"faces": {
+				"north": {"uv": [15, 3, 16, 6], "texture": "#0"},
+				"east": {"uv": [14, 3, 15, 6], "texture": "#0", "cullface": "east"},
+				"south": {"uv": [14, 0, 15, 2.5], "rotation": 180, "texture": "#0", "cullface": "south"},
+				"west": {"uv": [15, 3, 16, 6], "texture": "#0"}
+			}
+		},
+		{
+			"from": [2, 10, 15],
+			"to": [14, 15, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 18, 23]},
+			"faces": {
+				"south": {"uv": [0, 0, 6, 2.5], "texture": "#2", "cullface": "south"}
+			}
+		},
+		{
+			"from": [0, 15, 0],
+			"to": [16, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 23, 8]},
+			"faces": {
+				"north": {"uv": [0, 2.5, 8, 3], "rotation": 180, "texture": "#2", "cullface": "north"},
+				"east": {"uv": [7.5, 2.5, 8, 10.5], "rotation": 90, "texture": "#2", "cullface": "east"},
+				"south": {"uv": [0, 10, 8, 10.5], "texture": "#2", "cullface": "south"},
+				"west": {"uv": [0, 2.5, 0.5, 10.5], "rotation": 270, "texture": "#2", "cullface": "west"},
+				"up": {"uv": [0, 2.5, 8, 10.5], "texture": "#2", "cullface": "up"},
+				"down": {"uv": [0, 2.5, 8, 10.5], "texture": "#2"}
+			}
+		},
+		{
+			"from": [15, 10, 2],
+			"to": [16, 15, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 18, 21]},
+			"faces": {
+				"east": {"uv": [0, 0, 6, 2.5], "texture": "#2", "cullface": "east"}
+			}
+		},
+		{
+			"from": [2, 10, 0],
+			"to": [14, 15, 1],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 18, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 6, 2.5], "texture": "#2", "cullface": "north"}
+			}
+		},
+		{
+			"from": [0, 10, 2],
+			"to": [1, 15, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [-7, 18, 21]},
+			"faces": {
+				"west": {"uv": [0, 0, 6, 2.5], "texture": "#2", "cullface": "west"}
+			}
+		}
+	],
+	"groups": [0, 1,
+		{
+			"name": "Pillars",
+			"origin": [8, 8, 8],
+			"children": [2, 3, 4, 5]
+		},
+		{
+			"name": "Pillars",
+			"origin": [8, 8, 8],
+			"children": []
+		},
+		{
+			"name": "Press Arm",
+			"origin": [8, 8, 8],
+			"children": []
+		}, 6, 7, 8, 9, 10]
+}

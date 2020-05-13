@@ -1,13 +1,12 @@
 package com.terraformersmc.assembly.blockentity;
 
 import com.terraformersmc.assembly.Assembly;
-import com.terraformersmc.assembly.block.FluidInjectorBlock;
+import com.terraformersmc.assembly.block.AssemblyBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import com.terraformersmc.assembly.block.AssemblyBlocks;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,13 +17,14 @@ public class AssemblyBlockEntities {
 
 	public static final BlockEntityType<FluidBarrelBlockEntity> FLUID_BARREL = add("wooden_barrel", FluidBarrelBlockEntity::new, AssemblyBlocks.FLUID_BARREL);
 	public static final BlockEntityType<TreeTapBlockEntity> TREE_TAP = add("tree_tap", TreeTapBlockEntity::new, AssemblyBlocks.TREE_TAP);
-	public static final BlockEntityType<SteamPressBlockEntity> STEAM_PRESS = add("steam_press", SteamPressBlockEntity::new, AssemblyBlocks.STEAM_PRESS);
+	public static final BlockEntityType<PressBlockEntity> PRESS = add("press", PressBlockEntity::new, AssemblyBlocks.PRESS);
 	public static final BlockEntityType<BoilerBlockEntity> BOILER = add("boiler", BoilerBlockEntity::new, AssemblyBlocks.BOILER);
 	public static final BlockEntityType<BoilerChamberBlockEntity> BOILER_CHAMBER = add("boiler_chamber", BoilerChamberBlockEntity::new, AssemblyBlocks.BOILER_CHAMBER);
 	public static final BlockEntityType<FluidHopperBlockEntity> FLUID_HOPPER = add("fluid_hopper", FluidHopperBlockEntity::new, AssemblyBlocks.FLUID_HOPPER);
 	public static final BlockEntityType<SpigotBlockEntity> SPIGOT = add("spigot", SpigotBlockEntity::new, AssemblyBlocks.SPIGOT);
-	public static final BlockEntityType<FluidInjectorBlockEntity> FLUID_INJECTOR = add("fluid_injector", FluidInjectorBlockEntity::new, AssemblyBlocks.FLUID_INJECTOR);
+	public static final BlockEntityType<InjectorBlockEntity> INJECTOR = add("injector", InjectorBlockEntity::new, AssemblyBlocks.INJECTOR);
 	public static final BlockEntityType<TinkeringTableBlockEntity> TINKERING_TABLE = add("tinkering_table", TinkeringTableBlockEntity::new, AssemblyBlocks.TINKERING_TABLE);
+	public static final BlockEntityType<SqueezerBlockEntity> SQUEEZER = add("squeezer", SqueezerBlockEntity::new, AssemblyBlocks.SQUEEZER);
 
 	private static <T extends BlockEntity> BlockEntityType<T> add(String name, Supplier<? extends T> supplier, Block... blocks) {
 		return add(name, BlockEntityType.Builder.create(supplier, blocks));

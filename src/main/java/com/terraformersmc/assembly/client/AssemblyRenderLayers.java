@@ -7,7 +7,7 @@ import net.minecraft.client.render.RenderLayer;
 
 public class AssemblyRenderLayers {
 	public static void register() {
-		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(), AssemblyBlocks.HEVEA_DOOR, AssemblyBlocks.HEVEA_TRAPDOOR, AssemblyBlocks.HEVEA_SAPLING);
+		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(), AssemblyBlocks.HEVEA_DOOR, AssemblyBlocks.HEVEA_TRAPDOOR, AssemblyBlocks.HEVEA_SAPLING, AssemblyBlocks.SQUEEZER);
 		AssemblyFluids.getFluids().values().forEach(fluid -> BlockRenderLayerMap.INSTANCE.putFluid(fluid, RenderLayer.getTranslucent()));
 	}
 }

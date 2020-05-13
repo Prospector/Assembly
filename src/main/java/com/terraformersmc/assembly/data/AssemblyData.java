@@ -1,12 +1,14 @@
 package com.terraformersmc.assembly.data;
 
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
+import alexiil.mc.lib.attributes.fluid.volume.FluidKeys;
 import com.terraformersmc.assembly.Assembly;
 import com.terraformersmc.assembly.block.AssemblyBlocks;
-import com.terraformersmc.assembly.block.SteamPressBlock;
+import com.terraformersmc.assembly.block.PressBlock;
 import com.terraformersmc.assembly.data.factory.BoilingRecipeJsonFactory;
-import com.terraformersmc.assembly.data.factory.FluidInjectingRecipeJsonFactory;
+import com.terraformersmc.assembly.data.factory.InjectingRecipeJsonFactory;
 import com.terraformersmc.assembly.data.factory.PressingRecipeJsonFactory;
+import com.terraformersmc.assembly.data.factory.SqueezingRecipeJsonFactory;
 import com.terraformersmc.assembly.entity.AssemblyEntities;
 import com.terraformersmc.assembly.fluid.AssemblyFluids;
 import com.terraformersmc.assembly.item.AssemblyItems;
@@ -111,6 +113,9 @@ public class AssemblyData implements DossierProvider {
 			this.add(AssemblyItemTags.ZINC_CONCENTRATES, AssemblyItems.ZINC_CONCENTRATE);
 			this.add(AssemblyItemTags.BRASS_BLENDS, AssemblyItems.BRASS_BLEND);
 			this.add(AssemblyItemTags.HAMMERS, AssemblyItems.WOODEN_HAMMER, AssemblyItems.STONE_HAMMER, AssemblyItems.IRON_HAMMER, AssemblyItems.GOLDEN_HAMMER, AssemblyItems.DIAMOND_HAMMER);
+			this.add(AssemblyItemTags.FLATTENED_FISHES, AssemblyItems.FLATTENED_COD, AssemblyItems.FLATTENED_SALMON, AssemblyItems.FLATTENED_TROPICAL_FISH, AssemblyItems.FLATTENED_PUFFERFISH);
+			this.add(AssemblyItemTags.SQUISHY, AssemblyItemTags.FLATTENED_FISHES);
+			this.add(AssemblyItemTags.POPPABLE, AssemblyItems.FLATTENED_PUFFERFISH);
 		}
 	}
 
@@ -125,14 +130,17 @@ public class AssemblyData implements DossierProvider {
 			PressingRecipeJsonFactory.createSteamPressing(Ingredient.ofItems(Items.TROPICAL_FISH), AssemblyItems.FLATTENED_TROPICAL_FISH).criterion("has_tropical_fish", conditionsFrom(Items.TROPICAL_FISH)).offerTo(exporter);
 			PressingRecipeJsonFactory.createSteamPressing(Ingredient.ofItems(Items.PUFFERFISH), AssemblyItems.FLATTENED_PUFFERFISH).criterion("has_pufferfish", conditionsFrom(Items.PUFFERFISH)).offerTo(exporter);
 
-			FluidInjectingRecipeJsonFactory.create(Ingredient.ofItems(Items.SPONGE), FluidIngredient.of(FluidTags.WATER, FluidAmount.BUCKET), Blocks.WET_SPONGE).criterion("has_sponge", conditionsFrom(Items.SPONGE)).offerTo(exporter);
+			InjectingRecipeJsonFactory.create(Ingredient.ofItems(Items.SPONGE), FluidIngredient.of(FluidTags.WATER, FluidAmount.BUCKET), Blocks.WET_SPONGE).criterion("has_sponge", conditionsFrom(Items.SPONGE)).offerTo(exporter);
+
+			SqueezingRecipeJsonFactory.create(Ingredient.fromTag(AssemblyItemTags.FLATTENED_FISHES), FluidKeys.get(AssemblyFluids.FISH_OIL).withAmount(FluidAmount.BOTTLE.div(10))).criterion("has_fish", conditionsFrom(ItemTags.FISHES)).offerTo(exporter);
 
 			ShapelessRecipeJsonFactory.create(AssemblyItems.FORMIC_ACID).input(Items.GLASS_BOTTLE).input(AssemblyItems.VENOMOUS_FANG).criterion("has_fang", conditionsFrom(AssemblyItems.VENOMOUS_FANG)).offerTo(exporter);
 			ShapelessRecipeJsonFactory.create(AssemblyItems.BRASS_PLATE).input(AssemblyItemTags.BRASS_BLOCKS).input(AssemblyItemTags.HAMMERS).criterion("has_brass", conditionsFrom(AssemblyItemTags.BRASS_INGOTS)).offerTo(exporter);
 
 			ShapedRecipeJsonFactory.create(AssemblyBlocks.BOILER_CHAMBER).pattern("XXX").pattern("IBI").pattern("XXX").input('X', Blocks.IRON_BLOCK).input('I', Items.IRON_INGOT).input('B', Items.BUCKET).criterion("has_bucket", conditionsFrom(Items.BUCKET)).offerTo(exporter);
-			ShapedRecipeJsonFactory.create(AssemblyBlocks.STEAM_PRESS).pattern(" X ").pattern("BIB").pattern("PPP").input('X', Blocks.IRON_BLOCK).input('I', Items.IRON_INGOT).input('B', AssemblyItemTags.BRASS_INGOTS).input('P', AssemblyItemTags.BRASS_PLATES).criterion("has_brass", conditionsFrom(AssemblyItemTags.BRASS_INGOTS)).offerTo(exporter);
-			ShapedRecipeJsonFactory.create(AssemblyBlocks.FLUID_INJECTOR).pattern("BIB").pattern("PPP").input('I', Items.IRON_INGOT).input('B', Items.BUCKET).input('P', AssemblyItemTags.BRASS_PLATES).criterion("has_brass", conditionsFrom(AssemblyItemTags.BRASS_INGOTS)).offerTo(exporter);
+			ShapedRecipeJsonFactory.create(AssemblyBlocks.PRESS).pattern(" X ").pattern("BIB").pattern("PPP").input('X', Blocks.IRON_BLOCK).input('I', Items.IRON_INGOT).input('B', AssemblyItemTags.BRASS_INGOTS).input('P', AssemblyItemTags.BRASS_PLATES).criterion("has_brass", conditionsFrom(AssemblyItemTags.BRASS_INGOTS)).offerTo(exporter);
+			ShapedRecipeJsonFactory.create(AssemblyBlocks.INJECTOR).pattern("BIB").pattern("PPP").input('I', Items.IRON_INGOT).input('B', Items.BUCKET).input('P', AssemblyItemTags.BRASS_PLATES).criterion("has_brass", conditionsFrom(AssemblyItemTags.BRASS_INGOTS)).offerTo(exporter);
+			ShapedRecipeJsonFactory.create(AssemblyBlocks.SQUEEZER).pattern("PPP").pattern("BIB").pattern("PPP").input('I', Items.IRON_INGOT).input('B', Items.BUCKET).input('P', AssemblyItemTags.BRASS_PLATES).criterion("has_brass", conditionsFrom(AssemblyItemTags.BRASS_INGOTS)).offerTo(exporter);
 
 			ShapedRecipeJsonFactory.create(AssemblyBlocks.COPPER_BLOCK).pattern("XXX").pattern("XXX").pattern("XXX").input('X', AssemblyItemTags.COPPER_INGOTS).criterion("has_copper", conditionsFrom(AssemblyItemTags.COPPER_INGOTS)).offerTo(exporter);
 			ShapedRecipeJsonFactory.create(AssemblyBlocks.ZINC_BLOCK).pattern("XXX").pattern("XXX").pattern("XXX").input('X', AssemblyItemTags.ZINC_INGOTS).criterion("has_zinc", conditionsFrom(AssemblyItemTags.ZINC_INGOTS)).offerTo(exporter);
@@ -291,7 +299,7 @@ public class AssemblyData implements DossierProvider {
 
 			this.drops(AssemblyBlocks.BOILER, Blocks.FURNACE);
 			this.drops(AssemblyBlocks.BOILER_CHAMBER);
-			this.drops(AssemblyBlocks.STEAM_PRESS, block -> BlockLootTableGenerator.createForMultiblock(AssemblyBlocks.STEAM_PRESS, SteamPressBlock.HALF, DoubleBlockHalf.LOWER));
+			this.drops(AssemblyBlocks.PRESS, block -> BlockLootTableGenerator.createForMultiblock(AssemblyBlocks.PRESS, PressBlock.HALF, DoubleBlockHalf.LOWER));
 
 			this.oreDrops(Blocks.IRON_ORE, new Pair<>(AssemblyItems.IRON_CONCENTRATE, UniformLootTableRange.between(1.0F, 5.0F)), new Pair<>(AssemblyItems.COPPER_CONCENTRATE, BinomialLootTableRange.create(2, 0.25F)));
 			this.oreDrops(Blocks.GOLD_ORE, new Pair<>(AssemblyItems.GOLD_CONCENTRATE, UniformLootTableRange.between(1.0F, 5.0F)), new Pair<>(AssemblyItems.ZINC_CONCENTRATE, BinomialLootTableRange.create(1, 0.25F)));
@@ -308,7 +316,7 @@ public class AssemblyData implements DossierProvider {
 			this.drops(AssemblyBlocks.CONVEYOR_BELT);
 			this.drops(AssemblyBlocks.FLUID_HOPPER);
 			this.drops(AssemblyBlocks.SPIGOT);
-			this.drops(AssemblyBlocks.FLUID_INJECTOR);
+			this.drops(AssemblyBlocks.INJECTOR);
 		}
 
 		public void oreDrops(Block block, Pair<ItemConvertible, LootTableRange>... hammerDrops) {

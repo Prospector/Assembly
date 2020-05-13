@@ -7,7 +7,6 @@ import com.terraformersmc.assembly.fluid.AssemblyFluids;
 import com.terraformersmc.assembly.item.exoframe.ExoframePieceItem;
 import com.terraformersmc.assembly.item.exoframe.PistonBootsItem;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
@@ -48,8 +47,9 @@ public class AssemblyItems {
 	//	public static final Item BIOMASS_BUCKET = add("biomass_bucket", new AssemblyBucketItem(AssemblyFluids.BIOMASS, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1).group(ItemGroup.MISC)));
 	public static final Item CRUDE_OIL_BUCKET = add("crude_oil_bucket", new AssemblyBucketItem(AssemblyFluids.CRUDE_OIL, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1).group(ItemGroup.MISC)));
 	public static final Item STEAM_BUCKET = add("steam_bucket", new AssemblyBucketItem(AssemblyFluids.STEAM, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1).group(ItemGroup.MISC)));
+	public static final Item FISH_OIL_BUCKET = add("fish_oil_bucket", new AssemblyBucketItem(AssemblyFluids.FISH_OIL, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1).group(ItemGroup.MISC)));
 
-	public static final Item STEAM_PRESS = add("steam_press", new BedItem(AssemblyBlocks.STEAM_PRESS, new Item.Settings().group(ItemGroup.DECORATIONS)));
+	public static final Item PRESS = add("press", new BedItem(AssemblyBlocks.PRESS, new Item.Settings().group(ItemGroup.DECORATIONS)));
 
 	public static final Item DIPSTICK = add("dipstick", new DipstickItem(new Item.Settings().group(ItemGroup.TOOLS).maxCount(1)));
 

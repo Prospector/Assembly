@@ -1,0 +1,8 @@
+{
+  "type": "assembly:pressing",
+  "input": {
+    "item": "minecraft:pufferfish"
+  },
+  "output": "assembly:flattened_pufferfish",
+  "presses": 1
+}

@@ -1,8 +1,0 @@
-{
-  "type": "assembly:steam_pressing",
-  "input": {
-    "item": "minecraft:salmon"
-  },
-  "output": "assembly:flattened_salmon",
-  "presses": 1
-}

@@ -1,6 +1,6 @@
 package com.terraformersmc.assembly.mixin.common.multiblock;
 
-import com.terraformersmc.assembly.block.SteamPressBlock;
+import com.terraformersmc.assembly.block.PressBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.enums.DoubleBlockHalf;
 import net.minecraft.server.network.ServerPlayerInteractionManager;
@@ -26,10 +26,10 @@ public abstract class MixinServerPlayerInteractionManager {
 		if (fromUpper || fromLower) {
 			BlockState newState;
 			BlockState oldState;
-			if ((oldState = world.getBlockState((BlockPos) miningPos)).getBlock() instanceof SteamPressBlock && (newState = world.getBlockState(pos)).getBlock() instanceof SteamPressBlock) {
-				if (fromUpper && oldState.get(SteamPressBlock.HALF) == DoubleBlockHalf.UPPER && newState.get(SteamPressBlock.HALF) == DoubleBlockHalf.LOWER) {
+			if ((oldState = world.getBlockState((BlockPos) miningPos)).getBlock() instanceof PressBlock && (newState = world.getBlockState(pos)).getBlock() instanceof PressBlock) {
+				if (fromUpper && oldState.get(PressBlock.HALF) == DoubleBlockHalf.UPPER && newState.get(PressBlock.HALF) == DoubleBlockHalf.LOWER) {
 					return true;
-				} else if (fromLower && oldState.get(SteamPressBlock.HALF) == DoubleBlockHalf.LOWER && newState.get(SteamPressBlock.HALF) == DoubleBlockHalf.UPPER) {
+				} else if (fromLower && oldState.get(PressBlock.HALF) == DoubleBlockHalf.LOWER && newState.get(PressBlock.HALF) == DoubleBlockHalf.UPPER) {
 					return true;
 				}
 			}

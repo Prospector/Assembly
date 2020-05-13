@@ -59,10 +59,12 @@ public class AssemblyBlocks {
 	//	public static final FluidBlock BIOMASS = add("biomass", new AssemblyFluidBlock(AssemblyFluids.BIOMASS, FabricBlockSettings.of(Material.WATER).noCollision().hardness(100.0F).dropsNothing()));
 	public static final FluidBlock CRUDE_OIL = add("crude_oil", new AssemblyFluidBlock(AssemblyFluids.CRUDE_OIL, FabricBlockSettings.of(Material.WATER).noCollision().hardness(100.0F).dropsNothing()));
 	public static final FluidBlock STEAM = add("steam", new AssemblyFluidBlock(AssemblyFluids.STEAM, FabricBlockSettings.of(Material.AIR).noCollision().hardness(100.0F).dropsNothing()));
+	public static final FluidBlock FISH_OIL = add("fish_oil", new AssemblyFluidBlock(AssemblyFluids.FISH_OIL, FabricBlockSettings.of(Material.WATER).noCollision().hardness(100.0F).dropsNothing()));
 
 	public static final Block BOILER = add("boiler", new BoilerBlock(FabricBlockSettings.of(Material.METAL).hardness(1.0F)));
 	public static final Block BOILER_CHAMBER = add("boiler_chamber", new BoilerChamberBlock(FabricBlockSettings.of(Material.METAL).hardness(1.0F)), ItemGroup.DECORATIONS);
-	public static final Block STEAM_PRESS = add("steam_press", new SteamPressBlock(FabricBlockSettings.of(Material.METAL).dynamicBounds().hardness(1.0F)));
+	public static final Block PRESS = add("press", new PressBlock(FabricBlockSettings.of(Material.METAL).dynamicBounds().hardness(1.0F)));
+	public static final Block SQUEEZER = add("squeezer", new SqueezerBlock(FabricBlockSettings.of(Material.METAL).nonOpaque().breakByTool(FabricToolTags.PICKAXES, 0)), ItemGroup.DECORATIONS);
 
 	public static final Block COPPER_ORE = add("copper_ore", new AssemblyOreBlock(FabricBlockSettings.of(Material.STONE).strength(2.5F, 2.5F)), ItemGroup.BUILDING_BLOCKS);
 
@@ -76,14 +78,14 @@ public class AssemblyBlocks {
 	public static final Block ZINC_CONCENTRATE_BLOCK = add("zinc_concentrate_block", new AssemblyFallingBlock(FabricBlockSettings.copyOf(Blocks.GRAVEL).breakByTool(FabricToolTags.SHOVELS)), ItemGroup.BUILDING_BLOCKS);
 	public static final Block BRASS_BLEND_BLOCK = add("brass_blend_block", new AssemblyFallingBlock(FabricBlockSettings.copyOf(Blocks.GRAVEL).breakByTool(FabricToolTags.SHOVELS)), ItemGroup.BUILDING_BLOCKS);
 
-	public static final Block CAPROCK = add("caprock", new Block(FabricBlockSettings.of(Material.STONE).hardness(4F).breakByTool(FabricToolTags.PICKAXES, 1)), ItemGroup.BUILDING_BLOCKS);
-	public static final Block HALITE = add("halite", new Block(FabricBlockSettings.of(Material.STONE).hardness(1.5F).breakByTool(FabricToolTags.PICKAXES, 0)), ItemGroup.BUILDING_BLOCKS);
+	public static final Block CAPROCK = add("caprock", new Block(FabricBlockSettings.of(Material.STONE).hardness(4F).breakByTool(FabricToolTags.PICKAXES, 2)), ItemGroup.BUILDING_BLOCKS);
+	public static final Block HALITE = add("halite", new Block(FabricBlockSettings.of(Material.STONE).hardness(1.5F).breakByTool(FabricToolTags.PICKAXES, 1)), ItemGroup.BUILDING_BLOCKS);
 
-	public static final Block CONVEYOR_BELT = add("conveyor_belt", new ConveyorBeltBlock(FabricBlockSettings.of(Material.METAL).breakByTool(FabricToolTags.PICKAXES, 0)), ItemGroup.REDSTONE);
-	public static final Block FLUID_HOPPER = add("fluid_hopper", new FluidHopperBlock(FabricBlockSettings.copyOf(Blocks.HOPPER).breakByTool(FabricToolTags.PICKAXES, 0)), ItemGroup.REDSTONE);
-	public static final Block SPIGOT = add("spigot", new SpigotBlock(FabricBlockSettings.copyOf(Blocks.HOPPER).breakByTool(FabricToolTags.PICKAXES, 0)), ItemGroup.REDSTONE);
-	public static final Block FLUID_INJECTOR = add("fluid_injector", new FluidInjectorBlock(FabricBlockSettings.copyOf(Blocks.HOPPER).breakByTool(FabricToolTags.PICKAXES, 0)), ItemGroup.DECORATIONS);
-	public static final Block TINKERING_TABLE = add("tinkering_table", new TinkeringTableBlock(FabricBlockSettings.of(Material.METAL).strength(5.0F, 6.0F).breakByTool(FabricToolTags.PICKAXES, 0)), ItemGroup.DECORATIONS);
+	public static final Block CONVEYOR_BELT = add("conveyor_belt", new ConveyorBeltBlock(FabricBlockSettings.of(Material.METAL).breakByTool(FabricToolTags.PICKAXES, 1)), ItemGroup.REDSTONE);
+	public static final Block FLUID_HOPPER = add("fluid_hopper", new FluidHopperBlock(FabricBlockSettings.copyOf(Blocks.HOPPER).breakByTool(FabricToolTags.PICKAXES, 1)), ItemGroup.REDSTONE);
+	public static final Block SPIGOT = add("spigot", new SpigotBlock(FabricBlockSettings.copyOf(Blocks.HOPPER).breakByTool(FabricToolTags.PICKAXES, 1)), ItemGroup.REDSTONE);
+	public static final Block INJECTOR = add("injector", new InjectorBlock(FabricBlockSettings.copyOf(Blocks.HOPPER).breakByTool(FabricToolTags.PICKAXES, 1)), ItemGroup.DECORATIONS);
+	public static final Block TINKERING_TABLE = add("tinkering_table", new TinkeringTableBlock(FabricBlockSettings.of(Material.METAL).strength(5.0F, 6.0F).breakByTool(FabricToolTags.PICKAXES, 1)), ItemGroup.DECORATIONS);
 
 	public static void register() {
 		for (Identifier id : ITEMS.keySet()) {

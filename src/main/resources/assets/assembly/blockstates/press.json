@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=upper": {
+      "model": "assembly:block/press_upper"
+    },
+    "half=lower": {
+      "model": "assembly:block/press_lower"
+    }
+  }
+}

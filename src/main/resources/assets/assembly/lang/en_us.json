@@ -48,8 +48,8 @@
 
   "block.assembly.boiler": "Boiler",
   "block.assembly.boiler_chamber": "Boiler Chamber",
-  "block.assembly.steam_press": "Steam Press",
-  "block.assembly.fluid_injector": "Fluid Injector",
+  "block.assembly.press": "Press",
+  "block.assembly.injector": "Injector",
 
   "block.assembly.latex": "Latex",
   "block.assembly.flowing_latex": "Flowing Latex",
@@ -62,6 +62,10 @@
   "block.assembly.crude_oil": "Crude Oil",
   "block.assembly.flowing_crude_oil": "Flowing Crude Oil",
   "item.assembly.crude_oil_bucket": "Crude Oil Bucket",
+
+  "block.assembly.fish_oil": "Fish Oil",
+  "block.assembly.flowing_fish_oil": "Flowing Fish Oil",
+  "item.assembly.crude_fish_bucket": "Fish Oil Bucket",
 
   "block.assembly.hevea_log": "Hevea Log",
   "block.assembly.stripped_hevea_log": "Stripped Hevea Log",

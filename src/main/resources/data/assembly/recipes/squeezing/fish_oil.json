@@ -1,0 +1,11 @@
+{
+  "type": "assembly:squeezing",
+  "input": {
+    "tag": "assembly:flattened_fishes"
+  },
+  "output": {
+    "fluid": "assembly:fish_oil",
+    "amount": "1/30"
+  },
+  "squeezes": 1
+}

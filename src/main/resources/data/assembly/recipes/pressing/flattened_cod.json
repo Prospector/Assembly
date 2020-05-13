@@ -1,0 +1,8 @@
+{
+  "type": "assembly:pressing",
+  "input": {
+    "item": "minecraft:cod"
+  },
+  "output": "assembly:flattened_cod",
+  "presses": 1
+}

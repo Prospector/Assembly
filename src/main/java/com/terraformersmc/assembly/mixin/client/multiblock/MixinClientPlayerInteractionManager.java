@@ -1,16 +1,10 @@
 package com.terraformersmc.assembly.mixin.client.multiblock;
 
-import com.terraformersmc.assembly.block.SteamPressBlock;
+import com.terraformersmc.assembly.block.PressBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.enums.DoubleBlockHalf;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,10 +30,10 @@ public abstract class MixinClientPlayerInteractionManager {
 		if (fromUpper || fromLower) {
 			BlockState newState;
 			BlockState oldState;
-			if ((oldState = networkHandler.getWorld().getBlockState(currentBreakingPos)).getBlock() instanceof SteamPressBlock && (newState = networkHandler.getWorld().getBlockState(pos)).getBlock() instanceof SteamPressBlock) {
-				if (fromUpper && oldState.get(SteamPressBlock.HALF) == DoubleBlockHalf.UPPER && newState.get(SteamPressBlock.HALF) == DoubleBlockHalf.LOWER) {
+			if ((oldState = networkHandler.getWorld().getBlockState(currentBreakingPos)).getBlock() instanceof PressBlock && (newState = networkHandler.getWorld().getBlockState(pos)).getBlock() instanceof PressBlock) {
+				if (fromUpper && oldState.get(PressBlock.HALF) == DoubleBlockHalf.UPPER && newState.get(PressBlock.HALF) == DoubleBlockHalf.LOWER) {
 					info.setReturnValue(bl);
-				} else if (fromLower && oldState.get(SteamPressBlock.HALF) == DoubleBlockHalf.LOWER && newState.get(SteamPressBlock.HALF) == DoubleBlockHalf.UPPER) {
+				} else if (fromLower && oldState.get(PressBlock.HALF) == DoubleBlockHalf.LOWER && newState.get(PressBlock.HALF) == DoubleBlockHalf.UPPER) {
 					info.setReturnValue(bl);
 				}
 			}

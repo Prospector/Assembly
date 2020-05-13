@@ -1,6 +1,5 @@
 package com.terraformersmc.assembly.client.renderer;
 
-import com.terraformersmc.assembly.block.TinkeringTableBlock;
 import com.terraformersmc.assembly.blockentity.AssemblyBlockEntities;
 import com.terraformersmc.assembly.client.renderer.blockentityrenderer.*;
 import com.terraformersmc.assembly.entity.AssemblyEntities;
@@ -33,9 +32,9 @@ public class AssemblyRenderers {
 	private static void registerBlockEntityRenderers() {
 		BlockEntityRendererRegistry.INSTANCE.register(AssemblyBlockEntities.FLUID_BARREL, FluidBarrelBlockEntityRenderer::new);
 		BlockEntityRendererRegistry.INSTANCE.register(AssemblyBlockEntities.TREE_TAP, TreeTapBlockEntityRenderer::new);
-		BlockEntityRendererRegistry.INSTANCE.register(AssemblyBlockEntities.STEAM_PRESS, SteamPressBlockEntityRenderer::new);
+		BlockEntityRendererRegistry.INSTANCE.register(AssemblyBlockEntities.PRESS, PressBlockEntityRenderer::new);
 		BlockEntityRendererRegistry.INSTANCE.register(AssemblyBlockEntities.SPIGOT, SpigotBlockEntityRenderer::new);
-		BlockEntityRendererRegistry.INSTANCE.register(AssemblyBlockEntities.FLUID_INJECTOR, FluidInjectorBlockEntityRenderer::new);
+		BlockEntityRendererRegistry.INSTANCE.register(AssemblyBlockEntities.INJECTOR, InjectorBlockEntityRenderer::new);
 		BlockEntityRendererRegistry.INSTANCE.register(AssemblyBlockEntities.TINKERING_TABLE, TinkeringTableBlockEntityRenderer::new);
 	}
 

@@ -18,6 +18,9 @@ public class AssemblyItemTags {
 	public static final Tag.Identified<Item> BRASS_BLOCKS = ofCommon("brass_blocks");
 	public static final Tag.Identified<Item> HEVEA_LOGS = ofAssembly("hevea_logs");
 	public static final Tag.Identified<Item> HAMMERS = ofAssembly("hammers");
+	public static final Tag.Identified<Item> FLATTENED_FISHES = ofAssembly("flattened_fishes");
+	public static final Tag.Identified<Item> SQUISHY = ofAssembly("squishy");
+	public static final Tag.Identified<Item> POPPABLE = ofAssembly("poppable");
 
 	public static final Tag.Identified<Item> IRON_CONCENTRATES = ofAssembly("iron_concentrates");
 	public static final Tag.Identified<Item> GOLD_CONCENTRATES = ofAssembly("gold_concentrates");

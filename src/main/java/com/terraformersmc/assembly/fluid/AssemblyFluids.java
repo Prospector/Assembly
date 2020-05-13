@@ -5,7 +5,6 @@ import alexiil.mc.lib.attributes.fluid.volume.FluidKeys;
 import alexiil.mc.lib.attributes.fluid.volume.SimpleFluidKey;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-
 import com.terraformersmc.assembly.Assembly;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -21,12 +20,14 @@ public class AssemblyFluids {
 
 	public static AssemblyFluid LATEX = add(new AssemblyFluid.Settings("latex").tickRate(15));
 	public static AssemblyFluid FLOWING_LATEX = getFlowing(LATEX);
-//	public static AssemblyFluid BIOMASS = add(new AssemblyFluid.Settings("biomass").tickRate(8));
+	//	public static AssemblyFluid BIOMASS = add(new AssemblyFluid.Settings("biomass").tickRate(8));
 //	public static AssemblyFluid FLOWING_BIOMASS = getFlowing(BIOMASS);
 	public static AssemblyFluid CRUDE_OIL = add(new AssemblyFluid.Settings("crude_oil").tickRate(20));
 	public static AssemblyFluid FLOWING_CRUDE_OIL = getFlowing(CRUDE_OIL);
 	public static AssemblyFluid STEAM = add(new AssemblyFluid.Settings("steam").tickRate(1).fluidKey(FluidKey.FluidKeyBuilder::setGas));
 	public static AssemblyFluid FLOWING_STEAM = getFlowing(STEAM);
+	public static AssemblyFluid FISH_OIL = add(new AssemblyFluid.Settings("fish_oil").tickRate(15));
+	public static AssemblyFluid FLOWING_FISH_OIL = getFlowing(FISH_OIL);
 
 	public static AssemblyFluid add(AssemblyFluid.Settings settings) {
 		AssemblyFluid still = new AssemblyFluid.Still(settings);
@@ -35,20 +36,20 @@ public class AssemblyFluids {
 		putFluid(new Identifier(Assembly.MOD_ID, "flowing_" + settings.getName()), flowing);
 		STILL_FLOWING_MAP.put(still, flowing);
 		if (settings.fluidKeyBuilder != null) {
-		    FluidKey.FluidKeyBuilder builder = new FluidKey.FluidKeyBuilder(still);
-	        builder.setName(new TranslatableText("block.assembly." + settings.getName()));
-		    settings.fluidKeyBuilder.accept(builder);
-		    FluidKeys.put(still, new SimpleFluidKey(builder));
+			FluidKey.FluidKeyBuilder builder = new FluidKey.FluidKeyBuilder(still);
+			builder.setName(new TranslatableText("block.assembly." + settings.getName()));
+			settings.fluidKeyBuilder.accept(builder);
+			FluidKeys.put(still, new SimpleFluidKey(builder));
 		}
 		return still;
 	}
 
 	private static void putFluid(Identifier id, AssemblyFluid fluid) {
-	    FLUIDS.put(id, fluid);
-	    Registry.register(Registry.FLUID, id, fluid);
+		FLUIDS.put(id, fluid);
+		Registry.register(Registry.FLUID, id, fluid);
 	}
 
-    public static AssemblyFluid getFlowing(AssemblyFluid still) {
+	public static AssemblyFluid getFlowing(AssemblyFluid still) {
 		return STILL_FLOWING_MAP.get(still);
 	}
 
@@ -61,7 +62,7 @@ public class AssemblyFluids {
 	}
 
 	public static void register() {
-	    // Just to call clinit
+		// Just to call clinit
 	}
 
 	public static Map<Identifier, AssemblyFluid> getFluids() {

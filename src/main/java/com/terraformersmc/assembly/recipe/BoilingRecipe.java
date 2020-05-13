@@ -7,19 +7,14 @@ import com.terraformersmc.assembly.block.AssemblyBlocks;
 import com.terraformersmc.assembly.recipe.provider.FluidInputInventory;
 import com.terraformersmc.assembly.recipe.serializer.AssemblyRecipeSerializers;
 import com.terraformersmc.assembly.util.recipe.CustomRecipeToastIcon;
-import io.github.cottonmc.libcd.api.CustomOutputRecipe;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import java.util.Collection;
-import java.util.Collections;
-
-public class BoilingRecipe extends AssemblyRecipe<FluidInputInventory> implements CustomOutputRecipe, CustomRecipeToastIcon {
+public class BoilingRecipe extends AssemblyRecipe<FluidInputInventory> implements CustomRecipeToastIcon {
 	public Fluid inputFluid;
 	public FluidAmount ratio;
 	public Fluid output;
@@ -50,11 +45,6 @@ public class BoilingRecipe extends AssemblyRecipe<FluidInputInventory> implement
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return AssemblyRecipeSerializers.BOILING;
-	}
-
-	@Override
-	public Collection<Item> getOutputItems() {
-		return Collections.emptySet();
 	}
 
 	@Override

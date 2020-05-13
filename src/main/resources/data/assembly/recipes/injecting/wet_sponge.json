@@ -1,0 +1,11 @@
+{
+  "type": "assembly:injecting",
+  "input": {
+    "item": "minecraft:sponge"
+  },
+  "fluid": {
+    "tag": "minecraft:water",
+    "amount": "1"
+  },
+  "output": "minecraft:wet_sponge"
+}
