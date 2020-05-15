@@ -10,7 +10,9 @@ import com.terraformersmc.assembly.block.PressBlock;
 import com.terraformersmc.assembly.blockentity.base.AssemblySyncedNbtBlockEntity;
 import com.terraformersmc.assembly.recipe.AssemblyRecipeTypes;
 import com.terraformersmc.assembly.recipe.PressingRecipe;
+import com.terraformersmc.assembly.sound.AssemblySoundEvents;
 import com.terraformersmc.assembly.tag.AssemblyFluidTags;
+import com.terraformersmc.assembly.tag.AssemblyItemTags;
 import com.terraformersmc.assembly.util.AssemblyConstants;
 import com.terraformersmc.assembly.util.fluid.IOFluidContainer;
 import com.terraformersmc.assembly.util.fluid.SimpleIOFluidContainer;
@@ -27,7 +29,6 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Clearable;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
@@ -107,9 +108,20 @@ public class PressBlockEntity extends AssemblySyncedNbtBlockEntity implements Ti
 							sync = true;
 						}
 						if (this.progress == MAX_PROGRESS) {
-							this.world.playSound(null, this.pos, SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.BLOCKS, 0.6F, 0.5F + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.4F);
+							boolean squishy = getStack(INPUT_SLOT).getItem().isIn(AssemblyItemTags.SQUISHY);
+							boolean poppable = getStack(INPUT_SLOT).getItem().isIn(AssemblyItemTags.POPPABLE);
+							this.world.playSound(null, this.pos, AssemblySoundEvents.PRESS_HIT, SoundCategory.BLOCKS, squishy || poppable ? 0.2F : 0.6F, 0.5F + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.4F);
 							if (this.world instanceof ServerWorld) {
-								((ServerWorld) this.world).spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, this.getRenderStack()), this.pos.getX() + 0.5, this.pos.getY() + 0.7, this.pos.getZ() + 0.5, 10, 0.1, 0.1, 0.1, 0.05);
+								((ServerWorld) this.world).spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, this.getRenderStack()), this.pos.getX() + 0.5, this.pos.getY() + 0.7, this.pos.getZ() + 0.5, squishy ? 30 : 10, 0.1, 0.1, 0.1, 0.05);
+							}
+							if (squishy) {
+								this.world.playSound(null, this.pos, AssemblySoundEvents.PRESS_SQUISH, SoundCategory.BLOCKS, 0.6F, 0.5F + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.4F);
+							}
+							if (poppable) {
+								this.world.playSound(null, this.pos, AssemblySoundEvents.PRESS_POP, SoundCategory.BLOCKS, 0.6F, 0.5F + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.4F);
+								if (this.world instanceof ServerWorld) {
+									((ServerWorld) this.world).spawnParticles(ParticleTypes.SPLASH, this.pos.getX() + 0.5, this.pos.getY() + 0.7, this.pos.getZ() + 0.5, 30, 0.2, 0.2, 0.2, 0.2);
+								}
 							}
 							this.currentPresses++;
 							sync = true;
@@ -274,7 +286,7 @@ public class PressBlockEntity extends AssemblySyncedNbtBlockEntity implements Ti
 	@Override
 	public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
 //		if (this.world != null && RecipeUtil.isValidInput(this.world, AssemblyRecipeTypes.STEAM_PRESSING, stack)) {
-			return slot == INPUT_SLOT && this.isEmpty() && stack.getCount() == 1;
+		return slot == INPUT_SLOT && this.isEmpty() && stack.getCount() == 1;
 //		}
 //		return false;
 	}

@@ -4,7 +4,7 @@ import alexiil.mc.lib.attributes.AttributeList;
 import alexiil.mc.lib.attributes.AttributeProvider;
 import com.terraformersmc.assembly.blockentity.AssemblyBlockEntities;
 import com.terraformersmc.assembly.blockentity.FluidHopperBlockEntity;
-import com.terraformersmc.assembly.screen.AssemblyScreenHandlers;
+import com.terraformersmc.assembly.screen.AssemblyScreenSyncers;
 import com.terraformersmc.assembly.util.ComparatorUtil;
 import com.terraformersmc.assembly.util.interaction.Interactions;
 import com.terraformersmc.assembly.util.interaction.interactable.ScreenHandlerInteractable;
@@ -81,7 +81,7 @@ public class FluidHopperBlock extends HopperBlock implements AttributeProvider, 
 
 	@Override
 	public Identifier getScreenHandlerId() {
-		return AssemblyScreenHandlers.FLUID_HOPPER;
+		return AssemblyScreenSyncers.FLUID_HOPPER;
 	}
 
 	@Override

@@ -10,5 +10,26 @@
     "sounds": [
       "assembly:block/spigot_close"
     ]
+  },
+  "block.press.squish": {
+    "subtitle": "subtitles.assembly.block.press.squish",
+    "sounds": [
+      "assembly:block/press_squish"
+    ]
+  },
+  "block.press.pop": {
+    "subtitle": "subtitles.assembly.block.press.pop",
+    "sounds": [
+      "assembly:block/press_pop"
+    ]
+  },
+  "block.press.hit": {
+    "subtitle": "subtitles.assembly.block.press.hit",
+    "sounds": [
+      {
+        "name": "minecraft:block.anvil.place",
+        "type": "event"
+      }
+    ]
   }
 }

@@ -6,20 +6,27 @@ import alexiil.mc.lib.attributes.fluid.FluidInsertable;
 import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.impl.RejectingFluidInsertable;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
-import com.terraformersmc.assembly.blockentity.base.AssemblySyncedNbtBlockEntity;
+import com.terraformersmc.assembly.blockentity.base.AssemblyContainerBlockEntity;
+import com.terraformersmc.assembly.blockentity.base.AssemblySyncedNbtContainerBlockEntity;
 import com.terraformersmc.assembly.recipe.AssemblyRecipeTypes;
 import com.terraformersmc.assembly.recipe.InjectingRecipe;
+import com.terraformersmc.assembly.screen.builder.ScreenHandlerBuilder;
+import com.terraformersmc.assembly.screen.builder.ScreenSyncer;
+import com.terraformersmc.assembly.screen.builder.TankStyle;
 import com.terraformersmc.assembly.util.AssemblyConstants;
 import com.terraformersmc.assembly.util.fluid.IOFluidContainer;
 import com.terraformersmc.assembly.util.fluid.SimpleIOFluidContainer;
 import com.terraformersmc.assembly.util.interaction.interactable.TankInputInteractable;
+import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.Recipe;
-import net.minecraft.util.Clearable;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.collection.DefaultedList;
@@ -27,7 +34,7 @@ import net.minecraft.util.math.Direction;
 
 import javax.annotation.Nullable;
 
-public class InjectorBlockEntity extends AssemblySyncedNbtBlockEntity implements Tickable, Clearable, SidedInventory, TankInputInteractable {
+public class InjectorBlockEntity extends AssemblySyncedNbtContainerBlockEntity implements Tickable, SidedInventory, TankInputInteractable {
 
 	private static final String FLUIDS_KEY = AssemblyConstants.NbtKeys.FLUIDS;
 	private static final FluidAmount TANK_CAPACITY = FluidAmount.BUCKET.checkedMul(4);
@@ -35,17 +42,17 @@ public class InjectorBlockEntity extends AssemblySyncedNbtBlockEntity implements
 
 	private final IOFluidContainer tank;
 
-	public static final int SLOT = 0;
-	private static final int[] TOP_SLOTS = new int[]{SLOT};
-	private static final int[] SIDE_SLOTS = new int[]{SLOT};
-	private static final int[] BOTTOM_SLOTS = new int[]{SLOT};
-	protected DefaultedList<ItemStack> items;
+	public static final int INPUT_SLOT = 0;
+	public static final int OUTPUT_SLOT = 1;
+	private static final int[] TOP_SLOTS = new int[]{INPUT_SLOT};
+	private static final int[] SIDE_SLOTS = new int[]{INPUT_SLOT};
+	private static final int[] BOTTOM_SLOTS = new int[]{OUTPUT_SLOT};
 	private InjectingRecipe recipe = null;
+	private int progress = 0;
 
 	public InjectorBlockEntity() {
 		super(AssemblyBlockEntities.INJECTOR);
 		this.tank = new SimpleIOFluidContainer(1, TANK_CAPACITY);
-		this.items = DefaultedList.ofSize(1, ItemStack.EMPTY);
 	}
 
 	@Override
@@ -54,7 +61,7 @@ public class InjectorBlockEntity extends AssemblySyncedNbtBlockEntity implements
 			if (!this.world.isClient) {
 				if (this.recipe != null) {
 					System.out.println(recipe.getId());
-				} else if (FluidAttributes.INSERTABLE.get(getStack(SLOT)) != RejectingFluidInsertable.NULL) {
+				} else if (FluidAttributes.INSERTABLE.get(getStack(INPUT_SLOT)) != RejectingFluidInsertable.NULL) {
 
 				}
 			}
@@ -69,8 +76,6 @@ public class InjectorBlockEntity extends AssemblySyncedNbtBlockEntity implements
 
 	@Override
 	public void fromTag(CompoundTag tag, boolean syncing) {
-		this.items = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
-		Inventories.fromTag(tag, this.items);
 		if (!syncing) {
 			if (tag.contains(FLUIDS_KEY)) {
 				FluidVolume fluid = FluidVolume.fromTag(tag.getCompound(FLUIDS_KEY));
@@ -92,7 +97,6 @@ public class InjectorBlockEntity extends AssemblySyncedNbtBlockEntity implements
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag, boolean syncing) {
-		Inventories.toTag(tag, this.items);
 		if (!syncing) {
 			FluidVolume inputFluid = this.tank.getInvFluid(0);
 			if (!inputFluid.isEmpty()) {
@@ -106,17 +110,12 @@ public class InjectorBlockEntity extends AssemblySyncedNbtBlockEntity implements
 	}
 
 	public ItemStack getRenderStack() {
-		ItemStack input = this.getStack(SLOT);
+		ItemStack input = this.getStack(INPUT_SLOT);
 		return this.isEmpty() ? ItemStack.EMPTY : input;
 	}
 
 	public IOFluidContainer getTank() {
 		return this.tank;
-	}
-
-	@Override
-	public void clear() {
-		this.items.clear();
 	}
 
 	@Override
@@ -132,43 +131,28 @@ public class InjectorBlockEntity extends AssemblySyncedNbtBlockEntity implements
 	@Override
 	public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
 //		if (RecipeUtil.isValidInput(this.world, AssemblyRecipeTypes.FLUID_INJECTING, stack)) {
-		return slot == SLOT && this.isEmpty() && stack.getCount() == 1;
+		return slot == INPUT_SLOT && this.isEmpty() && stack.getCount() == 1;
 //		}
 //		return false;
 	}
 
 	@Override
 	public boolean canExtract(int slot, ItemStack stack, Direction dir) {
-		return slot == SLOT;
+		return slot == INPUT_SLOT;
 	}
 
 	@Override
 	public int size() {
-		return this.items.size();
-	}
-
-	@Override
-	public boolean isEmpty() {
-		for (ItemStack item : this.items) {
-			if (!item.isEmpty()) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	@Override
-	public ItemStack getStack(int slot) {
-		return this.items.get(slot);
+		return 2;
 	}
 
 	@Override
 	public ItemStack removeStack(int slot, int amount) {
-		ItemStack stack = Inventories.splitStack(this.items, slot, amount);
+		ItemStack stack = super.removeStack(slot, amount);
 		if (this.world != null && !this.world.isClient) {
 			this.sync();
 		}
-		if (slot == SLOT && amount > 0) {
+		if (slot == INPUT_SLOT && amount > 0) {
 			this.updateRecipe();
 		}
 		return stack;
@@ -176,11 +160,11 @@ public class InjectorBlockEntity extends AssemblySyncedNbtBlockEntity implements
 
 	@Override
 	public ItemStack removeStack(int slot) {
-		ItemStack stack = Inventories.removeStack(this.items, slot);
+		ItemStack stack = super.removeStack(slot);
 		if (this.world != null && !this.world.isClient) {
 			this.sync();
 		}
-		if (slot == SLOT) {
+		if (slot == INPUT_SLOT) {
 			this.updateRecipe();
 		}
 		return stack;
@@ -188,9 +172,9 @@ public class InjectorBlockEntity extends AssemblySyncedNbtBlockEntity implements
 
 	@Override
 	public void setStack(int slot, ItemStack newStack) {
-		ItemStack currentStack = this.items.get(slot);
+		ItemStack currentStack = this.contents.get(slot);
 		boolean noUpdate = !newStack.isEmpty() && newStack.isItemEqualIgnoreDamage(currentStack) && ItemStack.areTagsEqual(newStack, currentStack);
-		this.items.set(slot, newStack);
+		this.contents.set(slot, newStack);
 		if (newStack.getCount() > this.getMaxCountPerStack()) {
 			newStack.setCount(this.getMaxCountPerStack());
 		}
@@ -198,7 +182,7 @@ public class InjectorBlockEntity extends AssemblySyncedNbtBlockEntity implements
 		if (this.world != null && !this.world.isClient) {
 			this.sync();
 		}
-		if (slot == SLOT && !noUpdate) {
+		if (slot == INPUT_SLOT && !noUpdate) {
 			this.markDirty();
 			this.updateRecipe();
 		}
@@ -219,5 +203,41 @@ public class InjectorBlockEntity extends AssemblySyncedNbtBlockEntity implements
 	@Override
 	public FluidInsertable getInteractableInsertable() {
 		return this.getTank().getInsertable().getPureInsertable();
+	}
+
+	@Override
+	public ScreenSyncer<AssemblyContainerBlockEntity> createSyncer(int syncId, PlayerInventory inventory) {
+		return new ScreenHandlerBuilder(AssemblyConstants.Ids.INJECTOR, 176, 166, this)
+				.player(inventory.player)
+				.inventory()
+				.hotbar()
+				.addInventory()
+
+				.container(this)
+				.sync(this::getProgress, this::setProgress)
+				.slot(INPUT_SLOT, 20, 40)
+				.outputSlot(OUTPUT_SLOT, 40, 40)
+				.tank(60, 23, TankStyle.TWO, tank)
+				.addContainer()
+
+				.create(this, syncId);
+	}
+
+	@Override
+	protected Text getContainerName() {
+		return new TranslatableText("container.assembly.injecting");
+	}
+
+	public int getProgress() {
+		return progress;
+	}
+
+	public void setProgress(int progress) {
+		this.progress = progress;
+	}
+
+	@Override
+	protected boolean syncContents() {
+		return true;
 	}
 }

@@ -6,16 +6,19 @@ import alexiil.mc.lib.attributes.fluid.amount.FluidAmount;
 import alexiil.mc.lib.attributes.fluid.filter.FluidFilter;
 import alexiil.mc.lib.attributes.fluid.filter.RawFluidTagFilter;
 import alexiil.mc.lib.attributes.fluid.volume.FluidVolume;
-import com.terraformersmc.assembly.blockentity.base.AssemblySyncedNbtBlockEntity;
+import com.terraformersmc.assembly.blockentity.base.AssemblyContainerBlockEntity;
+import com.terraformersmc.assembly.blockentity.base.AssemblySyncedNbtContainerBlockEntity;
 import com.terraformersmc.assembly.recipe.AssemblyRecipeTypes;
 import com.terraformersmc.assembly.recipe.PressingRecipe;
+import com.terraformersmc.assembly.screen.builder.ScreenHandlerBuilder;
+import com.terraformersmc.assembly.screen.builder.ScreenSyncer;
+import com.terraformersmc.assembly.screen.builder.TankStyle;
 import com.terraformersmc.assembly.tag.AssemblyFluidTags;
 import com.terraformersmc.assembly.util.AssemblyConstants;
 import com.terraformersmc.assembly.util.fluid.IOFluidContainer;
 import com.terraformersmc.assembly.util.fluid.SimpleIOFluidContainer;
 import com.terraformersmc.assembly.util.interaction.interactable.TankInputInteractable;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventories;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -25,16 +28,15 @@ import net.minecraft.recipe.Recipe;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Clearable;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
 
 import javax.annotation.Nullable;
-import java.util.Iterator;
 
-public class SqueezerBlockEntity extends AssemblySyncedNbtBlockEntity implements Tickable, Clearable, SidedInventory, TankInputInteractable {
+public class SqueezerBlockEntity extends AssemblySyncedNbtContainerBlockEntity implements Tickable, SidedInventory, TankInputInteractable {
 
 	private static int MAX_PROGRESS = 5;
 	private static int MAX_RESET = 50;
@@ -52,9 +54,10 @@ public class SqueezerBlockEntity extends AssemblySyncedNbtBlockEntity implements
 	private final IOFluidContainer tank;
 
 	public static final int INPUT_SLOT = 0;
+	public static final int OUTPUT_SLOT = 1;
 	private static final int[] TOP_SLOTS = new int[]{INPUT_SLOT};
 	private static final int[] SIDE_SLOTS = new int[]{INPUT_SLOT};
-	protected DefaultedList<ItemStack> items;
+	private static final int[] BOTTOM_SLOTS = new int[]{OUTPUT_SLOT};
 	private int extractCooldown = 0;
 
 	private static final String RECIPE_KEY = AssemblyConstants.NbtKeys.RECIPE;
@@ -64,9 +67,8 @@ public class SqueezerBlockEntity extends AssemblySyncedNbtBlockEntity implements
 	public static final FluidFilter STEAM_FITLTER = new RawFluidTagFilter(AssemblyFluidTags.STEAM);
 
 	public SqueezerBlockEntity() {
-		super(AssemblyBlockEntities.PRESS);
+		super(AssemblyBlockEntities.SQUEEZER);
 		this.tank = new SimpleIOFluidContainer(1, TANK_CAPACITY, STEAM_FITLTER);
-		this.items = DefaultedList.ofSize(2, ItemStack.EMPTY);
 	}
 
 	@Override
@@ -131,8 +133,6 @@ public class SqueezerBlockEntity extends AssemblySyncedNbtBlockEntity implements
 
 	@Override
 	public void fromTag(CompoundTag tag, boolean syncing) {
-		this.items = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
-		Inventories.fromTag(tag, this.items);
 		this.progress = tag.getInt(PROGRESS_KEY);
 		this.reset = tag.getInt(RESET_KEY);
 		if (!syncing) {
@@ -159,7 +159,6 @@ public class SqueezerBlockEntity extends AssemblySyncedNbtBlockEntity implements
 
 	@Override
 	public CompoundTag toTag(CompoundTag tag, boolean syncing) {
-		Inventories.toTag(tag, this.items);
 		tag.putInt(PROGRESS_KEY, this.progress);
 		tag.putInt(RESET_KEY, this.reset);
 		if (!syncing) {
@@ -187,13 +186,16 @@ public class SqueezerBlockEntity extends AssemblySyncedNbtBlockEntity implements
 		return this.progress;
 	}
 
+	private void setProgress(int progress) {
+		this.progress = progress;
+	}
+
 	private int getReset() {
 		return this.reset;
 	}
 
-	@Override
-	public void clear() {
-		this.items.clear();
+	private void setReset(int reset) {
+		this.reset = reset;
 	}
 
 	@Override
@@ -201,7 +203,7 @@ public class SqueezerBlockEntity extends AssemblySyncedNbtBlockEntity implements
 		if (side == Direction.UP) {
 			return TOP_SLOTS;
 		} else if (side == Direction.DOWN) {
-			return new int[0];
+			return BOTTOM_SLOTS;
 		}
 		return SIDE_SLOTS;
 	}
@@ -221,55 +223,38 @@ public class SqueezerBlockEntity extends AssemblySyncedNbtBlockEntity implements
 
 	@Override
 	public int size() {
-		return this.items.size();
-	}
-
-	@Override
-	public boolean isEmpty() {
-		Iterator<ItemStack> iterator = this.items.iterator();
-		ItemStack stack;
-		do {
-			if (!iterator.hasNext()) {
-				return true;
-			}
-
-			stack = (ItemStack) iterator.next();
-		} while (stack.isEmpty());
-		return false;
-	}
-
-	@Override
-	public ItemStack getStack(int slot) {
-		return this.items.get(slot);
+		return 2;
 	}
 
 	@Override
 	public ItemStack removeStack(int slot, int amount) {
+		ItemStack stack = super.removeStack(slot, amount);
 		if (slot == INPUT_SLOT && amount > 0) {
 			this.updateRecipe();
 		}
 		if (this.world != null && !this.world.isClient) {
 			this.sync();
 		}
-		return Inventories.splitStack(this.items, slot, amount);
+		return stack;
 	}
 
 	@Override
 	public ItemStack removeStack(int slot) {
+		ItemStack stack = super.removeStack(slot);
 		if (slot == INPUT_SLOT) {
 			this.updateRecipe();
 		}
 		if (this.world != null && !this.world.isClient) {
 			this.sync();
 		}
-		return Inventories.removeStack(this.items, slot);
+		return stack;
 	}
 
 	@Override
 	public void setStack(int slot, ItemStack newStack) {
-		ItemStack currentStack = this.items.get(slot);
+		ItemStack currentStack = this.contents.get(slot);
 		boolean noUpdate = !newStack.isEmpty() && newStack.isItemEqualIgnoreDamage(currentStack) && ItemStack.areTagsEqual(newStack, currentStack);
-		this.items.set(slot, newStack);
+		this.contents.set(slot, newStack);
 		if (newStack.getCount() > this.getMaxCountPerStack()) {
 			newStack.setCount(this.getMaxCountPerStack());
 		}
@@ -284,19 +269,31 @@ public class SqueezerBlockEntity extends AssemblySyncedNbtBlockEntity implements
 	}
 
 	@Override
-	public boolean canPlayerUse(PlayerEntity player) {
-		if (this.world != null) {
-			if (this.world.getBlockEntity(this.pos) != this) {
-				return false;
-			} else {
-				return player.squaredDistanceTo((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
-			}
-		}
-		return false;
+	public FluidInsertable getInteractableInsertable() {
+		return this.getTank().getInsertable().getPureInsertable();
 	}
 
 	@Override
-	public FluidInsertable getInteractableInsertable() {
-		return this.getTank().getInsertable().getPureInsertable();
+	public ScreenSyncer<AssemblyContainerBlockEntity> createSyncer(int syncId, PlayerInventory inventory) {
+		return new ScreenHandlerBuilder(AssemblyConstants.Ids.SQUEEZER, 176, 166, this)
+				.player(inventory.player)
+				.inventory()
+				.hotbar()
+				.addInventory()
+
+				.container(this)
+				.sync(this::getProgress, this::setProgress)
+				.sync(this::getReset, this::setReset)
+				.slot(INPUT_SLOT, 20, 40)
+				.outputSlot(OUTPUT_SLOT, 40, 40)
+				.outputTank(60, 23, TankStyle.TWO, tank)
+				.addContainer()
+
+				.create(this, syncId);
+	}
+
+	@Override
+	protected Text getContainerName() {
+		return new TranslatableText("container.assembly.squeezing");
 	}
 }

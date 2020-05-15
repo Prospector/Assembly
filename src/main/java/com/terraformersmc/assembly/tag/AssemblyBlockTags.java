@@ -22,15 +22,19 @@ public class AssemblyBlockTags {
 	public static final Tag.Identified<Block> ZINC_CONCENTRATE_BLOCKS = ofAssembly("zinc_concentrate_blocks");
 	public static final Tag.Identified<Block> BRASS_BLEND_BLOCKS = ofAssembly("brass_blend_blocks");
 
-	public static Tag.Identified<Block> of(Identifier id) {
+	private static Tag.Identified<Block> of(Identifier id) {
 		return BlockTagsInvoker.register(id.toString());
 	}
 
-	public static Tag.Identified<Block> ofAssembly(String path) {
+	private static Tag.Identified<Block> ofAssembly(String path) {
 		return of(new Identifier(Assembly.MOD_ID, path));
 	}
 
-	public static Tag.Identified<Block> ofCommon(String path) {
+	private static Tag.Identified<Block> ofCommon(String path) {
 		return of(new Identifier(AssemblyConstants.COMMON_NAMESPACE, path));
+	}
+
+	public static void load() {
+
 	}
 }

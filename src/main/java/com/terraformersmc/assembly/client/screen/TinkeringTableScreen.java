@@ -19,7 +19,7 @@ public class TinkeringTableScreen extends BaseSyncedScreen<TinkeringTableBlockEn
 		ItemStack stack = syncer.getBlockEntity().getRenderingStack();
 		if (!stack.isEmpty()) {
 			Text itemName = stack.getName();
-			this.drawStringWithShadow(matrixStack, textRenderer, itemName, 47 + 113 / 2, 23, 0xe0e0e0);
+			this.drawTextWithShadow(matrixStack, textRenderer, itemName, 47 + 113 / 2, 23, 0xe0e0e0);
 		}
 	}
 }

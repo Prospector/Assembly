@@ -1,6 +1,5 @@
 package com.terraformersmc.assembly.block;
 
-import alexiil.mc.lib.attributes.AttributeProvider;
 import com.terraformersmc.assembly.block.propertyenum.ValveState;
 import com.terraformersmc.assembly.blockentity.AssemblyBlockEntities;
 import com.terraformersmc.assembly.sound.AssemblySoundEvents;
@@ -29,9 +28,8 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldView;
+import net.minecraft.world.WorldAccess;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -116,14 +114,8 @@ public class SpigotBlock extends HorizontalFacingBlock implements BlockEntityPro
 	}
 
 	@Override
-	public BlockState getStateForNeighborUpdate(BlockState state, Direction facing, BlockState
-			neighborState, IWorld world, BlockPos pos, BlockPos neighborPos) {
+	public BlockState getStateForNeighborUpdate(BlockState state, Direction facing, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
 		return facing == state.get(FACING) && !state.canPlaceAt(world, pos) ? Blocks.AIR.getDefaultState() : super.getStateForNeighborUpdate(state, facing, neighborState, world, pos, neighborPos);
-	}
-
-	@Override
-	public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
-		return world.getBlockState(pos.offset(state.get(FACING))).getBlock() instanceof AttributeProvider;
 	}
 
 	@Override

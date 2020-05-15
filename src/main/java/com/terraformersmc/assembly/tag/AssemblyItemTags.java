@@ -34,15 +34,19 @@ public class AssemblyItemTags {
 	public static final Tag.Identified<Item> ZINC_CONCENTRATE_BLOCKS = ofAssembly("zinc_concentrate_blocks");
 	public static final Tag.Identified<Item> BRASS_BLEND_BLOCKS = ofAssembly("brass_blend_blocks");
 
-	public static Tag.Identified<Item> of(Identifier id) {
+	private static Tag.Identified<Item> of(Identifier id) {
 		return ItemTagsInvoker.register(id.toString());
 	}
 
-	public static Tag.Identified<Item> ofAssembly(String path) {
+	private static Tag.Identified<Item> ofAssembly(String path) {
 		return of(new Identifier(Assembly.MOD_ID, path));
 	}
 
-	public static Tag.Identified<Item> ofCommon(String path) {
+	private static Tag.Identified<Item> ofCommon(String path) {
 		return of(new Identifier(AssemblyConstants.COMMON_NAMESPACE, path));
+	}
+
+	public static void load() {
+
 	}
 }

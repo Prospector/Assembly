@@ -28,7 +28,7 @@
 
 package com.terraformersmc.assembly.screen.builder;
 
-import com.terraformersmc.assembly.screen.AssemblyScreenHandlers;
+import com.terraformersmc.assembly.screen.AssemblyScreenSyncers;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
@@ -68,7 +68,7 @@ public class ScreenHandlerBuilder {
 		this.width = width;
 		this.height = height;
 
-		this.canInteract = player -> AssemblyScreenHandlers.canPlayerUse(blockEntity, player);
+		this.canInteract = player -> AssemblyScreenSyncers.canPlayerUse(blockEntity, player);
 
 		this.slots = new ArrayList<>();
 		this.tanks = new LinkedList<>();
@@ -83,7 +83,7 @@ public class ScreenHandlerBuilder {
 	}
 
 	public ScreenHandlerBuilder(final Identifier name, int width, int height, BlockEntity blockEntity) {
-		this(name, width, height, (w, h, text, textRenderer) -> new ScreenPos((w - textRenderer.getStringWidth(text)) / 2, 6), blockEntity);
+		this(name, width, height, (w, h, text, textRenderer) -> new ScreenPos((w - textRenderer.getWidth(text)) / 2, 6), blockEntity);
 	}
 
 	public ScreenHandlerBuilder interact(final Predicate<PlayerEntity> canInteract) {

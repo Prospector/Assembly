@@ -6,9 +6,9 @@ import com.terraformersmc.terraform.entity.TerraformBoat;
 import com.terraformersmc.terraform.entity.TerraformBoatEntity;
 import com.terraformersmc.terraform.item.TerraformBoatItem;
 import net.fabricmc.fabric.api.entity.FabricEntityTypeBuilder;
-import net.minecraft.entity.EntityCategory;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
@@ -35,7 +35,7 @@ public class AssemblyEntities {
 		TerraformBoat boat = new TerraformBoat(item.asItem(), planks.asItem(), skin, vanilla);
 
 		EntityType<TerraformBoatEntity> type = FabricEntityTypeBuilder.<TerraformBoatEntity>create(
-				EntityCategory.MISC, (entity, world) -> new TerraformBoatEntity(entity, world, boat))
+				SpawnGroup.MISC, (entity, world) -> new TerraformBoatEntity(entity, world, boat))
 				.size(EntityDimensions.fixed(1.375F, 0.5625F))
 				.build();
 

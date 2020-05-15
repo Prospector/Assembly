@@ -14,6 +14,9 @@ public class AssemblySoundEvents {
 
 	public static final SoundEvent SPIGOT_OPEN = add("block.spigot.open");
 	public static final SoundEvent SPIGOT_CLOSE = add("block.spigot.close");
+	public static final SoundEvent PRESS_HIT = add("block.press.hit");
+	public static final SoundEvent PRESS_SQUISH = add("block.press.squish");
+	public static final SoundEvent PRESS_POP = add("block.press.pop");
 
 	private static SoundEvent add(String id) {
 		Identifier identifier = new Identifier(Assembly.MOD_ID, id);

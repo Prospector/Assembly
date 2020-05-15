@@ -1,6 +1,5 @@
 package com.terraformersmc.assembly.screen;
 
-import com.google.common.collect.Lists;
 import com.terraformersmc.assembly.screen.builder.ScreenSyncerProvider;
 import com.terraformersmc.assembly.util.AssemblyConstants;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
@@ -9,15 +8,22 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
-public class AssemblyScreenHandlers {
+import java.util.HashSet;
+import java.util.Set;
 
-	public static final Identifier BOILER = AssemblyConstants.Ids.BOILER;
-	public static final Identifier FLUID_HOPPER = AssemblyConstants.Ids.FLUID_HOPPER;
-	public static final Identifier BOILER_CHAMBER = AssemblyConstants.Ids.BOILER_CHAMBER;
-	public static final Identifier TINKERING_TABLE = AssemblyConstants.Ids.TINKERING_TABLE;
+public class AssemblyScreenSyncers {
 
-	public static void registerServersideHandlers() {
-		for (Identifier id : Lists.newArrayList(BOILER, FLUID_HOPPER, BOILER_CHAMBER, TINKERING_TABLE)) {
+	private static final Set<Identifier> IDS = new HashSet<>();
+
+	public static final Identifier BOILER = add(AssemblyConstants.Ids.BOILER);
+	public static final Identifier FLUID_HOPPER = add(AssemblyConstants.Ids.FLUID_HOPPER);
+	public static final Identifier BOILER_CHAMBER = add(AssemblyConstants.Ids.BOILER_CHAMBER);
+	public static final Identifier TINKERING_TABLE = add(AssemblyConstants.Ids.TINKERING_TABLE);
+	public static final Identifier SQUEEZER = add(AssemblyConstants.Ids.SQUEEZER);
+	public static final Identifier INJECTOR = add(AssemblyConstants.Ids.INJECTOR);
+
+	public static void register() {
+		for (Identifier id : IDS) {
 			ContainerProviderRegistry.INSTANCE.registerFactory(id, (syncId, identifier, player, buf) -> {
 				BlockPos pos = buf.readBlockPos();
 				BlockEntity blockEntity = player.world.getBlockEntity(pos);
@@ -27,6 +33,11 @@ public class AssemblyScreenHandlers {
 				return null;
 			});
 		}
+	}
+
+	private static Identifier add(Identifier id) {
+		IDS.add(id);
+		return id;
 	}
 
 	public static boolean canPlayerUse(BlockEntity blockEntity, PlayerEntity player) {

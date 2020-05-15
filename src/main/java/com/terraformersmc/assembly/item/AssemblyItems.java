@@ -8,6 +8,8 @@ import com.terraformersmc.assembly.item.exoframe.ExoframePieceItem;
 import com.terraformersmc.assembly.item.exoframe.PistonBootsItem;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -48,6 +50,7 @@ public class AssemblyItems {
 	public static final Item CRUDE_OIL_BUCKET = add("crude_oil_bucket", new AssemblyBucketItem(AssemblyFluids.CRUDE_OIL, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1).group(ItemGroup.MISC)));
 	public static final Item STEAM_BUCKET = add("steam_bucket", new AssemblyBucketItem(AssemblyFluids.STEAM, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1).group(ItemGroup.MISC)));
 	public static final Item FISH_OIL_BUCKET = add("fish_oil_bucket", new AssemblyBucketItem(AssemblyFluids.FISH_OIL, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1).group(ItemGroup.MISC)));
+	public static final Item FISH_OIL_BOTTLE = add("fish_oil_bottle", new AssemblyBottleItem(AssemblyFluids.FISH_OIL, new Item.Settings().recipeRemainder(Items.GLASS_BOTTLE).maxCount(16).food((new FoodComponent.Builder()).hunger(1).saturationModifier(0.1F).statusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 25, 1), 0.25F).alwaysEdible().build()).group(ItemGroup.FOOD)));
 
 	public static final Item PRESS = add("press", new BedItem(AssemblyBlocks.PRESS, new Item.Settings().group(ItemGroup.DECORATIONS)));
 

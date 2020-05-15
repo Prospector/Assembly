@@ -26,7 +26,6 @@ import net.minecraft.advancement.criterion.EnterBlockCriterion;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.enums.DoubleBlockHalf;
-import net.minecraft.data.server.BlockLootTableGenerator;
 import net.minecraft.data.server.recipe.CookingRecipeJsonFactory;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonFactory;
@@ -114,8 +113,8 @@ public class AssemblyData implements DossierProvider {
 			this.add(AssemblyItemTags.BRASS_BLENDS, AssemblyItems.BRASS_BLEND);
 			this.add(AssemblyItemTags.HAMMERS, AssemblyItems.WOODEN_HAMMER, AssemblyItems.STONE_HAMMER, AssemblyItems.IRON_HAMMER, AssemblyItems.GOLDEN_HAMMER, AssemblyItems.DIAMOND_HAMMER);
 			this.add(AssemblyItemTags.FLATTENED_FISHES, AssemblyItems.FLATTENED_COD, AssemblyItems.FLATTENED_SALMON, AssemblyItems.FLATTENED_TROPICAL_FISH, AssemblyItems.FLATTENED_PUFFERFISH);
-			this.add(AssemblyItemTags.SQUISHY, AssemblyItemTags.FLATTENED_FISHES);
-			this.add(AssemblyItemTags.POPPABLE, AssemblyItems.FLATTENED_PUFFERFISH);
+			this.add(AssemblyItemTags.SQUISHY, ItemTags.FISHES);
+			this.add(AssemblyItemTags.POPPABLE, Items.PUFFERFISH);
 		}
 	}
 
@@ -299,7 +298,7 @@ public class AssemblyData implements DossierProvider {
 
 			this.drops(AssemblyBlocks.BOILER, Blocks.FURNACE);
 			this.drops(AssemblyBlocks.BOILER_CHAMBER);
-			this.drops(AssemblyBlocks.PRESS, block -> BlockLootTableGenerator.createForMultiblock(AssemblyBlocks.PRESS, PressBlock.HALF, DoubleBlockHalf.LOWER));
+			this.drops(AssemblyBlocks.PRESS, block -> BlockLootTableCreator.dropsWithProperty(AssemblyBlocks.PRESS, PressBlock.HALF, DoubleBlockHalf.LOWER));
 
 			this.oreDrops(Blocks.IRON_ORE, new Pair<>(AssemblyItems.IRON_CONCENTRATE, UniformLootTableRange.between(1.0F, 5.0F)), new Pair<>(AssemblyItems.COPPER_CONCENTRATE, BinomialLootTableRange.create(2, 0.25F)));
 			this.oreDrops(Blocks.GOLD_ORE, new Pair<>(AssemblyItems.GOLD_CONCENTRATE, UniformLootTableRange.between(1.0F, 5.0F)), new Pair<>(AssemblyItems.ZINC_CONCENTRATE, BinomialLootTableRange.create(1, 0.25F)));
@@ -310,7 +309,7 @@ public class AssemblyData implements DossierProvider {
 			this.drops(AssemblyBlocks.BRASS_BLOCK);
 
 			this.drops(AssemblyBlocks.CAPROCK);
-			this.drops(AssemblyBlocks.HALITE, (block) -> BlockLootTableCreator.dropsWithSilkTouch(AssemblyBlocks.HALITE, BlockLootTableCreator.addExplosionDecayCondition(block, ItemEntry.builder(AssemblyItems.SALT).withFunction(SetCountLootFunction.builder(UniformLootTableRange.between(1.0F, 3.0F))).withFunction(ApplyBonusLootFunction.uniformBonusCount(Enchantments.FORTUNE)))));
+			this.drops(AssemblyBlocks.HALITE, (block) -> BlockLootTableCreator.dropsWithSilkTouch(AssemblyBlocks.HALITE, BlockLootTableCreator.applyExplosionDecay(block, ItemEntry.builder(AssemblyItems.SALT).apply(SetCountLootFunction.builder(UniformLootTableRange.between(1.0F, 3.0F))).apply(ApplyBonusLootFunction.uniformBonusCount(Enchantments.FORTUNE)))));
 
 			this.drops(AssemblyBlocks.TINKERING_TABLE);
 			this.drops(AssemblyBlocks.CONVEYOR_BELT);
@@ -331,20 +330,26 @@ public class AssemblyData implements DossierProvider {
 					LootTableRange hammerDropCount = hammerDropEntry.getRight();
 					if (first) {
 						lootTable
-								.withPool(LootPool.builder()
-										.withRolls(ConstantLootTableRange.create(1))
-										.withEntry(AlternativeEntry.builder(
-												BlockLootTableCreator.addExplosionDecayCondition(hammerDrop, ItemEntry.builder(hammerDrop).withFunction(SetCountLootFunction.builder(hammerDropCount)).withFunction(ApplyBonusLootFunction.uniformBonusCount(Enchantments.FORTUNE)))
-														.withCondition(MatchToolLootCondition.builder(ItemPredicate.Builder.create().tag(AssemblyItemTags.HAMMERS))))
-												.withChild(BlockLootTableCreator.addSurvivesExplosionCondition(drop, ItemEntry.builder(drop)))));
+								.pool(LootPool.builder()
+										.rolls(ConstantLootTableRange.create(1))
+										.with(AlternativeEntry.builder(
+												BlockLootTableCreator.applyExplosionDecay(hammerDrop,
+														ItemEntry.builder(hammerDrop)
+																.apply(SetCountLootFunction.builder(hammerDropCount))
+																.apply(ApplyBonusLootFunction.uniformBonusCount(Enchantments.FORTUNE)))
+														.conditionally(MatchToolLootCondition.builder(ItemPredicate.Builder.create().tag(AssemblyItemTags.HAMMERS))))
+												.alternatively(BlockLootTableCreator.addSurvivesExplosionCondition(drop, ItemEntry.builder(drop)))));
 						first = false;
 					} else {
 						lootTable
-								.withPool(LootPool.builder()
-										.withRolls(ConstantLootTableRange.create(1))
-										.withEntry(
-												BlockLootTableCreator.addExplosionDecayCondition(hammerDrop, ItemEntry.builder(hammerDrop).withFunction(SetCountLootFunction.builder(hammerDropCount)).withFunction(ApplyBonusLootFunction.uniformBonusCount(Enchantments.FORTUNE)))
-														.withCondition(MatchToolLootCondition.builder(ItemPredicate.Builder.create().tag(AssemblyItemTags.HAMMERS)))));
+								.pool(LootPool.builder()
+										.rolls(ConstantLootTableRange.create(1))
+										.with(
+												BlockLootTableCreator.applyExplosionDecay(hammerDrop,
+														ItemEntry.builder(hammerDrop)
+																.apply(SetCountLootFunction.builder(hammerDropCount))
+																.apply(ApplyBonusLootFunction.uniformBonusCount(Enchantments.FORTUNE)))
+														.conditionally(MatchToolLootCondition.builder(ItemPredicate.Builder.create().tag(AssemblyItemTags.HAMMERS)))));
 					}
 				}
 				return lootTable;

@@ -2,7 +2,7 @@ package com.terraformersmc.assembly.block;
 
 import com.terraformersmc.assembly.blockentity.AssemblyBlockEntities;
 import com.terraformersmc.assembly.blockentity.TinkeringTableBlockEntity;
-import com.terraformersmc.assembly.screen.AssemblyScreenHandlers;
+import com.terraformersmc.assembly.screen.AssemblyScreenSyncers;
 import com.terraformersmc.assembly.util.interaction.Interactions;
 import com.terraformersmc.assembly.util.interaction.interactable.ScreenHandlerInteractable;
 import net.minecraft.block.*;
@@ -77,6 +77,6 @@ public class TinkeringTableBlock extends HorizontalFacingBlock implements BlockE
 
 	@Override
 	public Identifier getScreenHandlerId() {
-		return AssemblyScreenHandlers.TINKERING_TABLE;
+		return AssemblyScreenSyncers.TINKERING_TABLE;
 	}
 }

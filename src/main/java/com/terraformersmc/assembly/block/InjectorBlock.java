@@ -2,20 +2,16 @@ package com.terraformersmc.assembly.block;
 
 import alexiil.mc.lib.attributes.AttributeList;
 import alexiil.mc.lib.attributes.AttributeProvider;
-import alexiil.mc.lib.attributes.fluid.FluidAttributes;
-import alexiil.mc.lib.attributes.fluid.impl.RejectingFluidInsertable;
 import com.terraformersmc.assembly.blockentity.InjectorBlockEntity;
-import com.terraformersmc.assembly.recipe.AssemblyRecipeTypes;
-import com.terraformersmc.assembly.util.interaction.InteractionActionResult;
+import com.terraformersmc.assembly.screen.AssemblyScreenSyncers;
 import com.terraformersmc.assembly.util.interaction.Interactions;
+import com.terraformersmc.assembly.util.interaction.interactable.ScreenHandlerInteractable;
 import com.terraformersmc.assembly.util.math.ShapeUtil;
-import com.terraformersmc.assembly.util.recipe.RecipeUtil;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
@@ -26,7 +22,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class InjectorBlock extends HorizontalFacingBlock implements BlockEntityProvider, AttributeProvider {
+public class InjectorBlock extends HorizontalFacingBlock implements BlockEntityProvider, AttributeProvider, ScreenHandlerInteractable {
 	private static final VoxelShape SHAPE_BASE = Block.createCuboidShape(0, 0, 0, 16, 10, 16);
 	private static final VoxelShape SHAPE_PLATE = Block.createCuboidShape(2, 10, 2, 14, 11, 14);
 	private static final VoxelShape SHAPE_LEFT_NOZZLE = Block.createCuboidShape(14, 10, 5, 16, 16, 11);
@@ -50,44 +46,7 @@ public class InjectorBlock extends HorizontalFacingBlock implements BlockEntityP
 
 	@Override
 	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-		return Interactions.handleDefaultInteractions(state, world, pos, player, hand, hit, (state1, world1, pos1, player1, hand1, hit1) -> {
-			BlockEntity blockEntity = world.getBlockEntity(pos);
-			if (blockEntity instanceof InjectorBlockEntity) {
-				InjectorBlockEntity fluidInjector = ((InjectorBlockEntity) blockEntity);
-				ItemStack outputStack = fluidInjector.getStack(InjectorBlockEntity.SLOT);
-				if (!outputStack.isEmpty()) {
-					if (!world.isClient()) {
-						if (!player.isCreative()) {
-							player.inventory.insertStack(outputStack);
-						}
-						fluidInjector.removeStack(InjectorBlockEntity.SLOT);
-					}
-					return InteractionActionResult.SUCCESS;
-				} else {
-					ItemStack stackInHand = player.getStackInHand(hand);
-					ItemStack stack;
-					if (!player.isCreative()) {
-						stack = stackInHand.split(1);
-					} else {
-						stack = stackInHand.copy().split(1);
-					}
-					if (FluidAttributes.INSERTABLE.get(stackInHand) != RejectingFluidInsertable.NULL) {
-						if (fluidInjector.canInsert(InjectorBlockEntity.SLOT, stackInHand.copy().split(1), hit.getSide())) {
-							if (!world.isClient()) {
-								fluidInjector.setStack(InjectorBlockEntity.SLOT, stack);
-							}
-							return InteractionActionResult.SUCCESS;
-						}
-					} else if (RecipeUtil.isValidInput(world, AssemblyRecipeTypes.INJECTING, stack)) {
-						if (!world.isClient()) {
-							fluidInjector.setStack(InjectorBlockEntity.SLOT, stack);
-						}
-						return InteractionActionResult.SUCCESS;
-					}
-				}
-			}
-			return InteractionActionResult.PASS;
-		});
+		return Interactions.handleDefaultInteractions(state, world, pos, player, hand, hit);
 	}
 
 	@Override
@@ -130,5 +89,10 @@ public class InjectorBlock extends HorizontalFacingBlock implements BlockEntityP
 			}
 			super.onBlockRemoved(state, world, pos, newState, notify);
 		}
+	}
+
+	@Override
+	public Identifier getScreenHandlerId() {
+		return AssemblyScreenSyncers.INJECTOR;
 	}
 }

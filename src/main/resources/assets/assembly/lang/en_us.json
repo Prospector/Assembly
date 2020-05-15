@@ -50,6 +50,7 @@
   "block.assembly.boiler_chamber": "Boiler Chamber",
   "block.assembly.press": "Press",
   "block.assembly.injector": "Injector",
+  "block.assembly.squeezer": "Squeezer",
 
   "block.assembly.latex": "Latex",
   "block.assembly.flowing_latex": "Flowing Latex",
@@ -65,7 +66,8 @@
 
   "block.assembly.fish_oil": "Fish Oil",
   "block.assembly.flowing_fish_oil": "Flowing Fish Oil",
-  "item.assembly.crude_fish_bucket": "Fish Oil Bucket",
+  "item.assembly.fish_oil_bucket": "Fish Oil Bucket",
+  "item.assembly.fish_oil_bottle": "Fish Oil Bottle",
 
   "block.assembly.hevea_log": "Hevea Log",
   "block.assembly.stripped_hevea_log": "Stripped Hevea Log",
@@ -116,9 +118,14 @@
 
   "filled_map.assembly:salt_dome": "Petrogeologist Map",
 
+  "container.assembly.tinkering": "Tinkering",
+  "container.assembly.boiling": "Boiling",
+  "container.assembly.squeezing": "Squeezing",
+  "container.assembly.injecting": "Injecting",
+
   "subtitles.assembly.block.spigot.open": "Spigot valve opened",
   "subtitles.assembly.block.spigot.close": "Spigot valve closed",
-
-  "container.assembly.tinkering": "Tinkering",
-  "container.assembly.boiling": "Boiling"
+  "subtitles.assembly.block.press.hit": "Press pressing",
+  "subtitles.assembly.block.press.squish": "Press squishing",
+  "subtitles.assembly.block.press.pop": "Press popping"
 }

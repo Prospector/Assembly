@@ -88,7 +88,7 @@ public abstract class AssemblyContainerBlockEntity extends LockableContainerBloc
 	}
 
 	@Override
-	public final ScreenHandler createContainer(int syncId, PlayerInventory inventory) {
+	public final ScreenHandler createScreenHandler(int syncId, PlayerInventory inventory) {
 		return createSyncer(syncId, inventory);
 	}
 

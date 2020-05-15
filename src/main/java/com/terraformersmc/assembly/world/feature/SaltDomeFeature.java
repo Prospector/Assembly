@@ -41,12 +41,12 @@ public class SaltDomeFeature extends AbstractTempleFeature<DefaultFeatureConfig>
 	}
 
 	@Override
-	protected int getSpacing(DimensionType dimensionType, ChunkGeneratorConfig chunkGeneratorConfig) {
+	protected int getSpacing(ChunkGeneratorConfig chunkGeneratorConfig) {
 		return 40;
 	}
 
 	@Override
-	protected int getSeparation(DimensionType dimensionType, ChunkGeneratorConfig chunkGeneratorConfig) {
+	protected int getSeparation(ChunkGeneratorConfig chunkGeneratorConfig) {
 		return 10;
 	}
 
@@ -61,7 +61,7 @@ public class SaltDomeFeature extends AbstractTempleFeature<DefaultFeatureConfig>
 		}
 
 		@Override
-		public void init(ChunkGenerator<?> chunkGenerator, StructureManager structureManager, int x, int z, Biome biome) {
+		public void init(ChunkGenerator chunkGenerator, StructureManager structureManager, int x, int z, Biome biome) {
 			ChunkPos chunkPos = new ChunkPos(x, z);
 			int xPos = chunkPos.getStartX() + this.random.nextInt(16);
 			int zPos = chunkPos.getStartZ() + this.random.nextInt(16);

@@ -5,7 +5,7 @@ import alexiil.mc.lib.attributes.AttributeProvider;
 import com.terraformersmc.assembly.blockentity.AssemblyBlockEntities;
 import com.terraformersmc.assembly.blockentity.BoilerBlockEntity;
 import com.terraformersmc.assembly.blockentity.BoilerChamberBlockEntity;
-import com.terraformersmc.assembly.screen.AssemblyScreenHandlers;
+import com.terraformersmc.assembly.screen.AssemblyScreenSyncers;
 import com.terraformersmc.assembly.util.ComparatorUtil;
 import com.terraformersmc.assembly.util.interaction.Interactions;
 import com.terraformersmc.assembly.util.interaction.interactable.InteractionBypass;
@@ -32,8 +32,8 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 
 import javax.annotation.Nullable;
 
@@ -131,7 +131,7 @@ public class BoilerChamberBlock extends HorizontalFacingBlock implements BlockEn
 	}
 
 	@Override
-	public BlockState getStateForNeighborUpdate(BlockState ourState, Direction ourFacing, BlockState otherState, IWorld world, BlockPos ourPos, BlockPos otherPos) {
+	public BlockState getStateForNeighborUpdate(BlockState ourState, Direction ourFacing, BlockState otherState, WorldAccess world, BlockPos ourPos, BlockPos otherPos) {
 		if (ourState.get(WATERLOGGED)) {
 			world.getFluidTickScheduler().schedule(ourPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
@@ -152,7 +152,7 @@ public class BoilerChamberBlock extends HorizontalFacingBlock implements BlockEn
 
 	@Override
 	public Identifier getScreenHandlerId() {
-		return AssemblyScreenHandlers.BOILER_CHAMBER;
+		return AssemblyScreenSyncers.BOILER_CHAMBER;
 	}
 
 	@Override

@@ -9,8 +9,11 @@ import com.terraformersmc.assembly.loot.AssemblyLoot;
 import com.terraformersmc.assembly.networking.AssemblyNetworking;
 import com.terraformersmc.assembly.recipe.AssemblyRecipeTypes;
 import com.terraformersmc.assembly.recipe.serializer.AssemblyRecipeSerializers;
-import com.terraformersmc.assembly.screen.AssemblyScreenHandlers;
+import com.terraformersmc.assembly.screen.AssemblyScreenSyncers;
 import com.terraformersmc.assembly.sound.AssemblySoundEvents;
+import com.terraformersmc.assembly.tag.AssemblyBlockTags;
+import com.terraformersmc.assembly.tag.AssemblyFluidTags;
+import com.terraformersmc.assembly.tag.AssemblyItemTags;
 import com.terraformersmc.assembly.util.AssemblyConstants;
 import com.terraformersmc.assembly.world.AssemblyWorldgen;
 import com.terraformersmc.assembly.world.feature.AssemblyFeatures;
@@ -34,7 +37,7 @@ public class Assembly implements ModInitializer {
 		AssemblyBlocks.register();
 		AssemblyBlockEntities.register();
 		AssemblyItems.register();
-		AssemblyScreenHandlers.registerServersideHandlers();
+		AssemblyScreenSyncers.register();
 		AssemblyRecipeTypes.register();
 		AssemblyRecipeSerializers.register();
 		AssemblyEntities.register();
@@ -44,9 +47,13 @@ public class Assembly implements ModInitializer {
 		AssemblyWorldgen.register();
 		AssemblyLoot.register();
 		AssemblySoundEvents.register();
+		AssemblyBlockTags.load();
+		AssemblyFluidTags.load();
+		AssemblyItemTags.load();
 		FabricItemGroupBuilder.create(new Identifier(MOD_ID, "items")).icon(() -> new ItemStack(AssemblyItems.BRASS_GEAR)).appendItems(stacks -> Registry.ITEM.forEach(item -> {
-			if (Registry.ITEM.getId(item).getNamespace().equals(MOD_ID))
+			if (Registry.ITEM.getId(item).getNamespace().equals(MOD_ID)) {
 				item.appendStacks(item.getGroup(), (DefaultedList<ItemStack>) stacks);
+			}
 		})).build();
 	}
 }
